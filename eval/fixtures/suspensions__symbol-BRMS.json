@@ -1,0 +1,1 @@
+{"at":1789614812747,"ttl":21600000,"tool":"suspensions","params":{"symbol":"BRMS"},"body":{"results":[{"symbol":"BRMS","suspension_date":"2023-04-18","reason":"Suspended (mock)"},{"symbol":"BRMS","suspension_date":"2024-11-02","reason":"Suspended (mock)"}],"pagination":{"total_count":2,"has_next":false}}}
