@@ -1,15 +1,17 @@
 // Satu-satunya jembatan ke dunia luar: Sectors Financial API v2.
 // Kill test §6 PRD: hapus file ini → produk mati. Tidak ada sumber data lain.
 import { createHash } from "node:crypto";
-import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { TOOL_SPECS, type ToolName, type ToolSpec } from "./tools.ts";
 
 const BASE = "https://api.sectors.app/v2";
-const CACHE_DIR = process.env.ARUS_CACHE || ".cache/sectors";
-const SEED_DIRS = (process.env.ARUS_SEED_DIRS || "eval/fixtures").split(":");
+// LAZY: env bisa diatur setelah module init oleh import ESM (eval/test mengeset sebelum dynamic import)
+const CACHE_DIR = () => (process.env.ARUS_CACHE || ".cache/sectors");
+const SEED_DIRS = () => (process.env.ARUS_SEED_DIRS || "eval/fixtures").split(":");
 
 export class SectorsUnavailable extends Error {}
+class NotFoundError extends SectorsUnavailable {}
 
 // Kelas TTL per endpoint — sesuai anggaran credit §5: cache-first, percakapan dibaca dari cache.
 const TTL: Record<string, number> = {
@@ -32,11 +34,11 @@ function unwrap(rec: unknown): unknown {
   return rec && typeof rec === "object" && "body" in (rec as object) && "tool" in (rec as object) ? (rec as { body: unknown }).body : rec;
 }
 function seedLookup(tool: string, params: Record<string, string | number>, key: string): unknown {
-  const exact = SEED_DIRS.map((d) => fileIn(d, key)).find((f) => existsSync(f));
+  const exact = SEED_DIRS().map((d) => fileIn(d, key)).find((f) => existsSync(f));
   if (exact) return unwrap(JSON.parse(readFileSync(exact, "utf8")));
   const segs = Object.entries(params).filter(([k]) => !/^(start|end|date)$/.test(k)).map(([k, v]) => `${k}-${String(v)}`).sort();
   if (!segs.length) return null;
-  for (const dir of SEED_DIRS) {
+  for (const dir of SEED_DIRS()) {
     if (!existsSync(dir)) continue;
     for (const f of readdirSync(dir)) {
       const stem = f.replace(/\.json$/, "");
@@ -69,6 +71,7 @@ async function fetchLive(url: string, timeoutMs = 15000): Promise<unknown> {
     if (++breaker.fails >= 3) breaker.openUntil = Date.now() + 60000;
     throw new SectorsUnavailable("Sectors data unavailable (rate limit / server error).");
   }
+  if (res.status === 404) throw new NotFoundError(`404 ${url}`);
   if (!res.ok) throw new SectorsUnavailable(`Sectors error ${res.status} ${url}`);
   breaker.fails = 0;
   return res.json(); // kredit dihitung per-panggilan di sectorsGet (satu sumber kebenaran)
@@ -92,10 +95,13 @@ export async function sectorsGet<T = unknown>(
   if (qs.length) url += (url.includes("?") ? "&" : "?") + qs.join("&");
 
   const key = keyOf(tool, params);
-  const cf = fileIn(CACHE_DIR, key);
+  const cf = fileIn(CACHE_DIR(), key);
   if (!opts.live && existsSync(cf)) {
     const rec = JSON.parse(readFileSync(cf, "utf8"));
-    if (Date.now() - rec.at < TTL[spec.cache]) return rec.body as T;
+    if (rec.body && (rec.body as { not_found?: boolean }).not_found) {
+      if (Date.now() - rec.at < 3600e3) throw new NotFoundError(`${tool} → 404 (ternegatif 1 jam, hemat kredit)`);
+      rmSync(cf, { force: true });
+    } else if (Date.now() - rec.at < TTL[spec.cache]) return rec.body as T;
   }
   const pend = inflight.get(key);
   if (pend && !opts.live) return pend as Promise<T>;
@@ -108,13 +114,17 @@ export async function sectorsGet<T = unknown>(
       else body = (await fetchLive(url, spec.timeout)) as T;
       creditsUsed += spec.credits;
     } catch (e) {
+      if (e instanceof NotFoundError) { // cache negatif: satu 404 jangan mengulang pembelian kredit
+        mkdirSync(CACHE_DIR(), { recursive: true });
+        writeFileSync(cf, JSON.stringify({ at: Date.now(), ttl: 3600e3, tool, params, body: { not_found: true } }));
+      }
       // fallback jujur: seed cache hanya bila dinyatakan (ARUS_SEED / fixtures), bukan sumber lain.
       const seed = seedLookup(tool, params, key);
       if (seed && process.env.ARUS_SEED === "1") return seed as T;
       throw e;
     }
     if (body !== null) {
-      mkdirSync(CACHE_DIR, { recursive: true });
+      mkdirSync(CACHE_DIR(), { recursive: true });
       writeFileSync(cf, JSON.stringify({ at: Date.now(), ttl: ttlFile, tool, params, body }));
     }
     return body;

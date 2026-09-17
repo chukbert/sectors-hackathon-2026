@@ -85,11 +85,14 @@ export function clusterOwnerships(own: Ownership[]): Map<string, string> {
   const d = dsu(); const tickers = own.map((o) => o.ticker);
   const seen = new Set(tickers.map((t) => t.toUpperCase()));
   for (const t of tickers) d.union(t, t);
-  // 1) label API langsung → union ke "rekan" ticker dengan label sama yang juga ada di set
+  // 1) label — ticker masuk ke SEMUA bucket yang berlaku (label API DAN known-list),
+  //    karena API bisa memberi label berbeda-string untuk grup yang sama (INDF "Salim Group" vs ICBB "…")
   const byGroup = new Map<string, string[]>();
+  const bucket = (g: string, t: string) => { (byGroup.get(g) ?? byGroup.set(g, []).get(g)!).push(t) };
   for (const o of own) {
-    const g = o.group || knownGroup(o.ticker);
-    if (g) (byGroup.get(g) ?? byGroup.set(g, []).get(g)!).push(o.ticker);
+    if (o.group) bucket(o.group, o.ticker);
+    const k = knownGroup(o.ticker);
+    if (k) bucket(k, o.ticker);
   }
   for (const list of byGroup.values()) for (let i = 1; i < list.length; i++) d.union(list[0], list[i]);
   // 2) pemegang kendali sama (normalisasi+fuzzy) → union; simpan nama pengendali utk label

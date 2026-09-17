@@ -94,7 +94,7 @@ export async function katalisPillar(ticker: string, plan: Plan, emit: (l: string
 }
 
 // ── fundamentals (LLM tool-loop; fallback: valuasi dari company_report) ────
-const FUND_TOOLS: ToolName[] = ["company_report", "quarterly_financials", "subsector_report", "company_segments", "free_float"];
+const FUND_TOOLS: ToolName[] = ["company_report", "quarterly_financials", "subsector_report", "subsectors", "company_segments", "free_float"];
 export async function fundamentalPillar(ticker: string, plan: Plan): Promise<PillarOut> {
   const rep = await sectorsGet("company_report", { symbol: ticker, sections: "valuation,overview" }).catch(() => null) as never;
   const toolJsons: unknown[] = rep ? [rep] : [];
@@ -109,7 +109,7 @@ export async function fundamentalPillar(ticker: string, plan: Plan): Promise<Pil
   if (llmOk()) {
     try {
       const out = await toolLoop({
-        system: "Kamu Fundamentals-Agent ARUS. Jelaskan apakah PERGERAKAN harga ditopang KINERJA (revenue/earnings kuartalan, segmen, valuasi vs subsektor). Bahasa Indonesia. Jawab JSON {\"title\":\"…\",\"bullets\":[\"…\",\"…\",\"…\"],\"weak\":true|false}. weak=true bila kinerja memburuk/tidak berubah padahal harga naik. Semua angka harus dari hasil tool.",
+        system: "Kamu Fundamentals-Agent ARUS. Jelaskan apakah PERGERAKAN harga ditopang KINERJA (revenue/earnings kuartalan, segmen, valuasi vs subsektor). ATURAN TOOL: nilai sub_sector untuk subsector_report WAJIB dari field sub_sector pada company-report §overview (kebab-case asli) atau daftar /subsectors — jangan mengarang slug. company_segments boleh 404 (emiten tanpa data segmen) → lewati, jangan diulang. Bahasa Indonesia. Jawab JSON {\"title\":\"…\",\"bullets\":[\"…\",\"…\",\"…\"],\"weak\":true|false}. weak=true bila kinerja memburuk/tidak berubah padahal harga naik. Semua angka harus dari hasil tool.",
         user: `Ticker ${ticker}. Konteks: "${plan.question}".`, tools: FUND_TOOLS });
       const j = out.json as { title?: string; bullets?: string[]; weak?: boolean } | null;
       if (j?.title) title = j.title;

@@ -1,8 +1,11 @@
 // EVAL HARNESS — 20 kasus, offline deterministik (LLM-gated test ditandai SKIP bila key kosong).
 // Angka yang di-assert berasal dari fixtures sintetis eval/fixtures (BUKAN data pasar nyata)
 // atau dari properti matematis yang berlaku pada data apa pun. → EVAL_REPORT.md
+// ISOLASI: key ambient di shell TIDAK boleh bocor ke eval — assert melekat pada fixtures.
+delete process.env.SECTORS_API_KEY;
+delete process.env.GEMINI_API_KEY;
 process.env.ARUS_SEED = "1";
-process.env.ARUS_CACHE = process.env.ARUS_CACHE || ".cache/eval";
+process.env.ARUS_CACHE = ".cache/eval";
 import { mkdirSync, writeFileSync, rmSync } from "node:fs";
 mkdirSync(process.env.ARUS_CACHE, { recursive: true });
 
