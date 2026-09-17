@@ -2,7 +2,7 @@
 // ATURAN ARSITEKTUR yang membuat klaim "zero numeric hallucination" nyata:
 //   semua ANGKA pada kartu dihasilkan KODE deterministik (flow/fomo/graph/mover) —
 //   LLM hanya menyusun PROSA; setiap bullet prose lolos gate lib/ground.ts terhadap JSON tool.
-import { sectorsGet, isoDaysAgo, lastTradingDay, SectorsUnavailable } from "./sectors.ts";
+import { sectorsGet, isoDaysAgo, lastTradingDay, SectorsUnavailable, startQuery, queryCredits } from "./sectors.ts";
 import { kohortFlowIndex, flowSentences } from "./flow.ts";
 import { fomoMeter, type DailyRow } from "./fomo.ts";
 import { loadOwnerships, clusterOwnerships, egoGraph, autopsiKartu, knownMembers, knownGroup } from "./graph.ts";
@@ -83,7 +83,7 @@ export async function katalisPillar(ticker: string, plan: Plan, emit: (l: string
       const out = await toolLoop({
         system: "Kamu News-Agent ARUS. Tugasm: pisahkan katalis SUBSTANTIF vs VIRAL untuk satu ticker IDX. Cross-check klaim judul berita vs filing/corporate-actions. Bahasa Indonesia, hemat kata. Jawab JSON {\"title\":\"…\",\"bullets\":[\"…\",\"…\",\"…\"]} — angka HANYA yang kamu lihat di hasil tool.",
         user: `Ticker ${ticker}. Pertanyaan user: "${plan.question}". Data awal: ${nArt} berita, ${nFil} filing, ${nSusp} suspend (14d). Panggil tool bila perlu; jangan mengarang.`,
-        tools: KATALIS_TOOLS });
+        tools: KATALIS_TOOLS, maxRounds: 2 });
       const j = out.json as { title?: string; bullets?: string[] } | null;
       if (j?.title) title = j.title;
       if (Array.isArray(j?.bullets) && j.bullets.length) bullets.push(...j.bullets.filter((b) => typeof b === "string").slice(0, 3));
@@ -95,8 +95,8 @@ export async function katalisPillar(ticker: string, plan: Plan, emit: (l: string
 
 // ── fundamentals (LLM tool-loop; fallback: valuasi dari company_report) ────
 const FUND_TOOLS: ToolName[] = ["company_report", "quarterly_financials", "subsector_report", "subsectors", "company_segments", "free_float"];
-export async function fundamentalPillar(ticker: string, plan: Plan): Promise<PillarOut> {
-  const rep = await sectorsGet("company_report", { symbol: ticker, sections: "valuation,overview" }).catch(() => null) as never;
+export async function fundamentalPillar(ticker: string, plan: Plan, prefetched?: unknown): Promise<PillarOut> {
+  const rep = (prefetched ?? await sectorsGet("company_report", { symbol: ticker, sections: "overview,valuation,ownership" }).catch(() => null)) as never;
   const toolJsons: unknown[] = rep ? [rep] : [];
   const hist = (rep as { valuation?: { historical_valuation?: { pb?: number; pb_peer_avg?: number }[] } } | null)?.valuation?.historical_valuation ?? [];
   const medPb = hist.length ? hist[hist.length - 1] : undefined;
@@ -110,7 +110,7 @@ export async function fundamentalPillar(ticker: string, plan: Plan): Promise<Pil
     try {
       const out = await toolLoop({
         system: "Kamu Fundamentals-Agent ARUS. Jelaskan apakah PERGERAKAN harga ditopang KINERJA (revenue/earnings kuartalan, segmen, valuasi vs subsektor). ATURAN TOOL: nilai sub_sector untuk subsector_report WAJIB dari field sub_sector pada company-report §overview (kebab-case asli) atau daftar /subsectors — jangan mengarang slug. company_segments boleh 404 (emiten tanpa data segmen) → lewati, jangan diulang. Bahasa Indonesia. Jawab JSON {\"title\":\"…\",\"bullets\":[\"…\",\"…\",\"…\"],\"weak\":true|false}. weak=true bila kinerja memburuk/tidak berubah padahal harga naik. Semua angka harus dari hasil tool.",
-        user: `Ticker ${ticker}. Konteks: "${plan.question}".`, tools: FUND_TOOLS });
+        user: `Ticker ${ticker}. Konteks: "${plan.question}".`, tools: FUND_TOOLS, maxRounds: 2 });
       const j = out.json as { title?: string; bullets?: string[]; weak?: boolean } | null;
       if (j?.title) title = j.title;
       if (Array.isArray(j?.bullets)) bullets.unshift(...j.bullets.filter((b) => typeof b === "string").slice(0, 3));
@@ -121,9 +121,14 @@ export async function fundamentalPillar(ticker: string, plan: Plan): Promise<Pil
 }
 
 // ── grup (deterministik + LLM labeler) ──────────────────────────────────────
-export async function grupPillar(ticker: string, peerTickers: string[], portfolio: { ticker: string; pct: number }[], user: string): Promise<PillarOut & { graph?: GraphPayload }> {
-  const universe = [...new Set([ticker.toUpperCase(), ...peerTickers.map((t) => t.toUpperCase()), ...portfolio.map((p) => p.ticker)])].slice(0, 14);
-  let own = await loadOwnerships(universe);
+export async function grupPillar(ticker: string, peerTickers: string[], portfolio: { ticker: string; pct: number }[], user: string, prefetchedReport?: unknown): Promise<PillarOut & { graph?: GraphPayload }> {
+  const asked = ticker.toUpperCase();
+  const universe = [...new Set([asked, ...peerTickers.map((t) => t.toUpperCase()), ...portfolio.map((p) => p.ticker)])].slice(0, 14);
+  let own = await loadOwnerships(prefetchedReport ? universe.filter((t) => t !== asked) : universe);
+  if (prefetchedReport) {
+    const o = (prefetchedReport as { ownership?: { major_shareholders?: { name: string; share_percentage: number | string }[]; conglomerates_group?: string } }).ownership;
+    own = own.filter((x) => x.ticker !== asked).concat([{ ticker: asked, group: o?.conglomerates_group || undefined, holders: (o?.major_shareholders ?? []).map((h) => ({ name: h.name, share_percentage: Number(h.share_percentage) || 0 })) }]);
+  }
   let clusters = clusterOwnerships(own);
   const g0 = (clusters.get(ticker.toUpperCase()) ?? "") || knownGroup(ticker) || "";
   // perluas ego-graph ke tetangga grup (known-list) supaya "siapa lagi sekelompok" terlihat;
@@ -140,7 +145,6 @@ export async function grupPillar(ticker: string, peerTickers: string[], portfoli
   const bullets = g
     ? [`pengendali: ${g} — ${graph.nodes.filter((n) => !n.hub).length} emiten ter-cluster satu grup di universe yang dicek`, `free float & riwayat suspend diperiksa pilar lain (⚑ bila kecil / sering)`]
     : ["tidak ada pemegang pengendali yang sama dengan ticker lain di universe ini — independen (sejauh data)"];
-  const asked = ticker.toUpperCase();
   const peer = portfolio.find((p) => p.ticker.toUpperCase() !== asked && (clusters.get(p.ticker.toUpperCase()) ?? "") === g && g !== "");
   if (peer) bullets.unshift(`⚑ satu grup dengan ${peer.ticker.toUpperCase()} yang SUDAH kamu pegang`);
   let title = g ? `Satu grup dengan ${g}` : "Tidak sekelompok dengan yang kamu pegang";
@@ -189,7 +193,8 @@ const labelFor = (id: PillarId) => ({ mover: "Penggerak", katalis: "Katalis", fl
 
 export async function runTickerAnalysis(plan: Plan, emit: Emit, user: string, portfolio: { ticker: string; pct: number }[]) {
   const ticker = plan.tickers[0] ?? "BBCA";
-  emit({ type: "trace", line: `◇ planner · intent ${plan.intent} → pilar: mover flow katalis fundamental grup` });
+  startQuery(Number(process.env.ARUS_QUERY_BUDGET || 12)); // §5: hemat kredit — lebih dari ini agen baca cache/deterministik
+  emit({ type: "trace", line: `◇ planner · intent ${plan.intent} → pilar: mover flow katalis fundamental grup · budget ${process.env.ARUS_QUERY_BUDGET || 12} kredit` });
 
   const toolJsons: unknown[] = [];
   const evidenceLines: string[] = [];
@@ -203,12 +208,14 @@ export async function runTickerAnalysis(plan: Plan, emit: Emit, user: string, po
   } catch (e) { emit({ type: "trace", line: `▸ mover ✗ ${(e as Error).message.slice(0, 60)}`, ok: false }); }
 
   let flow: FlowIndex | null = null;
-  try { flow = await kohortFlowIndex(ticker, 7); toolJsons.push(flow); emit({ type: "trace", line: `▸ flow ✓ join broker-summary × registry — ritel ${flow.retail_net_m} M vs institusi ${flow.institusi_net_m} M`, ok: true }); }
+  try { flow = await kohortFlowIndex(ticker, 7, mover?.daily); toolJsons.push(flow); emit({ type: "trace", line: `▸ flow ✓ join broker-summary × registry — ritel ${flow.retail_net_m} M vs institusi ${flow.institusi_net_m} M`, ok: true }); }
   catch (e) { emit({ type: "trace", line: `▸ flow ✗ ${(e as Error).message.slice(0, 60)}`, ok: false }); }
   if (flow) evidenceLines.push(...flowSentences(flow));
 
+  // SATU panggilan company_report utk tiga konsumen (overview header + valuation fundamental + ownership grup)
+  const rep = await sectorsGet("company_report", { symbol: ticker, sections: "overview,valuation,ownership" }).catch(() => null);
   // pilar paralel
-  const [katalis, fund, grup] = await Promise.allSettled([katalisPillar(ticker, plan, (l, o) => emit({ type: "trace", line: `▸ news ${o?.ok ? "✓ " : "↩ "}${l}` })), fundamentalPillar(ticker, plan), grupPillar(ticker, [], portfolio, user)]);
+  const [katalis, fund, grup] = await Promise.allSettled([katalisPillar(ticker, plan, (l, o) => emit({ type: "trace", line: `▸ news ${o?.ok ? "✓ " : "↩ "}${l}` })), fundamentalPillar(ticker, plan, rep), grupPillar(ticker, [], portfolio, user, rep)]);
   const pillars: (KartuPillar & { graph?: GraphPayload })[] = [];
   for (const [name, r] of [["news", katalis], ["fundamentals", fund], ["graph", grup]] as const) {
     if (r.status === "fulfilled") {
@@ -240,7 +247,7 @@ export async function runTickerAnalysis(plan: Plan, emit: Emit, user: string, po
 
   const bantahOut = await bantah(plan, ticker, flow, mover?.fomo ?? null, evidenceLines);
   emit({ type: "trace", line: `◈ bantah-agent ✓ kasus ${plan.intent === "risiko" ? "penenang" : "lawan"} disusun`, ok: true });
-  emit({ type: "trace", line: "◆ synthesis · merangkai kartu…" });
+  emit({ type: "trace", line: `◆ synthesis · merangkai kartu… (≈${queryCredits()} kredit query ini)` });
 
   const flags: string[] = [];
   if (flow?.distribusi_ritel) flags.push("⚑ pola distribusi ke kohort ritel");
@@ -274,7 +281,7 @@ export async function runTickerAnalysis(plan: Plan, emit: Emit, user: string, po
 
   const kartu: Kartu = {
     ticker: ticker.toUpperCase(),
-    company: (await sectorsGet("company_report", { symbol: ticker, sections: "overview" }).catch(() => null) as { overview?: { company_name?: string } } | null)?.overview?.company_name ?? "",
+    company: (rep as { overview?: { company_name?: string } } | null)?.overview?.company_name ?? "",
     price: mover?.price ?? 0, change_pct: mover?.change_pct ?? 0, vol_mult: mover?.vol_mult ?? 0,
     fomo: mover?.fomo ?? { score: 0, label: "dingin", components: [] },
     pillars: pillars.sort((a, b) => ["mover", "katalis", "flow", "grup", "fundamental"].indexOf(a.id) - ["mover", "katalis", "flow", "grup", "fundamental"].indexOf(b.id)),

@@ -2,7 +2,7 @@
 // Anomali = z-score volume & lompatan harga dari data FULL-UNIVERSE Sectors (close × top-changes × most-traded).
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
-import { sectorsGet, isoDaysAgo, lastTradingDay } from "./sectors.ts";
+import { sectorsGet, isoDaysAgo, lastTradingDay, startQuery, queryCredits } from "./sectors.ts";
 
 const OUT_DIR = process.env.ARUS_CACHE || ".cache";
 export interface BriefEntry { ticker: string; delta: number; one: string; sev: "kritis" | "waspada" | "bersih"; body: string; counter: string }
@@ -23,6 +23,7 @@ async function scoreTicker(t: string, end: string): Promise<{ delta: number; vol
 }
 
 export async function scanAnomalies(limit = 10): Promise<Brief> {
+  startQuery(Number(process.env.ARUS_MORNING_BUDGET || 30)); // §5: cron tidak boleh membobol pool
   const end = lastTradingDay();
   const [movers, traded] = await Promise.all([
     sectorsGet("top_changes", { classifications: "top_gainers,top_losers", periods: "1d", n_stock: "20" }),
@@ -34,7 +35,7 @@ export async function scanAnomalies(limit = 10): Promise<Brief> {
   JSON.stringify(movers).match(/"symbol":"([A-Z]{4})"/g)?.forEach((s) => cand.add(s.slice(10, -1)));
   JSON.stringify(traded ?? "").match(/"symbol":"([A-Z]{4})/g)?.forEach((s) => cand.add(s.slice(10)));
 
-  const scored = (await Promise.all([...cand].slice(0, 24).map(async (t) => {
+  const scored = (await Promise.all([...cand].slice(0, 10).map(async (t) => {
     const sc = await scoreTicker(t, end).catch(() => null);
     return sc ? { t, ...sc } : null;
   }))).filter(Boolean) as { t: string; delta: number; volz: number }[];

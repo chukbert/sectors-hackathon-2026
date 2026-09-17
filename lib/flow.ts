@@ -11,15 +11,15 @@ const M = 1e6; // Rp → juta
 const r1 = (x: number) => Math.round(x * 10) / 10;
 const toM = (x: number) => r1(x / M);
 
-export async function kohortFlowIndex(ticker: string, days = 7): Promise<FlowIndex> {
+export async function kohortFlowIndex(ticker: string, days = 7, preDaily?: { close: number }[]): Promise<FlowIndex> {
   const end = lastTradingDay();
   const start = isoDaysAgo(days);
   const [regRaw, sumRaw, fflowRaw, filRaw, dRaw] = await Promise.all([
     sectorsGet("broker_registry", {}),
     sectorsGet("broker_summary", { symbol: ticker, start, end }),
     sectorsGet("foreign_flow", { symbol: ticker, start: isoDaysAgo(90), end }),
-    sectorsGet("filings", { symbol: ticker, start, end }).catch(() => ({ results: [] })),
-    sectorsGet("daily", { symbol: ticker, start, end }),
+    sectorsGet("filings", { symbol: ticker, start: isoDaysAgo(14), end }).catch(() => ({ results: [] })), // window kanonik = punya katalis → 1 kredit utk dua agen
+    preDaily ? Promise.resolve({ data: preDaily }) : sectorsGet("daily", { symbol: ticker, start, end }), // reuse milik mover
   ]);
   const reg = new Map((regRaw as RegistryRow[]).map((b) => [b.code, b]));
   const data = (sumRaw as { data: SummaryDay[] }).data ?? [];

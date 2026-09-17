@@ -53,15 +53,37 @@ function seedLookup(tool: string, params: Record<string, string | number>, key: 
   return null;
 }
 
+// ── anggaran kredit per query (§5: hard constraint 1.000 kredit) ──────────────
+let qLimit = Infinity, qMark = 0;
+export function startQuery(limit: number) { qLimit = limit; qMark = creditsUsed }
+export function queryCredits() { return Math.max(0, creditsUsed - qMark) }
+/** tarif sebenarnya: multi-section & multi-kombinasi dihitung sesuai dokumen harga */
+export function costOf(tool: ToolName, params: Record<string, string | number>): number {
+  const spec: ToolSpec = TOOL_SPECS[tool];
+  if ((tool === "company_report" || tool === "subsector_report") && params.sections) return String(params.sections).split(",").filter(Boolean).length;
+  if (tool === "quarterly_financials") return Math.min(8, Number(params.n_quarters) || 8); // 1/kuartal yang dikembalikan
+  if (tool === "screener" && params.q) return 3;                                              // ?q= NL = 3 kredit
+  if (tool === "top_changes") {
+    const c = String(params.classifications ?? "top_gainers,top_losers").split(",").length;
+    const pr = String(params.periods ?? "1d,7d,14d,30d,365d").split(",").length;
+    return c * pr;
+  }
+  return spec.paginated ? 1 : spec.credits; // paginated: ditagih per halaman oleh fetchAllPages
+}
+
 const inflight = new Map<string, Promise<unknown>>();
 let breaker = { fails: 0, openUntil: 0 };
 let creditsUsed = 0; // 1 kredit per respons 2xx (approx; multi-kredit dihitung di specs)
 export const credits = { get used() { return creditsUsed } };
 
-async function fetchLive(url: string, timeoutMs = 15000): Promise<unknown> {
+let lastCost = 0;
+async function fetchLive(url: string, timeoutMs = 15000, cost = 1): Promise<unknown> {
+  lastCost = cost;
   const key = process.env.SECTORS_API_KEY;
   if (!key) throw new SectorsUnavailable("SECTORS_API_KEY belum diisi — ARUS hanya hidup di atas data Sectors.");
   if (Date.now() < breaker.openUntil) throw new SectorsUnavailable("Sectors data unavailable (circuit breaker terbuka — rate limit).");
+  // gate SEBELUM request — kredit yang belum dibeli jangan sampai terlanjur habis
+  if (queryCredits() + lastCost > qLimit) throw new SectorsUnavailable(`batas kredit query (${qLimit}) habis — agen jatuh ke cache/deterministik.`);
   const res = await fetch(url, { headers: { Authorization: key }, signal: AbortSignal.timeout(timeoutMs) });
   if (res.status === 401 || res.status === 403) {
     breaker.fails++;
@@ -74,7 +96,8 @@ async function fetchLive(url: string, timeoutMs = 15000): Promise<unknown> {
   if (res.status === 404) throw new NotFoundError(`404 ${url}`);
   if (!res.ok) throw new SectorsUnavailable(`Sectors error ${res.status} ${url}`);
   breaker.fails = 0;
-  return res.json(); // kredit dihitung per-panggilan di sectorsGet (satu sumber kebenaran)
+  creditsUsed += lastCost; // tagihan nyata per respons 2xx
+  return res.json();
 }
 
 /** GET ter-cache. options.live=true memaksa ulang; halaman paginated digabung via options.paginate. */
@@ -110,9 +133,10 @@ export async function sectorsGet<T = unknown>(
     const ttlFile = TTL[spec.cache];
     let body: T;
     try {
-      if (paged) body = (await fetchAllPages(url, opts.live)) as T;
-      else body = (await fetchLive(url, spec.timeout)) as T;
-      creditsUsed += spec.credits;
+      const cost = costOf(tool, params);
+      if (paged) body = (await fetchAllPages(url, opts.live, cost)) as T;
+      else body = (await fetchLive(url, spec.timeout, cost)) as T;
+      // tagihan terjadi di fetchLive (per respons 2xx) — jangan hitung dua kali
     } catch (e) {
       if (e instanceof NotFoundError) { // cache negatif: satu 404 jangan mengulang pembelian kredit
         mkdirSync(CACHE_DIR(), { recursive: true });
@@ -134,12 +158,12 @@ export async function sectorsGet<T = unknown>(
 }
 
 // Gabung halaman: {results:[], pagination:{next_offset,has_next}} (close, news, filings, suspensions, free-float)
-async function fetchAllPages(url0: string, live?: boolean): Promise<unknown> {
+async function fetchAllPages(url0: string, live: boolean | undefined, cost: number): Promise<unknown> {
   const rows: Record<string, unknown>[] = [];
-  let offset = 0;
+  let offset = 0; let pages = 0;
   for (let page = 0; page < 40; page++) {
     const url = url0 + (url0.includes("?") ? "&" : "?") + `offset=${offset}`;
-    const j = (await fetchLive(url)) as { results?: Record<string, unknown>[]; pagination?: { next_offset?: number; has_next?: boolean; limit?: number } };
+    const j = (await fetchLive(url, undefined, pages++ ? 1 : cost)) as { results?: Record<string, unknown>[]; pagination?: { next_offset?: number; has_next?: boolean; limit?: number } };
     const chunk = j.results ?? (Array.isArray(j) ? (j as Record<string, unknown>[]) : []);
     if (!Array.isArray(j) && !j.results) return j; // bukan envelope → kembalikan apa adanya
     rows.push(...chunk);

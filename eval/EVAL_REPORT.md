@@ -1,6 +1,6 @@
 # EVAL_REPORT — ARUS
 
-Tanggal jalan: 2026-09-17T06:26:55.440Z · LLM tidak aktif (case deterministik saja; jalur LLM butuh GEMINI_API_KEY)
+Tanggal jalan: 2026-09-17T06:34:47.744Z · LLM tidak aktif (case deterministik saja; jalur LLM butuh GEMINI_API_KEY)
 **20 PASS / 0 FAIL / 0 SKIP** dari 20 kasus.
 
 Semua assert memakai fixtures **sintetis** (`eval/fixtures/`, skenario demo PRD §8.4) atau properti yang berlaku umum.
