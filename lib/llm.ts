@@ -1,6 +1,5 @@
 // Pembungkus Google GenAI SDK — model penalaran (§5: gemini-3.8-flash, effort medium).
 // Semua agen memakai SATU jalur ini supaya effort/telemetry terpusat.
-import { existsSync } from "node:fs";
 import { GoogleGenAI, Type } from "@google/genai";
 import { TOOL_SPECS, type ToolName } from "./tools.ts";
 import { sectorsGet, SectorsUnavailable } from "./sectors.ts";
@@ -18,10 +17,26 @@ function textOf(r: { candidates?: { content?: { parts?: { text?: string }[] } }[
   return (r.candidates?.[0]?.content?.parts ?? []).map((p) => p.text ?? "").join("");
 }
 
+// 503 "high demand" / 429 dari Google bersifat sementara → exponential backoff, lalu biarkan
+// pemanggil jatuh ke jalur deterministik (kartu tetap terbit, tanpa prose LLM).
+async function withRetry<T>(fn: () => Promise<T>, tries = 3): Promise<T> {
+  for (let i = 0; ; i++) {
+    try { return await fn(); }
+    catch (e) {
+      const m = String((e as Error)?.message ?? e);
+      if (i < tries && /(503|429|UNAVAILABLE|high demand|RESOURCE_EXHAUSTED|DEADLINE)/i.test(m)) {
+        await new Promise((r) => setTimeout(r, 700 * 2 ** i));
+        continue;
+      }
+      throw e;
+    }
+  }
+}
+
 export async function completeText(system: string, prompt: string, temperature = 0.4): Promise<string> {
   const a = ai(); if (!a) throw new Error("GEMINI_API_KEY kosong");
-  const r = await a.models.generateContent({ model: MODEL, contents: prompt,
-    config: { systemInstruction: system, temperature, thinkingConfig: { thinkingBudget: THINKING_BUDGET } as never } });
+  const r = await withRetry(() => a.models.generateContent({ model: MODEL, contents: prompt,
+    config: { systemInstruction: system, temperature, thinkingConfig: { thinkingBudget: THINKING_BUDGET } as never } }));
   return textOf(r);
 }
 
@@ -57,8 +72,8 @@ export async function toolLoop(args: {
   const toolJsons: unknown[] = [];
   const calls: { name: string; params: Record<string, string> }[] = [];
   for (let round = 0; round < (args.maxRounds ?? 5); round++) {
-    const r = await a.models.generateContent({ model: MODEL, contents: contents as never,
-      config: { systemInstruction: args.system, tools: [{ functionDeclarations: declarationsFor(args.tools) }] } });
+    const r = await withRetry(() => a.models.generateContent({ model: MODEL, contents: contents as never,
+      config: { systemInstruction: args.system, tools: [{ functionDeclarations: declarationsFor(args.tools) }] } }));
     const cand = r.candidates?.[0] as { content?: { parts?: { functionCall?: { id?: string; name: string; args?: Record<string, string> } }[] } } | undefined;
     const fcs = (cand?.content?.parts ?? []).filter((p) => p.functionCall).map((p) => p.functionCall!) ;
     if (!fcs.length) {

@@ -45,10 +45,14 @@ async function handle(req: NextRequest): Promise<AsyncGenerator<ChatEvent>> {
         if (llmOk()) {
           const { completeText } = await import("@/lib/llm.ts");
           const ctx = history.slice(-4).map((h) => `${h.role}: ${h.text}`).join("\n");
-          yield { type: "teks", text: await completeText(
-            "Kamu ARUS, asisten riset investor ritel IDX berbasis data Sectors. Bicara Bahasa Indonesia santai, jujur, tidak pernah menyuruh beli/jual/hold. Kalau ditanya sesuatu yang butuh data, arahkan ke pertanyaan ticker.",
-            `${ctx}\nuser: ${text}`) };
-        } else {
+          try {
+            yield { type: "teks", text: await completeText(
+              "Kamu ARUS, asisten riset investor ritel IDX berbasis data Sectors. Bicara Bahasa Indonesia santai, jujur, tidak pernah menyuruh beli/jual/hold. Kalau ditanya sesuatu yang butuh data, arahkan ke pertanyaan ticker.",
+              `${ctx}\nuser: ${text}`) };
+            return;
+          } catch { yield { type: "teks", text: "LLM sedang sibuk (503) — jalur deterministik tetap hidup: coba “kenapa BRMS naik?” atau “brief pagi”." }; return; }
+        }
+        {
           yield { type: "teks", text: "ARUS butuh ticker agar datanya bicara. Coba: “kenapa BRMS naik? boleh ikut?” · “autopsi portofolio saya” · “brief pagi”. (Mode deterministik: GEMINI_API_KEY belum diisi — semua kartu tetap terhitung dari data, tanpa LLM.)" };
         }
         return;
