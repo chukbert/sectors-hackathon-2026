@@ -1,113 +1,99 @@
-# ARUS
+# ARUS — asisten riset IDX (v6)
 
-> *Ikan kecil lihat harga. ARUS lihat arus.*
+*Ikan kecil lihat harga. ARUS lihat arus — uang, barang, kuasa.*
 
-Asisten **multi-agent** untuk investor ritel IDX: menjawab "kenapa saham ini naik, boleh ikut?"
-dengan **arus informasi** (berita vs filing), **arus uang** (broker per-kohort & asing), dan
-**arus kepemilikan** (grup konglomerasi) — semuanya dari [Sectors Financial API](https://sectors.app),
-plus **counter-argument wajib** dan **memori perilaku** si pengguna.
+Asisten multi-agent untuk **ticker IDX apa pun** (bukan cuma daftar demo): satu chat → satu Kartu Arus dengan verdict
+probabilistik, bukti bersitasi, bantahan, dan angka yang semuanya dihitung kode. Tanpa login. Live gagal = jujur
+"data tidak tersedia" — tidak ada fallback karangan.
 
-Sectors Hackathon 2026 · Track 01: AI Agents & Assistants.
-**Bukan nasihat keuangan, tidak bisa dan tidak akan mengeksekusi order.** Output: fakta, skor, pertanyaan, bantahan.
+Track: Sectors Hackathon 2026 · Track 01 AI Agents & Assistants. Alat riset & edukasi. **Bukan nasihat keuangan. Tanpa eksekusi order.**
 
----
+> Catatan versi: kode di repo ini = **v6** (terpasang & teruji 34/34 offline). `ARCHITECTURE.md`, `PRD.md`, dan
+> `BUILD_PLAN.md` sudah dirombak ke arah **v7 — query compiler LLM-first + entity resolver + graph reasoning**
+> (ditandai 🔜); bagian ber-tanda ✅ adalah yang sudah berjalan.
 
-## 1. Arsitektur
+## Yang berubah di v6 (self-healing)
 
-```
-User / Scheduler (cron 08:30 WIB)
-   ▼
-[1 PLANNER/ROUTER]   intent: kenapa-gerak · evaluasi-beli · autopsi-portofolio · pagi · risiko · obrolan
-                    → subset pilar (lib/agents.ts)
-   ▼
-[5 SPESIALIS — paralel, tool-loop sendiri, cache-first]
- Mover        : close, daily, top-changes, most-traded, index-daily, idx-total
- Flow         : broker-summary × broker-registry → KOHORT FLOW INDEX · foreign-flow · filings(insider)
- News         : news × filings × corporate-actions × suspensions → KATALIS METER
- Fundamentals : company-report §valuation · quarterly-financials · subsector-report · segments
- Graph        : company-report §ownership (batch) → union-find → GRUPGRAPH
-   ▼
-[2 VERIFIER]         grounding check di KODE (lib/ground.ts): angka dalam prosa wajib hadir
-                     di JSON tool output (±0.6%) — kalau tidak: dibuang, tercatat di trace.
-   ▼
-[3 BANTAH-AGENT]     adversarial: menyusun kasus terkuat sisi lawan, lalu mematahkannya dengan data
-   ▼
-[4 SYNTHESIS]        Kartu Arus: FOMO Meter + pilar + ⚑ + bantahan + pertanyaan + disclaimer
-                     + payload graph{nodes,edges} → dirender force-graph INLINE di chat
-   ▼
-[5 MEMORY]           node:sqlite per user: keputusan + portofolio → Cermin Perilaku ("pola lama kamu…")
-```
+- **Ticker universal.** Nol whitelist. Token 4-huruf-kapital apa pun = kandidat ticker; huruf kecil dicek ke daftar simbol.
+  Tidak ada ticker → klarifikasi `data-kurang`, **tidak menerbitkan kartu tentang emiten lain** (`lib/resolve.ts`).
+- **Dua router.** Heuristik keyword (selalu jalan) + **LLM planner multi-intent** via OpenRouter (`lib/planner.ts`).
+  Pertanyaan majemuk ("kenapa ANTM naik dan ex-date kapan?") dijalankan sebagai >1 analisis lalu digabung satu kartu.
+- **Satu pintu evidence.** Semua fetch Sectors di `lib/evidence.ts`; cache-first, cache-404 negatif, circuit breaker,
+  timeouts, ledger kredit (`lib/sectors.ts`). Live gagal → metrik itu ditandai tidak tersedia.
+- **Angka = hasil hitung.** FOMO, Kohort Flow (broker registry × summary × foreign-flow), likuiditas, dividen, drawdown,
+  cluster insider, DNA broker, divergence — semuanya di `lib/metrics.ts` + `lib/{barang,dna,kuasa,graph,gnn}.ts`. Nol konstanta ajaib.
+- **Verifier & guard dieksekusi.** Prosa LLM diuji grounding angka (±0.5%, `lib/ground.ts`); gagal → prosa deterministik.
+  Guardrail memblokir anjuran eksplisit — hasilnya dipakai, bukan dibuang.
+- **Memori dipakai.** Portofolio ("portofolio saya: BUMI 30 BRMS 30…"), watchlist, pola perilaku → masuk ke jawaban.
+- **LLM di lima titik (semua lewat verifier/guard).** `planner` (routing multi-intent + validasi ticker) · `narrator`
+  (prosa kartu) · `tutor` (menulis ulang Bagian 2) · `bantahan` (sisi lain) · `lanjutan` (pertanyaan berikutnya) —
+  plus ringkasan memori di `/api/memory` (di-cache). Setiap output LLM diuji grounding angka + guardrail; gagal/tanpa
+  key → versi deterministik. Tanpa Sectors tetap jalan (SEED=1).
+- **Output dua lapis.** Setiap kartu dibagi **Bagian 1 · Data faktual (bacaan teknis)** dan **Bagian 2 · Pelan-pelan
+  (arti per istilah + analogi + apa yang terbaca dari kondisi ini)** — dasar Bagian 2 deterministik (`lib/awam.ts`),
+  lalu diperhalus tutor LLM hanya bila lolos verifikasi.
+- **MCP 8 tools jujur.** Parameter benar-benar dipakai; `import "dotenv/config"`; tanpa Sectors = mati (kill test).
+- **Eval & calib jujur.** 34 kasus dengan assertion yang bisa gagal (regresi SMAR→ANTM, ticker asing, multi-intent,
+  budget ≤6kr, grounding, label SEED, struktur Bagian 2 bebas nasihat, fallback deterministik, screener + fundamental) +
+  calib dengan kontrol negatif. Semua offline, 0 kredit.
 
-Stack sengaja membosankan: **Next.js 15 · TypeScript · @google/genai (`gemini-3.8-flash`, effort medium) ·
-node:sqlite · force-graph canvas tulisan sendiri.** Nol framework agent — orkestrasinya kodenya.
-Pola mengikuti resep resmi docs Sectors (Tool Use, Multi-Agent Workflows, Structured Output, MCP).
+## Format output: 2 bagian
 
-## 2. Kenapa ini "multi-agent", bukan prompt di client LLM
+1. **Bagian 1 — Data faktual & bacaan teknis.** Verdict + keyakinan, narasi, visual (arus uang, rantai barang, grup,
+   anomali), metrik, bukti bersitasi, bantahan, dan rincian endpoint. Untuk yang sudah paham istilah pasar.
+2. **Bagian 2 — Pelan-pelan: artinya apa.** Gaya tutor untuk yang baru ikut investasi: tiap istilah dijelaskan
+   *arti → analogi sehari-hari ("ibarat toko…") → apa yang terbaca di kartu ini*, dikelompokkan **🟢 sisi yang mendukung /
+   🟡 perlu diperhatikan / ⚪ istilah & konteks**, ditutup ringkasan pemula (`kartu.awam.intisari`) — murni penjelasan
+   kondisi, bukan rekomendasi atau ajakan beli/jual.
 
-Cabut prompt-nya → yang tersisa tetap bekerja: **Kohort Flow Index** (join broker-summary × registry),
-**GrupGraph** (union-find nama pengendali ter-normalisasi+fuzzy × known-list 30 grup),
-**FOMO Meter** (z-score volume, deviasi SMA, streak asing, divergence berita-vs-filing),
-**deteksi distribusi ke ritel**, **verifier grounding numerik**, **scheduler anomali full-universe**,
-dan **memori perilaku** — semuanya kode deterministik dengan tes (`npm test`, `npm run eval`).
-LLM hanya menyusun PROSA di atas angka yang dihitung kode; angka kartu **tidak pernah** lahir dari model.
-Peta endpoint → fitur: [`sectors-deps.txt`](./sectors-deps.txt) (kill test §6 PRD: cabut Sectors = UI mati).
+## Intent yang didukung
 
-## 3. Track requirement checklist
+| Intent | Contoh | Inti |
+|---|---|---|
+| kenapa-gerak | `kenapa SMAR naik?` | return, kohort uang, asing, insider |
+| rumor | `SMAR mau ke 500?` | FOMO berbasis data + distribusi ritel + filing |
+| risiko | `risiko BUMI apa?` | drawdown, distribusi, streak asing, suspensi |
+| dividen | `yield SMAR aman?` | riwayat yield, konsistensi, ex-date |
+| kalender | `ex-date BMRI kapan?` | corporate-actions (dividen/rights/split/AGM) |
+| likuiditas | `likuiditas BRMS?` | nilai transaksi 20hr, market cap, hari volume nol |
+| banding | `banding ADRO vs PTBA` | return/volume/FOMO side-by-side |
+| autopsi | `autopsi portofolio saya` | Group Score dari ownership (union-find) |
+| barang | `coal naik kok ADRO turun?` | divergence komoditas vs volume + exposure |
+| dna | `broker YP aman?` | fingerprint 14hr: distribusi/conduit asing/gorengan |
+| screener | `saham apa yang paling murah?` · `saham bank termurah?` | Sectors screener: PE/PB/yield/ROE/DER/market cap/growth + filter sektor (slug divalidasi ke helper list, 1kr, angka apa adanya) |
+| fundamental | `PE ANTM berapa?` · `laba SMAR gimana?` · `segmen TLKM?` | report §valuation/financials/future/management/peers/overview (1kr/section), quarterly financials (1kr/kuartal), segments — apa adanya dari Sectors |
+| kuasa | `ada cluster insider?` | ≥4 insider-sell 1 sektor 7hr, rights wave |
+| pagi | `scan pagi` | GNN-lite anomali dari close 90hr |
+| pasar | `IHSG gimana?` | index-daily |
 
-| Requirement | Bukti di repo |
-|---|---|
-| Multi-step reasoning | planner → 5 pilar paralel → verifier → bantah → synthesis (`lib/agents.ts`) |
-| Custom tool-use pipeline | 25 endpoint dibungkus dengan schema+validator+cache-class sendiri (`lib/tools.ts`, `lib/sectors.ts`) |
-| Routing antar sumber | `pillars` per-tool + intent planner; valuasi tidak memanggil endpoint broker |
-| Memory / state | `lib/memory.ts` (SQLite) — keputusan, portofolio, pola chase; graph percakapan bertahan antar-follow-up |
-| Autonomous execution | `npm run morning` (cron 08:30) — full-universe scan → brief 10 anomali tanpa user action |
-| Purpose-built interface | Kartu Arus + flow bars + **GrupGraph inline** di stream chat (`app/page.tsx`) |
-| Innovative use of Sectors | derived assets (tidak ada endpoint tunggal-nya) — lihat §2 |
-
-## 4. Menjalankan
+## Jalankan
 
 ```bash
 npm install
-cp .env.example .env       # SECTORS_API_KEY dari portal Sectors (Insider plan); GEMINI_API_KEY opsional
-npm run dev                # http://localhost:3000
-npm test                   # unit deterministik (node --test)
-npm run eval               # 20 kasus → eval/EVAL_REPORT.md
-npm run morning            # scan anomali sekali (cron: 30 8 * * 1-5 WIB)
+cp .env.example .env   # isi SECTORS_API_KEY + OPENROUTER_API_KEY
+npm run eval           # 34 kasus jujur, SEED=1, offline, 0 kredit
+npm run calib          # konsistensi aturan + kontrol negatif
+npm run dev            # :3000 — HP tanpa login
+npm run mcp            # MCP 8 tools via stdio (Inspector)
 ```
 
-Tanpa `GEMINI_API_KEY` produk tetap jalan penuh — prose agen memakai template deterministik dari angka
-terhitung (dinyatakan jujur di trace). Tanpa `SECTORS_API_KEY`: error state "Sectors data unavailable"
-(sengaja — tidak ada fallback sumber lain); mode demo offline: `ARUS_SEED=1` baca `eval/fixtures/`
-(lihat [`SEED.md`](./SEED.md)).
+- `SEED=1` → fixture berlabel SEED (cache di `ARUS_CACHE`, default `.cache/`). Tanpa key dan tanpa `SEED=1` → error jujur.
+- Tanpa `OPENROUTER_API_KEY` → planner memakai heuristik, sintesis deterministik (semua kartu tetap terbit).
+- Budget: 6 kredit/sesi (badge ⚡ + ledger per endpoint). Cache 404 negatif & circuit breaker menghemat kredit.
 
-## 5. Fitur
+## MCP
 
-- **F1 Kartu Arus** — trace orkestrasi live + 5 pilar + FOMO 0–100 dengan komponen + bantahan + pertanyaan yang dikembalikan.
-- **F2 Kohort Flow Index** — "broker kohort ritel net-buy Rp X M vs asing+institusional net-sell Rp Y M / 7 hari", streak asing, ⚑ insider-sell, **deteksi distribusi → exit liquidity**.
-- **F3 GrupGraph + Autopsi Portofolio = intent chat** — "autopsi portofolio saya BBCA INDF ICBP…" → Group Score + graph penuh inline; follow-up ("kok bisa INDF sama ICBP?") dijawab dari graph yang sama.
-- **F4 Katalis Meter** — substantif vs viral: `berita > 0 tapi filing = 0` → ⚑; suspend history + free float kecil.
-- **F5 Morning Arus** — cron; z-score volume & lompatan harga dari full-universe; tiap entri dengan counter-argument.
-- **F6 Cermin Perilaku** — "3 bulan lalu kamu juga begini" + Panic Decoder (intent risiko: kartu yang sama, framing menenangkan-berbasis-bukti).
+`npx @modelcontextprotocol/inspector tsx mcp/server.ts` — 8 tools:
+`kohort_flow(symbol) · group_neighborhood(symbol) · fomo_meter(symbol) · rumor_verdict(text) ·
+portfolio_group_score(symbols) · commodity_chain(slug) · broker_dna(code) · event_cluster(sector)`.
+Semua menghormati parameter dan memakai pipeline yang sama dengan chat. Cabut Sectors = MCP mati.
 
-## 6. Limitasi (diakui — juga tertulis di kartu)
+## Limitasi jujur
 
-- **Nama broker ≠ identitas pemilik akun.** "Kohort ritel" = proxy statistik broker yang dipakai ritel; output adalah indikator, bukan tuduhan.
-- **Kepemilikan per laporan terakhir**; cluster = *kemungkinan relasi* (normalisasi+fuzzy+known-list; ambang kendali 20%).
-- Data Sectors adalah **EOD** (bukan realtime); tanggal libur bisa mundur 1 hari dari estimasi.
-- Verifier meng-gate angka **finansial** (bersatuan/desimal/≥100); plural kecil ("2 grup") dan tahun sengaja di luar gate.
-- Free-float/segments bergantung cakupan pelaporan emiten; pilar fundamental bisa kembali ke valuasi dasar.
-- **Tidak ada** tombol beli/jual, integrasi sekuritas, atau klaim akurasi 99% —by design.
+Broker = proxy kohort, bukan identitas; DNA = pola historis, bukan vonis; ownership = laporan terakhir, label
+"kemungkinan relasi"; komoditas monthly (coal bi-weekly), EOD bukan realtime; proyeksi analis (§future) = pihak ketiga
+yang dikutip Sectors, bukan ramalan ARUS; **cakupan endpoint ARUS 20/54 endpoint IDX+Mining Sectors**
+(lihat `docs/API_COVERAGE.md`) — izin IUP, ranking, mayoritas pasar/indeks & broker, multi-market SGX/KLSE belum
+diimplementasikan (API-nya tersedia, ini gap ARUS); `SEED=1` = data contoh, bukan data pasar.
 
-## 7. Struktur repo
-
-```
-app/            page.tsx (chat UI, satu permukaan) · api/chat (stream NDJSON) · api/decision
-lib/            sectors.ts (client+cache+breaker) · tools.ts (25 wrapper) · flow · graph · fomo ·
-                ground (verifier) · llm (GenAI) · agents (planner→…→synthesis) · memory · morning
-components/     grafik.tsx (force-directed canvas, nol dependency)
-scripts/        morning-arus.ts (cron) · make-fixtures.ts (generator SEED)
-eval/           run.ts (20 kasus) · fixtures/ (SNAPSHOT sintetis) · EVAL_REPORT.md
-SEED.md · sectors-deps.txt
-```
-
-Data & layanan: [Sectors Financial API v2](https://docs.sectors.app) — satu-satunya sumber data produk ini.
+Dokumen: `docs/HEALING.md` (audit + perubahan v6) · `docs/API_COVERAGE.md` (audit cakupan endpoint Sectors) · `ARCHITECTURE.md` · `docs/PRD-v5.md` (perencanaan).

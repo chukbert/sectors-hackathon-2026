@@ -1,47 +1,45 @@
-ARUS → SECTORS DEPENDENCY MAP  (kill test §6: hapus semua baris ini → produk mati)
-==================================================================================
-Semua input data ARUS adalah Sectors Financial API v2 (https://api.sectors.app/v2).
-Tidak ada sumber lain. Satu-satunya non-Sectors input: pertanyaan user.
-Kolom fitur: F1 Kartu Arus · F2 Kohort Flow Index · F3 GrupGraph/Autopsi · F4 Katalis Meter · F5 Morning Arus · F6 Cermin/Panic
+# sectors-deps.txt — bukti kill-test: cabut Sectors = produk + MCP mati. Nol fallback Yahoo.
+# format: endpoint → fitur
 
-prices / transactions
-  GET /v2/close/                          F5 (anomali full-universe; 1x/hari, 32 kredit)
-  GET /v2/daily/{symbol}/                 F1 Mover · F4 SMA/z-score · F5 (per kandidat)
-  GET /v2/companies/top-changes/          F5 trigger gainers/losers
-  GET /v2/most-traded/                    F5 konteks likuiditas
-  GET /v2/index-daily/{index_code}/       F1 Mover (konteks IHSG)
-  GET /v2/idx-total/                      F5 konteks kapitalisasi
-  GET /v2/listing-performance/{symbol}/   F1 Mover (ticker baru = risiko beda)
-
-brokers / flow
-  GET /v2/broker-summary/{symbol}/        F2 INTI — join × registry → Kohort Flow Index
-  GET /v2/broker-summary/{symbol}/top/    F2 top akumulasi/distribusi
-  GET /v2/brokers/top/                    F2 konteks market per kohort
-  GET /v2/brokers/                        F2 registry (cohort, is_foreign) — SUMBER KUNCI JOIN
-  GET /v2/broker-activity/{code}/         F2 (investigasi broker tertentu, on-demand)
-  GET /v2/foreign-flow/{symbol}/          F2 streak asing 90d · F1 komponen FOMO
-  GET /v2/filings/                        F2 insider-sell ⚑ · F4 cross-check klaim berita
-
-news / events
-  GET /v2/news/                           F4 substantif-vs-viral · F5 news-spike
-  GET /v2/tags/                           F4 filter topik
-  GET /v2/company/corporate-actions/{s}/  F4 aksi korporasi nyata vs narasi
-  GET /v2/suspensions/                    F4 ⚑ "gampang digoreng, bisa disetop" · F1 flags
-  GET /v2/free-float/                     F4 free-float kecil ⚑ · F1 kartu
-
-company / fundamentals
-  GET /v2/company/report/{symbol}/        F3 ownership (major_shareholders + conglomerates_group)
-                                          F1 valuation (pb, pb_peer_avg) · overview (nama)
-  GET /v2/financials/quarterly/{symbol}/  F1 Fundamental (kinerja vs harga)
-  GET /v2/company/get-segments/{symbol}/  F4 "narasi hijau vs 84% komoditas lama"
-  GET /v2/company/shareholders-composition/{s}/  F3 profil kategori (asing/ritel %)
-  GET /v2/subsector/report/{sub}/         F1 pembanding median PB/PE subsektor
-  GET /v2/companies/                      internal: universe/nama (screener; TIDAK dipamerkan)
-
-DERIVED ASSETS — tidak tersedia sebagai endpoint tunggal, dihitung kode ARUS:
-  Kohort Flow Index   = broker-summary × broker-registry (cohort/origin) per hari
-  GrupGraph           = company-report §ownership → union-find nama pengendali (normalisasi+fuzzy)
-                        × known-list 30 grup (hanya utk memanggil kandidat, bukan membuktikan)
-  FOMO Meter          = daily(z-vol, deviasi SMA, return) × news-vs-filings × foreign-flow streak
-  Deteksi distribusi  = harga naik + institusi/asing net-jual + ritel net-buy (F2)
-  Group Score         = % portofolio yang ternyata satu pengendali (F3)
+daily/{symbol}/ → F1,F9
+close/universe → F1,GNN
+top-changes → F1
+most-traded → F1
+idx-total → F1
+index-daily-universe → F1
+broker-summary-by-symbol → F2,rumor
+broker-registry → F2,F10
+foreign-flow/? → F2,F9,DNA
+filings/ → F2,F4,F11
+corporate-actions/?type=dividend → F5,F11
+corporate-actions/?type=upcoming_dividend → F6,F11
+corporate-actions/?type=right_issue → F11
+corporate-actions/?type=stock_split → F11
+corporate-actions/?type=agm → F11
+latest-quarterly-dates → F6,F11
+free-float → F4,F6
+suspensions/ → F4,F6,F11
+news/?tags= → F4,F8,F11
+news/ → F4,F8
+company-report?sections=dividend → F5
+company-report?sections=ownership → F3
+quarterly-financials → F5,F9
+mining/commodities/{name}/price?start_year=&end_year= → F9
+mining/commodities/nickel/price → F9
+mining-companies/performance → F9
+mining-companies/financials → F9
+mining-companies/detail → F9
+mining/sales-destination/{slug} → F9
+mining/exports/?commodity_type= → F9
+mining/global-commodity → F9
+mining/production → F9
+mining/resources-reserves → F9
+mining/sites → F9
+mining/contracts/ → F9
+mining/licenses/ → F9
+mining/license-auctions-detail → F9
+mining/ownership/tree → F3
+broker-activity/{broker_code}/ → F10
+broker-activity-top → F10
+brokers/top?origin+cohort → F10
+broker-summary-top → F10

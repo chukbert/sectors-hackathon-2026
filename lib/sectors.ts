@@ -1,187 +1,131 @@
-// Satu-satunya jembatan ke dunia luar: Sectors Financial API v2.
-// Kill test §6 PRD: hapus file ini → produk mati. Tidak ada sumber data lain.
-import { createHash } from "node:crypto";
-import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+// lib/sectors.ts — Sectors REST v2 client: cache disk + credit-guard + dedupe + cache-404 negatif + circuit breaker.
+// Kill test: tanpa SECTORS_API_KEY dan tanpa SEED=1 → error jujur "Sectors data unavailable".
+// Tidak ada satu pun fallback data karangan di mode live.
+import fs from "node:fs";
 import path from "node:path";
-import { TOOL_SPECS, type ToolName, type ToolSpec } from "./tools.ts";
+import { CreditSession, estimateCost } from "./credit.js";
 
-const BASE = "https://api.sectors.app/v2";
-// LAZY: env bisa diatur setelah module init oleh import ESM (eval/test mengeset sebelum dynamic import)
-const CACHE_DIR = () => (process.env.ARUS_CACHE || ".cache/sectors");
-const SEED_DIRS = () => (process.env.ARUS_SEED_DIRS || "eval/fixtures").split(":");
+const BASE = process.env.SECTORS_BASE_URL ?? "https://api.sectors.app/v2";
+const CACHE_DIR = () => process.env.ARUS_CACHE ?? path.join(process.cwd(), ".cache");
 
-export class SectorsUnavailable extends Error {}
-class NotFoundError extends SectorsUnavailable {}
-
-// Kelas TTL per endpoint — sesuai anggaran credit §5: cache-first, percakapan dibaca dari cache.
-const TTL: Record<string, number> = {
-  universe: 24 * 3600e3,   // full-universe 1×/hari
-  holders: 7 * 24 * 3600e3,// shareholders/ownership 1×/minggu/ticker
-  daily: 24 * 3600e3,      // broker summary 1×/hari/ticker
-  news: 6 * 3600e3,
-  helper: 30 * 24 * 3600e3,
-};
-
-// key yang BISA DIBACA manusia — cache & fixtures SEED harus bisa di-audit juri tanpa hash-cracking
-function keyOf(tool: string, params: Record<string, string | number>): string {
-  const q = Object.entries(params).map(([k, v]) => `${k}-${String(v)}`).sort().join("_");
-  return (tool + (q ? `__${q}` : "")).replace(/[^A-Za-z0-9._-]/g, "").slice(0, 120);
-}
-function fileIn(dir: string, key: string) { return path.join(dir, `${key}.json`) }
-
-/** fixture seed: coba nama persis, lalu cocokkan pada tool+param non-tanggal (tanggal berotasi tiap hari) */
-function unwrap(rec: unknown): unknown {
-  return rec && typeof rec === "object" && "body" in (rec as object) && "tool" in (rec as object) ? (rec as { body: unknown }).body : rec;
-}
-function seedLookup(tool: string, params: Record<string, string | number>, key: string): unknown {
-  const exact = SEED_DIRS().map((d) => fileIn(d, key)).find((f) => existsSync(f));
-  if (exact) return unwrap(JSON.parse(readFileSync(exact, "utf8")));
-  const segs = Object.entries(params).filter(([k]) => !/^(start|end|date)$/.test(k)).map(([k, v]) => `${k}-${String(v)}`).sort();
-  if (!segs.length) return null;
-  for (const dir of SEED_DIRS()) {
-    if (!existsSync(dir)) continue;
-    for (const f of readdirSync(dir)) {
-      const stem = f.replace(/\.json$/, "");
-      if (!stem.startsWith(tool)) continue;
-      const ps = (stem.split("__")[1] ?? "").split("_");
-      if (segs.every((s) => ps.includes(s))) {
-        const rec = JSON.parse(readFileSync(path.join(dir, f), "utf8"));
-        return rec && typeof rec === "object" && "body" in rec && "tool" in rec ? (rec as { body: unknown }).body : rec;
-      }
-    }
-  }
-  return null;
+export function isSeedMode(): boolean {
+  return process.env.SEED === "1";
 }
 
-// ── anggaran kredit per query (§5: hard constraint 1.000 kredit) ──────────────
-let qLimit = Infinity, qMark = 0;
-export function startQuery(limit: number) { qLimit = limit; qMark = creditsUsed }
-export function queryCredits() { return Math.max(0, creditsUsed - qMark) }
-/** tarif sebenarnya: multi-section & multi-kombinasi dihitung sesuai dokumen harga */
-export function costOf(tool: ToolName, params: Record<string, string | number>): number {
-  const spec: ToolSpec = TOOL_SPECS[tool];
-  if ((tool === "company_report" || tool === "subsector_report") && params.sections) return String(params.sections).split(",").filter(Boolean).length;
-  if (tool === "quarterly_financials") return Math.min(8, Number(params.n_quarters) || 8); // 1/kuartal yang dikembalikan
-  if (tool === "screener" && params.q) return 3;                                              // ?q= NL = 3 kredit
-  if (tool === "top_changes") {
-    const c = String(params.classifications ?? "top_gainers,top_losers").split(",").length;
-    const pr = String(params.periods ?? "1d,7d,14d,30d,365d").split(",").length;
-    return c * pr;
-  }
-  return spec.paginated ? 1 : spec.credits; // paginated: ditagih per halaman oleh fetchAllPages
+function ttlFor(endpoint: string): number {
+  if (/\/brokers\/?(\?|$)/.test(endpoint)) return 30 * 24 * 3600e3;
+  if (endpoint.includes("/company/report")) return 7 * 24 * 3600e3;
+  if (endpoint.includes("corporate-actions")) return 6 * 3600e3;
+  if (endpoint.includes("/mining/commodities") && endpoint.includes("/price")) return 7 * 24 * 3600e3;
+  if (endpoint.includes("performance") || endpoint.includes("financials")) return 90 * 24 * 3600e3;
+  if (endpoint.includes("contracts") || endpoint.includes("licenses") || endpoint.includes("auctions")) return 30 * 24 * 3600e3;
+  if (endpoint.includes("universe") && !endpoint.includes("ownership")) return 24 * 3600e3;
+  if (endpoint.includes("ownership")) return 7 * 24 * 3600e3;
+  if (endpoint.includes("index-daily")) return 24 * 3600e3;
+  return 6 * 3600e3;
 }
 
-const inflight = new Map<string, Promise<unknown>>();
-let breaker = { fails: 0, openUntil: 0 };
-let creditsUsed = 0; // 1 kredit per respons 2xx (approx; multi-kredit dihitung di specs)
-export const credits = { get used() { return creditsUsed } };
-
-let lastCost = 0;
-async function fetchLive(url: string, timeoutMs = 15000, cost = 1): Promise<unknown> {
-  lastCost = cost;
-  const key = process.env.SECTORS_API_KEY;
-  if (!key) throw new SectorsUnavailable("SECTORS_API_KEY belum diisi — ARUS hanya hidup di atas data Sectors.");
-  if (Date.now() < breaker.openUntil) throw new SectorsUnavailable("Sectors data unavailable (circuit breaker terbuka — rate limit).");
-  // gate SEBELUM request — kredit yang belum dibeli jangan sampai terlanjur habis
-  if (queryCredits() + lastCost > qLimit) throw new SectorsUnavailable(`batas kredit query (${qLimit}) habis — agen jatuh ke cache/deterministik.`);
-  const res = await fetch(url, { headers: { Authorization: key }, signal: AbortSignal.timeout(timeoutMs) });
-  if (res.status === 401 || res.status === 403) {
-    breaker.fails++;
-    throw new SectorsUnavailable("Sectors data unavailable (API key ditolak).");
-  }
-  if (res.status === 429 || res.status >= 500) {
-    if (++breaker.fails >= 3) breaker.openUntil = Date.now() + 60000;
-    throw new SectorsUnavailable("Sectors data unavailable (rate limit / server error).");
-  }
-  if (res.status === 404) throw new NotFoundError(`404 ${url}`);
-  if (!res.ok) throw new SectorsUnavailable(`Sectors error ${res.status} ${url}`);
-  breaker.fails = 0;
-  creditsUsed += lastCost; // tagihan nyata per respons 2xx
-  return res.json();
+function cachePath(endpoint: string) {
+  const safe = endpoint.replace(/[^a-zA-Z0-9]+/g, "_").slice(0, 180);
+  const dir = CACHE_DIR();
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+  return path.join(dir, safe + ".json");
 }
 
-/** GET ter-cache. options.live=true memaksa ulang; halaman paginated digabung via options.paginate. */
+const inflight = new Map<string, Promise<{ data: unknown; seed: boolean }>>();
+const breaker = { fails: 0, openUntil: 0 };
+
+function normalizeEndpoint(endpoint: string): string {
+  const qi = endpoint.indexOf("?");
+  const p = qi === -1 ? endpoint : endpoint.slice(0, qi);
+  const query = qi === -1 ? "" : endpoint.slice(qi);
+  return (p.endsWith("/") ? p : p + "/") + query;
+}
+
 export async function sectorsGet<T = unknown>(
-  tool: ToolName,
-  params: Record<string, string | number> = {},
-  opts: { live?: boolean; paginate?: boolean } = {},
-): Promise<T> {
-  const spec: ToolSpec = TOOL_SPECS[tool];
-  if (!spec) throw new Error(`tool tak dikenal: ${tool}`);
-  let url = BASE + spec.path;
-  for (const [k, v] of Object.entries(params)) url = url.replace(`{${k}}`, encodeURIComponent(String(v)));
-  const qs = Object.entries(params)
-    .filter(([k]) => !spec.path.includes(`{${k}}`))
-    .map(([k, v]) => `${k}=${encodeURIComponent(String(v))}`);
-  const paged = opts.paginate || spec.paginated;
-  if (opts.paginate && !qs.some((q) => q.startsWith("limit="))) qs.push("limit=100");
-  if (qs.length) url += (url.includes("?") ? "&" : "?") + qs.join("&");
+  endpoint: string,
+  session: CreditSession,
+  opts: { seed?: unknown } = {}
+): Promise<{ data: T; cached: boolean; seed: boolean }> {
+  endpoint = normalizeEndpoint(endpoint);
+  const live = !isSeedMode();
+  const cp = cachePath(endpoint);
 
-  const key = keyOf(tool, params);
-  const cf = fileIn(CACHE_DIR(), key);
-  if (!opts.live && existsSync(cf)) {
-    const rec = JSON.parse(readFileSync(cf, "utf8"));
-    if (rec.body && (rec.body as { not_found?: boolean }).not_found) {
-      if (Date.now() - rec.at < 3600e3) throw new NotFoundError(`${tool} → 404 (ternegatif 1 jam, hemat kredit)`);
-      rmSync(cf, { force: true });
-    } else if (Date.now() - rec.at < TTL[spec.cache]) return rec.body as T;
-  }
-  const pend = inflight.get(key);
-  if (pend && !opts.live) return pend as Promise<T>;
-
-  const job = (async (): Promise<T> => {
-    const ttlFile = TTL[spec.cache];
-    let body: T;
+  if (fs.existsSync(cp)) {
     try {
-      const cost = costOf(tool, params);
-      if (paged) body = (await fetchAllPages(url, opts.live, cost)) as T;
-      else body = (await fetchLive(url, spec.timeout, cost)) as T;
-      // tagihan terjadi di fetchLive (per respons 2xx) — jangan hitung dua kali
-    } catch (e) {
-      if (e instanceof NotFoundError) { // cache negatif: satu 404 jangan mengulang pembelian kredit
-        mkdirSync(CACHE_DIR(), { recursive: true });
-        writeFileSync(cf, JSON.stringify({ at: Date.now(), ttl: 3600e3, tool, params, body: { not_found: true } }));
+      const raw = JSON.parse(fs.readFileSync(cp, "utf8")) as { at: number; data?: unknown; seed?: boolean; negative?: boolean; status?: number };
+      const shapeOk = opts.seed === undefined || Array.isArray(opts.seed) === Array.isArray(raw.data);
+      if (raw.negative && Date.now() - raw.at < 3600e3) {
+        // 404 ter-cache 1 jam: satu 404 jangan membeli kredit dua kali.
+        throw new Error(`Sectors 404 (cache negatif 1 jam) untuk ${endpoint}`);
       }
-      // fallback jujur: seed cache hanya bila dinyatakan (ARUS_SEED / fixtures), bukan sumber lain.
-      const seed = seedLookup(tool, params, key);
-      if (seed && process.env.ARUS_SEED === "1") return seed as T;
-      throw e;
+      if (!raw.negative && Date.now() - raw.at < ttlFor(endpoint) && !(live && raw.seed) && shapeOk) {
+        session.charge(endpoint, 0, true);
+        return { data: raw.data as T, cached: true, seed: !!raw.seed };
+      }
+    } catch (e) {
+      if (String(e).includes("cache negatif")) throw e;
+      /* cache rusak → fetch ulang */
     }
-    if (body !== null) {
-      mkdirSync(CACHE_DIR(), { recursive: true });
-      writeFileSync(cf, JSON.stringify({ at: Date.now(), ttl: ttlFile, tool, params, body }));
-    }
-    return body;
-  })().finally(() => inflight.delete(key));
-  inflight.set(key, job);
-  return job;
-}
-
-// Gabung halaman: {results:[], pagination:{next_offset,has_next}} (close, news, filings, suspensions, free-float)
-async function fetchAllPages(url0: string, live: boolean | undefined, cost: number): Promise<unknown> {
-  const rows: Record<string, unknown>[] = [];
-  let offset = 0; let pages = 0;
-  for (let page = 0; page < 40; page++) {
-    const url = url0 + (url0.includes("?") ? "&" : "?") + `offset=${offset}`;
-    const j = (await fetchLive(url, undefined, pages++ ? 1 : cost)) as { results?: Record<string, unknown>[]; pagination?: { next_offset?: number; has_next?: boolean; limit?: number } };
-    const chunk = j.results ?? (Array.isArray(j) ? (j as Record<string, unknown>[]) : []);
-    if (!Array.isArray(j) && !j.results) return j; // bukan envelope → kembalikan apa adanya
-    rows.push(...chunk);
-    const pg = j.pagination;
-    if (!pg?.has_next) break;
-    offset = pg.next_offset ?? offset + (pg.limit ?? chunk.length);
-    if (!chunk.length) break;
   }
-  return { results: rows, pagination: { total_count: rows.length, has_next: false } };
+
+  if (inflight.has(endpoint)) {
+    const { data, seed } = await inflight.get(endpoint) as { data: T; seed: boolean };
+    session.charge(endpoint, 0, true);
+    return { data, cached: true, seed };
+  }
+
+  const cost = estimateCost(endpoint);
+  const job = (async (): Promise<{ data: T; seed: boolean }> => {
+    if (isSeedMode()) {
+      if (opts.seed !== undefined) {
+        fs.writeFileSync(cp, JSON.stringify({ at: Date.now(), data: opts.seed, seed: true }));
+        session.charge(endpoint, 0, false);
+        return { data: opts.seed as T, seed: true };
+      }
+      throw new Error(`SEED=1 tapi tidak ada fixture untuk ${endpoint}`);
+    }
+    const key = process.env.SECTORS_API_KEY;
+    if (!key) throw new Error(`Sectors data unavailable (SECTORS_API_KEY kosong) untuk ${endpoint}`);
+    if (Date.now() < breaker.openUntil) throw new Error(`Sectors data unavailable (circuit breaker terbuka) untuk ${endpoint}`);
+    session.canAfford(cost);
+    const res = await fetch(BASE + endpoint, {
+      headers: { Authorization: key },
+      signal: AbortSignal.timeout(20_000),
+    }).catch((e) => {
+      throw new Error(`Sectors tidak terjangkau (${String((e as Error).message ?? e)}) untuk ${endpoint}`);
+    });
+    if (res.status === 401 || res.status === 403) {
+      breaker.fails++;
+      breaker.openUntil = Date.now() + 300_000;
+      throw new Error(`Sectors data unavailable (API key ditolak) untuk ${endpoint}`);
+    }
+    if (res.status === 429 || res.status >= 500) {
+      if (++breaker.fails >= 3) breaker.openUntil = Date.now() + 60_000;
+      throw new Error(`Sectors data unavailable (rate limit / server error ${res.status}) untuk ${endpoint}`);
+    }
+    if (res.status === 404) {
+      fs.writeFileSync(cp, JSON.stringify({ at: Date.now(), negative: true, status: 404 }));
+      throw new Error(`Sectors 404 untuk ${endpoint}`);
+    }
+    if (!res.ok) throw new Error(`Sectors error ${res.status} untuk ${endpoint}`);
+    breaker.fails = 0;
+    const data = (await res.json()) as T;
+    session.charge(endpoint, cost, false);
+    fs.writeFileSync(cp, JSON.stringify({ at: Date.now(), data, seed: false }));
+    return { data, seed: false };
+  })();
+  inflight.set(endpoint, job);
+  try {
+    const out = await job;
+    return { data: out.data, cached: false, seed: out.seed };
+  } finally {
+    inflight.delete(endpoint);
+  }
 }
 
-/** tanggal trading terakhir — data EOD, jadi sebelum ~16:30 WIB hari ini belum lengkap (ponytail: libur nasional tak dipantau; endpoint memaklumi tanggal kosong, fallback mundur 1 hari). */
-export function lastTradingDay(now = new Date()): string {
-  const x = new Date(now);
-  if (x.getHours() < 16) x.setDate(x.getDate() - 1); // sebelum tutup pasar: pakai kemarin
-  while (x.getDay() === 0 || x.getDay() === 6) x.setDate(x.getDate() - 1);
-  return x.toISOString().slice(0, 10);
-}
-export function isoDaysAgo(n: number): string {
-  const x = new Date(); x.setDate(x.getDate() - n); return x.toISOString().slice(0, 10);
+export function cacheDirStatus() {
+  const dir = CACHE_DIR();
+  const files = fs.existsSync(dir) ? fs.readdirSync(dir).filter((f) => f.endsWith(".json")).length : 0;
+  return { dir, files };
 }

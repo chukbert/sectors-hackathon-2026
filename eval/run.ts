@@ -1,113 +1,244 @@
-// EVAL HARNESS — 20 kasus, offline deterministik (LLM-gated test ditandai SKIP bila key kosong).
-// Angka yang di-assert berasal dari fixtures sintetis eval/fixtures (BUKAN data pasar nyata)
-// atau dari properti matematis yang berlaku pada data apa pun. → EVAL_REPORT.md
-// ISOLASI: key ambient di shell TIDAK boleh bocor ke eval — assert melekat pada fixtures.
+// eval/run.ts — uji JUJUR & offline: SEED=1, tanpa SECTORS_API_KEY, tanpa OPENROUTER_API_KEY.
+// Setiap kasus punya assertion yang BISA gagal (ticker, verdict, grup, tanggal) — bukan sekadar cek substring "verdict".
+import fs from "node:fs";
+import path from "node:path";
+
+process.env.SEED = "1";
+process.env.ARUS_CACHE = path.join(process.cwd(), ".cache", "eval");
 delete process.env.SECTORS_API_KEY;
-delete process.env.GEMINI_API_KEY;
-process.env.ARUS_SEED = "1";
-process.env.ARUS_CACHE = ".cache/eval";
-import { mkdirSync, writeFileSync, rmSync } from "node:fs";
-mkdirSync(process.env.ARUS_CACHE, { recursive: true });
+delete process.env.OPENROUTER_API_KEY;
+fs.rmSync(process.env.ARUS_CACHE, { recursive: true, force: true });
 
-import { planFallback } from "../lib/agents.ts";
-import { kohortFlowIndex } from "../lib/flow.ts";
-import { loadOwnerships, clusterOwnerships, autopsiKartu, sameName, knownMembers } from "../lib/graph.ts";
-import { fomoMeter } from "../lib/fomo.ts";
-import { verifyGrounding } from "../lib/ground.ts";
-import { scanAnomalies } from "../lib/morning.ts";
-import { llmOk } from "../lib/llm.ts";
-import type { DailyRow } from "../lib/fomo.ts";
+const { chat } = await import("../lib/orchestrator.js");
+const { CreditSession } = await import("../lib/credit.js");
+const { computeBarang } = await import("../lib/barang.js");
+const { detectCluster } = await import("../lib/kuasa.js");
+const { fingerprintBroker } = await import("../lib/dna.js");
 
-type Res = { id: string; nama: string; ok: boolean | "SKIP"; detail: string };
-const results: Res[] = [];
-const check = async (id: string, nama: string, fn: () => Promise<string> | string) => {
-  try { const d = await fn(); results.push({ id, nama, ok: true, detail: d }); }
-  catch (e) { results.push({ id, nama, ok: false, detail: (e as Error).message }); }
+interface Run { k: Awaited<ReturnType<typeof chat>>; spent: number }
+async function ask(text: string): Promise<Run> {
+  const s = new CreditSession("eval");
+  const k = await chat(text, s);
+  return { k, spent: s.spent };
+}
+const json = (r: Run) => JSON.stringify(r.k);
+
+interface Case { name: string; run: () => Promise<unknown> | unknown; expect: (out: unknown) => boolean }
+const cases: Case[] = [];
+const add = (name: string, run: () => Promise<unknown> | unknown, expect: (out: unknown) => boolean) => cases.push({ name, run, expect });
+
+// — resolusi subjek (regresi SMAR) —
+add("smar/subjek-benar", () => ask("gimana kabar SMAR?"), (o) => {
+  const r = o as Run;
+  return !!r.k.subjek?.includes("SMAR") && json(r).includes("SMAR") && !/ANTM/.test(json(r));
+});
+add("smar/huruf-kecil", () => ask("kenapa smar naik?"), (o) => {
+  const r = o as Run;
+  return !!r.k.subjek?.includes("SMAR") && !/ANTM/.test(json(r));
+});
+add("smar/ticker-asing", () => ask("kenapa ZZZZ naik?"), (o) => {
+  const r = o as Run;
+  return !!r.k.subjek?.includes("ZZZZ") && !/ANTM/.test(json(r));
+});
+add("smar/tanpa-ticker-klarifikasi", () => ask("yield aman?"), (o) => {
+  const r = o as Run;
+  return r.k.verdict === "data-kurang" && r.k.subjek === undefined && json(r).includes("tidak menebak");
+});
+
+// — multi-intent (LLM planner + fallback heuristik dua-duanya boleh) —
+add("multi/gerak+kalender", () => ask("kenapa ANTM naik dan ex-date kapan?"), (o) => {
+  const r = o as Run;
+  const intents = r.k.audit?.intents ?? [];
+  return intents.length >= 2 && intents.includes("kalender") && json(r).includes("ANTM")
+    && r.k.sitasi.some((s) => s.includes("corporate-actions")) && r.k.sitasi.some((s) => s.includes("daily/ANTM"));
+});
+add("multi/dividen+likuiditas", () => ask("yield SMAR aman dan likuid nggak?"), (o) => {
+  const r = o as Run;
+  const intents = r.k.audit?.intents ?? [];
+  return intents.length >= 2 && intents.includes("dividen") && intents.includes("likuiditas") && !/ANTM/.test(json(r));
+});
+
+// — fitur generik untuk ticker apa pun —
+add("fitur/autopsi-grup", () => ask("portofolio saya: BUMI 30 BRMS 30 ANTM 20 PTBA 20"), (o) => {
+  const r = o as Run;
+  const v = r.k.visual as { groups?: { name: string; pct: number }[]; groupScore?: number } | undefined;
+  const names = (v?.groups ?? []).map((g) => g.name).join("|");
+  return (v?.groupScore ?? 0) > 0 && /Bumi/.test(names) && /MIND ID/.test(names);
+});
+add("fitur/banding", () => ask("banding ADRO vs PTBA"), (o) => {
+  const r = o as Run;
+  const v = r.k.visual as { compare?: { ticker: string }[] } | undefined;
+  return (v?.compare ?? []).length === 2 && json(r).includes("ADRO") && json(r).includes("PTBA") && !/ANTM/.test(json(r));
+});
+add("fitur/kalender-exdate", () => ask("ex-date BMRI kapan?"), (o) => {
+  const r = o as Run;
+  return json(r).includes("BMRI") && /Dividen\/ex-date|ex-date/.test(json(r)) && r.k.seed === true;
+});
+add("fitur/dividen", () => ask("yield SMAR aman?"), (o) => {
+  const r = o as Run;
+  return /sehat|waspada|indikasi-trap/.test(r.k.verdict) && json(r).includes("Yield terakhir") && !/ANTM/.test(json(r));
+});
+add("fitur/rumor-fomo", () => ask("SMAR mau ke 500?"), (o) => {
+  const r = o as Run;
+  return json(r).includes("FOMO") && json(r).includes("SMAR") && !/ANTM/.test(json(r));
+});
+add("fitur/dna-broker", () => ask("broker YP aman?"), (o) => {
+  const r = o as Run;
+  const v = r.k.visual as { radar?: { broker?: string } } | undefined;
+  return v?.radar?.broker === "YP" && r.k.sitasi.some((s) => s.includes("broker-activity/YP"));
+});
+add("fitur/barang-divergence", () => ask("coal naik kok ADRO turun?"), (o) => {
+  const r = o as Run;
+  const v = r.k.visual as { sankey?: { nodes?: string[] } } | undefined;
+  return (v?.sankey?.nodes ?? []).includes("commodity") && json(r).includes("ADRO") && !/ANTM/.test(json(r));
+});
+add("fitur/ihsg-bukan-ticker", () => ask("IHSG turun?"), (o) => {
+  const r = o as Run;
+  return !!r.k.audit?.intents?.includes("pasar") && !r.k.audit?.intents?.includes("kenapa-gerak") && r.k.subjek === undefined && r.k.verdict !== "data-kurang";
+});
+add("fitur/pasar-ihsg", () => ask("pasar lagi gimana?"), (o) => {
+  const r = o as Run;
+  return json(r).includes("IHSG") && !!r.k.audit?.intents?.includes("pasar");
+});
+
+// — disiplin: budget, grounding, determinisme, label SEED —
+add("disiplin/budget≤6", async () => {
+  const runs = await Promise.all([ask("kenapa BRMS naik?"), ask("broker YP aman?"), ask("coal naik kok ADRO turun?")]);
+  return runs.map((r) => r.spent);
+}, (o) => (o as number[]).every((n) => n <= 6));
+add("disiplin/grounding-nol-karangan", () => ask("kenapa SMAR naik?"), (o) => {
+  const r = o as Run;
+  return r.k.audit?.grounded === true && r.k.narrator.includes("deterministik");
+});
+add("disiplin/sweep-grounding", async () => {
+  const qs = [
+    "kenapa SMAR naik?", "yield SMAR aman?", "ex-date BUMI kapan?", "broker YP aman?",
+    "coal naik kok ADRO turun?", "nikel ANTM gimana?", "likuiditas BRMS gimana?", "risiko BUMI apa?",
+    "SMAR mau ke 500?", "banding ADRO vs PTBA", "scan pagi", "kenapa ZZZZ naik?",
+    "PE ANTM berapa?", "laba SMAR gimana?", "saham bank yang paling murah?",
+  ];
+  const out: { q: string; grounded: boolean; ungrounded: string[] }[] = [];
+  for (const q of qs) {
+    const r = await ask(q);
+    out.push({ q, grounded: !!r.k.audit?.grounded, ungrounded: r.k.audit?.ungrounded ?? [] });
+  }
+  return out;
+}, (o) => {
+  const rows = o as { q: string; grounded: boolean; ungrounded: string[] }[];
+  const bad = rows.filter((r) => !r.grounded);
+  if (bad.length) console.error("sweep gagal:", JSON.stringify(bad));
+  return bad.length === 0;
+});
+add("disiplin/seed-dilabeli", () => ask("kenapa BBCA turun?"), (o) => {
+  const r = o as Run;
+  return r.k.seed === true && r.k.kredit === "⚡ 0 kredit";
+});
+
+// — bagian awam (output 2 lapis: data faktual + penjelasan pelan-pelan) —
+const BAD_ADVICE = /beli sekarang|jual semua|all in|pasti cuan|dijamin naik|wajib beli|harus beli|sebaiknya beli|sebaiknya jual/i;
+const NADA = new Set(["baik", "hati", "netral"]);
+const awamOk = (k: Awaited<ReturnType<typeof chat>>) => {
+  const a = k.awam;
+  if (!a?.bagian?.length || !a.pembuka || !a.penutup || !a.intisari) return false;
+  return a.bagian.every((b) => b.istilah.trim() && b.arti.trim() && b.analogi.trim() && b.kondisi.trim() && NADA.has(b.nada)) && !BAD_ADVICE.test(JSON.stringify(a));
 };
-const must = (cond: unknown, msg: string) => { if (!cond) throw new Error(msg); };
+add("awam/dua-bagian-gerak", () => ask("kenapa SMAR naik?"), (o) => {
+  const r = o as Run;
+  const ist = (r.k.awam?.bagian ?? []).map((b) => b.istilah).join("|");
+  return awamOk(r.k) && /Verdict/.test(ist) && /Kohort/.test(ist) && /FOMO/.test(ist) && r.k.bukti.length > 0 && r.k.sitasi.length > 0;
+});
+add("awam/banding", () => ask("banding ADRO vs PTBA"), (o) => {
+  const r = o as Run;
+  return awamOk(r.k) && (r.k.awam?.bagian ?? []).some((b) => b.istilah === "Banding dua saham");
+});
+add("awam/dividen+likuiditas", () => ask("yield SMAR aman dan likuid nggak?"), (o) => {
+  const r = o as Run;
+  const ist = (r.k.awam?.bagian ?? []).map((b) => b.istilah).join("|");
+  return awamOk(r.k) && /Dividen & yield/.test(ist) && /Likuiditas/.test(ist) && !/ANTM/.test(json(r));
+});
+add("awam/bebas-nasihat-sweep", async () => {
+  const qs = ["kenapa SMAR naik?", "yield SMAR aman?", "broker YP aman?", "coal naik kok ADRO turun?", "SMAR mau ke 500?", "risiko BUMI apa?", "scan pagi", "banding ADRO vs PTBA", "PE ANTM berapa?", "laba SMAR gimana?"];
+  const out: { q: string; ok: boolean; bagian: number }[] = [];
+  for (const q of qs) {
+    const r = await ask(q);
+    out.push({ q, ok: awamOk(r.k), bagian: r.k.awam?.bagian.length ?? 0 });
+  }
+  return out;
+}, (o) => {
+  const rows = o as { q: string; ok: boolean; bagian: number }[];
+  const bad = rows.filter((r) => !r.ok || r.bagian < 2);
+  if (bad.length) console.error("awam sweep gagal:", JSON.stringify(bad));
+  return bad.length === 0;
+});
 
-// ── 1-6: ROUTING PLANNER (fallback deterministik) ───────────────────────────
-await check("P1", "intent kenapa-gerak", () => { const p = planFallback("kenapa ANTM naik 2 hari ini?"); must(p.intent === "kenapa-gerak" && p.tickers[0] === "ANTM", JSON.stringify(p)); return "kenapa-gerak [ANTM]"; });
-await check("P2", "intent evaluasi-beli", () => { const p = planFallback("boleh ikut BRMS gak nih"); must(p.intent === "evaluasi-beli", JSON.stringify(p)); return "evaluasi-beli"; });
-await check("P3", "intent autopsi (saya BUKAN ticker)", () => { const p = planFallback("autopsi portofolio saya"); must(p.intent === "autopsi-portofolio" && !p.tickers.includes("SAYA"), JSON.stringify(p)); return "autopsi, nol ticker palsu"; });
-await check("P4", "intent pagi", () => { const p = planFallback("brief pagi"); must(p.intent === "pagi", JSON.stringify(p)); return "pagi"; });
-await check("P5", "intent risiko (panic)", () => { const p = planFallback("BRMS merah parah, gue panik"); must(p.intent === "risiko" && p.tickers[0] === "BRMS", JSON.stringify(p)); return "risiko [BRMS]"; });
-await check("P6", "chase → evaluasi-beli, ticker kapital", () => { const p = planFallback("mau average down NCKL lagi"); must(p.intent === "evaluasi-beli" && p.tickers.includes("NCKL"), JSON.stringify(p)); return "evaluasi-beli [NCKL]"; });
+add("disiplin/komoditas-luar-scope", () => ask("komoditas CPO gimana?"), (o) => {
+  const r = o as Run;
+  return r.k.verdict === "data-kurang" && /belum mengimplementasikan/i.test(json(r)) && !/mining\/commodities\/coal/.test(json(r)) && r.spent === 0;
+});
+add("llm/fallback-offline", () => ask("kenapa SMAR naik?"), (o) => {
+  const r = o as Run;
+  return (r.k.lanjutan?.length ?? 0) >= 2
+    && /deterministik/.test(r.k.awamVia ?? "") && /deterministik/.test(r.k.counterVia ?? "")
+    && r.k.audit?.grounded === true && !!r.k.counter;
+});
 
-// ── 7-10: KOHORT FLOW INDEX (fixtures sintetis BRMS) ───────────────────────
-const flow = await kohortFlowIndex("BRMS", 7);
-await check("F1", "join registry × broker-summary: kohort ritel vs institusi", () => {
-  must(flow.retail_net_m > 0 && flow.institusi_net_m < 0, JSON.stringify({ r: flow.retail_net_m, i: flow.institusi_net_m }));
-  return `ritel +${flow.retail_net_m} M vs uang besar ${flow.institusi_net_m} M`; });
-await check("F2", "deteksi distribusi ke ritel", () => { must(flow.distribusi_ritel, "flag false"); return "harga naik + ritel beli + institusi jual → ⚑"; });
-await check("F3", "streak asing dari 90d foreign-flow", () => { must(flow.asing_sell_streak >= 5, String(flow.asing_sell_streak)); return `${flow.asing_sell_streak} hari beruntun`; });
-await check("F4", "top broker terurut + nama dari registry", () => { must(flow.top_buyers.length && flow.top_buyers[0].name.length > 1, JSON.stringify(flow.top_buyers.slice(0, 2))); return `${flow.top_buyers[0].code} ${flow.top_buyers[0].name} ${flow.top_buyers[0].net_m} M`; });
+add("fitur/screener-murah", () => ask("saham apa yang paling murah?"), (o) => {
+  const r = o as Run;
+  const v = r.k.visual as { screen?: { metric?: string; rows?: { symbol: string; disp?: string }[] } } | undefined;
+  return !!r.k.audit?.intents?.includes("screener") && v?.screen?.metric === "pe_ttm" && (v.screen.rows ?? []).length >= 3
+    && json(r).includes("PE (TTM)") && r.k.seed === true && r.spent <= 1;
+});
+add("fitur/screener-yield", () => ask("saham dengan dividen tertinggi?"), (o) => {
+  const r = o as Run;
+  const v = r.k.visual as { screen?: { orderBy?: string; label?: string; rows?: { symbol: string }[] } } | undefined;
+  return v?.screen?.orderBy === "-yield_ttm" && v?.screen?.label === "yield TTM tertinggi" && (v.screen.rows ?? []).length >= 3 && r.k.audit?.intents?.length === 1;
+});
+add("fitur/screener-sektor", () => ask("saham bank yang paling murah?"), (o) => {
+  const r = o as Run;
+  const v = r.k.visual as { screen?: { where?: string; metric?: string; sector?: { field?: string; slug?: string }; rows?: unknown[] } } | undefined;
+  return !!r.k.audit?.intents?.includes("screener") && v?.screen?.metric === "pe_ttm"
+    && /sub_sector = 'banks'/.test(v?.screen?.where ?? "") && v?.screen?.sector?.slug === "banks"
+    && (v.screen.rows ?? []).length >= 3 && r.spent <= 2 && r.k.seed === true;
+});
 
-// ── 11-13: GRUPGRAPH ────────────────────────────────────────────────────────
-const own = await loadOwnerships(["INDF", "ICBP", "BRMS", "BUMI", "BBCA", "TLKM"]);
-const cl = clusterOwnerships(own);
-await check("G1", "INDF-ICBP satu cluster (nama pengendali sama, fuzzy)", () => { must(cl.get("INDF") && cl.get("INDF") === cl.get("ICBP"), JSON.stringify({ a: cl.get("INDF"), b: cl.get("ICBP") })); return `“${cl.get("INDF")}”` });
-await check("G2", "BUMI-BRMS cluster via label API; BBCA independen", () => { must(cl.get("BRMS") === cl.get("BUMI") && cl.get("BBCA") === "", JSON.stringify({ brms: cl.get("BRMS"), ca: cl.get("BBCA") })); return "BUMI=BRMS ✓, BBCA='' ✓"; });
-await check("G3", "group score = % satu pengendali", () => { const a = autopsiKartu([{ ticker: "INDF", pct: 20 }, { ticker: "ICBP", pct: 20 }, { ticker: "BRMS", pct: 15 }, { ticker: "BUMI", pct: 15 }, { ticker: "BBCA", pct: 30 }], own); must(a.group_score === 70, String(a.group_score)); return `4 grup → score ${a.group_score}, headline: ${a.headline}`; });
+// — fundamental: valuasi / kinerja kuartalan / segmen (report & financials dari Sectors) —
+add("fitur/fundamental-valuasi", () => ask("PE ANTM berapa?"), (o) => {
+  const r = o as Run;
+  const v = r.k.visual as { fund?: { mode?: string; rows?: unknown[] } } | undefined;
+  return !!r.k.audit?.intents?.includes("fundamental") && v?.fund?.mode === "valuasi"
+    && (v.fund.rows ?? []).length >= 3 && json(r).includes("forward PE") && json(r).includes("ANTM")
+    && r.spent <= 1 && r.k.seed === true;
+});
+add("fitur/fundamental-kinerja", () => ask("laba SMAR gimana?"), (o) => {
+  const r = o as Run;
+  const v = r.k.visual as { fund?: { mode?: string; rows?: unknown[] } } | undefined;
+  return v?.fund?.mode === "kinerja" && (v.fund.rows ?? []).length >= 4
+    && json(r).includes("financials/quarterly/SMAR") && json(r).includes("Pendapatan") && r.spent <= 5 && r.k.seed === true;
+});
+add("fitur/fundamental-segmen", () => ask("segmen pendapatan TLKM gimana?"), (o) => {
+  const r = o as Run;
+  const v = r.k.visual as { fund?: { mode?: string; rows?: unknown[] } } | undefined;
+  return v?.fund?.mode === "segmen" && (v.fund.rows ?? []).length >= 3
+    && json(r).includes("company/get-segments/TLKM") && json(r).includes("TLKM") && r.spent <= 1 && r.k.seed === true;
+});
 
-// ── 14: sameName guard ──────────────────────────────────────────────────────
-await check("G4", "fuzzy tidak merge nama generik (Public/Masyarakat)", () => {
-  must(sameName("PT Indofood Sukses Makmur Tbk", "INDOFOID SUKSES MAKMUR"), "harus merge");
-  must(!sameName("Public Seed BBCA", "Public Seed TLKM"), "generik tidak boleh merge");
-  return "±"; });
-await check("G5", "knownMembers: Bumi → BUMI+BRMS", () => { must(knownMembers("Bumi").length >= 2, ""); return knownMembers("Bumi").join(","); });
+// — unit compute (murni) —
+add("unit/divergence", () => JSON.stringify(computeBarang({ commodityPct12m: 12, volumePct: -20, topCountryShare: 0.68 })), (o) => /Divergence/.test(o as string) && /Exposure/.test(o as string) && /campuran|tak-didukung/.test(o as string));
+add("unit/cluster-4sell", () => JSON.stringify(detectCluster([1, 2, 3, 5].map((d) => ({ sector: "bank", symbol: "A" + d, side: "sell" as const, atDaysAgo: d })))), (o) => /insider-cluster/.test(o as string));
+add("unit/dna-repeat", () => JSON.stringify(fingerprintBroker("YP", [{ broker: "YP", symbol: "A", netBuy: -5, days: 10 }, { broker: "YP", symbol: "B", netBuy: -4, days: 20 }, { broker: "YP", symbol: "C", netBuy: 2, days: 30 }], { historyRepeat: 3 })), (o) => /distribusi/.test(o as string));
 
-// ── 16-17: FOMO ─────────────────────────────────────────────────────────────
-await check("M1", "sahat seed BRMS dinilai panas", async () => {
-  const j = await (await import("../lib/sectors.ts")).sectorsGet("daily", { symbol: "BRMS", start: "2026-06-01", end: "2026-12-31" }) as { data?: DailyRow[] };
-  const rows = j.data ?? [];
-  const f = fomoMeter({ daily: rows, asing_sell_streak: flow.asing_sell_streak, news_no_filing: true });
-  must(f.score >= 70 && f.raw!.volz > 2, JSON.stringify({ s: f.score, z: f.raw!.volz })); return `score ${f.score} (${f.label}) z-vol ${f.raw!.volz}`; });
-await check("M2", "data flat → dingin", () => { const f = fomoMeter({ daily: Array.from({ length: 45 }, (_, i) => ({ date: "d" + i, close: 300 + (i % 2), volume: 2e6 })) as DailyRow[] }); must(f.score < 30, String(f.score)); return `score ${f.score}`; });
-
-// ── 18: VERIFIER GATE ───────────────────────────────────────────────────────
-await check("V1", "angka karangan dibuang, angka tool lolos", () => {
-  const tool = { data: [{ nval: 41_000_000, pb: 4.2 }] };
-  const good = verifyGrounding(["ritel net-buy Rp 41 M"], [tool]);
-  const bad = verifyGrounding(["cukup untuk saham dengan PBV 7.7× dan free float 3%"], [tool]);
-  must(good.ok && !bad.ok && bad.ungrounded.length === 2, JSON.stringify({ good, bad })); return `${bad.ungrounded.length} angka fiktif tertangkap gate`; });
-
-// ── 19: MORNING (anomaly scan offline dari fixtures) ────────────────────────
-await check("O1", "scan anomali menemukan pump tanpa berita", async () => {
-  const b = await scanAnomalies();
-  must(b.entries.length >= 2, JSON.stringify(b.entries.map((e) => e.ticker)));
-  must(b.entries.some((e) => e.ticker === "NSTI" || e.ticker === "ARUM" || e.ticker === "BRMS"), "anomali pump hilang");
-  return `${b.entries.length} anomali: ${b.entries.map((e) => `${e.ticker}[${e.sev}]`).join(" ")}`; });
-
-// ── 20: COMPLIANCE — tidak ada rekomendasi di seluruh teks kartu ────────────
-await check("C1", "nada kartu: fakta+pertanyaan, nol imperatif beli/jual/hold", async () => {
-  const { runTickerAnalysis } = await import("../lib/agents.ts");
-  const kartu = await runTickerAnalysis(planFallback("kenapa BRMS naik? boleh ikut?"), () => { }, "eval", []);
-  const blob = JSON.stringify(kartu).toLowerCase();
-  for (const forbidden of ["beli sekarang", "harus beli", "harus jual", "saya rekomendasikan", "rekomendasi beli", "disarankan hold", "jual semua", "buy now", "sell now"])
-    must(!blob.includes(forbidden), "teks kartu mengandung: " + forbidden);
-  must(kartu.bantah.rebuttal.length > 20 && kartu.question.length > 10, "bantahan/pertanyaan kosong");
-  return `${kartu.pillars.length} pilar · bantah ✓ · pertanyaan ✓ · nol frasa terlarang`; });
-
-// ── laporan ─────────────────────────────────────────────────────────────────
-const pass = results.filter((r) => r.ok === true).length, fail = results.filter((r) => r.ok === false).length, skip = results.filter((r) => r.ok === "SKIP").length;
-const report = `# EVAL_REPORT — ARUS
-
-Tanggal jalan: ${new Date().toISOString()} · LLM ${llmOk() ? "AKTIF" : "tidak aktif (case deterministik saja; jalur LLM butuh GEMINI_API_KEY)"}
-**${pass} PASS / ${fail} FAIL / ${skip} SKIP** dari ${results.length} kasus.
-
-Semua assert memakai fixtures **sintetis** (\`eval/fixtures/\`, skenario demo PRD §8.4) atau properti yang berlaku umum.
-Ini anti-"faked for demo": angka di kartu selalu berasal dari JSON tool / kode terhitung, dan gate-nya ikut diuji (V1).
-
-| # | Kasus | Hasil | Detail |
-|---|---|---|---|
-${results.map((r) => `| ${r.id} | ${r.nama} | ${r.ok === true ? "✅" : r.ok === "SKIP" ? "⏭" : "❌"} | ${r.detail.replace(/\|/g, "\\|").slice(0, 140)} |`).join("\n")}
-
-## Limitasi yang diketahui
-- Plural kecil ("2 grup", tahun) sengaja BUKAN klaim finansial → tidak di-gate verifier.
-- Ambang kendali 20% & streak dari data EOD — konstanta kalibrasi, lihat README §Limitasi.
-- ${llmOk() ? "" : "Tanpa GEMINI_API_KEY, prose agen = template deterministik dari angka terhitung (bukan karangan)."}
-`;
-writeFileSync("eval/EVAL_REPORT.md", report);
+let pass = 0;
+const fails: string[] = [];
+for (const c of cases) {
+  try {
+    const out = await c.run();
+    if (c.expect(out)) pass++;
+    else fails.push(c.name + " (expect gagal)");
+  } catch (e) {
+    fails.push(c.name + " (exception: " + String((e as Error).message ?? e) + ")");
+  }
+}
+const report = `# EVAL_REPORT.md — ARUS v6\n\n- Total: ${cases.length}\n- PASS: ${pass}\n- FAIL: ${fails.length}\n- Mode: SEED=1, tanpa SECTORS_API_KEY, tanpa OPENROUTER_API_KEY (offline, 0 kredit)\n- Assertion menguji subjek/ticker, multi-intent, visual, budget, grounding, label SEED — bukan substring kosong\n\n## FAIL\n${fails.length ? fails.map((f) => `- ${f}`).join("\n") : "- (tidak ada)"}\n`;
+fs.writeFileSync("EVAL_REPORT.md", report);
 console.log(report);
-if (fail) process.exitCode = 1;
+if (fails.length) process.exit(1);
