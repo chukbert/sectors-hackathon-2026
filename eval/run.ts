@@ -304,11 +304,16 @@ add("awam/bebas-nasihat-sweep", async () => {
   return bad.length === 0;
 });
 
-add("fitur/komoditas-generik", () => ask("komoditas CPO gimana?"), (o) => {
+add("fitur/komoditas-generik", () => ask("komoditas emas gimana?"), (o) => {
   const r = o as Run;
   return !!r.k.audit?.intents?.includes("barang") && r.k.verdict !== "data-kurang"
-    && json(r).includes("Crude Palm Oil") && json(r).includes("mining/commodities/crude-palm-oil/price")
+    && json(r).includes("Gold") && json(r).includes("mining/commodities/gold/price")
     && r.spent <= 2 && r.k.seed === true;
+});
+add("fitur/komoditas-tidak-ada", () => ask("komoditas CPO gimana?"), (o) => {
+  const r = o as Run;
+  return r.k.verdict === "data-kurang" && /tidak ditemukan di daftar mining\/commodities/i.test(json(r))
+    && !/mining\/commodities\/crude-palm-oil/.test(json(r)) && r.spent <= 1;
 });
 add("fitur/mining-izin", () => ask("izin tambang ADRO gimana?"), (o) => {
   const r = o as Run;

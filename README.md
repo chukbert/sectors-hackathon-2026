@@ -110,8 +110,10 @@ Semua menghormati parameter dan memakai pipeline yang sama dengan chat. Cabut Se
 ## Limitasi jujur
 
 Broker = proxy kohort, bukan identitas; DNA = pola historis, bukan vonis; ownership = laporan terakhir, label
-"kemungkinan relasi"; komoditas monthly (coal bi-weekly), EOD bukan realtime; proyeksi analis (§future) = pihak ketiga
-yang dikutip Sectors, bukan ramalan ARUS; **cakupan endpoint ARUS 26/54 endpoint IDX+Mining Sectors**
+"kemungkinan relasi"; komoditas monthly (coal bi-weekly), EOD bukan realtime; **daftar komoditas harga Sectors =
+logam + coal grades (CPO/agri tidak ada — ARUS menjawab jujur "tidak di daftar", verified live 19 Sep)**;
+lisensi/kontrak mining terdata di level operator (holding seperti ADRO bisa 0 baris — bukan berarti tidak ada);
+proyeksi analis (§future) = pihak ketiga yang dikutip Sectors, bukan ramalan ARUS; **cakupan endpoint ARUS 26/54**
 (lihat `docs/API_COVERAGE.md`) — yang belum: sector-report per subsektor, sebagian top-list broker/universe close &
 foreign-flow, resources/sites/production/exports/global mining, dan multi-market SGX/KLSE (API-nya tersedia, ini gap
 ARUS yang dinyatakan terbuka); `SEED=1` = data contoh, bukan data pasar.

@@ -62,7 +62,7 @@ sectors-deps.txt  ✅ baris endpoint → fitur (bukti kill-test; dipakai di vide
 - [x] Entity: kandidat wajib terverifikasi Sectors; gagal → jujur, tidak mengarang ticker
 - [x] Rantai: setiap node/edge klaim bersitasi; edge tak terverifikasi tidak pernah diklaim fakta
 - [x] 0 angka tak-grounding (±0.5% verifier); guard blokir 100% anjuran eksplisit
-- [x] ≤ `SECTORS_BUDGET`/sesi (default 6kr) dengan badge + ledger cocok — ⚠️ tune live masih pending (verifikasi user)
+- [x] ≤ `SECTORS_BUDGET`/sesi (default 6kr) dengan badge + ledger cocok — ✅ live 19 Sep: 10kr untuk 8 call verifikasi, ledger cocok
 - [x] Live gagal → "data tidak tersedia"; tanpa fallback karangan; `SEED=1` selalu berlabel
 - [x] URL publik HP tanpa login <60s; permalink `/k/{id}` + OG render
 - [x] MCP 8 tools Inspector OK; mati bila Sectors dicabut

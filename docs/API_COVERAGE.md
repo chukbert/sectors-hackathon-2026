@@ -7,6 +7,10 @@
 > reachable + quarterly financials + revenue segments. Endpoint terpakai 14 → 20.
 > Revisi 4 (19 Sep 2026): **v7 + P0-Ranking/Pasar + P1-Mining inti** — top-changes, most-traded, idx-total, daftar
 > `mining/commodities/`, `mining/licenses/` (IUP), `mining/contracts/`. Endpoint terpakai 20 → **26** (≈48%).
+> Revisi 5 (19 Sep 2026): **verifikasi LIVE endpoint baru** (10kr dari 1.000, ledger di kartu) — shapecocok docs:
+> top-changes/most-traded/idx-total/commodities ✓; **daftar komoditas live = 18 item (logam + coal grades), CPO/agri TIDAK ada**
+> → pesan "tidak ditemukan di daftar" ARUS terbukti benar; licenses per emiten operator ✓ (PTBA 7 IUP); ADRO (holding) 0
+> baris lisensi/kontrak = wajar, data ada di level operator.
 
 ## Ringkasan
 
@@ -34,6 +38,23 @@ helper slug (subsectors/industries/subindustries), financials/quarterly, company
   default 2×5 = 10kr · broker-summary/top & broker-activity/top 2kr · brokers/top 2kr · report **1kr per section**
   (semua 8 = 8kr) · quarterly financials **1kr per kuartal** · close & foreign-flow universe **1kr per halaman**
   (limit max 30 → ±32 halaman untuk 950 ticker) · mining rata-rata 1kr.
+
+## Verifikasi live (19 Sep 2026 — 10kr dari 1.000)
+
+| Endpoint | Hasil live | Biaya |
+|---|---|---|
+| `/companies/top-changes/?classifications=top_gainers&periods=1d` | ✓ shape docs; `price_change` desimal | 1kr |
+| `/most-traded/?start…&end…` | ✓ keyed by date; volume desc | 2kr |
+| `/idx-total/` | ✓ 21 baris untuk 30 hari (hari bursa) | 1kr |
+| `/mining/commodities/` | ✓ 18 item — **tanpa CPO/agri** (logam + Coal HBA 1–3) | 1kr |
+| `/mining/licenses/?company=pt-bukit-asam-tbk` | ✓ 7 IUP, fields persis docs | 1kr |
+| `/mining/licenses/?company=pt-alamtri-resources-indonesia-tbk` (ADRO) | ✓ 200 kosong — holding, lisensi di operator | 1kr |
+| `/mining/contracts/?mine_owner=…` | ✓ 200 kosong (sama, level operator) | 1kr |
+| Chat live `top gainer hari ini apa?` (compiler LLM + narrator) | ✓ intents `pasar`, 1kr, kartu ranking | 1kr |
+
+Catatan: smoke chat kedua (`komoditas CPO gimana?`) → jawaban jujur "tidak ditemukan di daftar" (0kr, list dari cache) —
+sesuai temuan live bahwa CPO memang tidak ada di database harga Sectors. **Klaim lama v6 "di Sectors data CPO ADA" terbukti keliru**;
+pesan v7 tidak lagi menyiratkan itu.
 
 ## Status per grup (path v2 asli)
 

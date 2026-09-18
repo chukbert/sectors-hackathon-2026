@@ -413,13 +413,24 @@ export function seedIdxTotal(days = 90): { date: string; idx_total_market_cap: n
 
 // — P1 mining: daftar komoditas, lisensi (IUP), kontrak (owner↔kontraktor) —
 export function seedCommodities(): { name: string; data_points: number; earliest_date: string; latest_date: string }[] {
+  // Meniru daftar LIVE (verified 19 Sep): logam + coal grades; CPO/agri TIDAK ada di database harga Sectors.
   return [
-    { name: "Coal", data_points: 1200, earliest_date: "1968-01-01", latest_date: dayBack(7, 6) },
-    { name: "Nickel", data_points: 900, earliest_date: "1968-01-01", latest_date: dayBack(7, 6) },
-    { name: "Gold", data_points: 703, earliest_date: "1968-01-01", latest_date: dayBack(7, 6) },
-    { name: "Crude Palm Oil", data_points: 640, earliest_date: "1980-01-01", latest_date: dayBack(7, 6) },
-    { name: "Copper", data_points: 600, earliest_date: "1968-01-01", latest_date: dayBack(7, 6) },
-    { name: "Tin", data_points: 420, earliest_date: "1968-01-01", latest_date: dayBack(7, 6) },
+    { name: "Gold", data_points: 705, earliest_date: "1968-01-01", latest_date: dayBack(7, 6) },
+    { name: "Silver", data_points: 705, earliest_date: "1968-01-01", latest_date: dayBack(7, 6) },
+    { name: "Coal", data_points: 194, earliest_date: "2011-01-01", latest_date: dayBack(30, 20) },
+    { name: "Aluminum", data_points: 113, earliest_date: "2017-10-01", latest_date: dayBack(30, 20) },
+    { name: "Chromium", data_points: 113, earliest_date: "2017-10-01", latest_date: dayBack(30, 20) },
+    { name: "Cobalt", data_points: 113, earliest_date: "2017-10-01", latest_date: dayBack(30, 20) },
+    { name: "Copper", data_points: 113, earliest_date: "2017-10-01", latest_date: dayBack(30, 20) },
+    { name: "Iron", data_points: 113, earliest_date: "2017-10-01", latest_date: dayBack(30, 20) },
+    { name: "Lead", data_points: 113, earliest_date: "2017-10-01", latest_date: dayBack(30, 20) },
+    { name: "Manganese", data_points: 113, earliest_date: "2017-10-01", latest_date: dayBack(30, 20) },
+    { name: "Nickel", data_points: 113, earliest_date: "2017-10-01", latest_date: dayBack(30, 20) },
+    { name: "Titanium", data_points: 113, earliest_date: "2017-10-01", latest_date: dayBack(30, 20) },
+    { name: "Zinc", data_points: 113, earliest_date: "2017-10-01", latest_date: dayBack(30, 20) },
+    { name: "Coal (HBA 1)", data_points: 48, earliest_date: "2022-01-01", latest_date: dayBack(30, 20) },
+    { name: "Coal (HBA 2)", data_points: 48, earliest_date: "2022-01-01", latest_date: dayBack(30, 20) },
+    { name: "Coal (HBA 3)", data_points: 43, earliest_date: "2022-01-01", latest_date: dayBack(30, 20) },
   ];
 }
 export interface LicenseSeedRow { wiup_code: string; license_type: string; province: string; license_effective_date: string; license_expiry_date: string; activity: string; licensed_area_ha: number; commodity_type: string; company_name: string; cnc: string; company_slug: string | null }
