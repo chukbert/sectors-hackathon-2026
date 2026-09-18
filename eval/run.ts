@@ -146,6 +146,37 @@ add("fitur/entitas-offline-jujur", () => ask("saham Indomaret apa?"), (o) => {
   return r.k.verdict === "data-kurang" && /tidak menebak|butuh LLM/i.test(json(r)) && !/AMRT|DNET/.test(json(r));
 });
 
+// — graph reasoning v7: claim graph bersitasi, edge tanpa data dibuang, kausalitas kondisional + bantahan —
+add("unit/chain-graph", async () => {
+  const { buildChain } = await import("../lib/chain.js");
+  const r = buildChain({
+    focus: ["ADRO"],
+    requested: [{ from: "ADRO", edge: "group", to: "anggota grup" }, { from: "ADRO", edge: "contractor", to: "kontraktor" }],
+    ownerships: [{ symbol: "ADRO", group: "Alamtri (Adaro)", holders: [{ name: "PT Alamtri Holdings", pct: 60 }, { name: "Masyarakat", pct: 30 }], cited: "company/report/ADRO?sections=ownership", seed: true }],
+    knownGroups: { "Alamtri (Adaro)": ["ADRO", "AADI"] },
+    commodity: { word: "coal", pct: -8.5, cited: "mining/commodities/coal/price", seed: true },
+  });
+  return JSON.stringify(r);
+}, (o) => {
+  const s = o as string;
+  return /AADI/.test(s) && /Jika coal tertekan/.test(s) && /Bantahan untuk/.test(s)
+    && /contractor/.test(s) && /dibuang/.test(s) && !/"verified":false/.test(s);
+});
+add("fitur/rantai-grup", () => ask("kalau coal jatuh, siapa di grup BUMI yang paling kena?"), (o) => {
+  const r = o as Run;
+  const v = r.k.visual as { rantai?: { edges?: { from: string; to: string }[] } } | undefined;
+  const edges = v?.rantai?.edges ?? [];
+  return !!r.k.audit?.intents?.includes("rantai") && edges.some((e) => e.from === "BUMI" && e.to === "BRMS")
+    && r.k.sitasi.some((s) => s.includes("company/report/BUMI")) && /Jika coal (tertekan|menguat)/.test(json(r))
+    && r.spent <= 4 && r.k.seed === true;
+});
+add("fitur/rantai-negatif-jujur", () => ask("siapa grup ZZZZ?"), (o) => {
+  const r = o as Run;
+  const v = r.k.visual as { rantai?: { edges?: unknown[] } } | undefined;
+  return r.k.verdict === "data-kurang" && (v?.rantai?.edges ?? []).length === 0
+    && /tidak ada label grup|Belum ada relasi terverifikasi/i.test(json(r));
+});
+
 // — fitur generik untuk ticker apa pun —
 add("fitur/autopsi-grup", () => ask("portofolio saya: BUMI 30 BRMS 30 ANTM 20 PTBA 20"), (o) => {
   const r = o as Run;

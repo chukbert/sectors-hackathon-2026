@@ -11,7 +11,8 @@ import {
   getterFor, type CorporateActions,
 } from "./evidence.js";
 import { computeFlow, dividendFromReport, fomoMeter, lastTradingDay, liquidityFromDaily, maxDrawdownPct, returnsFromDaily, type DailyRow, type FilingRow } from "./metrics.js";
-import { autopsiKartu, loadOwnerships } from "./graph.js";
+import { autopsiKartu, KNOWN_GROUPS, knownGroup, loadOwnerships } from "./graph.js";
+import { buildChain, type ChainOwnership } from "./chain.js";
 import { computeBarang, pctFromDailyVolume, pctFromPriceSeries } from "./barang.js";
 import { fingerprintBroker, touchesFromActivity } from "./dna.js";
 import { detectCluster, detectRightsWave, eventsFromFilings } from "./kuasa.js";
@@ -27,7 +28,7 @@ import { addDecision, addPola, addWatch, chasePattern, getPortfolio, getWatchlis
 import {
   anomaliPart, bandingPart, buildAwam, buyerPart, clusterPart, dividenPart, dnaPart, drawdownPart, entitasPart, fomoPart,
   grupPart, hargaVolumePart, ihsgPart, kalenderPart, kinerjaPart, kohortPart, komoditasPart, lanjutanFor, likuiditasPart,
-  manajemenPart, peerPart, pemilikPart, p, produksiPart, prospekPart, segmenPart, suspensiPart, tentangPart, tahunanPart,
+  manajemenPart, peerPart, pemilikPart, p, produksiPart, prospekPart, rantaiPart, segmenPart, suspensiPart, tentangPart, tahunanPart,
   valuasiPart, volumeEmitenPart,
   type Awam, type AwamBagian,
 } from "./awam.js";
@@ -867,13 +868,68 @@ async function buildEntitas(q: string, sym: string | null, plan: Plan, session: 
   });
 }
 
-/** Fase 3 v7 — placeholder jujur sampai graph reasoning aktif. */
-async function buildRantai(plan: Plan): Promise<Build> {
-  const hops = plan.hops ?? [];
+/** Fase 3 v7 — graph reasoning: hop terverifikasi + claim graph bersitasi + narasi kondisional + bantahan per hop. */
+async function buildRantai(q: string, sym: string | null, plan: Plan, known: string[], session: CreditSession): Promise<Build> {
+  const get = getterFor(session);
+  const hopFroms = (plan.hops ?? []).map((h) => h.from.trim().toUpperCase()).filter((t) => /^[A-Z]{4}$/.test(t));
+  const focus = [...new Set([...(sym ? [sym] : []), ...plan.tickers, ...hopFroms])].filter((t) => /^[A-Z]{4}$/.test(t)).slice(0, 2);
+  if (!focus.length) return miss("rantai", known);
+
+  const ownerships: ChainOwnership[] = [];
+  let fetched = 0;
+  let seed = false;
+  for (const t of focus) {
+    const e = await fetchReport(get, t, ["ownership"]);
+    fetched++;
+    seed = seed || e.seed;
+    const own = (e.ok && e.data ? e.data.ownership : null) as { conglomerates_group?: string; major_shareholders?: { name?: unknown; share_percentage?: unknown }[] } | null | undefined;
+    if (!own) continue;
+    ownerships.push({
+      symbol: t,
+      group: own.conglomerates_group || knownGroup(t),
+      holders: (own.major_shareholders ?? []).filter((h) => h && typeof h.name === "string").map((h) => ({ name: String(h.name), pct: Math.round((Number(h.share_percentage) || 0) * 100) / 100 })),
+      cited: `company/report/${t}?sections=ownership`,
+      seed: e.seed,
+    });
+  }
+  if (!ownerships.length) {
+    return pack({ verdict: "data-kurang", probability: 0.5, confHint: 0.4, bukti: [`Struktur kepemilikan ${focus.join(", ")} tidak tersedia di Sectors — rantai relasi tidak bisa ditelusuri, tidak menebak`], sitasi: focus.map((t) => `company/report/${t}?sections=ownership`), pool: [], needs: Math.max(1, fetched), ok: 0 });
+  }
+
+  let commodity: { word: string; pct: number; cited: string; seed: boolean } | undefined;
+  let commodityOk = 0;
+  if (plan.commodity === "coal" || plan.commodity === "nickel") {
+    const pe = await fetchCommodityPrice(get, plan.commodity);
+    if (pe.ok && pe.data) {
+      commodityOk = 1;
+      commodity = { word: plan.commodity, pct: pctFromPriceSeries(pe.data), cited: `mining/commodities/${plan.commodity}/price`, seed: pe.seed };
+    }
+  }
+
+  const r = buildChain({ focus, requested: plan.hops ?? [], ownerships, knownGroups: KNOWN_GROUPS, commodity });
+  const bukti: string[] = [
+    ...r.nodeClaims.map((c) => `${c.text} — ${c.cited} (1kr)`),
+    ...r.edges.map((e) => `${e.from} -${e.edge}→ ${e.to}: ${e.label} — ${e.cited}`),
+  ];
+  if (r.conditional.length) bukti.push(...r.conditional.map((c) => `KONDISIONAL: ${c}`));
+  if (r.dropped.length) bukti.push(`Edge tak terverifikasi (dibuang, tidak diklaim): ${r.dropped.join("; ")}`);
+  bukti.push("100% klaim relasi di kartu ini bersitasi; edge tanpa data tidak pernah diklaim fakta. Label grup = kemungkinan relasi.");
+  const info = r.edges.some((e) => e.verified);
   return pack({
-    verdict: "data-kurang", probability: 0.5, confHint: 0.4,
-    bukti: [`Graph reasoning (rantai hop bersitasi) belum aktif di build ini${hops.length ? `; rencana hop tervalidasi: ${hops.map((h) => `${h.from} -${h.edge}→ ${h.to}`).join("; ")}` : ""}. Gap ARUS, bukan gap API: ownership/contractor/sales-destination/get-segments tersedia.`],
-    sitasi: [], pool: [], needs: 1, ok: 0,
+    verdict: info ? "info" : "data-kurang", probability: 0.6, confHint: 0.7, bukti,
+    awam: [rantaiPart(focus, r.edges, commodity?.word)],
+    sitasi: [...new Set([...r.citations, ...(commodity ? [commodity.cited] : [])])],
+    visual: {
+      rantai: {
+        title: `Rantai relasi: ${focus.join(", ")}`,
+        nodes: r.nodes,
+        edges: r.edges.map((e) => ({ from: e.from, to: e.to, label: e.label })),
+        note: "Edge bersitasi dari §ownership + known-list grup (kemungkinan relasi). Narasi dampak selalu kondisional; edge tanpa data dibuang, bukan diklaim.",
+      },
+    },
+    pool: [ownerships, commodity, r, { fetched }],
+    needs: Math.max(1, fetched + (plan.commodity ? 1 : 0)), ok: ownerships.length + commodityOk,
+    info, seed: seed || (commodity?.seed ?? false),
   });
 }
 
@@ -946,7 +1002,7 @@ async function runIntent(intent: Intent, plan: Plan, sym: string | null, tickers
     case "pagi": return buildPagi(q, session);
     case "screener": return buildScreener(q, session, plan.screen);
     case "entitas": return buildEntitas(q, sym, plan, session);
-    case "rantai": return buildRantai(plan);
+    case "rantai": return buildRantai(q, sym, plan, known, session);
     case "fundamental": return sym ? buildFundamental(sym, q, session, plan.fundamentalMode) : miss("fundamental", known);
     case "barang": return buildBarang(q, sym, session, plan.commodity);
     case "dna": return buildDna(plan.brokerCode, session);

@@ -396,6 +396,19 @@ export function pemilikPart(sym: string, group: string | undefined, holders: { n
   );
 }
 
+export function rantaiPart(focus: string[], edges: { from: string; to: string; edge: string; label: string }[], commodity?: string): AwamBagian {
+  const list = edges.filter((e) => e.edge === "group" || e.edge === "affiliate").slice(0, 4).map((e) => `${e.from} ↔ ${e.to}`).join(" · ");
+  return p(
+    "Rantai relasi (hulu–hilir)",
+    "Rantai relasi = peta siapa terhubung dengan siapa lewat kepemilikan atau afiliasi. Dari situ terlihat siapa yang mungkin ikut terdampak saat satu bagian tertekan.",
+    "Ibarat silsilah keluarga usaha: kabar buruk di satu anggota bisa terasa ke anggota lain, tapi belum tentu separah itu — tergantung usaha masing-masing.",
+    list
+      ? `Relasi terverifikasi: ${list}.${commodity ? ` Cara membacanya: jika harga ${commodity} turun, anggota grup dengan eksposur sejenis berpotensi ikut tertekan.` : ""} Ini kemungkinan relasi dan dampaknya kondisional — bukan ramalan atau ajakan.`
+      : `Belum ada relasi terverifikasi di data untuk ${focus.join(", ")} — ARUS tidak menggambar rantai yang tidak ada datanya.`,
+    list ? "netral" : "hati",
+  );
+}
+
 /** Fallback deterministik untuk pertanyaan lanjutan bila LLM tidak tersedia/gagal validasi. */
 export function lanjutanFor(sym: string | undefined, intents: string[]): string[] {
   if (!sym) return ["pasar lagi gimana?", "scan pagi", "ada cluster insider?"];

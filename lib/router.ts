@@ -20,6 +20,8 @@ export function route(q: string, tickers: string[]): Intent {
   // Ticker dianggap niat user hanya bila ditulis kapital (mis. "BANK"), selain itu kata biasa.
   if (parseScreen(q) && (tickers.length === 0 || !tickers.some((t) => q.includes(t)))) return "screener";
   if (tickers.length && FUNDAMENTAL.test(s)) return "fundamental";
+  // Graph reasoning (fallback tanpa LLM): pertanyaan relasi grup/hulu-hilir dengan ticker.
+  if (tickers.length && /grup|konglomerasi|hulu|hilir|afiliasi|afiliat|anak usaha|kontraktor|contractor|rantai|supply/.test(s)) return "rantai";
   if (/coal|batubara|batu bara|nikel|nickel|tambang|komoditas|mining|smelter/.test(s)) return "barang";
   if (/broker|bandar/.test(s)) return "dna";
   if (/insider|direksi|komisaris|cluster|rights issue|right issue|rights/.test(s)) return "kuasa";

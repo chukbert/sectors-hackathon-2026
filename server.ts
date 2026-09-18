@@ -214,6 +214,7 @@ function renderVisual(v: unknown): string {
     screen?: { label?: string; where?: string; orderBy?: string; rows?: { symbol: string; name: string; disp?: string | null }[] };
     fund?: { title?: string; subtitle?: string; note?: string; rows?: { label?: string; name?: string; disp?: string }[] };
     entitas?: { title?: string; subtitle?: string; note?: string; rows?: { label?: string; name?: string; disp?: string }[] };
+    rantai?: { title?: string; note?: string; edges?: { from: string; to: string; label: string }[] };
   };
   let h = "";
   if (o.sankey?.nodes?.length) {
@@ -275,6 +276,11 @@ function renderVisual(v: unknown): string {
     h += fblock.rows.map((r) =>
       `<div class="frow"><div class="fmain"><b>${esc(r.label ?? "")}</b>${r.name ? `<div class="fsub">${esc(r.name)}</div>` : ""}</div>${r.disp ? `<span class="fval">${esc(r.disp)}</span>` : ""}</div>`).join("");
     if (fblock.note) h += `<div class="meta">${esc(fblock.note)}</div>`;
+  }
+  if (o.rantai?.edges?.length) {
+    h += `<h3>🔗 ${esc(o.rantai.title ?? "Rantai relasi")}</h3>` + o.rantai.edges.map((e) =>
+      `<div class="frow"><div class="fmain"><b>${esc(e.from)} → ${esc(e.to)}</b><div class="fsub">${esc(e.label)}</div></div></div>`).join("");
+    if (o.rantai.note) h += `<div class="meta">${esc(o.rantai.note)}</div>`;
   }
   return h;
 }
@@ -533,6 +539,12 @@ function fundViz(f){
   var head=f.subtitle?'<div class="vizcap" style="margin-top:0">'+esc(f.subtitle)+'</div>':'';
   return head+rows+(f.note?'<div class="vizcap">'+esc(f.note)+'</div>':'');
 }
+function rantaiViz(r){
+  var rows=(r.edges||[]).map(function(e){
+    return '<div class="frow"><div class="fmain"><b>'+esc(e.from)+' → '+esc(e.to)+'</b><div class="fsub">'+esc(e.label)+'</div></div></div>';
+  }).join("");
+  return rows+(r.note?'<div class="vizcap">'+esc(r.note)+'</div>':'');
+}
 function metricPills(bukti){
   var pills=[];var j=bukti.join("\\n");
   var m3=j.match(/FOMO\\s+(\\d+)/);if(m3)pills.push("🔥 FOMO "+m3[1]);
@@ -576,6 +588,7 @@ function renderKartu(k){
   if(v.screen){hasViz=true;vh+='<div class="sect">🔎 Screener Sectors — '+esc(v.screen.label||"")+'</div><div class="viz">'+screenViz(v.screen)+'</div>'}
   if(v.fund){hasViz=true;vh+='<div class="sect">📊 '+esc(v.fund.title||"Fundamental")+'</div><div class="viz">'+fundViz(v.fund)+'</div>'}
   if(v.entitas){hasViz=true;vh+='<div class="sect">🧩 '+esc(v.entitas.title||"Cari emiten")+'</div><div class="viz">'+fundViz(v.entitas)+'</div>'}
+  if(v.rantai&&v.rantai.edges&&v.rantai.edges.length){hasViz=true;vh+='<div class="sect">🔗 '+esc(v.rantai.title||"Rantai relasi")+'</div><div class="viz">'+rantaiViz(v.rantai)+'</div>'}
   var mp=metricPills(k.bukti||[]);if(mp){hasViz=true;vh+='<div class="sect">📊 Metrik arus</div><div class="viz">'+mp+'<div class="vizcap">Ringkasan angka kunci dari bukti di bawah — kohort (uang), likuiditas, FOMO, yield, dan aliran asing.</div></div>'}
   if(hasViz)h+=vh;
   if(k.bukti&&k.bukti.length){h+='<div class="sect">🧾 Bukti berbasis data</div><ul class="ev">'+k.bukti.map(function(b,i){var ic=/Divergence|⚑|trap|distribusi/i.test(b)?"⚠️":/\\+|akumulasi|sehat|likuid/i.test(b)?"✅":"•";return '<li><span class="ico">'+ic+'</span><span>'+esc(b)+'</span></li>'}).join("")+'</ul>'}
