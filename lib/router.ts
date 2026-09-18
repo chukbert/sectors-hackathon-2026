@@ -29,6 +29,9 @@ export function route(q: string, tickers: string[]): Intent {
   if (/pompom|mau ke|katanya|betul\?|diserok|bakal terbang|terbang/.test(s)) return "rumor";
   if (/risiko|panik|anjlok|nyangkut|merah|takut/.test(s)) return "risiko";
   if (/pasar|ihsg|market|indeks|index/.test(s) && tickers.length === 0) return "pasar";
+  // Entity resolver (fallback tanpa LLM): nama/brand tanpa ticker, atau pemilik/induk dengan ticker.
+  if (!tickers.length && /nama saham|saham (untuk|dari)|emiten (dari|apa)|kode saham (untuk|dari)|apa (saham|emiten)|saham .+ (apa|apaan)\b/.test(s)) return "entitas";
+  if (tickers.length && /(induk|pemilik|milik siapa|anak usaha|dimiliki)/.test(s)) return "entitas";
   if (tickers.length) return "kenapa-gerak";
   return "obrolan";
 }

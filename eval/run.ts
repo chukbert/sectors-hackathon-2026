@@ -112,6 +112,40 @@ add("llm/compiler-fallback-offline", () => ask("saham bank yang paling murah?"),
   return r.k.audit?.router === "heuristik" && !!r.k.audit?.intents?.includes("screener") && r.spent <= 2;
 });
 
+// — entity resolver v7: verifikasi Sectors wajib; kandidat halusinasi tidak pernah lolos —
+add("unit/entity-verify", async () => {
+  const { resolveEntity } = await import("../lib/entity.js");
+  const get = async (ep: string) => {
+    const sym = ep.match(/company\/report\/([A-Z]+)\?/)?.[1] ?? "";
+    if (sym === "ZZZZ") throw new Error("Sectors 404");
+    return { data: { symbol: `${sym}.JK`, company_name: `PT ${sym}`, overview: { sector: "retail", sub_sector: "retail-trade", market_cap: 5e13, listing_date: "2010-01-01" } }, seed: true };
+  };
+  const r = await resolveEntity(get as never, { name: "Indomaret", candidates: ["DNET", "ZZZZ"], relation: "jaringan toko" }, 2);
+  return { hits: r.hits.map((h) => h.symbol), misses: r.misses.map((m) => m.symbol), ok: r.ok };
+}, (o) => {
+  const x = o as { hits: string[]; misses: string[]; ok: boolean };
+  return x.hits.join(",") === "DNET" && x.misses.join(",") === "ZZZZ" && x.ok === true;
+});
+add("unit/entity-halusinasi", async () => {
+  const { resolveEntity } = await import("../lib/entity.js");
+  const get = async () => { throw new Error("Sectors 404"); };
+  const r = await resolveEntity(get as never, { name: "BrandPalsu", candidates: ["ZZZZ", "YYYY"] }, 2);
+  return { hits: r.hits.length, ok: r.ok };
+}, (o) => {
+  const x = o as { hits: number; ok: boolean };
+  return x.hits === 0 && x.ok === false;
+});
+add("fitur/entitas-pemilik", () => ask("siapa induk ADRO?"), (o) => {
+  const r = o as Run;
+  const v = r.k.visual as { entitas?: { rows?: unknown[] } } | undefined;
+  return !!r.k.audit?.intents?.includes("entitas") && json(r).includes("Alamtri") && json(r).includes("ownership")
+    && (v?.entitas?.rows ?? []).length >= 1 && r.spent <= 1 && r.k.seed === true;
+});
+add("fitur/entitas-offline-jujur", () => ask("saham Indomaret apa?"), (o) => {
+  const r = o as Run;
+  return r.k.verdict === "data-kurang" && /tidak menebak|butuh LLM/i.test(json(r)) && !/AMRT|DNET/.test(json(r));
+});
+
 // — fitur generik untuk ticker apa pun —
 add("fitur/autopsi-grup", () => ask("portofolio saya: BUMI 30 BRMS 30 ANTM 20 PTBA 20"), (o) => {
   const r = o as Run;

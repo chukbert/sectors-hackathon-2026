@@ -25,11 +25,13 @@ import { fmtNum, fmtRatioPct, fmtRp, fundQueryFor, latestValuation, parseFundame
 import { detectSectorWord, fmtScreenValue, matchSector, parseScreen, screenFromCompiled, SCREEN_LABELS, sectorLabel, type ScreenInput, type SectorFilter } from "./screener.js";
 import { addDecision, addPola, addWatch, chasePattern, getPortfolio, getWatchlist, setPortfolio } from "./memory.js";
 import {
-  anomaliPart, bandingPart, buildAwam, buyerPart, clusterPart, dividenPart, dnaPart, drawdownPart, fomoPart, grupPart,
-  hargaVolumePart, ihsgPart, kalenderPart, kinerjaPart, kohortPart, komoditasPart, lanjutanFor, likuiditasPart, manajemenPart,
-  peerPart, p, produksiPart, prospekPart, segmenPart, suspensiPart, tentangPart, tahunanPart, valuasiPart, volumeEmitenPart,
+  anomaliPart, bandingPart, buildAwam, buyerPart, clusterPart, dividenPart, dnaPart, drawdownPart, entitasPart, fomoPart,
+  grupPart, hargaVolumePart, ihsgPart, kalenderPart, kinerjaPart, kohortPart, komoditasPart, lanjutanFor, likuiditasPart,
+  manajemenPart, peerPart, pemilikPart, p, produksiPart, prospekPart, segmenPart, suspensiPart, tentangPart, tahunanPart,
+  valuasiPart, volumeEmitenPart,
   type Awam, type AwamBagian,
 } from "./awam.js";
+import { resolveEntity, resolveOwners, type EntityResolution } from "./entity.js";
 
 export interface Kartu {
   verdict: string;
@@ -780,14 +782,87 @@ async function buildObrolan(q: string, session: CreditSession): Promise<Build> {
   return pack({ verdict: "info", probability: 0.5, confHint: 0.6, bukti: [help], sitasi: [], pool: [], needs: 1, ok: 1, info: true });
 }
 
-/** Fase 2 v7 — placeholder jujur sampai entity resolver aktif (kandidat TIDAK pernah diklaim sebelum diverifikasi). */
-async function buildEntitas(plan: Plan): Promise<Build> {
-  const ent = plan.entities ?? [];
+/** Fase 2 v7 — entity resolver: kandidat LLM diverifikasi Sectors sebelum diklaim; arah balik ticker → pemilik. */
+async function buildEntitas(q: string, sym: string | null, plan: Plan, session: CreditSession): Promise<Build> {
+  const get = getterFor(session);
+  const entities = plan.entities ?? [];
+
+  if (entities.length) {
+    const results: EntityResolution[] = [];
+    const skipped: string[] = [];
+    let budget = 2; // maks 2 kandidat per pertanyaan (1kr/kandidat, ARCHITECTURE §3)
+    for (const ent of entities) {
+      const n = Math.min(2, ent.candidates.length, budget);
+      if (n <= 0) { skipped.push(ent.name); continue; }
+      budget -= n;
+      results.push(await resolveEntity(get, ent, n));
+    }
+    const names = [...new Set(results.map((r) => r.name))];
+    const hits = results.flatMap((r) => r.hits.map((h) => ({ ...h, query: r.name, relation: r.relation })));
+    const misses = results.flatMap((r) => r.misses.map((m) => ({ ...m, query: r.name })));
+    const bukti: string[] = [];
+    const sitasi: string[] = [];
+    for (const h of hits) {
+      bukti.push(`${h.query} → ${h.symbol} ${h.companyName}${h.sector ? ` · ${h.sector}${h.subSector ? `/${h.subSector}` : ""}` : ""} · market cap ${fmtRp(h.marketCap)} — ${h.cited} (1kr, terverifikasi Sectors)`);
+      sitasi.push(h.cited);
+    }
+    for (const r of results) if (r.relation) bukti.push(`Keterkaitan "${r.relation}" untuk ${r.name} berasal dari pengetahuan model — dilabeli kemungkinan relasi, bukan klaim Sectors`);
+    if (misses.length) bukti.push(`Kandidat dieliminasi (tidak ada data Sectors): ${misses.map((m) => `${m.symbol} (${m.reason})`).join(" · ")}`);
+    if (skipped.length) bukti.push(`Demi anggaran kredit, kandidat untuk ${skipped.join(", ")} tidak diverifikasi di sesi ini`);
+    if (!hits.length) {
+      return pack({
+        verdict: "data-kurang", probability: 0.5, confHint: 0.4,
+        bukti: [...bukti, "Tidak ditemukan emiten terverifikasi untuk pertanyaan ini — ARUS tidak mengarang kode saham. Coba sebut ticker langsung."],
+        sitasi, awam: [entitasPart(names.join(", "), [], misses.map((m) => m.symbol))],
+        pool: [results, misses], needs: Math.max(1, results.length), ok: 0, seed: results.some((r) => r.seed),
+      });
+    }
+    return pack({
+      verdict: "info", probability: 0.6, confHint: 0.7, bukti, sitasi,
+      awam: [entitasPart(names.join(", "), hits, misses.map((m) => m.symbol))],
+      visual: {
+        entitas: {
+          title: `Cari emiten: ${names.join(", ")}`,
+          subtitle: "Kandidat dari pengetahuan model → diverifikasi company/report §overview (1kr/kandidat; identitas & angka apa adanya dari Sectors)",
+          rows: hits.map((h) => ({ label: h.symbol, name: `${h.companyName}${h.sector ? ` · ${h.sector}` : ""}`, disp: fmtRp(h.marketCap) })),
+          note: "Yang diverifikasi Sectors: keberadaan & identitas emiten. Keterkaitan brand/nama dengan emiten = kemungkinan relasi dari model, bukan klaim Sectors.",
+        },
+      },
+      pool: [results, hits, misses], needs: Math.max(1, results.length), ok: results.filter((r) => r.ok).length,
+      info: true, seed: results.some((r) => r.seed),
+    });
+  }
+
+  // Arah balik: ticker → pemilik/induk ("ini anak usaha siapa?").
+  if (sym && /(induk|pemilik|milik siapa|anak usaha|dimiliki|konglomerasi|grup)/.test(q.toLowerCase())) {
+    const own = await resolveOwners(get, sym);
+    if (!own) {
+      return pack({ verdict: "data-kurang", probability: 0.5, confHint: 0.4, bukti: [`Struktur kepemilikan ${sym} tidak tersedia di Sectors — tidak menebak`], sitasi: [`company/report/${sym}?sections=ownership`], pool: [], needs: 1, ok: 0 });
+    }
+    const bukti = [
+      `${sym} pemegang saham utama: ${own.holders.slice(0, 4).map((h) => `${h.name} ${h.pct}%`).join(" · ") || "-"} — ${own.cited} (1kr)`,
+      own.group ? `Kemungkinan grup: ${own.group} (label data Sectors + known-list) — kemungkinan relasi, bukan vonis kendali` : "Tidak ada label grup konglomerasi di laporan — ARUS tidak menyimpulkan induk di luar data",
+      "Pemilik di bawah ambang laporan tidak terlihat — daftar ini bukan struktur lengkap",
+    ];
+    return pack({
+      verdict: "info", probability: 0.6, confHint: 0.7, bukti,
+      sitasi: [own.cited, "known-list grup"],
+      awam: [pemilikPart(sym, own.group, own.holders)],
+      visual: {
+        entitas: {
+          title: `Pemilik ${sym}`,
+          subtitle: `company/report §ownership (1kr)${own.group ? ` · kemungkinan grup: ${own.group}` : ""}`,
+          rows: own.holders.map((h) => ({ label: h.name, name: "pemegang saham", disp: `${h.pct}%` })),
+          note: "Laporan terakhir; kepemilikan bisa berubah dan tidak menampilkan pemegang di bawah ambang laporan.",
+        },
+      },
+      pool: [own], needs: 1, ok: 1, info: true, seed: own.seed,
+    });
+  }
+
   return pack({
     verdict: "data-kurang", probability: 0.5, confHint: 0.4,
-    bukti: [ent.length
-      ? `Entity resolver belum aktif di build ini: kandidat ${ent.map((e) => `${e.name} → ${e.candidates.join("/")}`).join("; ")} BELUM diverifikasi ke Sectors, jadi ARUS tidak mengklaimnya. Gap ARUS, bukan gap API: company/report §overview tersedia untuk verifikasi.`
-      : "Entity resolver belum aktif di build ini — ARUS tidak menebak ticker dari brand/nama. Gap ARUS, bukan gap API: company/report §overview tersedia untuk verifikasi."],
+    bukti: ["ARUS butuh LLM (OPENROUTER_API_KEY) untuk mengenali brand/nama → kandidat ticker; tanpa itu ARUS tidak menebak. Ini gap mode offline, bukan gap API (company/report §overview tersedia)."],
     sitasi: [], pool: [], needs: 1, ok: 0,
   });
 }
@@ -870,7 +945,7 @@ async function runIntent(intent: Intent, plan: Plan, sym: string | null, tickers
     case "banding": return tickers.length >= 2 ? buildBanding(tickers[0]!, tickers[1]!, session) : miss("banding", known);
     case "pagi": return buildPagi(q, session);
     case "screener": return buildScreener(q, session, plan.screen);
-    case "entitas": return buildEntitas(plan);
+    case "entitas": return buildEntitas(q, sym, plan, session);
     case "rantai": return buildRantai(plan);
     case "fundamental": return sym ? buildFundamental(sym, q, session, plan.fundamentalMode) : miss("fundamental", known);
     case "barang": return buildBarang(q, sym, session, plan.commodity);

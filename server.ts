@@ -213,6 +213,7 @@ function renderVisual(v: unknown): string {
     compare?: { ticker: string; price: number; ret7: number; ret30: number; ret90: number; volMult: number; fomo?: number | null; liq?: string | null }[];
     screen?: { label?: string; where?: string; orderBy?: string; rows?: { symbol: string; name: string; disp?: string | null }[] };
     fund?: { title?: string; subtitle?: string; note?: string; rows?: { label?: string; name?: string; disp?: string }[] };
+    entitas?: { title?: string; subtitle?: string; note?: string; rows?: { label?: string; name?: string; disp?: string }[] };
   };
   let h = "";
   if (o.sankey?.nodes?.length) {
@@ -266,12 +267,14 @@ function renderVisual(v: unknown): string {
       `<div class="scrrow"><span class="scrno">${i + 1}</span><b>${esc(r.symbol)}</b><span class="scrname">${esc(r.name)}</span><span class="scrval">${esc(r.disp ?? "-")}</span></div>`).join("")
       + `<div class="meta">Urut ${esc(o.screen.orderBy ?? "")} · where "${esc(o.screen.where || "-")}" · angka apa adanya dari Sectors screener, bukan hitungan ARUS.</div>`;
   }
-  if (o.fund?.rows?.length) {
-    h += `<h3>📊 ${esc(o.fund.title ?? "Fundamental")}</h3>`;
-    if (o.fund.subtitle) h += `<div class="meta">${esc(o.fund.subtitle)}</div>`;
-    h += o.fund.rows.map((r) =>
+  const fblock = o.fund ?? o.entitas;
+  if (fblock?.rows?.length) {
+    const icon = o.entitas ? "🧩" : "📊";
+    h += `<h3>${icon} ${esc(fblock.title ?? "Fundamental")}</h3>`;
+    if (fblock.subtitle) h += `<div class="meta">${esc(fblock.subtitle)}</div>`;
+    h += fblock.rows.map((r) =>
       `<div class="frow"><div class="fmain"><b>${esc(r.label ?? "")}</b>${r.name ? `<div class="fsub">${esc(r.name)}</div>` : ""}</div>${r.disp ? `<span class="fval">${esc(r.disp)}</span>` : ""}</div>`).join("");
-    if (o.fund.note) h += `<div class="meta">${esc(o.fund.note)}</div>`;
+    if (fblock.note) h += `<div class="meta">${esc(fblock.note)}</div>`;
   }
   return h;
 }
@@ -572,6 +575,7 @@ function renderKartu(k){
   if(v.compare&&v.compare.length){hasViz=true;vh+='<div class="sect">⚖️ Banding</div><div class="viz">'+compareViz(v.compare)+'</div>'}
   if(v.screen){hasViz=true;vh+='<div class="sect">🔎 Screener Sectors — '+esc(v.screen.label||"")+'</div><div class="viz">'+screenViz(v.screen)+'</div>'}
   if(v.fund){hasViz=true;vh+='<div class="sect">📊 '+esc(v.fund.title||"Fundamental")+'</div><div class="viz">'+fundViz(v.fund)+'</div>'}
+  if(v.entitas){hasViz=true;vh+='<div class="sect">🧩 '+esc(v.entitas.title||"Cari emiten")+'</div><div class="viz">'+fundViz(v.entitas)+'</div>'}
   var mp=metricPills(k.bukti||[]);if(mp){hasViz=true;vh+='<div class="sect">📊 Metrik arus</div><div class="viz">'+mp+'<div class="vizcap">Ringkasan angka kunci dari bukti di bawah — kohort (uang), likuiditas, FOMO, yield, dan aliran asing.</div></div>'}
   if(hasViz)h+=vh;
   if(k.bukti&&k.bukti.length){h+='<div class="sect">🧾 Bukti berbasis data</div><ul class="ev">'+k.bukti.map(function(b,i){var ic=/Divergence|⚑|trap|distribusi/i.test(b)?"⚠️":/\\+|akumulasi|sehat|likuid/i.test(b)?"✅":"•";return '<li><span class="ico">'+ic+'</span><span>'+esc(b)+'</span></li>'}).join("")+'</ul>'}

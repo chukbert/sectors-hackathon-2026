@@ -374,6 +374,28 @@ export function tentangPart(sym: string, o: { sector?: string; subSector?: strin
   );
 }
 
+export function entitasPart(nama: string, hits: { symbol: string; companyName: string; sector?: string }[], misses: string[]): AwamBagian {
+  const list = hits.map((h) => `${h.symbol} (${h.companyName}${h.sector ? `, ${h.sector}` : ""})`).join(" · ");
+  return p(
+    "Mencari saham dari nama/brand",
+    "Nama brand atau perusahaan belum tentu sama dengan kode sahamnya. Kode ditebak dari pengenalan nama, lalu diverifikasi ke data resmi Sectors sebelum ditampilkan.",
+    "Ibarat mencari nomor telepon dari nama toko: namanya diingat dulu, nomor yang dipakai tetap nomor yang terdaftar resmi.",
+    hits.length
+      ? `Terverifikasi di Sectors untuk "${nama}": ${list}.${misses.length ? ` Kandidat ${misses.join(", ")} tidak lolos verifikasi sehingga dibuang.` : ""} Keterkaitan brand dengan emiten tetap kemungkinan relasi, bukan klaim.`
+      : `Tidak ada kandidat yang lolos verifikasi Sectors untuk "${nama}". ARUS tidak mengarang kode saham${misses.length ? ` (kandidat ${misses.join(", ")} tidak ditemukan)` : ""}.`,
+    hits.length ? "netral" : "hati",
+  );
+}
+
+export function pemilikPart(sym: string, group: string | undefined, holders: { name: string; pct: number }[]): AwamBagian {
+  return p(
+    "Pemilik & induk usaha",
+    "Struktur pemilik = siapa saja yang punya porsi saham besar di sebuah perusahaan. Dari sini terlihat kemungkinan induk atau afiliasinya.",
+    "Ibarat daftar nama pemegang kunci toko: makin besar porsinya, makin besar pengaruhnya.",
+    `${sym} dipegang: ${holders.slice(0, 3).map((h) => `${h.name} ${h.pct}%`).join(" · ") || "-"}${group ? ` · kemungkinan grup: ${group}` : ""}. Ini laporan terakhir — bisa berubah, dan pemilik di bawah ambang laporan tidak terlihat.`,
+  );
+}
+
 /** Fallback deterministik untuk pertanyaan lanjutan bila LLM tidak tersedia/gagal validasi. */
 export function lanjutanFor(sym: string | undefined, intents: string[]): string[] {
   if (!sym) return ["pasar lagi gimana?", "scan pagi", "ada cluster insider?"];
