@@ -2,7 +2,23 @@
 // Angka tetap milik Sectors; ARUS tidak menghitung ulang, hanya menata & menerjemahkan.
 export type FundMode = "valuasi" | "kinerja" | "tahunan" | "segmen" | "prospek" | "manajemen" | "peer" | "tentang";
 
+export const FUND_MODES: FundMode[] = ["valuasi", "kinerja", "tahunan", "segmen", "prospek", "manajemen", "peer", "tentang"];
+
 export interface FundQuery { mode: FundMode; label: string; sections: string[] }
+
+/** Mode tervalidasi dari query compiler → bentuk eksekusi deterministik (label + section Sectors). */
+export function fundQueryFor(mode: FundMode): FundQuery {
+  switch (mode) {
+    case "segmen": return { mode, label: "Segmen pendapatan", sections: [] };
+    case "prospek": return { mode, label: "Prospek & estimasi analis", sections: ["future"] };
+    case "manajemen": return { mode, label: "Manajemen", sections: ["management"] };
+    case "peer": return { mode, label: "Peer sebanding", sections: ["peers"] };
+    case "tahunan": return { mode, label: "Kinerja tahunan", sections: ["financials"] };
+    case "kinerja": return { mode, label: "Kinerja kuartalan", sections: [] };
+    case "tentang": return { mode, label: "Profil perusahaan", sections: ["overview"] };
+    case "valuasi": return { mode, label: "Valuasi", sections: ["valuation"] };
+  }
+}
 
 export function parseFundamental(q: string): FundQuery {
   const s = q.toLowerCase();

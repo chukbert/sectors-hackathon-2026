@@ -7,6 +7,37 @@ export const SCREEN_LABELS: Record<string, string> = {
   der_mrq: "DER (MRQ)", market_cap: "market cap", yoy_quarter_earnings_growth: "pertumbuhan laba kuartal (YoY)",
 };
 
+export type ScreenMetric = keyof typeof SCREEN_LABELS;
+export const SCREEN_METRICS = Object.keys(SCREEN_LABELS) as ScreenMetric[];
+
+/** Arah default per metric (murah/rendah = asc) — arah dari LLM boleh menimpanya setelah validasi. */
+export function defaultDirection(metric: ScreenMetric): "asc" | "desc" {
+  return metric === "pe_ttm" || metric === "pb_mrq" || metric === "der_mrq" ? "asc" : "desc";
+}
+
+const SCREEN_WHERE: Record<ScreenMetric, string> = {
+  pe_ttm: "pe_ttm > 0", pb_mrq: "pb_mrq > 0", yield_ttm: "yield_ttm > 0", roe_ttm: "roe_ttm > 0",
+  der_mrq: "der_mrq >= 0", market_cap: "", yoy_quarter_earnings_growth: "yoy_quarter_earnings_growth > 0",
+};
+const SCREEN_LABEL_FMT: Record<ScreenMetric, { asc: string; desc: string }> = {
+  pe_ttm: { asc: "PE terendah", desc: "PE tertinggi" },
+  pb_mrq: { asc: "PB terendah", desc: "PB tertinggi" },
+  der_mrq: { asc: "DER terendah", desc: "DER tertinggi" },
+  yield_ttm: { asc: "yield TTM terendah", desc: "yield TTM tertinggi" },
+  roe_ttm: { asc: "ROE terendah", desc: "ROE tertinggi" },
+  market_cap: { asc: "market cap terkecil", desc: "market cap terbesar" },
+  yoy_quarter_earnings_growth: { asc: "pertumbuhan laba kuartal (YoY) terlemah", desc: "pertumbuhan laba kuartal (YoY) tercepat" },
+};
+
+export interface ScreenInput { metric: ScreenMetric; direction?: "asc" | "desc"; sectorWord?: string }
+
+/** Bentuk tervalidasi dari compiler → query screener deterministik (where/orderBy/label). */
+export function screenFromCompiled(c: ScreenInput): Screen {
+  const metric: ScreenMetric = SCREEN_METRICS.includes(c.metric) ? c.metric : "market_cap";
+  const direction = c.direction === "asc" || c.direction === "desc" ? c.direction : defaultDirection(metric);
+  return { where: SCREEN_WHERE[metric], orderBy: (direction === "asc" ? "" : "-") + metric, metric, label: SCREEN_LABEL_FMT[metric][direction] };
+}
+
 export function parseScreen(q: string): Screen | null {
   const s = q.toLowerCase();
   const has = (re: RegExp) => re.test(s);
@@ -44,6 +75,13 @@ export function detectSectorWord(q: string): string | null {
   const s = q.toLowerCase();
   for (const w of Object.keys(SECTOR_WORDS)) if (new RegExp(`\\b${w}\\b`).test(s)) return w;
   return null;
+}
+
+/** Kata sektor dari LLM → kata kanonik yang dikenal (null = tidak dikenal → filter tidak dipasang). */
+export function knownSectorWord(word: string): string | null {
+  const w = word.trim().toLowerCase();
+  if (!SECTOR_WORDS[w]) return null;
+  return SECTOR_ALIAS[w] ?? w;
 }
 
 export interface SectorFilter { field: "sub_sector" | "sector" | "industry" | "sub_industry"; slug: string; word: string }

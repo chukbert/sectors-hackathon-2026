@@ -46,7 +46,7 @@ function headers() {
   };
 }
 
-async function askLLM(system: string, user: string, timeoutMs = 25_000): Promise<string | null> {
+export async function askLLM(system: string, user: string, timeoutMs = 25_000): Promise<string | null> {
   if (!process.env.OPENROUTER_API_KEY) return null;
   try {
     const res = await fetch(URL, {

@@ -21,8 +21,8 @@ import { bantah } from "./decider.js";
 import { DISCLAIMER, guardText } from "./guard.js";
 import { counterLlm, followUps, MODEL, narrate, tutorAwam } from "./synthesis.js";
 import { miningSlug } from "./slugs.js";
-import { fmtNum, fmtRatioPct, fmtRp, latestValuation, parseFundamental, quarterLabel, type ValuationLike } from "./fundamental.js";
-import { detectSectorWord, fmtScreenValue, matchSector, parseScreen, SCREEN_LABELS, sectorLabel, type SectorFilter } from "./screener.js";
+import { fmtNum, fmtRatioPct, fmtRp, fundQueryFor, latestValuation, parseFundamental, quarterLabel, type FundMode, type ValuationLike } from "./fundamental.js";
+import { detectSectorWord, fmtScreenValue, matchSector, parseScreen, screenFromCompiled, SCREEN_LABELS, sectorLabel, type ScreenInput, type SectorFilter } from "./screener.js";
 import { addDecision, addPola, addWatch, chasePattern, getPortfolio, getWatchlist, setPortfolio } from "./memory.js";
 import {
   anomaliPart, bandingPart, buildAwam, buyerPart, clusterPart, dividenPart, dnaPart, drawdownPart, fomoPart, grupPart,
@@ -320,8 +320,8 @@ const yoyPct = (cur: number | null | undefined, prev: number | null | undefined)
   cur === null || cur === undefined || prev === null || prev === undefined || prev === 0
     ? null : Math.round(((cur - prev) / Math.abs(prev)) * 1000) / 10;
 
-async function buildScreener(q: string, session: CreditSession): Promise<Build> {
-  const screen = parseScreen(q);
+async function buildScreener(q: string, session: CreditSession, input?: ScreenInput): Promise<Build> {
+  const screen = input ? screenFromCompiled(input) : parseScreen(q);
   if (!screen) {
     return pack({ verdict: "data-kurang", probability: 0.5, confHint: 0.4, bukti: ["Screener butuh kriteria: murah (PE), PB, yield, ROE, DER, market cap, atau pertumbuhan laba — tanpa itu ARUS tidak menyaring asal-asalan"], sitasi: [], pool: [], needs: 1, ok: 0 });
   }
@@ -331,7 +331,7 @@ async function buildScreener(q: string, session: CreditSession): Promise<Build> 
   // Filter sektor: kata sektor divalidasi ke daftar slug Sectors (bukan daftar hardcode ARUS).
   let where = screen.where;
   let sector: SectorFilter | null = null;
-  const word = detectSectorWord(q);
+  const word = input?.sectorWord ?? detectSectorWord(q);
   if (word) {
     const subE = await fetchSubsectors(get);
     sitasi.push("subsectors/");
@@ -376,8 +376,8 @@ async function buildScreener(q: string, session: CreditSession): Promise<Build> 
 
 // — fundamental: valuasi / kinerja kuartalan / tahunan / segmen / prospek / manajemen / peer / profil —
 // Angka & section apa adanya dari Sectors (report 1kr/section; quarterly 1kr/kuartal; segmen 1kr).
-async function buildFundamental(sym: string, q: string, session: CreditSession): Promise<Build> {
-  const fq = parseFundamental(q);
+async function buildFundamental(sym: string, q: string, session: CreditSession, mode?: FundMode): Promise<Build> {
+  const fq = mode ? fundQueryFor(mode) : parseFundamental(q);
   const get = getterFor(session);
 
   if (fq.mode === "kinerja") {
@@ -560,15 +560,19 @@ function rekapYoY(label: string, revYoY: number | null, labaYoY: number | null):
   return `${label} YoY: pendapatan ${revYoY === null ? "-" : `${revYoY >= 0 ? "+" : ""}${revYoY}%`} · laba ${labaYoY === null ? "-" : `${labaYoY >= 0 ? "+" : ""}${labaYoY}%`} (kuartal sama tahun lalu)`;
 }
 
-async function buildBarang(q: string, sym: string | null, session: CreditSession, commodityOverride?: "coal" | "nickel"): Promise<Build> {
+async function buildBarang(q: string, sym: string | null, session: CreditSession, commodityOverride?: string): Promise<Build> {
   // Jujur soal cakupan: ARUS hanya mengambil harga coal & nikel dari Sectors — jangan diam-diam menjawab coal.
   const OUT_COMMODITY = /\bcpo\b|kelapa sawit|\bemas\b|\bgold\b|\bperak\b|\bsilver\b|\btimah\b|\btembaga\b|\bcopper\b|\bminyak\b|\boil\b|\bgas\b/i;
-  if (!commodityOverride && !sym && OUT_COMMODITY.test(q) && !/coal|batubara|batu bara|nikel|nickel|tambang/i.test(q)) {
-    const label = (q.match(OUT_COMMODITY) ?? ["komoditas itu"])[0]!.toLowerCase();
+  const generic = commodityOverride && !/^(coal|nickel)$/.test(commodityOverride) ? commodityOverride : null;
+  const qLabel = generic ? null : ((q.match(OUT_COMMODITY) ?? [])[0]?.toLowerCase() ?? null);
+  const label = generic ?? qLabel;
+  if (!sym && label && !/coal|batubara|batu bara|nikel|nickel|tambang/i.test(q)) {
     return pack({ verdict: "data-kurang", probability: 0.5, confHint: 0.4, bukti: [`ARUS belum mengimplementasikan komoditas "${label}" — di Sectors data ini ADA (mining/commodities + mining/commodities/{slug}/price); ini keterbatasan cakupan ARUS, bukan keterbatasan API`], sitasi: [], pool: [], needs: 1, ok: 0 });
   }
   const get = getterFor(session);
-  const commodity = commodityOverride ?? (sym ? commodityFor(sym, q) : q.match(/nikel|nickel/i) ? "nickel" : "coal");
+  const commodity: "coal" | "nickel" = commodityOverride === "coal" || commodityOverride === "nickel"
+    ? commodityOverride
+    : sym ? commodityFor(sym, q) : q.match(/nikel|nickel/i) ? "nickel" : "coal";
   const bukti: string[] = [];
   const sitasi: string[] = [`mining/commodities/${commodity}/price`];
   const priceE = await fetchCommodityPrice(get, commodity);
@@ -776,6 +780,28 @@ async function buildObrolan(q: string, session: CreditSession): Promise<Build> {
   return pack({ verdict: "info", probability: 0.5, confHint: 0.6, bukti: [help], sitasi: [], pool: [], needs: 1, ok: 1, info: true });
 }
 
+/** Fase 2 v7 — placeholder jujur sampai entity resolver aktif (kandidat TIDAK pernah diklaim sebelum diverifikasi). */
+async function buildEntitas(plan: Plan): Promise<Build> {
+  const ent = plan.entities ?? [];
+  return pack({
+    verdict: "data-kurang", probability: 0.5, confHint: 0.4,
+    bukti: [ent.length
+      ? `Entity resolver belum aktif di build ini: kandidat ${ent.map((e) => `${e.name} → ${e.candidates.join("/")}`).join("; ")} BELUM diverifikasi ke Sectors, jadi ARUS tidak mengklaimnya. Gap ARUS, bukan gap API: company/report §overview tersedia untuk verifikasi.`
+      : "Entity resolver belum aktif di build ini — ARUS tidak menebak ticker dari brand/nama. Gap ARUS, bukan gap API: company/report §overview tersedia untuk verifikasi."],
+    sitasi: [], pool: [], needs: 1, ok: 0,
+  });
+}
+
+/** Fase 3 v7 — placeholder jujur sampai graph reasoning aktif. */
+async function buildRantai(plan: Plan): Promise<Build> {
+  const hops = plan.hops ?? [];
+  return pack({
+    verdict: "data-kurang", probability: 0.5, confHint: 0.4,
+    bukti: [`Graph reasoning (rantai hop bersitasi) belum aktif di build ini${hops.length ? `; rencana hop tervalidasi: ${hops.map((h) => `${h.from} -${h.edge}→ ${h.to}`).join("; ")}` : ""}. Gap ARUS, bukan gap API: ownership/contractor/sales-destination/get-segments tersedia.`],
+    sitasi: [], pool: [], needs: 1, ok: 0,
+  });
+}
+
 function finalize(intent: Intent, b: Build, q: string, session: CreditSession, seed: boolean, extraBukti: string[] = []): Omit<Kartu, "narasi" | "narrator"> & { body: string } {
   const bukti = [...b.bukti, ...extraBukti];
   const conf = Math.max(0.3, Math.min(0.9, b.confHint * (0.5 + 0.5 * (b.ok / Math.max(1, b.needs)))));
@@ -843,8 +869,10 @@ async function runIntent(intent: Intent, plan: Plan, sym: string | null, tickers
     case "autopsi": return buildAutopsi(q, session);
     case "banding": return tickers.length >= 2 ? buildBanding(tickers[0]!, tickers[1]!, session) : miss("banding", known);
     case "pagi": return buildPagi(q, session);
-    case "screener": return buildScreener(q, session);
-    case "fundamental": return sym ? buildFundamental(sym, q, session) : miss("fundamental", known);
+    case "screener": return buildScreener(q, session, plan.screen);
+    case "entitas": return buildEntitas(plan);
+    case "rantai": return buildRantai(plan);
+    case "fundamental": return sym ? buildFundamental(sym, q, session, plan.fundamentalMode) : miss("fundamental", known);
     case "barang": return buildBarang(q, sym, session, plan.commodity);
     case "dna": return buildDna(plan.brokerCode, session);
     case "kuasa": return buildKuasa(sym, session);
@@ -865,7 +893,7 @@ export async function chat(q: string, session: CreditSession): Promise<Kartu> {
   const plan = await planQuery(q, { portfolio: known.portfolio, watchlist: known.watchlist });
   const res = resolveTickers(q, known);
   // Portofolio/watchlist HANYA dipakai bila intent memang butuh subjek ticker.
-  const usesContext = plan.intents.some((i) => ["kenapa-gerak", "rumor", "risiko", "dividen", "likuiditas", "fundamental", "autopsi", "pagi"].includes(i));
+  const usesContext = plan.intents.some((i) => ["kenapa-gerak", "rumor", "risiko", "dividen", "likuiditas", "fundamental", "autopsi", "pagi", "rantai"].includes(i));
   const tickers = [...new Set([...plan.tickers, ...(usesContext ? res.tickers : [])])];
   const sym = tickers[0] ?? null;
   addPola(q);

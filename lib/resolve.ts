@@ -87,6 +87,8 @@ export function clarificationText(intent: string, known: string[] = []): string 
     likuiditas: "Contoh: “likuiditas BRMS gimana?”",
     risiko: "Contoh: “risiko BUMI apa?”",
     fundamental: "Contoh: “PE ANTM berapa?” atau “laba SMAR gimana?”",
+    entitas: "Contoh: “saham Indomaret apa?”",
+    rantai: "Contoh: “kalau coal jatuh, siapa di grup ADRO yang kena?”",
     barang: "Contoh: “coal naik kok ADRO turun?”",
     dna: "Contoh: “broker YP aman?”",
     kalender: "Contoh: “ex-date BMRI kapan?”",

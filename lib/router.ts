@@ -3,7 +3,8 @@
 import { parseScreen } from "./screener.js";
 export type Intent =
   | "pasar" | "rumor" | "kenapa-gerak" | "barang" | "dna" | "kuasa" | "kalender" | "dividen"
-  | "likuiditas" | "autopsi" | "banding" | "pagi" | "risiko" | "screener" | "fundamental" | "obrolan";
+  | "likuiditas" | "autopsi" | "banding" | "pagi" | "risiko" | "screener" | "fundamental"
+  | "entitas" | "rantai" | "obrolan";
 
 export const NEEDS_TICKER: Intent[] = ["rumor", "kenapa-gerak", "dividen", "likuiditas", "risiko", "fundamental"];
 

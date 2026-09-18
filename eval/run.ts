@@ -14,6 +14,8 @@ const { CreditSession } = await import("../lib/credit.js");
 const { computeBarang } = await import("../lib/barang.js");
 const { detectCluster } = await import("../lib/kuasa.js");
 const { fingerprintBroker } = await import("../lib/dna.js");
+const { validateCompiled } = await import("../lib/compiler.js");
+const { screenFromCompiled } = await import("../lib/screener.js");
 
 interface Run { k: Awaited<ReturnType<typeof chat>>; spent: number }
 async function ask(text: string): Promise<Run> {
@@ -56,6 +58,58 @@ add("multi/dividen+likuiditas", () => ask("yield SMAR aman dan likuid nggak?"), 
   const r = o as Run;
   const intents = r.k.audit?.intents ?? [];
   return intents.length >= 2 && intents.includes("dividen") && intents.includes("likuiditas") && !/ANTM/.test(json(r));
+});
+add("disiplin/direksi-bukan-kuasa", () => ask("siapa direksi ASII?"), (o) => {
+  const r = o as Run;
+  const intents = r.k.audit?.intents ?? [];
+  return intents.length === 1 && intents[0] === "fundamental" && !json(r).includes("cluster insider");
+});
+
+// — query compiler v7: validator murni (tanpa LLM) + fallback heuristik 0 kredit —
+add("unit/compiler-valid", () => {
+  const v = validateCompiled({
+    intents: ["rantai", "fundamental"],
+    tickers: ["ADRO"],
+    entities: [{ name: "Indomaret", candidates: ["AMRT", "DNET"], relation: "pemilik jaringan" }],
+    fundamental_mode: "kinerja",
+    screen: { criteria: "murah", metric: "pe_ttm", direction: "asc", sector_word: "bank" },
+    commodity: { word: "coal", slug_candidates: ["coal"] },
+    hops: [{ from: "ADRO", edge: "ownership", to: "grup" }],
+    alasan: "uji",
+  }, "kenapa ADRO dan labanya gimana?");
+  const p = v.plan;
+  return !!p && p.intents.join(",") === "rantai,fundamental" && p.tickers.includes("ADRO")
+    && p.entities.length === 1 && p.entities[0]!.candidates.includes("AMRT")
+    && p.fundamentalMode === "kinerja" && p.screen?.metric === "pe_ttm" && p.screen?.sectorWord === "bank"
+    && p.commodity?.word === "coal" && p.commodity?.slugCandidates.includes("coal")
+    && p.hops.length === 1 && v.rejected.length === 0;
+}, (o) => o === true);
+add("unit/compiler-screen-map", () => {
+  const asc = screenFromCompiled({ metric: "pe_ttm", direction: "asc" });
+  const desc = screenFromCompiled({ metric: "yield_ttm", direction: "desc" });
+  const def = screenFromCompiled({ metric: "pe_ttm" });
+  return [asc.orderBy, asc.label, asc.where, desc.orderBy, desc.label, def.orderBy].join("|");
+}, (o) => o === "pe_ttm|PE terendah|pe_ttm > 0|-yield_ttm|yield TTM tertinggi|pe_ttm");
+add("unit/compiler-out-of-enum", () => {
+  const v = validateCompiled({
+    intents: ["terbang", "screener", "screener", "kenapa-gerak", "dividen", "kalender", "obrolan"],
+    screen: { metric: "harga_naik", direction: "asc", sector_word: "kripto" },
+    hops: [{ from: "A", edge: "teleport", to: "B" }],
+  }, "saham apa yang murah?");
+  const p = v.plan;
+  return !!p && p.intents.length === 3 && p.intents[0] === "screener" && p.screen === undefined && p.hops.length === 0
+    && v.rejected.some((r) => r.includes("intent:terbang")) && v.rejected.some((r) => r.includes("screen.metric"))
+    && v.rejected.some((r) => r.includes("hop.edge"));
+}, (o) => o === true);
+add("unit/compiler-ticker-liar", () => {
+  const v = validateCompiled({ intents: ["fundamental"], tickers: ["ADRO", "ZZZZ"] }, "PE ADRO berapa?");
+  return !!v.plan && v.plan.tickers.join(",") === "ADRO" && v.unverifiedTickers.includes("ZZZZ")
+    && !v.plan.tickers.includes("ZZZZ");
+}, (o) => o === true);
+add("unit/compiler-tanpa-intent", () => validateCompiled({ intents: ["terbang"], tickers: ["ADRO"] }, "ADRO"), (o) => (o as { plan: unknown }).plan === null);
+add("llm/compiler-fallback-offline", () => ask("saham bank yang paling murah?"), (o) => {
+  const r = o as Run;
+  return r.k.audit?.router === "heuristik" && !!r.k.audit?.intents?.includes("screener") && r.spent <= 2;
 });
 
 // — fitur generik untuk ticker apa pun —
@@ -238,7 +292,7 @@ for (const c of cases) {
     fails.push(c.name + " (exception: " + String((e as Error).message ?? e) + ")");
   }
 }
-const report = `# EVAL_REPORT.md — ARUS v6\n\n- Total: ${cases.length}\n- PASS: ${pass}\n- FAIL: ${fails.length}\n- Mode: SEED=1, tanpa SECTORS_API_KEY, tanpa OPENROUTER_API_KEY (offline, 0 kredit)\n- Assertion menguji subjek/ticker, multi-intent, visual, budget, grounding, label SEED — bukan substring kosong\n\n## FAIL\n${fails.length ? fails.map((f) => `- ${f}`).join("\n") : "- (tidak ada)"}\n`;
+const report = `# EVAL_REPORT.md — ARUS v7\n\n- Total: ${cases.length}\n- PASS: ${pass}\n- FAIL: ${fails.length}\n- Mode: SEED=1, tanpa SECTORS_API_KEY, tanpa OPENROUTER_API_KEY (offline, 0 kredit)\n- Assertion menguji subjek/ticker, multi-intent, visual, budget, grounding, label SEED, validator compiler — bukan substring kosong\n\n## FAIL\n${fails.length ? fails.map((f) => `- ${f}`).join("\n") : "- (tidak ada)"}\n`;
 fs.writeFileSync("EVAL_REPORT.md", report);
 console.log(report);
 if (fails.length) process.exit(1);
