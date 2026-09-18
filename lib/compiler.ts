@@ -23,6 +23,11 @@ export interface CompiledEntity { name: string; candidates: string[]; relation?:
 export interface CompiledScreen { metric: ScreenMetric; direction: "asc" | "desc"; criteria?: string; sectorWord?: string }
 export interface CompiledHop { from: string; edge: Edge; to: string }
 export interface CompiledCommodity { word: string; slugCandidates: string[] }
+export interface CompiledRanking {
+  kind: "movers" | "traded";
+  classification?: "top_gainers" | "top_losers";
+  period?: "1d" | "7d" | "14d" | "30d" | "365d";
+}
 export interface Compiled {
   intents: Intent[];
   tickers: string[];
@@ -30,6 +35,7 @@ export interface Compiled {
   fundamentalMode?: FundMode;
   screen?: CompiledScreen;
   commodity?: CompiledCommodity;
+  ranking?: CompiledRanking;
   hops: CompiledHop[];
   brokerCode?: string;
   note?: string;
@@ -62,6 +68,7 @@ Aturan:
 - screen: null bila tidak menyaring daftar. Bila ya: {"criteria","metric","direction","sector_word"}; metric salah satu pe_ttm|pb_mrq|yield_ttm|roe_ttm|der_mrq|market_cap|yoy_quarter_earnings_growth; direction "asc" (terendah/termurah) atau "desc" (tertinggi/termahal); sector_word hanya kata sektor umum (bank, tambang, semen, ritel, telekomunikasi, …) atau "".
 - broker_code: 2 huruf kapital, hanya bila user menyebut kode broker/bandar (contoh YP).
 - commodity: {"word","slug_candidates"} bila relevan (contoh {"word":"coal","slug_candidates":["coal"]}); selain itu null.
+- ranking: {"kind":"movers"|"traded","classification":"top_gainers"|"top_losers","period":"1d"|"7d"|"14d"|"30d"|"365d"} bila user minta top gainer/loser (movers) atau saham paling ramai/ditransaksikan (traded); selain itu null.
 - hops: maks 3 item {"from","edge","to"}; edge salah satu ownership|affiliate|contractor|buyer|segment|group. Isi bila intent rantai.
 - alasan: maks 120 karakter.`;
 
@@ -138,12 +145,26 @@ export function validateCompiled(raw: unknown, q: string, ctx: { known?: string[
     hops.push({ from, edge, to });
   }
 
+  const PERIODS = ["1d", "7d", "14d", "30d", "365d"] as const;
+  let ranking: CompiledRanking | undefined;
+  if (o.ranking && typeof o.ranking === "object") {
+    const rk = o.ranking as Record<string, unknown>;
+    const kind = asString(rk.kind);
+    if (kind === "movers" || kind === "traded") {
+      ranking = {
+        kind,
+        classification: rk.classification === "top_gainers" || rk.classification === "top_losers" ? rk.classification : undefined,
+        period: (PERIODS as readonly string[]).includes(String(rk.period)) ? (String(rk.period) as CompiledRanking["period"]) : undefined,
+      };
+    } else if (kind) rejected.push(`ranking.kind:${kind}`);
+  }
+
   const broker = asString(o.broker_code).toUpperCase();
   const brokerCode = /^[A-Z]{2}$/.test(broker) ? broker : undefined;
   const note = asString(o.alasan).slice(0, 120) || undefined;
 
   return {
-    plan: { intents, tickers, entities, fundamentalMode, screen, commodity, hops, brokerCode, note: note || undefined },
+    plan: { intents, tickers, entities, fundamentalMode, screen, commodity, ranking, hops, brokerCode, note: note || undefined },
     rejected,
     unverifiedTickers,
   };

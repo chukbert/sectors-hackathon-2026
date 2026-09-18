@@ -1,8 +1,8 @@
 {
   "name": "arus",
-  "version": "6.0.0",
+  "version": "7.0.0",
   "private": true,
-  "description": "ARUS v6 — asisten riset IDX multi-agent: ticker universal, dua router (heuristik+LLM multi-intent), verifier grounding, hemat kredit.",
+  "description": "ARUS v7 — asisten riset IDX multi-agent: query compiler LLM-first, entity resolver terverifikasi Sectors, graph reasoning bersitasi, angka tetap dihitung kode.",
   "type": "module",
   "scripts": {
     "dev": "tsx watch server.ts",

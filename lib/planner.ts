@@ -2,9 +2,9 @@
 //   (1) compiler LLM (compiler.ts) = primer: 1 call → JSON tervalidasi. Saat hasil valid, heuristik TIDAK
 //       menempelkan intent tambahan (regresi v6: "siapa direksi ASII?" kena bocoran kuasa).
 //   (2) heuristik keyword v6 = jaring pengaman: hidup hanya bila LLM absen/invalid/keluar enum (0 kredit).
-import { route, type Intent } from "./router.js";
+import { parseRanking, route, type Intent } from "./router.js";
 import { brokerCodes, plausibleTickers } from "./resolve.js";
-import { compileQuery, type CompiledEntity, type CompiledHop, type CompiledScreen, type CompileOpts } from "./compiler.js";
+import { compileQuery, type CompiledEntity, type CompiledHop, type CompiledRanking, type CompiledScreen, type CompileOpts } from "./compiler.js";
 import type { FundMode } from "./fundamental.js";
 
 const MAX_INTENTS = 3;
@@ -13,7 +13,8 @@ export interface Plan {
   intents: Intent[];
   tickers: string[];
   brokerCode?: string;
-  commodity?: string;
+  commodity?: { word: string; slugCandidates: string[] };
+  ranking?: CompiledRanking;
   entities?: CompiledEntity[];
   fundamentalMode?: FundMode;
   screen?: CompiledScreen;
@@ -55,7 +56,8 @@ export function heuristicPlan(q: string, ctx: { portfolio?: string[]; watchlist?
   return {
     intents, tickers,
     brokerCode: brokerCodes(q)[0],
-    commodity: /nikel|nickel/i.test(s) ? "nickel" : /coal|batubara|batu bara|tambang/i.test(s) ? "coal" : undefined,
+    commodity: /nikel|nickel/i.test(s) ? { word: "nickel", slugCandidates: [] } : /coal|batubara|batu bara|tambang/i.test(s) ? { word: "coal", slugCandidates: [] } : undefined,
+    ranking: primary === "pasar" ? parseRanking(q) ?? undefined : undefined,
     source: "heuristik",
   };
 }
@@ -75,7 +77,8 @@ export async function planQuery(
     intents: c.intents,
     tickers,
     brokerCode: c.brokerCode ?? (c.intents.includes("dna") ? brokerCodes(q)[0] : undefined),
-    commodity: c.commodity?.word ?? (c.intents.includes("barang") ? h.commodity : undefined),
+    commodity: c.commodity ?? (c.intents.includes("barang") ? h.commodity : undefined),
+    ranking: c.ranking ?? (c.intents.includes("pasar") ? h.ranking : undefined),
     entities: c.entities.length ? c.entities : undefined,
     fundamentalMode: c.fundamentalMode,
     screen: c.screen,

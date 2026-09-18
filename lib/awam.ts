@@ -170,12 +170,37 @@ export function ihsgPart(last: number, ret7: number, ret30: number): AwamBagian 
   );
 }
 
-export function komoditasPart(commodity: "coal" | "nickel", pct12: number): AwamBagian {
+export function komoditasPart(commodity: string, pct12: number): AwamBagian {
+  const label = commodity === "coal" ? "coal" : commodity === "nickel" ? "nikel" : commodity;
   return p(
     "Harga komoditas",
-    "Emiten tambang bergantung pada harga komoditasnya (coal/nikel). Angka ini perubahan harga komoditas dari rangkaian data bulanan terakhir.",
+    "Emiten tambang bergantung pada harga komoditasnya. Angka ini perubahan harga komoditas dari rangkaian data bulanan terakhir.",
     "Ibarat harga bahan baku di pasar induk: kalau batu bara naik, penjual batu bara ikut kebagian angin.",
-    `Harga ${commodity === "coal" ? "coal" : "nikel"} ${pct(pct12)} pada rangkaian terakhir. Artinya bahan yang dijual emiten ${pct12 >= 0 ? "sedang naik" : "sedang turun"} — ini latar belakang, bukan penentu tunggal harga sahamnya.`,
+    `Harga ${label} ${pct(pct12)} pada rangkaian terakhir. Artinya bahan yang dijual emiten ${pct12 >= 0 ? "sedang naik" : "sedang turun"} — ini latar belakang, bukan penentu tunggal harga sahamnya.`,
+  );
+}
+
+export function rankingPart(kind: "movers" | "traded", classification: string | undefined, rows: { symbol: string; disp: string; name: string }[]): AwamBagian {
+  const list = rows.slice(0, 3).map((r) => `${r.symbol} (${r.disp})`).join(" · ");
+  return p(
+    kind === "traded" ? "Saham paling ramai diperdagangkan" : "Peringkat perubahan harga (top movers)",
+    kind === "traded"
+      ? "Daftar ini diurutkan dari volume transaksi terbesar — menunjukkan saham yang paling banyak diperjualbelikan, bukan yang paling layak dibeli."
+      : "Daftar ini diurutkan dari perubahan harga terbesar pada periode yang diminta — menunjukkan gerakan paling ekstrem, bukan rekomendasi mengikuti.",
+    kind === "traded"
+      ? "Ibarat daftar toko paling ramai dikunjungi di pasar — ramai belum tentu untung, bisa juga sedang panik."
+      : "Ibarat papan skor lomba lari: yang paling cepat naik (atau paling dalam turun) di periode itu.",
+    `${classification === "top_losers" ? "Paling turun" : classification === "top_gainers" ? "Paling naik" : "Teratas"}: ${list || "-"}. Angka apa adanya dari Sectors (1–2kr); ini peringkat situasi, bukan ajakan.`,
+    "netral",
+  );
+}
+
+export function idxTotalPart(latest: number, pct: number, days: number): AwamBagian {
+  return p(
+    "Total market cap IDX",
+    "Market cap total bursa = nilai gabungan seluruh saham tercatat. Arahnya menggambarkan suasana pasar secara keseluruhan.",
+    "Ibarat menjumlahkan nilai semua toko di pasar induk — naik/turunnya belum tentu mencerminkan toko pilihanmu.",
+    `Market cap total IDX ${pct >= 0 ? "naik" : "turun"} ${Math.abs(pct)}% dalam ${days} hari terakhir. Ini konteks pasar, bukan penilaian satu saham.`,
   );
 }
 

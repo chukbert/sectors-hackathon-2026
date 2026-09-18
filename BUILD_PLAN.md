@@ -14,60 +14,60 @@
 | Model `meta/muse-spark-1.2` + effort `xhigh`, 5 titik LLM (planner/narator/tutor/bantahan/lanjutan) + ringkas memori | ✅ live-terverifikasi 1 call |
 | Output 2 lapis (teknis + awam deterministik) di chat, share, copy | ✅ |
 | P0-Fundamental: screener + filter sektor (helper slug) + report 8/8 section + quarterly financials + segmen | ✅ |
-| Eval offline | ✅ **34/34 PASS** (`npm run eval`) |
-| Cakupan endpoint | 20/54 IDX+Mining (≈37%) — lihat `docs/API_COVERAGE.md` |
+| Eval offline | ✅ **52/52 PASS** (`npm run eval`) |
+| Cakupan endpoint | 26/54 IDX+Mining (≈48%) — lihat `docs/API_COVERAGE.md` |
 | Repo git + riwayat commit (blocker #1) | ✅ 19 Sep — `master`, donor history tertaut (17 Sep) |
-| Query compiler LLM-first · entity resolver · graph reasoning | 🔜 fase 1–3 di bawah |
-| Paket endpoint: Ranking · Pasar/Sektor · Broker/Mining · SGX/KLSE | 🔜 fase 4 |
+| Query compiler LLM-first · entity resolver · graph reasoning | ✅ fase 1–3 selesai 19 Sep |
+| Paket endpoint: Ranking · Pasar · Mining generik | ✅ inti selesai; SGX/KLSE dipotong sadar (label di README) |
 
 ## 1. Fase
 
 | Fase | Isi | Selesai bila (gate) | Potong bila mepet |
 |---|---|---|---|
-| **1. Query compiler** 🔜 | `compiler.ts`: 1 call → JSON (intents/tickers/entities/mode/screen/sektor/komoditas/hops) + validator enum & verifikasi; `planner.ts` refactor: LLM primer, heuristik **fallback** dan tidak menempel intent saat LLM valid | eval kasus: valid · fallback tanpa key · out-of-enum · ticker tak terverifikasi → semua ditolak dengan jalur jujur; multi-intent LLM utuh | schema disederhanakan (buang `hops`, sisakan intents/screen/mode) |
-| **2. Entity resolver** 🔜 | `entity.ts`: intent `entitas` — brand/nama → maks 2 kandidat → verifikasi `company/report §overview` (1kr) → jawab identitas + alternatif; arah balik ticker → `§ownership` | "saham Indomaret apa?" terjawab terverifikasi (atau jujur tak ditemukan); kandidat halusinasi tidak pernah lolos | verifikasi 1 kandidat saja |
-| **3. Graph reasoning** 🔜 | `chain.ts`: dekomposisi hop (LLM) → telusur edge `ownership/affiliate/contractor/buyer/segment/group` (kode) → claim graph bersitasi → narasi kondisional + bantahan per hop; hop dibatasi budget & cache | kasus "hulu tertekan → hilir grup" menghasilkan kartu dengan 100% klaim edge bersitasi; edge tak terverifikasi dilabeli/dibuang; eval kasus positif + negatif | kedalaman 1 hop; narasi tanpa diagram |
-| **4. Paket endpoint** 🔜 | P0-Ranking (top-changes, most-traded, listing-performance) → P0-Pasar/Sektor (idx-total, index-daily multi-kode, index universe, sector-report) → P1-Broker/Mining (**commodities generik** ganti hardcode coal/nikel, licenses/contracts → tutup gap IUP, sites/resources/production/exports) → P2 SGX/KLSE (opsional, berlabel) | tiap paket: fixture + eval hijau + `docs/API_COVERAGE.md` diperbarui; tidak ada pesan yang menyiratkan keterbatasan API | P2 dilewati jujur; P1 mining minimal licenses + commodities |
+| **1. Query compiler** ✅ | `compiler.ts`: 1 call → JSON (intents/tickers/entities/mode/screen/sektor/komoditas/ranking/hops) + validator enum & verifikasi; `planner.ts` refactor: LLM primer, heuristik **fallback** dan tidak menempel intent saat LLM valid | eval kasus: valid · fallback tanpa key · out-of-enum · ticker tak terverifikasi → semua ditolak dengan jalur jujur; multi-intent LLM utuh — ✅ 41/41 | schema disederhanakan (buang `hops`, sisakan intents/screen/mode) |
+| **2. Entity resolver** ✅ | `entity.ts`: intent `entitas` — brand/nama → maks 2 kandidat → verifikasi `company/report §overview` (1kr) → jawab identitas + alternatif; arah balik ticker → `§ownership` | "saham Indomaret apa?" terjawab terverifikasi (atau jujur tak ditemukan); kandidat halusinasi tidak pernah lolos — ✅ 45/45 | verifikasi 1 kandidat saja |
+| **3. Graph reasoning** ✅ | `chain.ts`: dekomposisi hop (LLM) → telusur edge `ownership/affiliate/contractor/buyer/segment/group` (kode) → claim graph bersitasi → narasi kondisional + bantahan per hop; hop dibatasi budget & cache | kasus "hulu tertekan → hilir grup" menghasilkan kartu dengan 100% klaim edge bersitasi; edge tak terverifikasi dilabeli/dibuang; eval positif + negatif — ✅ 48/48 | kedalaman 1 hop; narasi tanpa diagram |
+| **4. Paket endpoint** ✅ inti | P0-Ranking (top-changes, most-traded) → P0-Pasar (idx-total, index-daily multi-kode) → P1-Mining (commodities generik, licenses/IUP, contracts) | tiap paket: fixture + eval hijau + `docs/API_COVERAGE.md` diperbarui; tidak ada pesan yang menyiratkan keterbatasan API — ✅ 52/52 | listing-performance, sector-report, sites/resources/exports, SGX/KLSE dilewati jujur (label README) |
 | **5. Hardening & submit**  | eval target ≥45 kasus · **git/commit-history ✅ 19 Sep** · keluarkan `.env` dari paket · demo cases (compiler, entitas, rantai, screener/fundamental) · README/ARCHITECTURE sinkron · video | semua DoD §3 ✅; submit 30 Sep; freeze | eval ≥40; video 1 take; MCP tetap 8 tools |
 
 ## 2. File map delta (dari kondisi sekarang)
 
 ```
 lib/
-  compiler.ts     🔜 BARU  schema + prompt + validator output LLM (enum, ticker, kandidat entitas, hop)
-  entity.ts       🔜 BARU  brand/nama → kandidat → verifikasi Sectors → jawaban identitas
-  chain.ts        🔜 BARU  claim graph: hop, edge bersitasi, narasi kondisional, bantahan per hop
-  planner.ts      🔧 refactor  LLM primer (compiler), heuristik fallback; multi-intent LLM tidak ditambahi heuristik
-  router.ts       ✅ tetap  fallback keyword; tambah intent `entitas`, `rantai` di jalur heuristik
-  evidence.ts     +fetch   commodities list (P1), licenses/contracts/sites/production, ranking, index universe
-  credit.ts       ✅ tetap  biaya per kuartal/section sudah benar; tambah estimasi endpoint baru
-  awam.ts         +part   entitasPart, rantaiPart (deterministik, tanpa angka baru, tanpa nasihat)
+  compiler.ts     ✅ schema + prompt + validator output LLM (enum, ticker, kandidat entitas, screen, sektor, komoditas, ranking, hop)
+  entity.ts       ✅ brand/nama → kandidat → verifikasi Sectors → jawaban identitas (+ arah balik pemilik)
+  chain.ts        ✅ claim graph: hop, edge bersitasi, narasi kondisional, bantahan per hop
+  planner.ts      ✅ LLM primer (compiler), heuristik fallback; multi-intent LLM tidak ditambahi heuristik
+  router.ts       ✅ fallback keyword + parseRanking; intent `entitas`, `rantai` di jalur heuristik
+  evidence.ts     ✅ +26 endpoint: commodities list/licenses/contracts/top-changes/most-traded/idx-total
+  credit.ts       ✅ biaya per kuartal/section/most-traded/top-changes benar
+  awam.ts         ✅ entitasPart · pemilikPart · rantaiPart · rankingPart · idxTotalPart
 eval/
-  run.ts          34 → ≥45  kasus compiler (valid/fallback/out-of-enum), entitas (ada/tidak), rantai (positif/negatif),
-                            ranking/pasar/mining saat paketnya masuk
-  fixtures         +brand fixture, +grup hulu-hilir, +ranking/sector/mining
+  run.ts          52 kasus: compiler (valid/fallback/out-of-enum/ticker), entitas (ada/tidak), rantai (positif/negatif/kontraktor),
+                  mining generik/IUP, ranking movers/traded, fundamental/screener + disiplin grounding/budget/SEED
+  fixtures        ✅ brand/ownership seed, ranking, idx-total, commodities/licenses/contracts
 docs/
-  API_COVERAGE.md +status  per paket; temuan crawl baru; koreksi biaya
-  BUILD_PLAN.md    ← dokumen ini
-ARCHITECTURE.md    ✅ v7 (compiler/entity/chain sudah digambarkan + penanda status)
-PRD.md             ✅ v7 (visi & momen diperbarui)
-sectors-deps.txt   +baris endpoint → fitur (bukti kill-test; dipakai di video)
+  API_COVERAGE.md ✅ Rev 4 — 26/54, paket inti selesai, gap tersisa jujur
+  BUILD_PLAN.md   ← dokumen ini
+ARCHITECTURE.md   ✅ v7 (compiler/entity/chain ✅ terpasang)
+PRD.md            ✅ v7 (F13–F15 ✅)
+sectors-deps.txt  ✅ baris endpoint → fitur (bukti kill-test; dipakai di video)
 ```
 
 ## 3. Definition of Done v7
 
-- [ ] Eval offline ≥45 PASS (tanpa `SECTORS_API_KEY` & `OPENROUTER_API_KEY`; SEED=1, 0 kredit)
-- [ ] Compiler: output LLM 100% tervalidasi sebelum eksekusi; tanpa key → fallback deterministik penuh
-- [ ] Multi-intent: LLM primer; heuristik tidak menempel saat LLM valid (regresi "direksi→kuasa" ada di eval)
-- [ ] Entity: kandidat wajib terverifikasi Sectors; gagal → jujur, tidak mengarang ticker
-- [ ] Rantai: setiap node/edge klaim bersitasi; edge tak terverifikasi tidak pernah diklaim fakta
-- [ ] 0 angka tak-grounding (±0.5% verifier); guard blokir 100% anjuran eksplisit
-- [ ] ≤ `SECTORS_BUDGET`/sesi (default 6kr) dengan badge + ledger cocok; semua biaya per docs
-- [ ] Live gagal → "data tidak tersedia"; tanpa fallback karangan; `SEED=1` selalu berlabel
-- [ ] URL publik HP tanpa login <60s; permalink `/k/{id}` + OG render
-- [ ] MCP 8 tools Inspector OK; mati bila Sectors dicabut
-- [ ] `docs/API_COVERAGE.md` akurat; pesan "belum didukung" selalu berarti gap ARUS, bukan limit API
-- [x] **Git beres 19 Sep:** riwayat commit dalam build period (donor 17 Sep + bootstrap) tersedia; `.env` tidak ikut; README/ARCHITECTURE/PRD sinkron
+- [x] Eval offline ≥45 PASS — **52/52** (tanpa `SECTORS_API_KEY` & `OPENROUTER_API_KEY`; SEED=1, 0 kredit)
+- [x] Compiler: output LLM 100% tervalidasi sebelum eksekusi; tanpa key → fallback deterministik penuh
+- [x] Multi-intent: LLM primer; heuristik tidak menempel saat LLM valid (regresi "direksi→kuasa" ada di eval)
+- [x] Entity: kandidat wajib terverifikasi Sectors; gagal → jujur, tidak mengarang ticker
+- [x] Rantai: setiap node/edge klaim bersitasi; edge tak terverifikasi tidak pernah diklaim fakta
+- [x] 0 angka tak-grounding (±0.5% verifier); guard blokir 100% anjuran eksplisit
+- [x] ≤ `SECTORS_BUDGET`/sesi (default 6kr) dengan badge + ledger cocok — ⚠️ tune live masih pending (verifikasi user)
+- [x] Live gagal → "data tidak tersedia"; tanpa fallback karangan; `SEED=1` selalu berlabel
+- [x] URL publik HP tanpa login <60s; permalink `/k/{id}` + OG render
+- [x] MCP 8 tools Inspector OK; mati bila Sectors dicabut
+- [x] `docs/API_COVERAGE.md` akurat (Rev 4, 26/54); pesan "belum didukung" selalu berarti gap ARUS, bukan limit API
+- [x] **Git: riwayat commit dalam build period tersedia** (blocker #1); `.env` tidak ikut; README/ARCHITECTURE/PRD sinkron
 - [ ] Freeze 30 Sep dipatuhi (nol perubahan setelah submit)
 
 ## 4. Risiko

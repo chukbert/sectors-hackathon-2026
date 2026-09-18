@@ -28,7 +28,7 @@ Aturan yang tidak boleh dilanggar siapa pun:
 ```mermaid
 flowchart TD
     U(["User HP · zero-login"]) --> CHAT["server.ts /api/chat"]
-    CHAT --> CMP{{"🔜 compiler.ts — QUERY COMPILER (LLM)<br/>JSON: intents[] · tickers[] · entities[] · mode · screen · sektor · komoditas · hops[]"}}
+    CHAT --> CMP{{"✅ compiler.ts — QUERY COMPILER (LLM)<br/>JSON: intents[] · tickers[] · entities[] · mode · screen · sektor · komoditas · ranking · hops[]"}}
     CMP --> VAL{"validator (kode)<br/>enum? ticker ∈ pesan/portofolio?<br/>slug ∈ daftar Sectors? kandidat entitas?"}
     VAL -->|"valid"| EXE["executor per intent<br/>evidence · entitas · rantai → mergeBuilds()"]
     VAL -->|"invalid / tanpa key"| HEU["fallback heuristik v6 ✅<br/>(route + parseScreen + parseFundamental)"]
@@ -45,7 +45,7 @@ flowchart TD
     K --> SH["share.ts ✅ /k/{id} + OG"]
 ```
 
-## 3. Query compiler 🔜 (jantung v7)
+## 3. Query compiler ✅ (jantung v7)
 
 Satu panggilan LLM (`meta/muse-spark-1.2` + effort `xhigh`) dengan output JSON ketat:
 
@@ -76,7 +76,7 @@ Satu panggilan LLM (`meta/muse-spark-1.2` + effort `xhigh`) dengan output JSON k
 
 **Multi-intent:** LLM adalah sumber utama (1–3 intent, urut prioritas). Bila hasil LLM valid, heuristik **tidak menempelkan** intent tambahan (bug v6: "siapa direksi ASII?" kena bocoran `kuasa`). Penggabungan hasil tetap deterministik di `mergeBuilds()`: bukti & sitasi digabung, verdict sinyal terkuat, Bagian 2 di-dedupe per istilah.
 
-## 4. Entity resolver 🔜 — "saham Indomaret apa?"
+## 4. Entity resolver ✅ — "saham Indomaret apa?"
 
 ```mermaid
 flowchart LR
@@ -88,7 +88,7 @@ flowchart LR
 
 Aturan lama "ticker harus muncul di pesan" **diperluas**: ticker boleh berasal dari pengetahuan model asalkan terverifikasi Sectors. Arah sebaliknya juga jalan lewat data yang sudah ada: ticker → `§ownership` (induk/afiliasi) untuk "ini anak usaha siapa?".
 
-## 5. Graph reasoning 🔜 — pertanyaan brutal berlapis
+## 5. Graph reasoning ✅ — pertanyaan brutal berlapis
 
 Contoh kelas soal: *"Kalau harga coal jatuh, siapa di grup ADRO yang paling kena — hulu bermasalah, hilirnya gimana?"*
 
@@ -135,17 +135,17 @@ flowchart TD
     X --> O["metrik ditandai tidak tersedia<br/>confidence turun → data-kurang bila < 0.55"]
 ```
 
-Tim punya 1.000 kredit; budget 6kr/sesi adalah **default hemat**, bukan plafon platform — dinaikkan sadar via `SECTORS_BUDGET` untuk demo/verifikasi. Biaya mengikuti docs: report 1kr/section, quarterly 1kr/kuartal, screener 1kr (NL 3kr), helper 1kr, segmen 1kr.
+Tim punya 1.000 kredit; budget 6kr/sesi adalah **default hemat**, bukan plafon platform — dinaikkan sadar via `SECTORS_BUDGET` untuk demo/verifikasi. Biaya mengikuti docs: report 1kr/section, quarterly 1kr/kuartal, screener 1kr (NL 3kr), helper 1kr, segmen 1kr, top-changes 1kr per klasifikasi×periode, most-traded 2kr, idx-total 1kr, mining (price/licenses/contracts/commodities list) ±1kr.
 
 ## 8. Modul
 
 | Modul | Peran | Status |
 |---|---|---|
-| `lib/planner.ts` | compiler LLM-first + validasi + fallback heuristik | 🔜 refactor (v6: dua router) |
-| `lib/compiler.ts` · `entity.ts` · `chain.ts` | compiler schema/validator · resolver brand→ticker · mesin hop reasoning | 🔜 baru |
+| `lib/planner.ts` | compiler LLM-first + validasi + fallback heuristik | ✅ LLM primer, heuristik jaring pengaman |
+| `lib/compiler.ts` · `entity.ts` · `chain.ts` | compiler schema/validator · resolver brand→ticker · mesin hop reasoning | ✅ |
 | `lib/router.ts` | fallback keyword (route) — jaring pengaman, bukan otak | ✅ |
 | `lib/resolve.ts` + `symbols.ts` | ekstraksi ticker universal, stopword, portofolio, kode broker | ✅ |
-| `lib/evidence.ts` + `seed.ts` | 20 endpoint Sectors; fixture hanya saat SEED=1 | ✅ |
+| `lib/evidence.ts` + `seed.ts` | 26 endpoint Sectors; fixture hanya saat SEED=1 | ✅ |
 | `lib/sectors.ts` + `credit.ts` | cache, TTL, 404 negatif, breaker, budget env, ledger | ✅ |
 | `lib/metrics.ts` | FOMO, Kohort Flow, likuiditas, dividen, return, drawdown | ✅ |
 | `lib/screener.ts` | kriteria screener + resolusi kata sektor ke slug helper | ✅ |

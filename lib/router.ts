@@ -1,6 +1,7 @@
 // lib/router.ts — routing intent deterministik (keyword). LLM planner opsional di atasnya.
 // ATURAN: router TIDAK memilih emiten. Ticker datang dari resolve.ts; tanpa ticker → klarifikasi/komoditas/screener.
 import { parseScreen } from "./screener.js";
+import type { CompiledRanking } from "./compiler.js";
 export type Intent =
   | "pasar" | "rumor" | "kenapa-gerak" | "barang" | "dna" | "kuasa" | "kalender" | "dividen"
   | "likuiditas" | "autopsi" | "banding" | "pagi" | "risiko" | "screener" | "fundamental"
@@ -10,6 +11,27 @@ export const NEEDS_TICKER: Intent[] = ["rumor", "kenapa-gerak", "dividen", "liku
 
 // Pertanyaan fundamental emiten (valuasi/laba/manajemen/segmen) — butuh subjek ticker.
 const FUNDAMENTAL = /fundamental|valuasi|valuation|\bpe\b|\bpb\b|\broe\b|\bder\b|\beps\b|\bmurah\b|\bmahal\b|margin|laba|pendapatan|revenue|profit|ekuitas|\butang\b|kinerja|kuartal|quarter|laporan keuangan|\bsegmen\b|segmentasi|prospek|\banalis\b|siapa (pengurus|direksi|manajemen|komisaris)|susunan (direksi|pengurus)|\bmanajemen\b|\bpeer\b|pesaing|kompetitor|sebanding|tahunan|historis|profil|sekilas/;
+
+const RANK_PERIODS: [RegExp, CompiledRanking["period"]][] = [
+  [/\b(7|tujuh)\s*(hari|hr|d)\b|sepekan|seminggu/, "7d"],
+  [/\b(14|empat belas)\s*(hari|hr|d)\b|dua pekan/, "14d"],
+  [/\b(30|tiga puluh)\s*(hari|hr|d)\b|sebulan/, "30d"],
+  [/\b(365|setahun)\b|setahun/, "365d"],
+  [/\b1\s*(hari|hr|d)\b|hari ini|sekarang|pagi ini/, "1d"],
+];
+
+/** Ranking P0 (deterministik, fallback tanpa LLM): top gainers/losers & most traded. */
+export function parseRanking(q: string): CompiledRanking | null {
+  const s = q.toLowerCase();
+  const period = RANK_PERIODS.find(([re]) => re.test(s))?.[1];
+  if (/top ?gainer|gainer|pemenang|paling naik|naik paling|cuan terbesar|naik terbesar/.test(s))
+    return { kind: "movers", classification: "top_gainers", period: period ?? "1d" };
+  if (/top ?loser|loser|paling turun|turun paling|turun terbesar|anjlok paling|ambruk/.test(s))
+    return { kind: "movers", classification: "top_losers", period: period ?? "1d" };
+  if (/most traded|paling (banyak )?(ditransaksikan|diperdagangkan|ramai|aktif)|volume terbesar|teraktif|paling rame/.test(s))
+    return { kind: "traded" };
+  return null;
+}
 
 export function route(q: string, tickers: string[]): Intent {
   const s = q.toLowerCase();
@@ -30,7 +52,7 @@ export function route(q: string, tickers: string[]): Intent {
   if (/likuid|volume|free float|float/.test(s)) return "likuiditas";
   if (/pompom|mau ke|katanya|betul\?|diserok|bakal terbang|terbang/.test(s)) return "rumor";
   if (/risiko|panik|anjlok|nyangkut|merah|takut/.test(s)) return "risiko";
-  if (/pasar|ihsg|market|indeks|index/.test(s) && tickers.length === 0) return "pasar";
+  if ((/pasar|ihsg|market|indeks|index/.test(s) || (tickers.length === 0 && parseRanking(q))) && tickers.length === 0) return "pasar";
   // Entity resolver (fallback tanpa LLM): nama/brand tanpa ticker, atau pemilik/induk dengan ticker.
   if (!tickers.length && /nama saham|saham (untuk|dari)|emiten (dari|apa)|kode saham (untuk|dari)|apa (saham|emiten)|saham .+ (apa|apaan)\b/.test(s)) return "entitas";
   if (tickers.length && /(induk|pemilik|milik siapa|anak usaha|dimiliki)/.test(s)) return "entitas";

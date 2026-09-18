@@ -32,6 +32,7 @@ export interface ChainInput {
   ownerships: ChainOwnership[];
   knownGroups: Record<string, string[]>;
   commodity?: { word: string; pct: number; cited: string; seed: boolean };
+  contracts?: { mine_owner_name?: string; contractor_name?: string; contract_period_end?: string | null; cited: string }[];
   maxRelatives?: number;
 }
 export interface ChainResult {
@@ -136,10 +137,24 @@ export function buildChain(input: ChainInput): ChainResult {
       continue;
     }
     const gap: Record<string, string> = {
-      contractor: `edge contractor belum diimplementasikan di ARUS (mining/contractors + licenses tersedia di Sectors; paket P1)`,
       buyer: `edge buyer per emiten belum ditelusuri (mining/sales-destination tersedia tapi level negara, bukan per perusahaan)`,
       segment: `edge segment belum dipakai di jalur rantai ini (company/get-segments tersedia — dijalankan lewat intent fundamental segmen)`,
     };
+    if (h.edge === "contractor") {
+      if (input.contracts?.length) {
+        for (const c of input.contracts.slice(0, 3)) {
+          edges.push({
+            from, to: c.contractor_name ?? "kontraktor", edge: "contractor", verified: true,
+            label: `kontrak aktif${c.contract_period_end ? ` s.d. ${c.contract_period_end}` : ""} (mining/contracts owner↔kontraktor)`,
+            cited: c.cited,
+          });
+        }
+        citations.add(input.contracts[0]!.cited);
+      } else {
+        dropped.push(`${h.from} -contractor→ ${h.to}: tidak ada baris kontrak di mining/contracts untuk emiten ini — dibuang, bukan diklaim`);
+      }
+      continue;
+    }
     dropped.push(`${h.from} -${h.edge}→ ${h.to}: ${gap[h.edge] ?? "edge tidak dikenal"} — dibuang, bukan diklaim`);
   }
 

@@ -249,7 +249,7 @@ export function seedCommodityPrice(commodity: string): { name: string; date: str
   const out: { name: string; date: string; price_usd_per_ton: number }[] = [];
   for (let i = 0; i < 12; i++) {
     const d = new Date(); d.setMonth(d.getMonth() - (11 - i));
-    out.push({ name: commodity === "nickel" ? "Nickel" : "Coal", date: iso(d), price_usd_per_ton: Math.round((start + ((end - start) * i) / 11) * 100) / 100 });
+    out.push({ name: commodity === "nickel" ? "Nickel" : commodity === "coal" ? "Coal" : commodity.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()), date: iso(d), price_usd_per_ton: Math.round((start + ((end - start) * i) / 11) * 100) / 100 });
   }
   return out;
 }
@@ -383,4 +383,65 @@ export function seedSegments(symRaw: string): { symbol: string; financial_year: 
     symbol: `${sym}.JK`, financial_year: new Date().getFullYear() - 1,
     revenue_breakdown: parts.map(([source, target, share]) => ({ value: Math.round(total * share), source, target })),
   };
+}
+// — P0-Ranking / pasar: top-changes, most-traded, idx-total —
+export interface TopChangeSeedRow { name: string; symbol: string; price_change: number; last_close_price: number; latest_close_date: string }
+export function seedTopChanges(classification: string, period: string, n = 5): Record<string, Record<string, TopChangeSeedRow[]>> {
+  const r = rng(`top${classification}${period}`);
+  const pool = classification === "top_losers"
+    ? ["SMAR", "BBCA", "TLKM", "ASII", "GOTO", "MYOR", "KLBF", "SIDO"]
+    : ["BRMS", "BUMI", "ANTM", "ADRO", "INCO", "PTBA", "MDKA", "TINS"];
+  const rows = pool.slice(0, n).map((sym) => {
+    const mag = (0.03 + r() * 0.22) * (classification === "top_losers" ? -1 : 1);
+    return { name: companyName(sym), symbol: `${sym}.JK`, price_change: Math.round(mag * 10000) / 10000, last_close_price: Math.round(500 + r() * 4000), latest_close_date: dayBack(1, 0) };
+  }).sort((a, b) => classification === "top_losers" ? a.price_change - b.price_change : b.price_change - a.price_change);
+  return { [classification]: { [period]: rows } };
+}
+export function seedMostTraded(n = 5): Record<string, { symbol: string; company_name: string; volume: number; price: number }[]> {
+  const r = rng("mosttraded");
+  const day = dayBack(3, 2);
+  const rows = ["GOTO", "BUMI", "BRMS", "ADRO", "ANTM", "BBRI", "TLKM", "SMAR"].slice(0, n).map((sym) => ({
+    symbol: `${sym}.JK`, company_name: companyName(sym), volume: Math.round((0.5 + r() * 3) * 1e9), price: Math.round(50 + r() * 3000),
+  })).sort((a, b) => b.volume - a.volume);
+  return { [day]: rows };
+}
+export function seedIdxTotal(days = 90): { date: string; idx_total_market_cap: number }[] {
+  const r = rng("idxtotal");
+  let v = 9.5e15;
+  return Array.from({ length: days }, (_, i) => { v = v * (1 + (r() - 0.48) / 100); return { date: dayBack(days, i), idx_total_market_cap: Math.round(v) }; });
+}
+
+// — P1 mining: daftar komoditas, lisensi (IUP), kontrak (owner↔kontraktor) —
+export function seedCommodities(): { name: string; data_points: number; earliest_date: string; latest_date: string }[] {
+  return [
+    { name: "Coal", data_points: 1200, earliest_date: "1968-01-01", latest_date: dayBack(7, 6) },
+    { name: "Nickel", data_points: 900, earliest_date: "1968-01-01", latest_date: dayBack(7, 6) },
+    { name: "Gold", data_points: 703, earliest_date: "1968-01-01", latest_date: dayBack(7, 6) },
+    { name: "Crude Palm Oil", data_points: 640, earliest_date: "1980-01-01", latest_date: dayBack(7, 6) },
+    { name: "Copper", data_points: 600, earliest_date: "1968-01-01", latest_date: dayBack(7, 6) },
+    { name: "Tin", data_points: 420, earliest_date: "1968-01-01", latest_date: dayBack(7, 6) },
+  ];
+}
+export interface LicenseSeedRow { wiup_code: string; license_type: string; province: string; license_effective_date: string; license_expiry_date: string; activity: string; licensed_area_ha: number; commodity_type: string; company_name: string; cnc: string; company_slug: string | null }
+export function seedLicenses(mslug: string): { results: LicenseSeedRow[]; pagination: { total_count: number; has_next: boolean } } {
+  const r = rng("lic" + mslug);
+  const soon = r() > 0.4;
+  const name = mslug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+  return {
+    results: [{
+      wiup_code: "SEED-IUP-1", license_type: "IUP", province: "Kalimantan Timur",
+      license_effective_date: dayBack(2000, 0),
+      license_expiry_date: soon ? futureDay(150 + Math.round(r() * 200)) : futureDay(1000 + Math.round(r() * 700)),
+      activity: "Operasi Produksi", licensed_area_ha: Math.round(r() * 50000),
+      commodity_type: mslug.includes("nickel") ? "Nickel" : "Coal", company_name: name, cnc: "CNC", company_slug: mslug,
+    }],
+    pagination: { total_count: 1, has_next: false },
+  };
+}
+export interface ContractSeedRow { mine_owner_slug: string; mine_owner_name: string; contractor_slug: string; contractor_name: string; contract_period_end: string | null }
+export function seedContracts(mslug: string): ContractSeedRow[] {
+  const r = rng("con" + mslug);
+  if (r() < 0.25) return [];
+  const name = mslug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+  return [{ mine_owner_slug: mslug, mine_owner_name: name, contractor_slug: "pt-utama-contractor", contractor_name: "PT Utama Contractor (SEED)", contract_period_end: futureDay(400 + Math.round(r() * 400)) }];
 }

@@ -35,10 +35,9 @@ mining/global-commodity → F9
 mining/production → F9
 mining/resources-reserves → F9
 mining/sites → F9
-mining/contracts/ → F9
-mining/licenses/ → F9
-mining/license-auctions-detail → F9
-mining/ownership/tree → F3
+mining/contracts/ → F9 (chain contractor)
+mining/licenses/ → F9 (IUP)
+mining/commodities/ → F9 (daftar komoditas generik)
 broker-activity/{broker_code}/ → F10
 broker-activity-top → F10
 brokers/top?origin+cohort → F10

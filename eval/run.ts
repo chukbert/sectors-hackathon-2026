@@ -162,6 +162,20 @@ add("unit/chain-graph", async () => {
   return /AADI/.test(s) && /Jika coal tertekan/.test(s) && /Bantahan untuk/.test(s)
     && /contractor/.test(s) && /dibuang/.test(s) && !/"verified":false/.test(s);
 });
+add("unit/chain-contractor", async () => {
+  const { buildChain } = await import("../lib/chain.js");
+  const r = buildChain({
+    focus: ["PTBA"],
+    requested: [{ from: "PTBA", edge: "contractor", to: "kontraktor" }],
+    ownerships: [{ symbol: "PTBA", holders: [{ name: "MIND ID", pct: 65 }], cited: "company/report/PTBA?sections=ownership", seed: true }],
+    knownGroups: {},
+    contracts: [{ contractor_name: "PT XYZ Kontraktor", contract_period_end: "2027-12-31", cited: "mining/contracts/?mine_owner=pt-bukit-asam-tbk" }],
+  });
+  return JSON.stringify(r);
+}, (o) => {
+  const s = o as string;
+  return /PT XYZ Kontraktor/.test(s) && /"verified":true/.test(s) && /mining\/contracts/.test(s) && /kontrak aktif/.test(s);
+});
 add("fitur/rantai-grup", () => ask("kalau coal jatuh, siapa di grup BUMI yang paling kena?"), (o) => {
   const r = o as Run;
   const v = r.k.visual as { rantai?: { edges?: { from: string; to: string }[] } } | undefined;
@@ -290,9 +304,27 @@ add("awam/bebas-nasihat-sweep", async () => {
   return bad.length === 0;
 });
 
-add("disiplin/komoditas-luar-scope", () => ask("komoditas CPO gimana?"), (o) => {
+add("fitur/komoditas-generik", () => ask("komoditas CPO gimana?"), (o) => {
   const r = o as Run;
-  return r.k.verdict === "data-kurang" && /belum mengimplementasikan/i.test(json(r)) && !/mining\/commodities\/coal/.test(json(r)) && r.spent === 0;
+  return !!r.k.audit?.intents?.includes("barang") && r.k.verdict !== "data-kurang"
+    && json(r).includes("Crude Palm Oil") && json(r).includes("mining/commodities/crude-palm-oil/price")
+    && r.spent <= 2 && r.k.seed === true;
+});
+add("fitur/mining-izin", () => ask("izin tambang ADRO gimana?"), (o) => {
+  const r = o as Run;
+  return json(r).includes("IUP") && json(r).includes("mining/licenses") && r.k.seed === true && !/ANTM/.test(json(r));
+});
+add("fitur/ranking-movers", () => ask("top gainer hari ini apa?"), (o) => {
+  const r = o as Run;
+  const v = r.k.visual as { ranking?: { rows?: unknown[] } } | undefined;
+  return !!r.k.audit?.intents?.includes("pasar") && (v?.ranking?.rows ?? []).length >= 3
+    && json(r).includes("Paling naik") && json(r).includes("top-changes") && r.spent <= 1 && r.k.seed === true;
+});
+add("fitur/ranking-traded", () => ask("saham paling ramai ditransaksikan?"), (o) => {
+  const r = o as Run;
+  const v = r.k.visual as { ranking?: { rows?: unknown[] } } | undefined;
+  return !!r.k.audit?.intents?.includes("pasar") && (v?.ranking?.rows ?? []).length >= 3
+    && json(r).includes("Paling ramai") && json(r).includes("most-traded") && r.spent <= 2 && r.k.seed === true;
 });
 add("llm/fallback-offline", () => ask("kenapa SMAR naik?"), (o) => {
   const r = o as Run;

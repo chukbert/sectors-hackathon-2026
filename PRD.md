@@ -72,11 +72,11 @@ sitasi per angka, bantahan, memori perilaku, dan kartu shareable.
 | F10 Broker DNA | ✅ | broker-activity → fingerprint pola |
 | F11 Kalender Kuasa | ✅ | cluster insider + rights wave |
 | F12 Screener & Fundamental | ✅ | screener `where/order_by` (+filter sektor via helper slug) · report 8/8 section · quarterly · segmen |
-| F13 Query Compiler (LLM-first) | 🔜 | 1 call → JSON tervalidasi: intents · tickers · entities · mode · screen · sektor · komoditas · hops |
-| F14 Entity Resolver | 🔜 | brand/nama → kandidat → verifikasi `§overview` → jawaban identitas + alternatif, atau jujur tak ada |
-| F15 Graph Reasoning (rantai konglomerasi) | 🔜 | hop ownership/affiliate/contractor/buyer/segment → claim graph bersitasi → narasi kondisional + bantahan per hop |
+| F13 Query Compiler (LLM-first) | ✅ | 1 call → JSON tervalidasi: intents · tickers · entities · mode · screen · sektor · komoditas · ranking · hops |
+| F14 Entity Resolver | ✅ | brand/nama → kandidat → verifikasi `§overview` → jawaban identitas + alternatif, atau jujur tak ada |
+| F15 Graph Reasoning (rantai konglomerasi) | ✅ | hop ownership/affiliate/contractor/buyer/segment → claim graph bersitasi → narasi kondisional + bantahan per hop |
 
-Semua fitur yang sudah ✅ diuji `npm run eval` **34/34 offline (0 kredit)**; F13–F15 menambah kasus eval (target ≥45).
+Semua fitur yang sudah ✅ diuji `npm run eval` **52/52 offline (0 kredit)** — target ≥45 terlampaui.
 
 ---
 
@@ -89,7 +89,7 @@ USER (HP, zero-login)
  ▼
 [VALIDATOR — kode]  enum? ticker ∈ pesan/portofolio atau terverifikasi Sectors? slug ∈ daftar? kandidat entitas?
  ▼ (invalid/tanpa key → fallback heuristik ✅)
-[EXECUTOR per intent]  evidence (20/54 endpoint ✅) · entity resolver 🔜 · chain/claim graph 🔜 → mergeBuilds() ✅
+[EXECUTOR per intent]  evidence (26/54 endpoint ✅) · entity resolver ✅ · chain/claim graph ✅ → mergeBuilds() ✅
  ▼
 [COMPUTE — kode]  metrik ✅ · fundamental ✅ · grup ✅ · divergence/DNA/cluster/GNN ✅
  ▼
@@ -112,15 +112,15 @@ relasi grup = laporan terakhir + label "kemungkinan relasi"; proyeksi analis = p
 
 | Tgl | Milestone |
 |---|---|
-| 19 ✅ | v6 + model muse-spark/xhigh + output 2 lapis + P0-Fundamental; eval 34/34 |
-| 20–21 | **F13 Query Compiler** + heuristik jadi fallback; eval kasus compiler |
-| 21–22 | **F14 Entity Resolver** (brand→ticker terverifikasi); eval kasus ada/tidak |
-| 22–24 | **F15 Graph Reasoning** (hulu→hilir konglomerasi); eval positif + negatif |
-| 24–27 | Paket endpoint: P0-Ranking → P0-Pasar/Sektor → P1-Broker/Mining (commodities generik, licenses/IUP) |
-| 27–29 | Hardening: eval ≥45 · git/commit-history beres · `.env` keluar · demo/video · docs sinkron |
+| 19 ✅ | v6 + model muse-spark/xhigh + output 2 lapis + P0-Fundamental; **v7: F13 compiler + F14 entity + F15 rantai + P0-Ranking/Pasar + P1-Mining (commodities generik, IUP, contracts)**; eval 34 → 52 |
+| 20–21 ✅ | **F13 Query Compiler** + heuristik jadi fallback; eval kasus compiler |
+| 21–22 ✅ | **F14 Entity Resolver** (brand→ticker terverifikasi); eval kasus ada/tidak |
+| 22–24 ✅ | **F15 Graph Reasoning** (hulu→hilir konglomerasi); eval positif + negatif |
+| 24–27 | Sisa paket endpoint opsional: listing-performance, sector-report, sites/resources/exports (gap terbuka, label jujur); tuning biaya live bersama user |
+| 27–29 | Hardening: demo/video · docs sinkron · verifikasi live dengan `SECTORS_BUDGET` sadar |
 | 30 pagi | Verifikasi kedua → **SUBMIT** → freeze (nol perubahan setelah submit) |
 
-**AC v7:** eval ≥45 offline tanpa exception · compiler 100% tervalidasi · entitas tak pernah mengarang ticker ·
+**AC v7:** eval **52/52** offline tanpa exception · compiler 100% tervalidasi · entitas tak pernah mengarang ticker ·
 rantai 100% klaim bersitasi · 0 angka tak-grounding · ≤ `SECTORS_BUDGET`/sesi · HP tanpa login <60s · permalink+OG ·
 MCP tetap hidup · tanpa key → deterministik ↩ · tanpa Sectors → error jujur · guard blokir 100% anjuran · docs sinkron.
 

@@ -215,6 +215,7 @@ function renderVisual(v: unknown): string {
     fund?: { title?: string; subtitle?: string; note?: string; rows?: { label?: string; name?: string; disp?: string }[] };
     entitas?: { title?: string; subtitle?: string; note?: string; rows?: { label?: string; name?: string; disp?: string }[] };
     rantai?: { title?: string; note?: string; edges?: { from: string; to: string; label: string }[] };
+    ranking?: { title?: string; subtitle?: string; note?: string; rows?: { label?: string; name?: string; disp?: string }[] };
   };
   let h = "";
   if (o.sankey?.nodes?.length) {
@@ -268,9 +269,9 @@ function renderVisual(v: unknown): string {
       `<div class="scrrow"><span class="scrno">${i + 1}</span><b>${esc(r.symbol)}</b><span class="scrname">${esc(r.name)}</span><span class="scrval">${esc(r.disp ?? "-")}</span></div>`).join("")
       + `<div class="meta">Urut ${esc(o.screen.orderBy ?? "")} · where "${esc(o.screen.where || "-")}" · angka apa adanya dari Sectors screener, bukan hitungan ARUS.</div>`;
   }
-  const fblock = o.fund ?? o.entitas;
+  const fblock = o.fund ?? o.entitas ?? o.ranking;
   if (fblock?.rows?.length) {
-    const icon = o.entitas ? "🧩" : "📊";
+    const icon = o.ranking ? "🏆" : o.entitas ? "🧩" : "";
     h += `<h3>${icon} ${esc(fblock.title ?? "Fundamental")}</h3>`;
     if (fblock.subtitle) h += `<div class="meta">${esc(fblock.subtitle)}</div>`;
     h += fblock.rows.map((r) =>
@@ -589,6 +590,7 @@ function renderKartu(k){
   if(v.fund){hasViz=true;vh+='<div class="sect">📊 '+esc(v.fund.title||"Fundamental")+'</div><div class="viz">'+fundViz(v.fund)+'</div>'}
   if(v.entitas){hasViz=true;vh+='<div class="sect">🧩 '+esc(v.entitas.title||"Cari emiten")+'</div><div class="viz">'+fundViz(v.entitas)+'</div>'}
   if(v.rantai&&v.rantai.edges&&v.rantai.edges.length){hasViz=true;vh+='<div class="sect">🔗 '+esc(v.rantai.title||"Rantai relasi")+'</div><div class="viz">'+rantaiViz(v.rantai)+'</div>'}
+  if(v.ranking){hasViz=true;vh+='<div class="sect">🏆 '+esc(v.ranking.title||"Peringkat")+'</div><div class="viz">'+fundViz(v.ranking)+'</div>'}
   var mp=metricPills(k.bukti||[]);if(mp){hasViz=true;vh+='<div class="sect">📊 Metrik arus</div><div class="viz">'+mp+'<div class="vizcap">Ringkasan angka kunci dari bukti di bawah — kohort (uang), likuiditas, FOMO, yield, dan aliran asing.</div></div>'}
   if(hasViz)h+=vh;
   if(k.bukti&&k.bukti.length){h+='<div class="sect">🧾 Bukti berbasis data</div><ul class="ev">'+k.bukti.map(function(b,i){var ic=/Divergence|⚑|trap|distribusi/i.test(b)?"⚠️":/\\+|akumulasi|sehat|likuid/i.test(b)?"✅":"•";return '<li><span class="ico">'+ic+'</span><span>'+esc(b)+'</span></li>'}).join("")+'</ul>'}

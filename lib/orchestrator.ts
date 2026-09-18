@@ -5,9 +5,9 @@ import type { Intent } from "./router.js";
 import { heuristicPlan, planQuery, type Plan } from "./planner.js";
 import { clarificationText, parsePortfolio, plausibleTickers, portfolioSourceNote, resolveTickers } from "./resolve.js";
 import {
-  evidenceOk, fetchBrokerActivity, fetchBrokerSummary, fetchCommodityPrice, fetchCorporateActions, fetchDaily, fetchFilings,
-  fetchForeignFlow, fetchIndexDaily, fetchIndustries, fetchMiningPerformance, fetchNews, fetchQuarterly, fetchRegistry,
-  fetchReport, fetchSalesDestination, fetchScreener, fetchSegments, fetchSubindustries, fetchSubsectors, fetchSuspensions,
+  evidenceOk, fetchBrokerActivity, fetchBrokerSummary, fetchCommodities, fetchCommodityPrice, fetchContracts, fetchCorporateActions, fetchDaily, fetchFilings,
+  fetchForeignFlow, fetchIdxTotal, fetchIndexDaily, fetchIndustries, fetchLicenses, fetchMiningPerformance, fetchMostTraded, fetchNews, fetchQuarterly, fetchRegistry,
+  fetchReport, fetchSalesDestination, fetchScreener, fetchSegments, fetchSubindustries, fetchSubsectors, fetchSuspensions, fetchTopChanges,
   getterFor, type CorporateActions,
 } from "./evidence.js";
 import { computeFlow, dividendFromReport, fomoMeter, lastTradingDay, liquidityFromDaily, maxDrawdownPct, returnsFromDaily, type DailyRow, type FilingRow } from "./metrics.js";
@@ -27,8 +27,8 @@ import { detectSectorWord, fmtScreenValue, matchSector, parseScreen, screenFromC
 import { addDecision, addPola, addWatch, chasePattern, getPortfolio, getWatchlist, setPortfolio } from "./memory.js";
 import {
   anomaliPart, bandingPart, buildAwam, buyerPart, clusterPart, dividenPart, dnaPart, drawdownPart, entitasPart, fomoPart,
-  grupPart, hargaVolumePart, ihsgPart, kalenderPart, kinerjaPart, kohortPart, komoditasPart, lanjutanFor, likuiditasPart,
-  manajemenPart, peerPart, pemilikPart, p, produksiPart, prospekPart, rantaiPart, segmenPart, suspensiPart, tentangPart, tahunanPart,
+  grupPart, hargaVolumePart, idxTotalPart, ihsgPart, kalenderPart, kinerjaPart, kohortPart, komoditasPart, lanjutanFor, likuiditasPart,
+  manajemenPart, peerPart, pemilikPart, p, produksiPart, prospekPart, rantaiPart, rankingPart, segmenPart, suspensiPart, tentangPart, tahunanPart,
   valuasiPart, volumeEmitenPart,
   type Awam, type AwamBagian,
 } from "./awam.js";
@@ -302,20 +302,92 @@ async function buildLikuiditas(sym: string, session: CreditSession): Promise<Bui
   return pack({ verdict: "info", probability: Math.min(0.85, 0.5 + liq.score / 2), confHint: 0.7, bukti, awam, sitasi: [`daily/${sym}/`], pool: [dailyE.data, liq], needs: 1, ok: dailyE.ok ? 1 : 0, info: true, seed: dailyE.seed });
 }
 
-async function buildPasar(session: CreditSession): Promise<Build> {
+const INDEX_CODES: [RegExp, string, string][] = [
+  [/\blq45\b/, "LQ45", "LQ45"],
+  [/\bidx30\b/, "IDX30", "IDX30"],
+  [/\bidxbumn20\b/, "IDXBUMN20", "IDX BUMN20"],
+  [/\bidxhidiv20\b/, "IDXHIDIV20", "IDX High Dividend 20"],
+  [/\bkompas100\b/, "KOMPAS100", "Kompas100"],
+  [/\bjii70\b/, "JII70", "JII70"],
+  [/\bsminfra18\b/, "SMINFRA18", "SMInfra18"],
+];
+
+async function buildPasar(q: string, session: CreditSession, plan: Plan): Promise<Build> {
   const get = getterFor(session);
-  const idxE = await fetchIndexDaily(get);
+  const rank = plan.ranking;
+
+  // P0-Ranking: top movers (1kr) / most traded (2kr) — angka apa adanya dari Sectors.
+  if (rank?.kind === "traded") {
+    const e = await fetchMostTraded(get, 5, 5);
+    const days = Object.keys(e.data ?? {}).sort();
+    const day = days[days.length - 1] ?? "-";
+    const rows = day !== "-" ? (e.data ?? {})[day] ?? [] : [];
+    const sitasi = ["most-traded/?start…&end…&n_stock=5 (2kr)"];
+    if (!rows.length) return pack({ verdict: "data-kurang", probability: 0.5, confHint: 0.4, bukti: ["Most-traded Sectors tidak mengembalikan baris (respons kosong yang valid)"], sitasi, pool: [e.data], needs: 1, ok: e.ok ? 1 : 0, seed: e.seed });
+    const bukti = [
+      `Paling ramai ${day}: ${rows.map((r) => `${r.symbol.replace(/\.JK$/, "")} (vol ${fmtNum(r.volume, 0)} · harga ${r.price})`).join(" · ")}`,
+      "Volume = keramaian transaksi (bisa akumulasi atau distribusi) — peringkat situasi, bukan rekomendasi.",
+    ];
+    return pack({
+      verdict: "info", probability: 0.6, confHint: 0.7, bukti, sitasi,
+      awam: [rankingPart("traded", undefined, rows.map((r) => ({ symbol: r.symbol.replace(/\.JK$/, ""), name: r.company_name, disp: `vol ${fmtNum(r.volume, 0)}` })))],
+      visual: { ranking: { title: `Paling ramai ${day}`, subtitle: "most-traded/ Sectors (2kr) — volume apa adanya, bukan hitungan ARUS", rows: rows.map((r) => ({ label: r.symbol.replace(/\.JK$/, ""), name: r.company_name, disp: `vol ${fmtNum(r.volume, 0)} · ${r.price}` })), note: "Ramai diperdagangkan bukan berarti layak dibeli; cocokkan dengan arus uang & filing." } },
+      pool: [e.data, rows], needs: 1, ok: e.ok ? 1 : 0, info: true, seed: e.seed,
+    });
+  }
+  if (rank?.kind === "movers") {
+    const cls = rank.classification ?? "top_gainers";
+    const period = rank.period ?? "1d";
+    const e = await fetchTopChanges(get, cls, period, 5);
+    const rows = ((cls === "top_losers" ? e.data?.top_losers : e.data?.top_gainers)?.[period] ?? []);
+    const sitasi = [`companies/top-changes/?classifications=${cls}&periods=${period}&n_stock=5 (1kr)`];
+    const label = cls === "top_losers" ? "Paling turun" : "Paling naik";
+    if (!rows.length) return pack({ verdict: "data-kurang", probability: 0.5, confHint: 0.4, bukti: [`Top-changes Sectors kosong untuk ${cls} ${period} (respons kosong yang valid)`], sitasi, pool: [e.data], needs: 1, ok: e.ok ? 1 : 0, seed: e.seed });
+    const disp = (v: number) => `${v >= 0 ? "+" : ""}${Math.round(v * 10000) / 100}%`;
+    const bukti = [
+      `${label} ${period}: ${rows.map((r) => `${r.symbol.replace(/\.JK$/, "")} ${disp(r.price_change)} (harga ${r.last_close_price}, per ${r.latest_close_date})`).join(" · ")}`,
+      "Peringkat gerak harga periode itu — angka apa adanya dari Sectors, bukan ajakan mengikuti.",
+    ];
+    return pack({
+      verdict: "info", probability: 0.6, confHint: 0.7, bukti, sitasi,
+      awam: [rankingPart("movers", cls, rows.map((r) => ({ symbol: r.symbol.replace(/\.JK$/, ""), name: r.name, disp: disp(r.price_change) })))],
+      visual: { ranking: { title: `${label} ${period}`, subtitle: `companies/top-changes/ (1kr) — ${cls} periode ${period}, apa adanya`, rows: rows.map((r) => ({ label: r.symbol.replace(/\.JK$/, ""), name: r.name, disp: disp(r.price_change) })), note: "Gerak ekstrem bisa jadi euforia atau jebakan; cek arus uang dan filing sebelum menyimpulkan." } },
+      pool: [e.data, rows], needs: 1, ok: e.ok ? 1 : 0, info: true, seed: e.seed,
+    });
+  }
+
+  // Pasar: total market cap IDX (1kr) bila diminta; selain itu indeks (IHSG default / kode lain).
+  if (/market ?cap|kapitalisasi|idx total|total pasar/i.test(q)) {
+    const e = await fetchIdxTotal(get, 90);
+    const rows = (e.data ?? []).filter((r) => typeof r.idx_total_market_cap === "number").sort((a, b) => a.date.localeCompare(b.date));
+    if (rows.length < 8) return pack({ verdict: "data-kurang", probability: 0.5, confHint: 0.4, bukti: ["idx-total Sectors tidak cukup data"], sitasi: ["idx-total/"], pool: [e.data], needs: 1, ok: e.ok ? 1 : 0, seed: e.seed });
+    const last = rows[rows.length - 1]!, at = (k: number) => rows[Math.max(0, rows.length - 1 - k)]!;
+    const pct = Math.round(((last.idx_total_market_cap - at(30).idx_total_market_cap) / at(30).idx_total_market_cap) * 1000) / 10;
+    return pack({
+      verdict: "info", probability: 0.6, confHint: 0.7,
+      bukti: [`Total market cap IDX ${fmtRp(last.idx_total_market_cap)} (${pct >= 0 ? "+" : ""}${pct}% 30hr) per ${last.date} — idx-total/ (1kr)`, "Market cap total = ukuran pasar keseluruhan, bukan arah satu saham"],
+      awam: [idxTotalPart(last.idx_total_market_cap, pct, 30)],
+      sitasi: ["idx-total/"], pool: [e.data, { pct }], needs: 1, ok: e.ok ? 1 : 0, info: true, seed: e.seed,
+    });
+  }
+
+  const codeRow = INDEX_CODES.find(([re]) => re.test(q.toLowerCase()));
+  const code = codeRow?.[1] ?? "IDXCOMPOSITE";
+  const label = codeRow?.[2] ?? "IHSG";
+  const idxE = await fetchIndexDaily(get, code);
   const rows = idxE.data?.data ?? [];
-  if (rows.length < 8) return pack({ verdict: "data-kurang", probability: 0.5, confHint: 0.4, bukti: ["Data indeks tidak tersedia"], sitasi: ["index-daily/IDXCOMPOSITE/"], pool: [idxE.data], needs: 1, ok: idxE.ok ? 1 : 0 });
+  if (rows.length < 8) return pack({ verdict: "data-kurang", probability: 0.5, confHint: 0.4, bukti: [`Data indeks ${label} tidak tersedia`], sitasi: [`index-daily/${code}/`], pool: [idxE.data], needs: 1, ok: idxE.ok ? 1 : 0, seed: idxE.seed });
   const last = rows[rows.length - 1]!.close;
   const at = (k: number) => rows[Math.max(0, rows.length - 1 - k)]!.close;
   const ret7 = Math.round(((last - at(7)) / at(7)) * 1000) / 10;
   const ret30 = Math.round(((last - at(30)) / at(30)) * 1000) / 10;
+  const awam = codeRow
+    ? [p(`${label} (indeks pasar)`, "Indeks = keranjang saham yang mewakili segmen pasar tertentu. Arahnya menggambarkan segmen itu, bukan satu saham.", "Ibarat rata-rata nilai satu kelas, bukan nilai satu murid.", `${label} di ${last}: 7 hari ${ret7 >= 0 ? "+" : ""}${ret7}%, 30 hari ${ret30 >= 0 ? "+" : ""}${ret30}%. Ini konteks segmen, bukan penilaian saham tunggal.`)]
+    : [ihsgPart(last, ret7, ret30)];
   return pack({
     verdict: "info", probability: 0.6, confHint: 0.7,
-    bukti: [`IHSG ${last} (${ret7 >= 0 ? "+" : ""}${ret7}% 7hr · ${ret30 >= 0 ? "+" : ""}${ret30}% 30hr) — index-daily/IDXCOMPOSITE/`, `Untuk aksi korporasi pasar: sebut ticker atau tanya "ex-date <ticker> kapan?"`],
-    awam: [ihsgPart(last, ret7, ret30)],
-    sitasi: ["index-daily/IDXCOMPOSITE/"], pool: [idxE.data, { last, ret7, ret30 }], needs: 1, ok: idxE.ok ? 1 : 0, info: true, seed: idxE.seed,
+    bukti: [`${label} ${last} (${ret7 >= 0 ? "+" : ""}${ret7}% 7hr · ${ret30 >= 0 ? "+" : ""}${ret30}% 30hr) — index-daily/${code}/`, `Untuk aksi korporasi pasar: sebut ticker atau tanya "ex-date <ticker> kapan?"`],
+    awam, sitasi: [`index-daily/${code}/`], pool: [idxE.data, { last, ret7, ret30 }], needs: 1, ok: idxE.ok ? 1 : 0, info: true, seed: idxE.seed,
   });
 }
 
@@ -563,32 +635,65 @@ function rekapYoY(label: string, revYoY: number | null, labaYoY: number | null):
   return `${label} YoY: pendapatan ${revYoY === null ? "-" : `${revYoY >= 0 ? "+" : ""}${revYoY}%`} · laba ${labaYoY === null ? "-" : `${labaYoY >= 0 ? "+" : ""}${labaYoY}%`} (kuartal sama tahun lalu)`;
 }
 
-async function buildBarang(q: string, sym: string | null, session: CreditSession, commodityOverride?: string): Promise<Build> {
-  // Jujur soal cakupan: ARUS hanya mengambil harga coal & nikel dari Sectors — jangan diam-diam menjawab coal.
-  const OUT_COMMODITY = /\bcpo\b|kelapa sawit|\bemas\b|\bgold\b|\bperak\b|\bsilver\b|\btimah\b|\btembaga\b|\bcopper\b|\bminyak\b|\boil\b|\bgas\b/i;
-  const generic = commodityOverride && !/^(coal|nickel)$/.test(commodityOverride) ? commodityOverride : null;
-  const qLabel = generic ? null : ((q.match(OUT_COMMODITY) ?? [])[0]?.toLowerCase() ?? null);
-  const label = generic ?? qLabel;
-  if (!sym && label && !/coal|batubara|batu bara|nikel|nickel|tambang/i.test(q)) {
-    return pack({ verdict: "data-kurang", probability: 0.5, confHint: 0.4, bukti: [`ARUS belum mengimplementasikan komoditas "${label}" — di Sectors data ini ADA (mining/commodities + mining/commodities/{slug}/price); ini keterbatasan cakupan ARUS, bukan keterbatasan API`], sitasi: [], pool: [], needs: 1, ok: 0 });
-  }
+// Komoditas generik (P1): kata → kandidat slug → VERIFIKASI ke mining/commodities Sectors (bukan tabel hardcode).
+const COMMODITY_WORDS: Record<string, string> = {
+  cpo: "crude-palm-oil", "kelapa sawit": "crude-palm-oil", sawit: "crude-palm-oil",
+  emas: "gold", gold: "gold", perak: "silver", silver: "silver",
+  tembaga: "copper", copper: "copper", timah: "tin", tin: "tin",
+  nikel: "nickel", nickel: "nickel", coal: "coal", batubara: "coal", "batu bara": "coal",
+};
+const slugify = (x: string) => x.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+export function detectCommodityWord(q: string): string | null {
+  const s = q.toLowerCase();
+  for (const w of Object.keys(COMMODITY_WORDS)) if (new RegExp(`\\b${w}\\b`).test(s)) return w;
+  return null;
+}
+
+async function buildBarang(q: string, sym: string | null, session: CreditSession, override?: { word: string; slugCandidates: string[] }): Promise<Build> {
   const get = getterFor(session);
-  const commodity: "coal" | "nickel" = commodityOverride === "coal" || commodityOverride === "nickel"
-    ? commodityOverride
-    : sym ? commodityFor(sym, q) : q.match(/nikel|nickel/i) ? "nickel" : "coal";
+  const word = override?.word ?? detectCommodityWord(q) ?? undefined;
   const bukti: string[] = [];
-  const sitasi: string[] = [`mining/commodities/${commodity}/price`];
-  const priceE = await fetchCommodityPrice(get, commodity);
+  const sitasi: string[] = [];
+  let target: { slug: string; label: string } | undefined;
+  let commoditySeed = false;
+
+  if (word) {
+    const direct = /^(coal|nickel)$/.test(word) ? word : COMMODITY_WORDS[word];
+    if (direct === "coal" || direct === "nickel") {
+      target = { slug: direct, label: direct === "coal" ? "Coal" : "Nikel" };
+    } else {
+      const listE = await fetchCommodities(get);
+      commoditySeed = listE.seed;
+      sitasi.push("mining/commodities/");
+      const cands = [...(override?.slugCandidates ?? []), direct ?? "", slugify(word)];
+      const hit = (listE.data ?? []).find((c) => cands.includes(slugify(c.name)) || slugify(c.name) === slugify(word) || c.name.toLowerCase().includes(word.toLowerCase()));
+      if (!listE.ok || !hit) {
+        return pack({
+          verdict: "data-kurang", probability: 0.5, confHint: 0.4,
+          bukti: [`Komoditas "${word}" tidak ditemukan di daftar mining/commodities Sectors — ARUS tidak mengarang seri harga. Coba nama Inggrisnya (mis. "gold", "copper", "crude palm oil"). Ini gap kandidat, bukan gap API.`],
+          sitasi, pool: [listE.data], needs: 1, ok: listE.ok ? 1 : 0, seed: listE.seed,
+        });
+      }
+      target = { slug: slugify(hit.name), label: hit.name };
+      bukti.push(`Komoditas "${word}" → ${hit.name} (${hit.data_points} titik data s.d. ${hit.latest_date}) — mining/commodities/ (1kr, diverifikasi ke daftar Sectors)`);
+    }
+  }
+
+  const slug = target?.slug ?? (sym ? commodityFor(sym, q) : "coal");
+  const label = target?.label ?? (slug === "nickel" ? "Nikel" : "Coal");
+  sitasi.push(`mining/commodities/${slug}/price`);
+  const priceE = await fetchCommodityPrice(get, slug);
   let pct = 0;
   try { pct = priceE.data ? pctFromPriceSeries(priceE.data) : 0; } catch { pct = 0; }
-  bukti.push(`${commodity === "coal" ? "Coal" : "Nikel"} ${pct >= 0 ? "+" : ""}${pct}% (12 titik bulanan terakhir) — mining/commodities/${commodity}/price`);
-  const awam: AwamBagian[] = [komoditasPart(commodity, pct)];
+  bukti.push(`${label} ${pct >= 0 ? "+" : ""}${pct}% (12 titik bulanan terakhir) — mining/commodities/${slug}/price`);
+  const awam: AwamBagian[] = [komoditasPart(label === "Coal" ? "coal" : label === "Nikel" ? "nickel" : label, pct)];
   if (!sym) {
     return pack({
       verdict: "info", probability: 0.6, confHint: 0.6, bukti, awam,
-      sitasi, pool: [priceE.data, { pct }], needs: 1, ok: priceE.ok ? 1 : 0, info: true, seed: priceE.seed,
+      sitasi, pool: [priceE.data, { pct, slug }], needs: 1, ok: priceE.ok ? 1 : 0, info: true, seed: priceE.seed || commoditySeed,
     });
   }
+
   const dailyE = await fetchDaily(get, sym, 90);
   const volPct = pctFromDailyVolume((dailyE.data ?? []) as DailyRow[]);
   bukti.push(`Volume ${sym} ${volPct >= 0 ? "+" : ""}${volPct}% (20hr vs 40hr sebelumnya) — daily/${sym}`);
@@ -627,18 +732,35 @@ async function buildBarang(q: string, sym: string | null, session: CreditSession
     } else {
       bukti.push("Sales-destination & performance mining tidak tersedia — divergence dihitung dari harga vs volume saja");
     }
-  } else {
-    bukti.push(`Slug mining ${sym} belum ada di mapping ARUS — data negara/strip tidak diambil (Sectors menyediakannya via mining/companies)`);
   }
+
+  // P1 lisensi IUP: sisa waktu izin → flag risiko perpanjangan (computeBarang).
+  let licenseMonthsLeft: number | undefined;
+  let licOk = 0;
+  if (mslug) {
+    const licE = await fetchLicenses(get, mslug);
+    const rows = licE.data?.results ?? [];
+    const nearest = rows.filter((r) => r.license_expiry_date).sort((a, b) => a.license_expiry_date!.localeCompare(b.license_expiry_date!))[0];
+    if (licE.ok && nearest?.license_expiry_date) {
+      licenseMonthsLeft = Math.max(0, Math.round((new Date(nearest.license_expiry_date).getTime() - Date.now()) / (30 * 24 * 3600e3)));
+      licOk = 1;
+      bukti.push(`IUP ${nearest.license_type ?? "-"} · ${nearest.commodity_type ?? "-"} s.d. ${nearest.license_expiry_date} (${licenseMonthsLeft} bln)${nearest.cnc ? ` · ${nearest.cnc}` : ""} — mining/licenses/?company=${mslug} (1kr, ${licE.data?.pagination?.total_count ?? rows.length} lisensi)`);
+      sitasi.push(`mining/licenses/?company=${mslug}`);
+    } else {
+      bukti.push(`Lisensi (IUP) ${sym} tidak terdata di Sectors untuk slug ${mslug} — bukan berarti tidak ada (mining/licenses/ tersedia)`);
+    }
+  } else {
+    bukti.push(`Slug mining ${sym} belum ada di mapping ARUS — data negara/strip/lisensi tidak diambil (Sectors menyediakannya via mining/companies + mining/licenses)`);
+  }
+
   const r = computeBarang({
     commodityPct12m: pct,
     volumePct: Number.isFinite(volPct) ? volPct : 0,
     stripDelta: extras?.stripDelta,
     topCountryShare: extras?.topCountryShare,
-    licenseMonthsLeft: undefined,
+    licenseMonthsLeft,
   });
   bukti.push(...r.flags);
-  bukti.push("Izin IUP: ARUS belum mengambil endpoint mining/licenses + mining/contracts (tersedia di Sectors) — tanpa flag, bukan berarti tidak ada");
   if (extras?.topCountry && typeof extras.topCountryShare === "number") awam.push(buyerPart(extras.topCountry, extras.topCountryShare));
   if (extras?.prodNote) awam.push(produksiPart(extras.prodNote, extras.stripDelta));
   const kreditLedger = session.ledger.length;
@@ -646,8 +768,9 @@ async function buildBarang(q: string, sym: string | null, session: CreditSession
     verdict: r.verdict === "tak-didukung" ? "tak-didukung" : r.verdict,
     probability: r.probability, confHint: 0.7, bukti, sitasi, awam,
     visual: { sankey: { ...r.sankey, meta: { topCountry: extras?.topCountry ?? "-", prod: extras?.prodNote ?? "?" } } },
-    pool: [priceE.data, dailyE.data, extras, miningRaw, r, { pct, volPct, kreditLedger }],
-    needs: 4, ok: [priceE, dailyE].filter((e) => evidenceOk(e)).length + (extras ? 2 : 0), seed: priceE.seed || dailyE.seed || (extras?.seed ?? false),
+    pool: [priceE.data, dailyE.data, extras, miningRaw, r, { pct, volPct, kreditLedger, licenseMonthsLeft }],
+    needs: 5, ok: [priceE, dailyE].filter((e) => evidenceOk(e)).length + (extras ? 2 : 0) + licOk,
+    seed: priceE.seed || dailyE.seed || (extras?.seed ?? false) || commoditySeed,
   });
 }
 
@@ -898,15 +1021,34 @@ async function buildRantai(q: string, sym: string | null, plan: Plan, known: str
 
   let commodity: { word: string; pct: number; cited: string; seed: boolean } | undefined;
   let commodityOk = 0;
-  if (plan.commodity === "coal" || plan.commodity === "nickel") {
-    const pe = await fetchCommodityPrice(get, plan.commodity);
+  const cw = plan.commodity?.word;
+  if (cw === "coal" || cw === "nickel") {
+    const pe = await fetchCommodityPrice(get, cw);
     if (pe.ok && pe.data) {
       commodityOk = 1;
-      commodity = { word: plan.commodity, pct: pctFromPriceSeries(pe.data), cited: `mining/commodities/${plan.commodity}/price`, seed: pe.seed };
+      commodity = { word: cw, pct: pctFromPriceSeries(pe.data), cited: `mining/commodities/${cw}/price`, seed: pe.seed };
     }
   }
 
-  const r = buildChain({ focus, requested: plan.hops ?? [], ownerships, knownGroups: KNOWN_GROUPS, commodity });
+  // Edge contractor (P1): mining/contracts/ owner↔kontraktor — hanya bila hop meminta (1kr).
+  const wantsContractor = (plan.hops ?? []).some((h) => h.edge === "contractor");
+  let contracts: { mine_owner_name?: string; contractor_name?: string; contract_period_end?: string | null; cited: string }[] | undefined;
+  let contractsOk = 0;
+  if (wantsContractor) {
+    for (const t of focus) {
+      const ms = miningSlug(t);
+      if (!ms) continue;
+      const ce = await fetchContracts(get, ms);
+      seed = seed || ce.seed;
+      if (ce.ok && ce.data?.length) {
+        contractsOk = 1;
+        contracts = ce.data.map((c) => ({ ...c, cited: `mining/contracts/?mine_owner=${ms}` }));
+        break;
+      }
+    }
+  }
+
+  const r = buildChain({ focus, requested: plan.hops ?? [], ownerships, knownGroups: KNOWN_GROUPS, commodity, contracts });
   const bukti: string[] = [
     ...r.nodeClaims.map((c) => `${c.text} — ${c.cited} (1kr)`),
     ...r.edges.map((e) => `${e.from} -${e.edge}→ ${e.to}: ${e.label} — ${e.cited}`),
@@ -918,7 +1060,7 @@ async function buildRantai(q: string, sym: string | null, plan: Plan, known: str
   return pack({
     verdict: info ? "info" : "data-kurang", probability: 0.6, confHint: 0.7, bukti,
     awam: [rantaiPart(focus, r.edges, commodity?.word)],
-    sitasi: [...new Set([...r.citations, ...(commodity ? [commodity.cited] : [])])],
+    sitasi: [...new Set([...r.citations, ...(commodity ? [commodity.cited] : []), ...(contracts ? [contracts[0]!.cited] : [])])],
     visual: {
       rantai: {
         title: `Rantai relasi: ${focus.join(", ")}`,
@@ -928,7 +1070,7 @@ async function buildRantai(q: string, sym: string | null, plan: Plan, known: str
       },
     },
     pool: [ownerships, commodity, r, { fetched }],
-    needs: Math.max(1, fetched + (plan.commodity ? 1 : 0)), ok: ownerships.length + commodityOk,
+    needs: Math.max(1, fetched + (plan.commodity ? 1 : 0) + (wantsContractor ? 1 : 0)), ok: ownerships.length + commodityOk + contractsOk,
     info, seed: seed || (commodity?.seed ?? false),
   });
 }
@@ -996,7 +1138,7 @@ function miss(intent: string, known: string[] = []): Build {
 async function runIntent(intent: Intent, plan: Plan, sym: string | null, tickers: string[], q: string, session: CreditSession, known: string[]): Promise<Build | null> {
   switch (intent) {
     case "obrolan": return plan.intents.length === 1 ? buildObrolan(q, session) : null;
-    case "pasar": return buildPasar(session);
+    case "pasar": return buildPasar(q, session, plan);
     case "autopsi": return buildAutopsi(q, session);
     case "banding": return tickers.length >= 2 ? buildBanding(tickers[0]!, tickers[1]!, session) : miss("banding", known);
     case "pagi": return buildPagi(q, session);

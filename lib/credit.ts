@@ -38,6 +38,12 @@ export function estimateCost(endpoint: string): number {
     const n = Number(endpoint.match(/[?&]n_quarters=(\d+)/)?.[1] ?? 1);
     return Math.max(1, Number.isFinite(n) ? n : 1);
   }
+  if (endpoint.includes("most-traded")) return 2;
+  if (endpoint.includes("top-changes")) {
+    const cls = endpoint.match(/classifications=([^&]+)/)?.[1]?.split(",").filter(Boolean).length ?? 1;
+    const per = endpoint.match(/periods=([^&]+)/)?.[1]?.split(",").filter(Boolean).length ?? 1;
+    return Math.max(1, cls * per);
+  }
   if (endpoint.includes("?q=") || endpoint.includes("sections=all") || endpoint.includes("type=all")) return 3;
   if (endpoint.includes("full-universe") || endpoint.includes("universe")) return 2;
   if (endpoint.includes("free-float") || endpoint.includes("/brokers/top") || endpoint.includes("broker-summary") && endpoint.includes("/top/")) return 2;

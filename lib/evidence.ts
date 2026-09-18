@@ -3,9 +3,9 @@
 import type { CreditSession } from "./credit.js";
 import { daysAgo, lastTradingDay, type BrokerDay, type DailyRow, type FilingRow, type ForeignDay, type RegistryRow } from "./metrics.js";
 import {
-  seedBrokerActivity, seedBrokerSummary, seedCommodityPrice, seedCorporateActions, seedDaily, seedFilings,
-  seedFilingsUniverse, seedForeignFlow, seedIndexDaily, seedIndustries, seedMiningPerformance, seedNews, seedQuarterly,
-  seedRegistry, seedReport, seedSalesDestination, seedScreener, seedSegments, seedSubindustries, seedSubsectors, seedSuspensions,
+  seedBrokerActivity, seedBrokerSummary, seedCommodities, seedCommodityPrice, seedContracts, seedCorporateActions, seedDaily, seedFilings,
+  seedFilingsUniverse, seedForeignFlow, seedIdxTotal, seedIndexDaily, seedIndustries, seedLicenses, seedMiningPerformance, seedMostTraded, seedNews, seedQuarterly,
+  seedRegistry, seedReport, seedSalesDestination, seedScreener, seedSegments, seedSubindustries, seedSubsectors, seedSuspensions, seedTopChanges,
 } from "./seed.js";
 
 export type Getter = <T>(endpoint: string, seed: unknown) => Promise<{ data: T; seed: boolean }>;
@@ -122,6 +122,37 @@ export interface SegmentResp { symbol?: string; financial_year?: number; revenue
 export const fetchSegments = (get: Getter, sym: string, year?: number): Promise<Evidence<SegmentResp>> =>
   grab("company-segments", () => get<SegmentResp>(
     `/company/get-segments/${sym}${year ? `?financial_year=${year}` : ""}`, seedSegments(sym)));
+
+// — P0-Ranking & pasar tambahan (path/param/biaya dari docs, 19 Sep) —
+export interface TopChangeRow { name: string; symbol: string; price_change: number; last_close_price: number; latest_close_date: string }
+export interface TopChangesResp { top_gainers?: Record<string, TopChangeRow[]>; top_losers?: Record<string, TopChangeRow[]> }
+export const fetchTopChanges = (get: Getter, classification: "top_gainers" | "top_losers" = "top_gainers", period = "1d", n = 5): Promise<Evidence<TopChangesResp>> =>
+  grab("top-changes", () => get<TopChangesResp>(`/companies/top-changes/?classifications=${classification}&periods=${period}&n_stock=${n}`, seedTopChanges(classification, period, n)));
+
+export interface MostTradedResp { [date: string]: { symbol: string; company_name: string; volume: number; price: number }[] }
+export const fetchMostTraded = (get: Getter, days = 5, n = 5): Promise<Evidence<MostTradedResp>> =>
+  grab("most-traded", () => get<MostTradedResp>(`/most-traded/?start=${daysAgo(days)}&end=${lastTradingDay()}&n_stock=${n}`, seedMostTraded(n)));
+
+export interface IdxTotalRow { date: string; idx_total_market_cap: number }
+export const fetchIdxTotal = (get: Getter, days = 90): Promise<Evidence<IdxTotalRow[]>> =>
+  grab("idx-total", () => get<IdxTotalRow[]>(`/idx-total/?start=${daysAgo(days)}&end=${lastTradingDay()}`, seedIdxTotal(days)));
+
+// — P1 mining: daftar komoditas (slug resolver), lisensi IUP, kontrak owner↔kontraktor —
+export interface CommodityRow { name: string; data_points: number; earliest_date: string; latest_date: string }
+export const fetchCommodities = (get: Getter): Promise<Evidence<CommodityRow[]>> =>
+  grab("mining-commodities", () => get<CommodityRow[]>(`/mining/commodities/`, seedCommodities()));
+
+export interface LicenseRow {
+  wiup_code?: string; license_type?: string; province?: string; license_effective_date?: string; license_expiry_date?: string;
+  activity?: string; licensed_area_ha?: number | null; commodity_type?: string; company_name?: string; cnc?: string | null; company_slug?: string | null;
+}
+export interface LicensesResp { results: LicenseRow[]; pagination?: { total_count?: number; has_next?: boolean } }
+export const fetchLicenses = (get: Getter, mslug: string, limit = 10): Promise<Evidence<LicensesResp>> =>
+  grab("mining-licenses", () => get<LicensesResp>(`/mining/licenses/?company=${mslug}&limit=${limit}&order_by=license_expiry_date`, seedLicenses(mslug)));
+
+export interface ContractRow { mine_owner_slug?: string; mine_owner_name?: string; contractor_slug?: string; contractor_name?: string; contract_period_end?: string | null }
+export const fetchContracts = (get: Getter, mslug: string): Promise<Evidence<ContractRow[]>> =>
+  grab("mining-contracts", () => get<ContractRow[]>(`/mining/contracts/?mine_owner=${mslug}`, seedContracts(mslug)));
 
 export function evidenceSeed(...items: Evidence<unknown>[]): boolean {
   return items.some((e) => e.seed);

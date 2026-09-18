@@ -5,22 +5,23 @@
 > bukan batasan API.** Dengan SECTORS_API_KEY yang sama, semua endpoint di bawah bisa diakses.
 > Revisi 3 (19 Sep 2026): **P0-Fundamental selesai** — screener + filter sektor (helper slug) + 8/8 report section
 > reachable + quarterly financials + revenue segments. Endpoint terpakai 14 → 20.
+> Revisi 4 (19 Sep 2026): **v7 + P0-Ranking/Pasar + P1-Mining inti** — top-changes, most-traded, idx-total, daftar
+> `mining/commodities/`, `mining/licenses/` (IUP), `mining/contracts/`. Endpoint terpakai 20 → **26** (≈48%).
 
 ## Ringkasan
 
 | | Jumlah |
 |---|---|
 | Endpoint IDX + Mining di docs v2 | **54** |
-| Dipakai ARUS (`lib/evidence.ts`) | **20** (≈37%) |
-| Grup fitur belum tersentuh | **Ranking, SGX, KLSE** (sisanya sudah parsial/penuh) |
-| SGX (7) + KLSE (4) | di luar cakupan ARUS (asisten IDX) |
+| Dipakai ARUS (`lib/evidence.ts`) | **26** (≈48%) |
+| Grup fitur belum tersentuh | **SGX, KLSE** (dipotong sadar: ARUS asisten IDX; label jujur di README) |
+| SGX (7) + KLSE (4) | di luar cakupan ARUS |
 
 Cakupan saat ini: daily, broker-summary, brokers(registry), broker-activity, foreign-flow(per simbol), filings, news,
-suspensions, corporate-actions (market-wide), company/report (**8/8 section**: dividend+ownership lama;
-overview/valuation/future/peers/financials/management via intent `fundamental`), index-daily (IDXCOMPOSITE),
-mining price (coal/nikel), sales-destination, performance, **screener `where/order_by/include_query_values` + filter
-sektor**, **helper slug (subsectors/industries/subindustries — tags ⏳)**, **financials/quarterly (n_quarters)**,
-**company/get-segments**.
+suspensions, corporate-actions (market-wide), company/report (**8/8 section**), index-daily (multi-kode), **idx-total**,
+mining price (generik, diverifikasi `mining/commodities/`), sales-destination, performance, screener + filter sektor,
+helper slug (subsectors/industries/subindustries), financials/quarterly, company/get-segments,
+**top-changes**, **most-traded**, **mining/licenses (IUP)**, **mining/contracts (owner↔kontraktor)**.
 
 ## Koreksi penting vs draf pertama
 
@@ -56,17 +57,16 @@ sektor**, **helper slug (subsectors/industries/subindustries — tags ⏳)**, **
 - `GET /v2/company/shareholders-composition/` — komposisi pemegang saham. Belum dipakai (ownership §report sudah ada).
 - `GET /v2/sector-report/…` (subsector report, per section) — **belum ada intent sektor** (P0-Pasar/Sektor).
 
-### Ranking & discovery — ❌
-- `GET /v2/companies/top-changes/` — `sub_sector`, `n_stock`(≤10), `classifications` (top_gainers|top_losers),
-  `periods` (1d|7d|14d|30d|365d), `min_mcap_billion`; `price_change` = desimal (0.25=+25%).
-- `GET /v2/most-traded/` — `start`/`end`(≤90hr, default 30hr), `sub_sector`, `adjusted`, `n_stock`(≤10); 2kr.
-- `GET /v2/listing-performance/{symbol}/` — `chg_7d/30d/90d/365d` + jadwal book building/offering, `prospectus_url`; 1kr.
+### Ranking & discovery — ✅ inti (listing-performance ⏳)
+- `GET /v2/companies/top-changes/` — ✅ dipakai (1 klasifikasi × 1 periode = 1kr): `top_gainers`/`top_losers` × `1d…365d`;
+  `price_change` desimal. Intent `pasar` (deteksi ranking deterministik + field `ranking` dari compiler).
+- `GET /v2/most-traded/` — ✅ dipakai (2kr): `start`/`end`, `n_stock`; respons keyed by date.
+- `GET /v2/listing-performance/{symbol}/` — ⏳ belum (kandidat nominal kecil; API tersedia).
 
-### Pasar & indeks — ◐ (hanya IHSG)
-- `GET /v2/idx-total/` — market cap total IDX (≤90hr, ≥2021-01-01); 1kr.
-- `GET /v2/index-daily/{index_code}/` — kode: ihsg, lq45, idx30, idxbumn20, idxhidiv20, kompas100, jii70, sminfra18, dll.
-- `GET /v2/index-daily/` — semua indeks 1 hari; `GET /v2/close/` — semua ticker 1 hari (1kr/halaman).
-- `GET /v2/foreign-flow/` — universe asing 1 hari (1kr/halaman).
+### Pasar & indeks — ◐ (IHSG + multi-kode + idx-total ✅)
+- `GET /v2/idx-total/` — ✅ dipakai (1kr): market cap total IDX, 90hr.
+- `GET /v2/index-daily/{index_code}/` — ✅ multi-kode (ihsg/lq45/idx30/bumn20/hidiv20/kompas100/jii70/sminfra18).
+- `GET /v2/index-daily/` (semua indeks 1 hari) & `GET /v2/close/` (universe) — ⏳ belum (hemat kredit; bukan gap API).
 
 ### Broker — ◐
 - `GET /v2/broker-summary/{symbol}/top/` — top buyers/sellers + share; filter `cohort/origin/foreign`, `n_brokers`; 2kr (≤90hr).
@@ -74,28 +74,30 @@ sektor**, **helper slug (subsectors/industries/subindustries — tags ⏳)**, **
 - `GET /v2/brokers/top/` — ranking broker harian (`metric=gross|net`, origin/cohort/foreign); 2kr.
 - Catatan: `/broker-summary/{sym}` & `/broker-activity/{code}` di ARUS dibatasi 14 hari — endpoint top mendukung 90 hari.
 
-### Mining extension — ◐ 4/19
-Tersedia & belum dipakai: `mining/companies` (+detail/financials USD/ownership), `mining/commodities` (daftar SEMUA
-komoditas), `mining/commodities/{slug}/price` (3 thn; ARUS hardcode coal/nikel → **ini akar keluhan "hanya coal/nikel"**),
-`mining/exports`, `mining/global-commodity`, `mining/total-production` (nasional + YoY), `mining/sites` (+detail:
-resources/reserves, lat/long), `mining/resources-reserves(+detail)`, `mining/licenses` (**IUP/IUPK + expiry + CNC**),
-`mining/contracts` (owner↔kontraktor), `mining/license-auctions(+detail)`.
+### Mining extension — ◐ 6/19
+Tersedia & belum dipakai: `mining/companies` (+detail/financials USD/ownership), `mining/exports`,
+`mining/global-commodity`, `mining/total-production`, `mining/sites` (+detail), `mining/resources-reserves(+detail)`,
+`mining/license-auctions(+detail)`.
+Sudah dipakai: `mining/commodities/{slug}/price` ✅ **generik** (kata → kandidat slug → verifikasi `mining/commodities/`),
+`mining/commodities/` (daftar) ✅, `mining/sales-destination` ✅, `mining/companies/performance` ✅,
+`mining/licenses/` ✅ (IUP/IUPK + expiry + CNC → flag risiko perpanjangan), `mining/contracts/` ✅ (owner↔kontraktor →
+edge `contractor` di chain).
 
 ## Lubang yang melanggar janji kejujuran
-1. ~~"IUP belum dipetakan"~~ → sekarang berlabel "gap implementasi ARUS" (endpoint ADA). Harus diimplementasikan (P1).
-2. ~~Blacklist CPO/emas~~ → akarnya `commodityFor()` hardcode coal/nikel + `COAL_SYMBOLS/NICKEL_SYMBOLS`; `mining/commodities`
-   menyediakan daftar lengkap. Pesan "belum didukung" tidak boleh menyiratkan batasan API.
-3. Fundamental (PE/PB/ROE/laba) nol — padahal bisa 1kr lewat screener.
-4. "Sektor X gimana" mustahil — tidak ada helper slug + sector report.
-5. Budget 6kr/sesi adalah **self-imposed** (tim punya 1.000 kredit); kini bisa diatur `SECTORS_BUDGET` env.
+1. ~~"IUP belum dipetakan"~~ → ✅ **selesai**: `mining/licenses/` dipakai di intent `barang` (flag izin <12bln).
+2. ~~Blacklist CPO/emas~~ → ✅ **selesai**: komoditas generik diverifikasi ke `mining/commodities/`; hardcode coal/nikel hanya
+   jalur cepat untuk 2 slug itu (nol tebakan slug).
+3. ~~Fundamental (PE/PB/ROE/laba) nol~~ → ✅ selesai (screener + report).
+4. ~~"Sektor X gimana" mustahil~~ → ✅ filter sektor via helper slug; sector-report per subsektor ⏳ (gap terbuka).
+5. Budget 6kr/sesi tetap **self-imposed** (tim punya 1.000 kredit); diatur `SECTORS_BUDGET` env.
 
 ## Rencana paket (disetujui, dikerjakan berurutan)
 | Paket | Isi | Status |
 |---|---|---|
-| P0-Fundamental | screener (`where/order_by/include_query_values`), helper slug, report sections lengkap, quarterly financials, segments |  screener ✅ · sisanya ⏳ |
-| P0-Ranking | top-changes, most-traded, listing-performance | ⏳ |
-| P0-Pasar/Sektor | idx-total, index-daily multi-kode, index universe, sector report | ⏳ |
-| P1-Broker/Mining | broker top lists, commodities generik, licenses, contracts, production, sites, resources, exports/global | ⏳ |
-| P2-Multi-market | SGX/KLSE | ⏳ |
+| P0-Fundamental | screener, helper slug, report sections, quarterly, segments | ✅ selesai |
+| P0-Ranking | top-changes, most-traded, listing-performance | ✅ inti (listing ⏳) |
+| P0-Pasar/Sektor | idx-total, index-daily multi-kode, index universe, sector report | ◐ idx-total + multi-kode ✅; universe & sector-report ⏳ |
+| P1-Broker/Mining | broker top lists, commodities generik, licenses, contracts, production, sites, resources, exports/global | ◐ commodities/licenses/contracts ✅; broker-top & sites/resources/export ⏳ |
+| P2-Multi-market | SGX/KLSE |  dipotong sadar (asisten IDX; dinyatakan di README) |
 
 Aturan tetap: LLM tidak menghitung; angka screener = sitasi `companies/?where=…`; live gagal → "data tidak tersedia".
