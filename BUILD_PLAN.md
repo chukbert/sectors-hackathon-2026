@@ -1,8 +1,8 @@
 # BUILD PLAN v7 — LLM-first + reasoning graf, di atas `sectors-v5/`
 
 > Pendamping `PRD.md` + `ARCHITECTURE.md`. Repo kerja: `sectors-v5/` (turunan v6 dari donor `sectors/`).
-> ⚠️ **Utang wajib beres sebelum submit:** `sectors-v5/` belum repo git; aturan lomba menilai commit history dalam build
-> period — harus diselesaikan (lihat Fase 5, blocker #1). `.env` (key asli) tidak boleh ikut paket submission.
+> ✅ **Git beres 19 Sep:** `sectors-v5/` repo git branch `master`; riwayat donor v6 (10 commit, 17 Sep — dalam build
+> period) tertaut sebagai parent; `.env` ter-ignore, nol rahasia di history. Sisa aturan lomba: commit kecil tiap perubahan.
 > Prinsip eksekusi: **LLM memahami bahasa; kode memegang angka, verifikasi, kredit.** Determininistik hanya untuk yang
 > obviously deterministic by nature. Semua uji offline (`SEED=1`, tanpa key) — **nol panggilan Sectors live saat dev.**
 
@@ -16,6 +16,7 @@
 | P0-Fundamental: screener + filter sektor (helper slug) + report 8/8 section + quarterly financials + segmen | ✅ |
 | Eval offline | ✅ **34/34 PASS** (`npm run eval`) |
 | Cakupan endpoint | 20/54 IDX+Mining (≈37%) — lihat `docs/API_COVERAGE.md` |
+| Repo git + riwayat commit (blocker #1) | ✅ 19 Sep — `master`, donor history tertaut (17 Sep) |
 | Query compiler LLM-first · entity resolver · graph reasoning | 🔜 fase 1–3 di bawah |
 | Paket endpoint: Ranking · Pasar/Sektor · Broker/Mining · SGX/KLSE | 🔜 fase 4 |
 
@@ -27,7 +28,7 @@
 | **2. Entity resolver** 🔜 | `entity.ts`: intent `entitas` — brand/nama → maks 2 kandidat → verifikasi `company/report §overview` (1kr) → jawab identitas + alternatif; arah balik ticker → `§ownership` | "saham Indomaret apa?" terjawab terverifikasi (atau jujur tak ditemukan); kandidat halusinasi tidak pernah lolos | verifikasi 1 kandidat saja |
 | **3. Graph reasoning** 🔜 | `chain.ts`: dekomposisi hop (LLM) → telusur edge `ownership/affiliate/contractor/buyer/segment/group` (kode) → claim graph bersitasi → narasi kondisional + bantahan per hop; hop dibatasi budget & cache | kasus "hulu tertekan → hilir grup" menghasilkan kartu dengan 100% klaim edge bersitasi; edge tak terverifikasi dilabeli/dibuang; eval kasus positif + negatif | kedalaman 1 hop; narasi tanpa diagram |
 | **4. Paket endpoint** 🔜 | P0-Ranking (top-changes, most-traded, listing-performance) → P0-Pasar/Sektor (idx-total, index-daily multi-kode, index universe, sector-report) → P1-Broker/Mining (**commodities generik** ganti hardcode coal/nikel, licenses/contracts → tutup gap IUP, sites/resources/production/exports) → P2 SGX/KLSE (opsional, berlabel) | tiap paket: fixture + eval hijau + `docs/API_COVERAGE.md` diperbarui; tidak ada pesan yang menyiratkan keterbatasan API | P2 dilewati jujur; P1 mining minimal licenses + commodities |
-| **5. Hardening & submit** 🔜 | eval target ≥45 kasus · **selesaikan git/commit-history** · keluarkan `.env` dari paket · demo cases (compiler, entitas, rantai, screener/fundamental) · README/ARCHITECTURE sinkron · video | semua DoD §3 ✅; submit 30 Sep; freeze | eval ≥40; video 1 take; MCP tetap 8 tools |
+| **5. Hardening & submit**  | eval target ≥45 kasus · **git/commit-history ✅ 19 Sep** · keluarkan `.env` dari paket · demo cases (compiler, entitas, rantai, screener/fundamental) · README/ARCHITECTURE sinkron · video | semua DoD §3 ✅; submit 30 Sep; freeze | eval ≥40; video 1 take; MCP tetap 8 tools |
 
 ## 2. File map delta (dari kondisi sekarang)
 
@@ -66,7 +67,7 @@ sectors-deps.txt   +baris endpoint → fitur (bukti kill-test; dipakai di video)
 - [ ] URL publik HP tanpa login <60s; permalink `/k/{id}` + OG render
 - [ ] MCP 8 tools Inspector OK; mati bila Sectors dicabut
 - [ ] `docs/API_COVERAGE.md` akurat; pesan "belum didukung" selalu berarti gap ARUS, bukan limit API
-- [ ] **Git: riwayat commit dalam build period tersedia** (blocker #1); `.env` tidak ikut; README/ARCHITECTURE/PRD sinkron
+- [x] **Git beres 19 Sep:** riwayat commit dalam build period (donor 17 Sep + bootstrap) tersedia; `.env` tidak ikut; README/ARCHITECTURE/PRD sinkron
 - [ ] Freeze 30 Sep dipatuhi (nol perubahan setelah submit)
 
 ## 4. Risiko
@@ -77,7 +78,7 @@ sectors-deps.txt   +baris endpoint → fitur (bukti kill-test; dipakai di video)
 | Latensi multi-call (compiler + sintesis + hop) | paralelkan yang independen; narasi hanya 1 pass; timeouts 20s; fallback deterministik sedini mungkin |
 | Kredit membengkak di reasoning berlapis | hop & kandidat dibatasi; cache-first; ledger tampil di kartu; `SECTORS_BUDGET` sadar |
 | Scope compiler > waktu | fase 1 boleh kehilangan `hops` (di fase 3), schema minimal tetap tervalidasi |
-| Git/commit history | blocker #1 di Fase 5, dikerjakan lebih awal bila memungkinkan (jangan menunggu H-1) |
+| Git/commit history | ✅ beres 19 Sep (bootstrap + donor history tertaut); sisa: commit kecil tiap perubahan |
 | Pertanyaan liar di luar cakupan | jawab jujur "belum diimplementasikan, API-nya ada" + usul lanjutan; jangan pura-pura |
 
 ## 5. Aturan main harian
