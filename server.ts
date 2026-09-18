@@ -1,5 +1,5 @@
 // server.ts — ARUS v7 web: chat HP-first + kartu + share /k/{id} + OG statis. Zero-login.
-import "dotenv/config";
+import "./lib/envfix.js";
 import express from "express";
 import cors from "cors";
 import { CreditSession } from "./lib/credit.js";
@@ -182,7 +182,7 @@ interface KartuLike {
   bukti?: unknown; counter?: unknown; sitasi?: unknown; visual?: unknown; narasi?: unknown;
   ledger?: unknown; awam?: unknown; lanjutan?: unknown;
 }
-interface LedgerRow { endpoint?: unknown; cost?: unknown; cached?: unknown }
+interface LedgerRow { endpoint?: unknown; cost?: unknown; cached?: unknown; note?: unknown }
 function renderLedger(ledger: unknown, kredit: unknown): string {
   const rows = (Array.isArray(ledger) ? ledger : []) as LedgerRow[];
   const items = rows.map((e) => {
@@ -190,7 +190,8 @@ function renderLedger(ledger: unknown, kredit: unknown): string {
     const tag = e.cached
       ? `<span class="etag cache">cache · 0kr</span>`
       : `<span class="etag live">${esc(String(e.cost ?? "?"))}kr</span>`;
-    return `<div class="eprow"><code title="${ep}">${ep}</code>${tag}</div>`;
+    const note = e.note ? ` <span class="etag cache">${esc(String(e.note))}</span>` : "";
+    return `<div class="eprow"><code title="${ep}">${ep}</code>${tag}${note}</div>`;
   }).join("");
   return `<details class="citebox"><summary>📎 Sitasi &amp; endpoint — ${rows.length} call ke Sectors API (klik untuk rincian)</summary><div class="inner">`
     + `<div class="csect">Endpoint Sectors yang ditembak</div>`
@@ -562,7 +563,7 @@ function citeDropdown(k){
   h+=sits.length?('<div class="chipsrow">'+sits.map(function(s){return '<span class="sit">📎 '+esc(s)+'</span>'}).join("")+'</div>'):'<div class="vizcap">—</div>';
   h+='<div class="csect">Endpoint Sectors yang ditembak ('+led.length+')</div>';
   if(led.length){
-    h+='<div class="eplist">'+led.map(function(e){var tag=e.cached?'<span class="etag cache">cache · 0kr</span>':'<span class="etag live">'+esc(e.cost)+'kr</span>';return '<div class="eprow"><code title="'+esc(e.endpoint)+'">'+esc(e.endpoint)+'</code>'+tag+'</div>'    }).join("")+'</div>';
+    h+='<div class="eplist">'+led.map(function(e){var tag=e.cached?'<span class="etag cache">cache · 0kr</span>':'<span class="etag live">'+esc(e.cost)+'kr</span>';var note=e.note?' <span class="etag cache">'+esc(e.note)+'</span>':'';return '<div class="eprow"><code title="'+esc(e.endpoint)+'">'+esc(e.endpoint)+'</code>'+tag+note+'</div>'    }).join("")+'</div>';
   }else{h+='<div class="vizcap">Respons lama — rincian endpoint tidak tersimpan. Sitasi di atas tetap menunjukkan sumber datanya.</div>'}
   h+='</div></div>';
   return h;

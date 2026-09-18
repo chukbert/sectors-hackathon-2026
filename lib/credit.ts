@@ -7,6 +7,7 @@ export interface LedgerEntry {
   cost: number;
   cached: boolean;
   at: string;
+  note?: string; // HTTP 400/404/429/5xx/jaringan — upaya tetap tercatat walau 0kr (transparansi ledger)
 }
 
 export class CreditSession {
@@ -20,9 +21,9 @@ export class CreditSession {
     if (this.spent + cost > SESSION_BUDGET)
       throw new Error(`CREDIT_EXHAUSTED: butuh ${cost}kr, sisa ${this.remaining}kr — data ini dilewati, bukan dikarang.`);
   }
-  charge(endpoint: string, cost: number, cached = false) {
+  charge(endpoint: string, cost: number, cached = false, note?: string) {
     this.spent += cost;
-    this.ledger.push({ endpoint, cost, cached, at: new Date().toISOString() });
+    this.ledger.push({ endpoint, cost, cached, at: new Date().toISOString(), note });
   }
   badge() {
     return `⚡ ${this.spent} kredit`;

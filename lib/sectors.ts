@@ -57,6 +57,7 @@ export async function sectorsGet<T = unknown>(
       const shapeOk = opts.seed === undefined || Array.isArray(opts.seed) === Array.isArray(raw.data);
       if (raw.negative && Date.now() - raw.at < 3600e3) {
         // 404 ter-cache 1 jam: satu 404 jangan membeli kredit dua kali.
+        session.charge(endpoint, 0, true, "404 ter-cache (0kr)");
         throw new Error(`Sectors 404 (cache negatif 1 jam) untuk ${endpoint}`);
       }
       if (!raw.negative && Date.now() - raw.at < ttlFor(endpoint) && !(live && raw.seed) && shapeOk) {
@@ -93,22 +94,30 @@ export async function sectorsGet<T = unknown>(
       headers: { Authorization: key },
       signal: AbortSignal.timeout(20_000),
     }).catch((e) => {
+      session.charge(endpoint, 0, false, "jaringan gagal (0kr)");
       throw new Error(`Sectors tidak terjangkau (${String((e as Error).message ?? e)}) untuk ${endpoint}`);
     });
     if (res.status === 401 || res.status === 403) {
+      session.charge(endpoint, 0, false, `HTTP ${res.status} key ditolak (0kr)`);
       breaker.fails++;
       breaker.openUntil = Date.now() + 300_000;
       throw new Error(`Sectors data unavailable (API key ditolak) untuk ${endpoint}`);
     }
     if (res.status === 429 || res.status >= 500) {
+      session.charge(endpoint, 0, false, `HTTP ${res.status} (0kr)`);
       if (++breaker.fails >= 3) breaker.openUntil = Date.now() + 60_000;
       throw new Error(`Sectors data unavailable (rate limit / server error ${res.status}) untuk ${endpoint}`);
     }
     if (res.status === 404) {
+      // Docs: 404 = lookup jalan → DITAGIH 1 kredit. Ledger harus jujur soal ini.
+      session.charge(endpoint, 1, false, "HTTP 404 — ditagih 1kr");
       fs.writeFileSync(cp, JSON.stringify({ at: Date.now(), negative: true, status: 404 }));
       throw new Error(`Sectors 404 untuk ${endpoint}`);
     }
-    if (!res.ok) throw new Error(`Sectors error ${res.status} untuk ${endpoint}`);
+    if (!res.ok) {
+      session.charge(endpoint, 0, false, `HTTP ${res.status} (0kr)`);
+      throw new Error(`Sectors error ${res.status} untuk ${endpoint}`);
+    }
     breaker.fails = 0;
     const data = (await res.json()) as T;
     session.charge(endpoint, cost, false);

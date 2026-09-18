@@ -4,7 +4,7 @@
 import "dotenv/config";
 import { CreditSession } from "../lib/credit.js";
 import {
-  fetchCommodities, fetchContracts, fetchIdxTotal, fetchLicenses, fetchMostTraded, fetchTopChanges, getterFor,
+  fetchCommodities, fetchContracts, fetchIdxTotal, fetchIndexDaily, fetchLicenses, fetchMostTraded, fetchTopChanges, getterFor,
 } from "../lib/evidence.js";
 import { miningSlug } from "../lib/slugs.js";
 
@@ -24,6 +24,12 @@ const mt = await fetchMostTraded(get, 5, 3);
 out.mostTraded = {
   ok: mt.ok, err: mt.err, seed: mt.seed, days: Object.keys(mt.data ?? {}).slice(-2),
   sample: Object.values(mt.data ?? {}).slice(-1)[0]?.slice(0, 2),
+};
+
+const idx = await fetchIndexDaily(get, "ihsg", 60);
+out.indexDaily = {
+  ok: idx.ok, err: idx.err, seed: idx.seed, n: idx.data?.length,
+  sample: idx.data?.slice(-2),
 };
 
 const it = await fetchIdxTotal(get, 30);
@@ -59,7 +65,7 @@ console.log(JSON.stringify(out, null, 2));
 
 if (process.argv.includes("--chat")) {
   const { chat } = await import("../lib/orchestrator.js");
-  for (const q of ["top gainer hari ini apa?", "komoditas CPO gimana?"]) {
+  for (const q of ["IHSG gimana?", "top gainer hari ini apa?", "komoditas emas gimana?"]) {
     const s = new CreditSession("verify-live-chat");
     const k = await chat(q, s);
     console.log(JSON.stringify({
@@ -67,10 +73,10 @@ if (process.argv.includes("--chat")) {
       catatan: k.audit?.catatan, subjek: k.subjek, seed: k.seed,
       bukti0: k.bukti[0]?.slice(0, 200), narrator: k.narrator,
       visualKeys: k.visual && typeof k.visual === "object" ? Object.keys(k.visual) : [],
-      ledger: s.ledger.map((e) => `${e.cost}kr ${e.cached ? "cache" : "live"} ${e.endpoint}`),
+      ledger: s.ledger.map((e) => `${e.cost}kr ${e.cached ? "cache" : "live"} ${e.endpoint}${e.note ? ` [${e.note}]` : ""}`),
     }, null, 2));
   }
 }
 
 console.log(`\nSPENT ${session.spent}kr · ${session.ledger.length} call`);
-for (const e of session.ledger) console.log(`  ${e.cost}kr ${e.cached ? "cache" : "live"} ${e.endpoint}`);
+for (const e of session.ledger) console.log(`  ${e.cost}kr ${e.cached ? "cache" : "live"} ${e.endpoint}${e.note ? ` [${e.note}]` : ""}`);

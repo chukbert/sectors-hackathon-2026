@@ -1,6 +1,6 @@
 // mcp/server.ts — 8 tools dengan parameter yang BENAR-BENAR dipakai. Pipeline sama dengan chat:
 // resolusi → evidence Sectors → compute code → credit guard. Cabut Sectors = MCP mati (kill test).
-import "dotenv/config";
+import "../lib/envfix.js";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";

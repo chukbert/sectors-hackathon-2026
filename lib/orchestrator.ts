@@ -302,14 +302,22 @@ async function buildLikuiditas(sym: string, session: CreditSession): Promise<Bui
   return pack({ verdict: "info", probability: Math.min(0.85, 0.5 + liq.score / 2), confHint: 0.7, bukti, awam, sitasi: [`daily/${sym}/`], pool: [dailyE.data, liq], needs: 1, ok: dailyE.ok ? 1 : 0, info: true, seed: dailyE.seed });
 }
 
+// Kode indeks Sectors (lowercase, verified docs+live): ihsg, lq45, idx30, idxbumn20, idxhidiv20, kompas100, jii70, sminfra18, dll.
 const INDEX_CODES: [RegExp, string, string][] = [
-  [/\blq45\b/, "LQ45", "LQ45"],
-  [/\bidx30\b/, "IDX30", "IDX30"],
-  [/\bidxbumn20\b/, "IDXBUMN20", "IDX BUMN20"],
-  [/\bidxhidiv20\b/, "IDXHIDIV20", "IDX High Dividend 20"],
-  [/\bkompas100\b/, "KOMPAS100", "Kompas100"],
-  [/\bjii70\b/, "JII70", "JII70"],
-  [/\bsminfra18\b/, "SMINFRA18", "SMInfra18"],
+  [/\blq45\b/, "lq45", "LQ45"],
+  [/\bidx30\b/, "idx30", "IDX30"],
+  [/\bidxbumn20\b/, "idxbumn20", "IDX BUMN20"],
+  [/\bidxhidiv20\b/, "idxhidiv20", "IDX High Dividend 20"],
+  [/\bkompas100\b/, "kompas100", "Kompas100"],
+  [/\bjii70\b/, "jii70", "JII70"],
+  [/\bsminfra18\b/, "sminfra18", "SMInfra18"],
+  [/\bsrikehati\b/, "srikehati", "SRI-KEHATI"],
+  [/\bidxg30\b/, "idxg30", "IDX G30"],
+  [/\bidxq30\b/, "idxq30", "IDX Q30"],
+  [/\bidxv30\b/, "idxv30", "IDX V30"],
+  [/\bidxesgl\b/, "idxesgl", "IDX ESG Leaders"],
+  [/\beconomic30\b/, "economic30", "IDX Economic30"],
+  [/\bftse\b/, "ftse", "FTSE Indonesia"],
 ];
 
 async function buildPasar(q: string, session: CreditSession, plan: Plan): Promise<Build> {
@@ -372,13 +380,13 @@ async function buildPasar(q: string, session: CreditSession, plan: Plan): Promis
   }
 
   const codeRow = INDEX_CODES.find(([re]) => re.test(q.toLowerCase()));
-  const code = codeRow?.[1] ?? "IDXCOMPOSITE";
+  const code = codeRow?.[1] ?? "ihsg";
   const label = codeRow?.[2] ?? "IHSG";
   const idxE = await fetchIndexDaily(get, code);
-  const rows = idxE.data?.data ?? [];
-  if (rows.length < 8) return pack({ verdict: "data-kurang", probability: 0.5, confHint: 0.4, bukti: [`Data indeks ${label} tidak tersedia`], sitasi: [`index-daily/${code}/`], pool: [idxE.data], needs: 1, ok: idxE.ok ? 1 : 0, seed: idxE.seed });
-  const last = rows[rows.length - 1]!.close;
-  const at = (k: number) => rows[Math.max(0, rows.length - 1 - k)]!.close;
+  const rows = [...(idxE.data ?? [])].filter((r) => typeof r.price === "number").sort((a, b) => a.date.localeCompare(b.date));
+  if (rows.length < 8) return pack({ verdict: "data-kurang", probability: 0.5, confHint: 0.4, bukti: [`Data indeks ${label} tidak tersedia dari Sectors (index-daily/${code}/)${idxE.err ? ` — ${idxE.err}` : ""}; ARUS tidak mengarang level indeks`], sitasi: [`index-daily/${code}/`], pool: [idxE.data], needs: 1, ok: idxE.ok ? 1 : 0, seed: idxE.seed });
+  const last = rows[rows.length - 1]!.price;
+  const at = (k: number) => rows[Math.max(0, rows.length - 1 - k)]!.price;
   const ret7 = Math.round(((last - at(7)) / at(7)) * 1000) / 10;
   const ret30 = Math.round(((last - at(30)) / at(30)) * 1000) / 10;
   const awam = codeRow

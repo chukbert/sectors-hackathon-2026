@@ -76,9 +76,10 @@ export interface SuspensionResp { results: { symbol?: string; suspension_date?: 
 export const fetchSuspensions = (get: Getter, sym: string | null): Promise<Evidence<SuspensionResp>> =>
   grab("suspensions", () => get<SuspensionResp>(sym ? `/suspensions/?symbol=${sym}` : `/suspensions/`, seedSuspensions()));
 
-export interface IndexResp { data: { date: string; close: number }[] }
-export const fetchIndexDaily = (get: Getter, code = "IDXCOMPOSITE", days = 60): Promise<Evidence<IndexResp>> =>
-  grab("index-daily", () => get<IndexResp>(`/index-daily/${code}?start=${daysAgo(days)}&end=${lastTradingDay()}`, seedIndexDaily(days)));
+// index-daily: kode lowercase (ihsg, lq45, idx30, …) & respons ARRAY {index_code,date,price} — verified live 19 Sep.
+export interface IndexRow { index_code?: string; date: string; price: number }
+export const fetchIndexDaily = (get: Getter, code = "ihsg", days = 60): Promise<Evidence<IndexRow[]>> =>
+  grab("index-daily", () => get<IndexRow[]>(`/index-daily/${code}/?start=${daysAgo(days)}&end=${lastTradingDay()}`, seedIndexDaily(code, days)));
 
 export interface PriceResp extends Array<{ name?: string; date: string; price_usd_per_ton?: number; price?: number }> {}
 export const fetchCommodityPrice = (get: Getter, commodity: string): Promise<Evidence<PriceResp>> =>

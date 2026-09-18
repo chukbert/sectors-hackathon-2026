@@ -271,12 +271,12 @@ export function seedMiningPerformance(): { year: number; available_years: number
   ] };
 }
 
-export function seedIndexDaily(n = 60): { data: { date: string; close: number }[] } {
-  const r = rng("ihsg");
-  let px = 7100;
-  const data = [];
-  for (let i = 0; i < n; i++) { px = px * (1 + (r() - 0.48) / 60); data.push({ date: dayBack(n, i), close: Math.round(px * 100) / 100 }); }
-  return { data };
+export function seedIndexDaily(code = "ihsg", n = 60): { index_code: string; date: string; price: number }[] {
+  const r = rng("ihsg" + code);
+  let px = code === "ihsg" ? 7100 : 800 + hash(code) % 900;
+  const data: { index_code: string; date: string; price: number }[] = [];
+  for (let i = 0; i < n; i++) { px = px * (1 + (r() - 0.48) / 60); data.push({ index_code: code.toUpperCase(), date: dayBack(n, i), price: Math.round(px * 100) / 100 }); }
+  return data;
 }
 
 export function seedSuspensions(): { results: { symbol: string; suspension_date: string; reason: string }[] } {

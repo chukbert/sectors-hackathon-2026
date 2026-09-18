@@ -12,6 +12,12 @@
 > → pesan "tidak ditemukan di daftar" ARUS terbukti benar; licenses per emiten operator ✓ (PTBA 7 IUP); ADRO (holding) 0
 > baris lisensi/kontrak = wajar, data ada di level operator.
 
+> Revisi 6 (19 Sep 2026): **bug indeks diperbaiki** — `index-daily` memakai kode **lowercase** (`ihsg`, `lq45`, `idx30`, …)
+> dan responsnya **array `{index_code,date,price}`**, bukan `{data:[{close}]}`. Kode lama `IDXCOMPOSITE` → **400 gratis**
+> (bukan 404) sehingga tidak masuk ledger dan kartu bilang "0 call Sectors". Verified live: `ihsg` → 42 baris,
+> IHSG 6.462,43 (17 Sep). Ledger kini mencatat upaya gagal (`HTTP 400/404/429/5xx`, jaringan) walau 0kr, dan **404
+> ditagih 1kr sesuai docs**.
+
 ## Ringkasan
 
 | | Jumlah |
@@ -50,6 +56,7 @@ helper slug (subsectors/industries/subindustries), financials/quarterly, company
 | `/mining/licenses/?company=pt-bukit-asam-tbk` | ✓ 7 IUP, fields persis docs | 1kr |
 | `/mining/licenses/?company=pt-alamtri-resources-indonesia-tbk` (ADRO) | ✓ 200 kosong — holding, lisensi di operator | 1kr |
 | `/mining/contracts/?mine_owner=…` | ✓ 200 kosong (sama, level operator) | 1kr |
+| `/index-daily/ihsg/` | ✓ 42 baris; IHSG 6.462,43 (17 Sep) — array `{index_code,date,price}` | 1kr |
 | Chat live `top gainer hari ini apa?` (compiler LLM + narrator) | ✓ intents `pasar`, 1kr, kartu ranking | 1kr |
 
 Catatan: smoke chat kedua (`komoditas CPO gimana?`) → jawaban jujur "tidak ditemukan di daftar" (0kr, list dari cache) —
@@ -86,7 +93,9 @@ pesan v7 tidak lagi menyiratkan itu.
 
 ### Pasar & indeks — ◐ (IHSG + multi-kode + idx-total ✅)
 - `GET /v2/idx-total/` — ✅ dipakai (1kr): market cap total IDX, 90hr.
-- `GET /v2/index-daily/{index_code}/` — ✅ multi-kode (ihsg/lq45/idx30/bumn20/hidiv20/kompas100/jii70/sminfra18).
+- `GET /v2/index-daily/{index_code}/` — ✅ **verified live**: kode lowercase (`ihsg`,`lq45`,`idx30`,`idxbumn20`,
+  `idxhidiv20`,`kompas100`,`jii70`,`sminfra18`,`srikehati`,`idxg30/q30/v30`,`idxesgl`,`economic30`,`ftse`,`sti`,`idxvesta28`);
+  respons **array** `{index_code,date,price}`. Kode tidak valid → **400 gratis** ("Please provide a valid index code").
 - `GET /v2/index-daily/` (semua indeks 1 hari) & `GET /v2/close/` (universe) — ⏳ belum (hemat kredit; bukan gap API).
 
 ### Broker — ◐
