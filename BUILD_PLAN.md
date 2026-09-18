@@ -11,10 +11,10 @@
 | Area | Status |
 |---|---|
 | v6 healing: ticker universal, dua router, evidence 1 pintu, verifier/guard dieksekusi, memori | ✅ |
-| Model `meta/muse-spark-1.2` + effort `xhigh`, 5 titik LLM (planner/narator/tutor/bantahan/lanjutan) + ringkas memori | ✅ live-terverifikasi 1 call |
+| Model `google/gemini-3.8-flash` + effort `high` (sesuai `.env`), titik LLM: compiler/narator/tutor/bantahan/lanjutan + ringkas memori | ✅ live-terverifikasi (19 Sep: IHSG, ranking, CPO) |
 | Output 2 lapis (teknis + awam deterministik) di chat, share, copy | ✅ |
 | P0-Fundamental: screener + filter sektor (helper slug) + report 8/8 section + quarterly financials + segmen | ✅ |
-| Eval offline | ✅ **52/52 PASS** (`npm run eval`) |
+| Eval offline | ✅ **53/53 PASS** (`npm run eval`) |
 | Cakupan endpoint | 26/54 IDX+Mining (≈48%) — lihat `docs/API_COVERAGE.md` |
 | Repo git + riwayat commit (blocker #1) | ✅ 19 Sep — `master`, donor history tertaut (17 Sep) |
 | Query compiler LLM-first · entity resolver · graph reasoning | ✅ fase 1–3 selesai 19 Sep |
@@ -43,7 +43,7 @@ lib/
   credit.ts       ✅ biaya per kuartal/section/most-traded/top-changes benar
   awam.ts         ✅ entitasPart · pemilikPart · rantaiPart · rankingPart · idxTotalPart
 eval/
-  run.ts          52 kasus: compiler (valid/fallback/out-of-enum/ticker), entitas (ada/tidak), rantai (positif/negatif/kontraktor),
+  run.ts          53 kasus: compiler (valid/fallback/out-of-enum/ticker), entitas (ada/tidak), rantai (positif/negatif/kontraktor),
                   mining generik/IUP, ranking movers/traded, fundamental/screener + disiplin grounding/budget/SEED
   fixtures        ✅ brand/ownership seed, ranking, idx-total, commodities/licenses/contracts
 docs/
@@ -56,7 +56,7 @@ sectors-deps.txt  ✅ baris endpoint → fitur (bukti kill-test; dipakai di vide
 
 ## 3. Definition of Done v7
 
-- [x] Eval offline ≥45 PASS — **52/52** (tanpa `SECTORS_API_KEY` & `OPENROUTER_API_KEY`; SEED=1, 0 kredit)
+- [x] Eval offline ≥45 PASS — **53/53** (tanpa `SECTORS_API_KEY` & `OPENROUTER_API_KEY`; SEED=1, 0 kredit)
 - [x] Compiler: output LLM 100% tervalidasi sebelum eksekusi; tanpa key → fallback deterministik penuh
 - [x] Multi-intent: LLM primer; heuristik tidak menempel saat LLM valid (regresi "direksi→kuasa" ada di eval)
 - [x] Entity: kandidat wajib terverifikasi Sectors; gagal → jujur, tidak mengarang ticker

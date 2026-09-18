@@ -76,7 +76,7 @@ sitasi per angka, bantahan, memori perilaku, dan kartu shareable.
 | F14 Entity Resolver | ✅ | brand/nama → kandidat → verifikasi `§overview` → jawaban identitas + alternatif, atau jujur tak ada |
 | F15 Graph Reasoning (rantai konglomerasi) | ✅ | hop ownership/affiliate/contractor/buyer/segment → claim graph bersitasi → narasi kondisional + bantahan per hop |
 
-Semua fitur yang sudah ✅ diuji `npm run eval` **52/52 offline (0 kredit)** — target ≥45 terlampaui.
+Semua fitur yang sudah ✅ diuji `npm run eval` **53/53 offline (0 kredit)** — target ≥45 terlampaui.
 
 ---
 
@@ -112,7 +112,7 @@ relasi grup = laporan terakhir + label "kemungkinan relasi"; proyeksi analis = p
 
 | Tgl | Milestone |
 |---|---|
-| 19 ✅ | v6 + model muse-spark/xhigh + output 2 lapis + P0-Fundamental; **v7: F13 compiler + F14 entity + F15 rantai + P0-Ranking/Pasar + P1-Mining (commodities generik, IUP, contracts)**; eval 34 → 52 |
+| 19 ✅ | v6 + model `google/gemini-3.8-flash` (effort `high`) + output 2 lapis + P0-Fundamental; **v7: F13 compiler + F14 entity + F15 rantai + P0-Ranking/Pasar + P1-Mining (commodities generik, IUP, contracts)**; eval 34 → 53; verifikasi live 11kr |
 | 20–21 ✅ | **F13 Query Compiler** + heuristik jadi fallback; eval kasus compiler |
 | 21–22 ✅ | **F14 Entity Resolver** (brand→ticker terverifikasi); eval kasus ada/tidak |
 | 22–24 ✅ | **F15 Graph Reasoning** (hulu→hilir konglomerasi); eval positif + negatif |
@@ -120,7 +120,7 @@ relasi grup = laporan terakhir + label "kemungkinan relasi"; proyeksi analis = p
 | 27–29 | Hardening: demo/video · docs sinkron · verifikasi live dengan `SECTORS_BUDGET` sadar |
 | 30 pagi | Verifikasi kedua → **SUBMIT** → freeze (nol perubahan setelah submit) |
 
-**AC v7:** eval **52/52** offline tanpa exception · compiler 100% tervalidasi · entitas tak pernah mengarang ticker ·
+**AC v7:** eval **53/53** offline tanpa exception · compiler 100% tervalidasi · entitas tak pernah mengarang ticker ·
 rantai 100% klaim bersitasi · 0 angka tak-grounding · ≤ `SECTORS_BUDGET`/sesi · HP tanpa login <60s · permalink+OG ·
 MCP tetap hidup · tanpa key → deterministik ↩ · tanpa Sectors → error jujur · guard blokir 100% anjuran · docs sinkron.
 

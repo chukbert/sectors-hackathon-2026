@@ -10,7 +10,7 @@ Track: Sectors Hackathon 2026 · Track 01 AI Agents & Assistants. Alat riset & e
 
 > **v7 — LLM memahami bahasa, kode memegang angka.** Query compiler LLM-first (1 call → JSON tervalidasi kode),
 > entity resolver (brand → kandidat → **verifikasi Sectors**), dan graph reasoning (hop bersitasi + narasi kondisional).
-> Heuristik v6 hidup hanya sebagai jaring pengaman saat LLM absen/invalid. Semua diuji `npm run eval` — **52/52 offline, 0 kredit**.
+> Heuristik v6 hidup hanya sebagai jaring pengaman saat LLM absen/invalid. Semua diuji `npm run eval` — **53/53 offline, 0 kredit**.
 
 ## Yang berubah (v6 → v7)
 
@@ -50,7 +50,7 @@ Track: Sectors Hackathon 2026 · Track 01 AI Agents & Assistants. Alat riset & e
   (arti per istilah + analogi + apa yang terbaca dari kondisi ini)** — dasar Bagian 2 deterministik (`lib/awam.ts`),
   lalu diperhalus tutor LLM hanya bila lolos verifikasi.
 - **MCP 8 tools jujur.** Parameter benar-benar dipakai; `import "dotenv/config"`; tanpa Sectors = mati (kill test).
-- **Eval jujur.** 52 kasus dengan assertion yang bisa gagal (regresi SMAR→ANTM, ticker asing, multi-intent, validator
+- **Eval jujur.** 53 kasus dengan assertion yang bisa gagal (regresi SMAR→ANTM, ticker asing, multi-intent, validator
   compiler, entity & rantai, budget, grounding, label SEED, struktur Bagian 2 bebas nasihat, fallback deterministik) +
   calib dengan kontrol negatif. Semua offline, 0 kredit.
 
@@ -90,7 +90,7 @@ Track: Sectors Hackathon 2026 · Track 01 AI Agents & Assistants. Alat riset & e
 ```bash
 npm install
 cp .env.example .env   # isi SECTORS_API_KEY + OPENROUTER_API_KEY
-npm run eval           # 52 kasus jujur, SEED=1, offline, 0 kredit
+npm run eval           # 53 kasus jujur, SEED=1, offline, 0 kredit
 npm run calib          # konsistensi aturan + kontrol negatif
 npm run dev            # :3000 — HP tanpa login
 npm run mcp            # MCP 8 tools via stdio (Inspector)

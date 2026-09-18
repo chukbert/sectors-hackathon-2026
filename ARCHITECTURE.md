@@ -47,7 +47,7 @@ flowchart TD
 
 ## 3. Query compiler ✅ (jantung v7)
 
-Satu panggilan LLM (`meta/muse-spark-1.2` + effort `xhigh`) dengan output JSON ketat:
+Satu panggilan LLM (`google/gemini-3.8-flash` + effort `high`) dengan output JSON ketat:
 
 ```json
 {

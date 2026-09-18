@@ -7,8 +7,8 @@
 // Tanpa OPENROUTER_API_KEY → semua null; pemanggil memakai versi deterministik (dipakai eval).
 import type { Awam } from "./awam.js";
 const URL = "https://openrouter.ai/api/v1/chat/completions";
-export const MODEL = process.env.OPENROUTER_MODEL ?? "meta/muse-spark-1.2";
-const EFFORT = process.env.OPENROUTER_REASONING_EFFORT ?? "xhigh";
+export const MODEL = process.env.OPENROUTER_MODEL ?? "google/gemini-3.8-flash";
+const EFFORT = process.env.OPENROUTER_REASONING_EFFORT ?? "high";
 
 const SYSTEM = `Kamu narator Bahasa Indonesia untuk kartu riset saham ARUS (alat riset & edukasi, BUKAN nasihat keuangan).
 Aturan keras:
