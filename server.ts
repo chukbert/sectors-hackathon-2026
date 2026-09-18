@@ -1,4 +1,4 @@
-// server.ts — ARUS v5 web: chat HP-first + kartu + share /k/{id} + OG statis. Zero-login.
+// server.ts — ARUS v7 web: chat HP-first + kartu + share /k/{id} + OG statis. Zero-login.
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
@@ -454,7 +454,7 @@ body{margin:0;background:var(--bg);color:var(--txt);font:15px/1.6 -apple-system,
 <div id="mem"></div>
 </aside>
 <div id="main">
-<div id="top"><button id="burger" onclick="document.getElementById('side').classList.toggle('open')">☰</button><button id="modelpill">ARUS v5 <span>uang · barang · kuasa ▾</span></button></div>
+<div id="top"><button id="burger" onclick="document.getElementById('side').classList.toggle('open')">☰</button><button id="modelpill">ARUS v7 <span>uang · barang · kuasa ▾</span></button></div>
 <div id="msgs"></div>
 <div id="box">
 <div id="suggrid"></div>
@@ -624,7 +624,7 @@ async function refreshHist(){
   }catch(e){}
 }
 function filterHist(q){q=(q||"").toLowerCase();var btns=document.querySelectorAll(".hitem");btns.forEach(function(b){b.style.display=b.textContent.toLowerCase().indexOf(q)>=0?"":"none"})}
-function newChat(){chatId=null;document.getElementById("ctitle");var t=document.getElementById("modelpill");if(t)t.innerHTML='ARUS v5 <span>uang · barang · kuasa ▾</span>';showEmpty();refreshHist();if(window.innerWidth<760)document.getElementById("side").classList.remove("open")}
+function newChat(){chatId=null;document.getElementById("ctitle");var t=document.getElementById("modelpill");if(t)t.innerHTML='ARUS v7 <span>uang · barang · kuasa ▾</span>';showEmpty();refreshHist();if(window.innerWidth<760)document.getElementById("side").classList.remove("open")}
 async function openChat(id){
   var r=await fetch("/api/chats/"+id);if(!r.ok)return;var c=await r.json();
   chatId=c.id;var m=document.getElementById("msgs");m.innerHTML="";
@@ -660,6 +660,6 @@ showEmpty();refreshHist();
 
 const port = Number(process.env.PORT ?? 3000);
 if (process.env.VITEST !== "1") {
-  app.listen(port, () => console.log(`ARUS v5 di :${port}`));
+  app.listen(port, () => console.log(`ARUS v7 di :${port}`));
 }
 export default app;
