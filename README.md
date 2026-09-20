@@ -42,6 +42,58 @@ user → guardrail (Jev) → klasifikasi level & intent (aturan + Jev conf 0.89)
 - **Anti-halusinasi berlapis:** verifier menolak klaim tanpa fakta pendukung (gagal-tertutup); jawaban degradasi eksplisit menyebut status data, bukan mengarang.
 - **Terbukti di lapangan:** bug nyata API (parameter `desc` ditolak, field `roe` butuh kurung tahun, taksonomi `perkebunan` = slug `agricultural-products`) dipetakan ke repair deterministik + test regresi — bukan diasumsikan dari dokumentasi.
 
+### Dua ujung spektrum — intent tunggal vs multi-intent maksimal
+
+Legenda bentuk: kotak = code milik tim · `{{hexagon}}` = keputusan Jev · silinder = data Sectors · stadium = user/output.
+
+**1. Intent paling sederhana** — `Berapa harga BRMS sekarang?` (1 intent, L1, ≤2 kr):
+
+```mermaid
+flowchart TD
+    U(["Query: Berapa harga BRMS sekarang?"]) --> EX["extractWithRules (kode)<br/>ticker BRMS dari regex + memori sesi<br/>tanpa panggilan LLM"]
+    EX --> JR{{"Jev intent_router<br/>1 intent: harga (0.97) · depth L1 conf 0.95"}}
+    JR --> GOV["Credit Governor (kode)<br/>cap L1 = 2 kr · mode replay/hybrid/live"]
+    GOV --> PL["planner template L1 (kode)<br/>1 langkah: daily BRMS 30 hari"]
+    PL --> RS["resolver cache-first (kode)<br/>fact memory → cache → irisan → live"]
+    RS -->|cache hit| S1[("Sectors daily BRMS<br/>0 kr")]
+    RS -->|miss dan izin live| S2[("Sectors daily BRMS<br/>1 kr")]
+    S1 --> CP["Argument Compiler (kode)<br/>close, volume, market cap, delta%<br/>semua angka jadi Fact{id}"]
+    S2 --> CP
+    CP --> NA["Gemini Narrator<br/>3 varian: Pemula/Menengah/Advanced<br/>hanya placeholder f:FACTID"]
+    NA --> VE{{"Jev verifier<br/>sitasi angka↔fakta + compliance fail-closed"}}
+    VE --> O(["AnswerDoc L1 · 1 agent · 1–2 kr<br/>hero harga + definisi + disclaimer"])
+```
+
+**2. Multi-intent maksimal** — `Carikan saham bank murah, bandingkan valuasi & fundamentalnya, siapa yang akumulasi, asing masuk atau keluar?` (5 intent paralel, L8, cap dibagi per agen):
+
+```mermaid
+flowchart TD
+    U(["Query 5 topik dalam 1 kalimat"]) --> EX["extractWithRules + LLM slots (kode)<br/>sectorText: bank · symbols: kosong<br/>kata perintah difilter stopword"]
+    EX --> JR{{"Jev intent_router<br/>screening 0.98 · valuasi 0.93 · fundamental 0.81<br/>bandarmologi 0.77 · aliran_asing 0.69 · depth L8"}}
+    JR --> CO["composeLevel (kode)<br/>ada intent non-screening → L8 boleh<br/>murni screener → dipangkas ≤L5"]
+    CO --> GOV["Credit Governor<br/>cap L8 = 24 kr → per agent 24/5 = 4 kr<br/>≥3 agent paralel → skip langkah opsional di atas 3 kr"]
+    GOV --> Q(("antrean intent<br/>3 worker paralel"))
+    Q --> A1
+    Q --> A2
+    Q --> A3
+    subgraph A1["Agent screening"]
+        P1["LLM to-screener-query + guard deterministik<br/>sub_sector→'banks', roe→roe_ttm, desc→-order_by"] --> R1[("Sectors companies<br/>1 kr")]
+    end
+    subgraph A2["Agent valuasi + fundamental"]
+        R2[("Sectors report valuation/financials<br/>1 kr/section")] --> R3[("Sectors quarterly ×4<br/>4 kr")]
+    end
+    subgraph A3["Agent bandarmologi + asing"]
+        R4[("Sectors broker-summary-top<br/>2 kr")] --> R5[("Sectors foreign-flow<br/>1 kr")]
+    end
+    A1 --> MG["merge (kode)<br/>dedup evidence · section per id<br/>di luar cap → 'n langkah dilewati'"]
+    A2 --> MG
+    A3 --> MG
+    MG --> CC["Gemini composeConclusion<br/>gabung 5 ringkasan · angka via f:FACTID saja"]
+    CC --> VE{{"Jev verifier tunggal (hemat)<br/>sitasi + kritik + compliance · fail-closed"}}
+    VE --> O(["AnswerDoc L8 · 5 agent · ≤24 kr<br/>hero + chart + tabel + 3 mode bahasa + jejak audit"])
+```
+
+
 ## Kesiapan demo & penilaian (aturan §6 & §9)
 
 - **MVP end-to-end berfungsi**: chat → dokumen riset bersitasi; mode `replay` menjawab alur penuh **0 kr** dari cache riset — demo stabil tanpa bergantung kredit/sisa kuota.
