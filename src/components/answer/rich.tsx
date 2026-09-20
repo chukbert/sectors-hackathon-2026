@@ -12,7 +12,6 @@ import {
   type LangMode,
   type Tone,
 } from "@/lib/util/format";
-import { useCite } from "@/components/answer/cite";
 
 export function formatFactRef(ref: FactRef, mode: LangMode): string {
   if (ref.valueNum === undefined) {
@@ -60,13 +59,10 @@ export function toneClass(tone: Tone): string {
 }
 
 export function FactChip({ fact, children }: { fact: FactRef; children: ReactNode }) {
-  const cite = useCite();
-  const n = cite.numbers.get(fact.id);
   const detail = `${fact.label}\nas of ${fact.asOf} · sumber: ${fact.source}${fact.valueNum !== undefined ? ` · nilai mentah: ${fact.valueNum}` : ""}`;
   return (
     <span className="fact-chip tabular" title={detail} data-fact-id={fact.id}>
       {children}
-      {n !== undefined ? <sup className="cite-sup">[{n}]</sup> : null}
     </span>
   );
 }

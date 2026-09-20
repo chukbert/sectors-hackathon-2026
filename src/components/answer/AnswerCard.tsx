@@ -5,7 +5,6 @@ import type { AnswerDoc, FactRef } from "@/lib/output/answerdoc";
 import type { LangMode } from "@/lib/util/format";
 import { formatDateId } from "@/lib/util/format";
 import Blocks from "@/components/answer/Blocks";
-import { CiteContext } from "@/components/answer/cite";
 import { formatFactRef } from "@/components/answer/rich";
 
 const MODES: Array<{ id: LangMode; label: string }> = [
@@ -44,12 +43,7 @@ export default function AnswerCard({
     const bySource = new Map<string, number>();
     for (const e of evidence) if (!bySource.has(e.endpoint)) bySource.set(e.endpoint, bySource.size + 1);
     for (const f of factIndexSrc) if (f.source && !bySource.has(f.source)) bySource.set(f.source, bySource.size + 1);
-    const numbers = new Map<string, number>();
-    for (const f of factIndexSrc) {
-      const n = bySource.get(f.source);
-      if (n !== undefined) numbers.set(f.id, n);
-    }
-    return { numbers, sources: [...bySource.entries()] };
+    return { sources: [...bySource.entries()] };
   }, [evidence, factIndexSrc]);
 
   const resolvePlain = (text: string) => text.replace(PLACEHOLDER, (_m, id: string) => {
@@ -101,8 +95,7 @@ export default function AnswerCard({
   ];
 
   return (
-    <CiteContext.Provider value={{ numbers: cite.numbers, audit }}>
-      <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3">
         <div ref={cardRef} className={`card p-4 sm:p-5 ${audit ? "audit" : ""}`}>
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div className="min-w-0 flex-1">
@@ -186,8 +179,7 @@ export default function AnswerCard({
         </div>
 
         {showAudit ? <AuditPanel doc={doc} sources={cite.sources} agents={agents} /> : null}
-      </div>
-    </CiteContext.Provider>
+    </div>
   );
 }
 
