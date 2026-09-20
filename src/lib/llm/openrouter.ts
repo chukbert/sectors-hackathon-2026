@@ -64,6 +64,8 @@ export async function chat(system: string, user: string, opts: { temperature?: n
       );
     } catch (err) {
       lastError = err;
+      const retriable = err instanceof LlmError && /HTTP (429|5\d\d)/.test(err.message);
+      if (retriable && attempt === 0) await new Promise((resolve) => setTimeout(resolve, 1500));
     }
   }
   throw lastError instanceof Error ? lastError : new LlmError(String(lastError));

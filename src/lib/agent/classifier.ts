@@ -51,7 +51,8 @@ export function classifyByRules(question: string, slots: Slots): { level: number
     reasons.push("pertanyaan singkat 1 emiten");
   }
   const screeningIntent = /carikan|screening|filter|daftar saham|saham dengan|saham apa|top gainer|top loser|paling (naik|turun|ramai|aktif)/i.test(question);
-  if (screeningIntent && !slots.isRumor && !slots.wantsAdvice) {
+  const flowIntent = /broker|bandar|akumulasi|distribusi|asing|foreign|net (buy|sell)|aliran dana/i.test(question);
+  if (screeningIntent && !flowIntent && !slots.isRumor && !slots.wantsAdvice) {
     if (level > 4) {
       level = 4;
       reasons.push("niat screener → kedalaman dibatasi L4");
@@ -64,7 +65,9 @@ export function classifyByRules(question: string, slots: Slots): { level: number
 }
 
 export function appliedScreenerCap(question: string): boolean {
-  return /carikan|screening|filter|daftar saham|saham dengan|saham apa|top gainer|top loser|paling (naik|turun|ramai|aktif)/i.test(question);
+  const screening = /carikan|screening|filter|daftar saham|saham dengan|saham apa|top gainer|top loser|paling (naik|turun|ramai|aktif)/i.test(question);
+  const flow = /broker|bandar|akumulasi|distribusi|asing|foreign|net (buy|sell)|aliran dana/i.test(question);
+  return screening && !flow;
 }
 
 export async function classifyLevel(

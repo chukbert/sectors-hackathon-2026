@@ -217,6 +217,8 @@ export async function runTurn(input: AgentTurnInput): Promise<TurnResult> {
 
   if (compiled.facts.length === 0) {
     notes.push("Tidak ada fakta yang berhasil dikumpulkan; jawaban dibatasi pada penjelasan status data.");
+    const cacheMode = getMode() === "replay";
+    const attempted = governed.executable.map((x) => x.endpoint).join(", ") || "-";
     sections = [
       {
         id: "limit",
@@ -226,11 +228,17 @@ export async function runTurn(input: AgentTurnInput): Promise<TurnResult> {
         ],
       },
     ];
-    conclusion = {
-      pemula: "Saya belum berhasil mengambil data yang dibutuhkan. Coba sebutkan kode emiten (mis. BBCA) atau ulangi sebentar lagi.",
-      menengah: "Pengambilan data gagal atau kosong. Sebutkan kode emiten yang valid agar saya bisa mengambil data yang tepat.",
-      advanced: "No facts retrieved (live gagal / kosong). Retry dengan simbol valid atau mode live.",
-    };
+    conclusion = cacheMode
+      ? {
+          pemula: `Saya tidak menemukan data siap-pakai untuk pertanyaan ini di mode replay (hanya membaca cache; jadi tidak ada kredit yang terpakai). Endpoint yang dicoba: ${attempted}. Coba tanyakan emiten yang sudah ada di cache, atau ubah mode ke hybrid/live.`,
+          menengah: `Tidak ada data di cache untuk pertanyaan ini (mode replay, 0 kr). Endpoint dicoba: ${attempted}. Opsi: ganti ke mode hybrid/live (butuh kredit Sectors), atau pilih emiten yang sudah tercache.`,
+          advanced: `Cache-only mode returned no facts for: ${attempted}. Switch run mode to hybrid/live (Sectors credits required) or use a cached symbol.`,
+        }
+      : {
+          pemula: `Data untuk pertanyaan ini belum tersedia dari Sectors (gagal atau kosong). Endpoint yang dicoba: ${attempted}. Sebutkan kode emiten yang valid atau coba lagi nanti.`,
+          menengah: `Pengambilan data gagal/kosong. Endpoint dicoba: ${attempted}. Periksa kode emiten atau tanggal, lalu ulangi.`,
+          advanced: `No facts retrieved from: ${attempted}. Verify symbol/date or retry; consider smaller windows to stay within endpoint limits.`,
+        };
   } else {
     emit("narrate", "Menyusun narasi 3 varian (pemula/menengah/advanced)");
     const sectionFacts = compiled.sections.map((s) => ({

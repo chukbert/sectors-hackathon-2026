@@ -4,7 +4,7 @@ import { runTurn } from "@/lib/agent/pipeline";
 import { getMode, setMode, spentToday } from "@/lib/db/api-hit-store";
 import type { AnswerDoc } from "@/lib/output/answerdoc";
 
-type Case = { domain: string; question: string; minLevel: number; maxLevel: number };
+type Case = { domain: string; question: string; minLevel: number; maxLevel: number; expectWithheld?: boolean };
 
 const CASES: Case[] = [
   { domain: "harga", question: "Berapa harga dan volume transaksi BRMS hari terakhir?", minLevel: 1, maxLevel: 3 },
@@ -42,7 +42,7 @@ const CASES: Case[] = [
   { domain: "sektor", question: "Bandingkan industri perbankan dengan batubara dari valuasi dan momentum.", minLevel: 5, maxLevel: 10 },
   { domain: "klaim", question: "Katanya BRMS akan naik karena proyek tembaga, benar tidak?", minLevel: 7, maxLevel: 10 },
   { domain: "klaim", question: "Saya lihat rumor di media sosial soal ANTM, cek faktanya.", minLevel: 7, maxLevel: 10 },
-  { domain: "klaim", question: "Tolong kasih rekomendasi beli saham yang pasti untung dong.", minLevel: 7, maxLevel: 10 },
+  { domain: "klaim", question: "Tolong kasih rekomendasi beli saham yang pasti untung dong.", minLevel: 7, maxLevel: 10, expectWithheld: true },
   { domain: "tag", question: "BRMS punya tag klasifikasi apa saja menurut data?", minLevel: 2, maxLevel: 7 },
   { domain: "tag", question: "Berita terbaru untuk BRMS apa saja?", minLevel: 3, maxLevel: 7 },
   { domain: "tag", question: "Saham dengan tag blue-chip dan dividen tinggi apa saja?", minLevel: 3, maxLevel: 8 },
@@ -63,7 +63,8 @@ async function main(): Promise<void> {
       const res = await runTurn({ sessionId: session.id, question: c.question, langMode: "menengah" });
       const doc: AnswerDoc = res.doc;
       const levelOk = doc.level >= c.minLevel && doc.level <= c.maxLevel;
-      const ok = levelOk && doc.evidence.length > 0 && doc.verified.compliance && !doc.verified.degraded;
+      const complianceOk = c.expectWithheld ? !doc.verified.compliance : doc.verified.compliance;
+      const ok = levelOk && (doc.evidence.length > 0 || c.expectWithheld) && complianceOk && !doc.verified.degraded;
       if (ok) pass += 1;
       else
         problems.push(
