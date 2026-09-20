@@ -1,5 +1,5 @@
 import { decide, choiceOf, noulOf, type JevQuestion } from "@/lib/llm/jev";
-import { extractSlots, rememberSymbol } from "@/lib/agent/slots";
+import { extractSlots, looksFinancial, rememberSymbol } from "@/lib/agent/slots";
 import { appliedScreenerCap, classifyByRules } from "@/lib/agent/classifier";
 import { buildDigest } from "@/lib/agent/digest";
 import { planTurn } from "@/lib/agent/planner";
@@ -107,6 +107,9 @@ export async function runTurn(input: AgentTurnInput): Promise<TurnResult> {
   const slots = await extractSlots(input.question);
   if (rumor && !slots.isRumor) slots.isRumor = true;
   if (wantsRecommendation && !slots.wantsAdvice) slots.wantsAdvice = true;
+  const explicitEntity = slots.symbols.length > 0 && !slots.symbolsFromMemory;
+  const financeScope = looksFinancial(input.question) || explicitEntity || slots.indexCode !== null || slots.commodity !== null;
+  const scoped = financeScope;
 
   const ruleLevel = classifyByRules(input.question, slots).level;
   let level = Math.max(ruleLevel, guardLevel || 0, rumor ? 7 : 0, wantsRecommendation ? 7 : 0);
@@ -115,7 +118,7 @@ export async function runTurn(input: AgentTurnInput): Promise<TurnResult> {
   }
   emit("level", `Level L${level} (aturan L${ruleLevel}${guardLevel ? `, Jev L${guardLevel}` : ""})`, slots.symbols.length ? `Emiten: ${slots.symbols.join(", ")}` : undefined);
 
-  if (!inScope) {
+  if (!scoped) {
     const doc = emptyDoc({
       sessionId: input.sessionId,
       turnId,

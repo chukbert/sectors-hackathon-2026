@@ -156,8 +156,9 @@ export function extractWithRules(question: string): Slots {
   for (const m of upperMatches) symbols.add(m.toUpperCase());
   const lowerTickers = question.match(/\b(bbca|bbri|bmri|bbni|tlkm|goto|antm|adro|ptba|brms|bren|inco|asii|icbp|indf|unvr|hmad|hmsp|ggrm|arto|amrt|mapi|aces|sido|klbf|myor|inkp|smgr|intp|tpia|pgas|medc|elsa|wskr|wika|jsmr|pnbn|bdmn|mega|bmtr|emtk|scma|raja|pgeo|tins|mdka)\b/gi) ?? [];
   for (const m of lowerTickers) symbols.add(m.toUpperCase());
+  const followUpLike = isFollowUp(question, symbols.size > 0);
   const fromMemory: string[] = [];
-  if (symbols.size === 0) {
+  if (followUpLike) {
     const mem = listMemory().filter((m) => m.kind === "fact" && m.key === "symbol").slice(0, 3);
     for (const item of mem) fromMemory.push(String(item.value));
   }
@@ -196,6 +197,7 @@ export function extractWithRules(question: string): Slots {
 
 export async function extractSlots(question: string): Promise<Slots> {
   const rules = extractWithRules(question);
+  const followUpLike = isFollowUp(question, rules.symbols.length > 0);
   if (rules.symbols.length > 0 || rules.indexCode || rules.commodity) return rules;
   try {
     const { data } = await chatJson<{ symbols: string[]; index_code: string | null; commodity: string | null; sector: string | null; period_days: number | null }>(
@@ -203,7 +205,7 @@ export async function extractSlots(question: string): Promise<Slots> {
       `Question: "${question}"\n\nJSON schema: {"symbols": string[], "index_code": string|null, "commodity": string|null, "sector": string|null, "period_days": number|null}`,
       { temperature: 0, maxTokens: 200 },
     );
-    const mem = listMemory().filter((m) => m.kind === "fact" && m.key === "symbol");
+    const mem = followUpLike ? listMemory().filter((m) => m.kind === "fact" && m.key === "symbol") : [];
     const symbols = data.symbols.map((s) => s.toUpperCase()).filter((s) => /^[A-Z]{4}$/.test(s));
     return {
       ...rules,
@@ -215,9 +217,18 @@ export async function extractSlots(question: string): Promise<Slots> {
       periodDays: data.period_days ?? rules.periodDays,
     };
   } catch {
-    const mem = listMemory().filter((m) => m.kind === "fact" && m.key === "symbol");
+    const mem = followUpLike ? listMemory().filter((m) => m.kind === "fact" && m.key === "symbol") : [];
     return { ...rules, symbols: mem.slice(0, 2).map((m) => String(m.value)), symbolsFromMemory: mem.length > 0 };
   }
+}
+
+export function isFollowUp(question: string, hasExplicitSymbols: boolean): boolean {
+  if (hasExplicitSymbols) return false;
+  return question.length < 48 || /\b(nya|itu|tadi|lagi|kalau|gimana dengan|bagaimana dengan|lanjut)\b/i.test(question);
+}
+
+export function looksFinancial(question: string): boolean {
+  return /saham|emiten|ticker|harga|dividen|yield|laba|pendapatan|revenue|ekuitas|hutang|utang|margin|arus kas|fundamental|valuasi|per\b|pbv|pe\b|roe|der|broker|bandar|asing|foreign|akumulasi|distribusi|ipo|listing|suspensi|indeks|ihsg|lq45|kuartal|laporan|berita|tren|komoditas|batubara|nikel|emas|tembaga|tambang|sektor|subsektor|mayoritas|pemegang|kapitalisasi|volume|transaksi|gainer|loser|prospek|proyeksi|analis/i.test(question);
 }
 
 export function rememberSymbol(symbol: string, provenance: string): void {
