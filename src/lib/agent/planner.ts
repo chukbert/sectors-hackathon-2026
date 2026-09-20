@@ -24,6 +24,7 @@ export function domainFor(level: number, slots: Slots): Domain {
 
 function levelPlan(level: number, slots: Slots, question: string): PlanStep[] {
   const wantsDeep = /fundamental|valuasi|kinerja|sehat|banding|vs\b|per\b|pbv|roe|margin|dividen|laba|revenue|tumbuh|tren|likuid|risiko/i.test(question);
+  const ownershipFocus = /kepemilikan|pemegang saham|komposisi saham|free float|porsi saham|shareholder|ownership|pengendali|treasury|porsi asing/i.test(question);
   const sym = slots.symbols[0];
   const symbols = slots.symbols;
   const days = slots.periodDays ?? (level >= 4 ? 90 : 30);
@@ -87,10 +88,16 @@ function levelPlan(level: number, slots: Slots, question: string): PlanStep[] {
       break;
     }
     case 6:
-      steps.push(step("report", { symbol: sym, sections: ["overview", "valuation", "financials", "dividend", "ownership"] }, `Fundamental menyeluruh ${sym}`, 1));
-      steps.push(step("quarterly", { symbol: sym, n_quarters: 8 }, `Kinerja kuartalan ${sym}`, 2));
-      steps.push(step("free-float", {}, "Free float & likuiditas", 2, true));
-      steps.push(step("segments", { symbol: sym }, `Segmen pendapatan ${sym}`, 3, true));
+      if (ownershipFocus) {
+        steps.push(step("report", { symbol: sym, sections: ["ownership", "overview"] }, `Struktur kepemilikan ${sym}`, 1));
+        steps.push(step("free-float", { _symbol: sym }, "Free float & porsi publik", 2));
+        steps.push(step("shareholders", { symbol: sym }, `Komposisi pemegang saham ${sym}`, 2, true));
+      } else {
+        steps.push(step("report", { symbol: sym, sections: ["overview", "valuation", "financials", "dividend", "ownership"] }, `Fundamental menyeluruh ${sym}`, 1));
+        steps.push(step("quarterly", { symbol: sym, n_quarters: 8 }, `Kinerja kuartalan ${sym}`, 2));
+        steps.push(step("free-float", { _symbol: sym }, "Free float & likuiditas", 2, true));
+        steps.push(step("segments", { symbol: sym }, `Segmen pendapatan ${sym}`, 3, true));
+      }
       if (slots.commodity) steps.push(step("mining-company-performance", { slug: "pt-alamtri-resources-indonesia-tbk" }, "Produksi & cadangan tambang", 3, true));
       break;
     case 7:

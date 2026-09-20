@@ -213,7 +213,7 @@ export async function runTurn(input: AgentTurnInput): Promise<TurnResult> {
     );
   }
 
-  const compiled = buildSections(slots, results, level);
+  const compiled = buildSections(slots, results, level, input.question);
   const traces: DecisionTrace[] = [];
 
   let title = input.question.slice(0, 90);

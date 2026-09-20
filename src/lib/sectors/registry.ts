@@ -394,9 +394,23 @@ export const ENDPOINTS: EndpointDef[] = [
       }
       const own = d?.ownership as AnyRec | undefined;
       if (own) {
-        for (const k of ["free_float", "foreign_ownership", "institutional_ownership", "retail_ownership"]) {
-          if (num(own[k]) !== undefined) out.push(baseFact(ctx, "report", `own_${k}`, `${k} ${SYM(ctx)}`, num(own[k]), "%"));
-        }
+        const seenKeys = new Set<string>();
+        const walk = (value: unknown, depth: number) => {
+          if (depth > 3 || value === null || typeof value !== "object") return;
+          if (Array.isArray(value)) {
+            for (const item of value) walk(item, depth + 1);
+            return;
+          }
+          for (const [k, v] of Object.entries(value as AnyRec)) {
+            if (num(v) !== undefined && /float|foreign|institution|retail|public|local|ownership|pct|percentage|total/i.test(k) && !seenKeys.has(k)) {
+              seenKeys.add(k);
+              out.push(baseFact(ctx, "report", `own_${k}`, `${k.replace(/_/g, " ")} ${SYM(ctx)}`, num(v), "%"));
+            } else if (typeof v === "object") {
+              walk(v, depth + 1);
+            }
+          }
+        };
+        walk(own, 0);
       }
       const mgmt = d?.management as AnyRec | undefined;
       if (mgmt && Array.isArray(mgmt.board)) {
@@ -486,15 +500,63 @@ export const ENDPOINTS: EndpointDef[] = [
     desc: "Komposisi pemegang saham.",
     extract: (p, ctx) => {
       const d = objBody(p);
-      const rows = Array.isArray(d) ? (d as AnyRec[]) : Array.isArray(d.data) ? (d.data as AnyRec[]) : [];
       const out: Fact[] = [];
-      for (const r of rows.slice(0, 8)) {
-        const pct = num(r.percentage) ?? num(r.share_percentage);
-        const name = r.name ?? r.holder_name ?? r.shareholder;
-        if (pct !== undefined && name)
-          out.push(baseFact(ctx, "shareholders", `holder_${String(name).slice(0, 24)}`, `Pemegang saham ${SYM(ctx)}: ${name}`, pct, "%"));
+      const history = Array.isArray(d.data) ? (d.data as AnyRec[]) : [];
+      const latest = history.length
+        ? [...history].sort((a, b) => String(a.date ?? "").localeCompare(String(b.date ?? ""))).at(-1)
+        : undefined;
+      const shares = num(latest?.shares_number);
+      const totalForeign = num(latest?.total_f);
+      const totalLocal = num(latest?.total_l);
+      if (shares && shares > 0 && totalForeign !== undefined) {
+        out.push(
+          baseFact(
+            ctx,
+            "shareholders",
+            "foreign_pct",
+            `Porsi kepemilikan asing ${SYM(ctx)} (komposisi per ${latest?.date})`,
+            totalForeign / shares,
+            "%",
+            latest?.date ? String(latest.date) : undefined,
+          ),
+        );
       }
-      return out;
+      if (shares && shares > 0 && totalLocal !== undefined) {
+        out.push(
+          baseFact(
+            ctx,
+            "shareholders",
+            "local_pct",
+            `Porsi kepemilikan lokal ${SYM(ctx)} (komposisi per ${latest?.date})`,
+            totalLocal / shares,
+            "%",
+            latest?.date ? String(latest.date) : undefined,
+          ),
+        );
+      }
+      const holderCount = num(latest?.numbers_of_shareholders);
+      if (holderCount !== undefined) {
+        out.push(baseFact(ctx, "shareholders", "holder_count", `Jumlah pemegang saham ${SYM(ctx)}`, holderCount, "count"));
+      }
+      const seen = new Set<string>();
+      const visit = (value: unknown, depth: number) => {
+        if (depth > 4 || value === null || typeof value !== "object") return;
+        if (Array.isArray(value)) {
+          for (const item of value) visit(item, depth + 1);
+          return;
+        }
+        const obj = value as AnyRec;
+        const pct = num(obj.percentage) ?? num(obj.share_percentage) ?? num(obj.ownership_percentage) ?? num(obj.pct);
+        const name = obj.name ?? obj.holder_name ?? obj.shareholder ?? obj.investor_name ?? obj.entity;
+        if (pct !== undefined && typeof name === "string" && !seen.has(name)) {
+          seen.add(name);
+          out.push(baseFact(ctx, "shareholders", `holder_${name.slice(0, 24)}`, `Pemegang saham ${SYM(ctx)}: ${name}`, pct, "%"));
+        }
+        for (const v of Object.values(obj)) visit(v, depth + 1);
+      };
+      visit(d, 0);
+      if (!out.length) out.push(baseFact(ctx, "shareholders", "status", `Struktur pemegang saham ${SYM(ctx)} belum tersedia pada respons ini`, undefined, "text"));
+      return out.sort((a, b) => (b.valueNum ?? 0) - (a.valueNum ?? 0)).slice(0, 10);
     },
   },
   {
@@ -789,12 +851,16 @@ export const ENDPOINTS: EndpointDef[] = [
     extract: (p, ctx) => {
       const rows = arrayBody(p);
       const out: Fact[] = [];
-      const bySym = new Map(rows.map((r) => [String(r.symbol), r]));
-      const sym = String(ctx.args.symbol ?? "");
-      const row = bySym.get(sym);
+      const sym = String(ctx.args._symbol ?? ctx.args.symbol ?? "").toUpperCase();
+      const row = sym ? rows.find((r) => String(r.symbol).toUpperCase().startsWith(sym)) : rows[0];
       if (row && num(row.free_float) !== undefined)
-        out.push(baseFact(ctx, "free-float", "free_float", `Free float ${sym}`, num(row.free_float), "%"));
+        out.push(baseFact(ctx, "free-float", "free_float", `Free float ${String(row.symbol)}`, num(row.free_float), "%"));
       out.push(baseFact(ctx, "free-float", "count", `Jumlah emiten dalam daftar free float`, rows.length, "count"));
+      if (!sym && rows.length) {
+        out.push(
+          baseFact(ctx, "free-float", "top", `Free float tertinggi: ${String(rows[0].symbol)}`, num(rows[0].free_float), "%"),
+        );
+      }
       return out;
     },
   },

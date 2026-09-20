@@ -183,7 +183,22 @@ function seriesFrom(facts: Fact[], endpoint: string, key: string): Array<{ date:
     .sort((a, b) => a.date.localeCompare(b.date));
 }
 
-export function buildSections(slots: Slots, results: ResolveResult[], level: number): Compiled {
+function prioritizeByQuestion(facts: Fact[], question: string): Fact[] {
+  const terms = question
+    .toLowerCase()
+    .split(/[^a-z0-9]+/)
+    .filter((t) => t.length >= 4);
+  const score = (f: Fact) => {
+    const label = `${f.label} ${f.key}`.toLowerCase();
+    let s = 0;
+    for (const t of terms) if (label.includes(t)) s += 2;
+    if (f.unit === "text") s -= 1;
+    return s;
+  };
+  return [...facts].sort((a, b) => score(b) - score(a));
+}
+
+export function buildSections(slots: Slots, results: ResolveResult[], level: number, question = ""): Compiled {
   const facts = results.flatMap((r) => r.facts);
   const derived = deriveFacts(facts);
   const allFacts = [...facts, ...derived];
@@ -382,7 +397,7 @@ export function buildSections(slots: Slots, results: ResolveResult[], level: num
       if (level >= 2 && relevant.length) {
         blocks.unshift({
           kind: "metric_row",
-          items: relevant
+          items: prioritizeByQuestion(relevant, question)
             .filter((f) => f.valueNum !== undefined)
             .slice(0, 6)
             .map((f) => ({ label: f.label, factId: f.id })),

@@ -26,6 +26,21 @@ export type NarratorOutput = {
 
 const PLACEHOLDER = /\{\{f:([a-z0-9]+)\|(number|idr|percent|per|signed|text|date)\}\}/gi;
 
+function prioritizeFacts(facts: Fact[], question: string): Fact[] {
+  const terms = question
+    .toLowerCase()
+    .split(/[^a-z0-9]+/)
+    .filter((t) => t.length >= 4);
+  const score = (f: Fact) => {
+    const label = `${f.label} ${f.key}`.toLowerCase();
+    let s = 0;
+    for (const t of terms) if (label.includes(t)) s += 2;
+    if (f.unit === "text") s -= 1;
+    return s;
+  };
+  return [...facts].sort((a, b) => score(b) - score(a));
+}
+
 function factsBlock(facts: Fact[]): string {
   return facts
     .map((f) => {
@@ -37,7 +52,7 @@ function factsBlock(facts: Fact[]): string {
 
 export async function narrate(input: NarratorInput): Promise<NarratorOutput> {
   try {
-    return await narrateOnce(input, { maxSections: 6, maxFacts: 10, maxTokens: 7000, compact: false });
+    return await narrateOnce(input, { maxSections: 6, maxFacts: 12, maxTokens: 7500, compact: false });
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
     console.warn(`[narrator] percobaan 1 gagal: ${message}`);
@@ -57,7 +72,7 @@ async function narrateOnce(
 ): Promise<NarratorOutput> {
   const usedSections = input.sections.slice(0, opts.maxSections);
   const sectionSpec = usedSections
-    .map((s) => `SECTION ${s.id} — ${s.title}\nFakta tersedia:\n${factsBlock(s.facts.slice(0, opts.maxFacts))}`)
+    .map((s) => `SECTION ${s.id} — ${s.title}\nFakta tersedia:\n${factsBlock(prioritizeFacts(s.facts, input.question).slice(0, opts.maxFacts))}`)
     .join("\n\n");
   const system = [
     "Kamu adalah Narrator INVESTIGRAPH, penulis analisis saham IDX berbahasa Indonesia untuk investor ritel.",
