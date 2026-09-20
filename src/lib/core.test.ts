@@ -2,10 +2,12 @@ import { describe, expect, it } from "vitest";
 import { formatIdr, formatNumber, formatPer, formatPercent } from "@/lib/util/format";
 import { canonicalKey, stableStringify } from "@/lib/util/ids";
 import { parseJsonLoose } from "@/lib/llm/openrouter";
-import { ENDPOINT_BY_ID, buildUrl, estimateCost } from "@/lib/sectors/registry";
+import { ENDPOINT_BY_ID, buildUrl, estimateCost, normalizeArgs, repairScreenerWhere } from "@/lib/sectors/registry";
 import { govern } from "@/lib/agent/tools";
 import { codeCitationCheck, codeComplianceCheck } from "@/lib/agent/verify";
 import { classifyByRules } from "@/lib/agent/classifier";
+import { extractWithRules } from "@/lib/agent/slots";
+import { applySectorTermFilter } from "@/lib/agent/planner";
 import type { Plan } from "@/lib/agent/types";
 import type { Fact } from "@/lib/facts";
 import type { NarratorOutput } from "@/lib/agent/narrator";
@@ -74,6 +76,24 @@ describe("registry", () => {
     const url = buildUrl(def, { symbol: "BRMS", sections: ["valuation", "financials"] });
     expect(url).toContain("sections=valuation&sections=financials");
   });
+  it("normalizeArgs screener melipat desc ke prefix minus order_by", () => {
+    const def = ENDPOINT_BY_ID.get("screener")!;
+    const a = normalizeArgs(def, { order_by: "market_cap", desc: true });
+    expect(a.order_by).toBe("-market_cap");
+    expect(a.desc).toBeUndefined();
+    expect(normalizeArgs(def, { order_by: "market_cap", desc: false }).order_by).toBe("market_cap");
+  });
+  it("repairScreenerWhere memperbaiki field yang ditolak API", () => {
+    const year = new Date().getUTCFullYear() - 1;
+    expect(repairScreenerWhere("sub_sector = 'Banks' and market_cap > 10000000000000 and pe_ttm < 10 and roe > 0.15")).toBe(
+      `sub_sector = 'Banks' and market_cap > 10000000000000 and pe_ttm < 10 and roe_ttm > 0.15`,
+    );
+    expect(repairScreenerWhere(`roe[2024] > 0.15 and der > 1 and revenue < 1000`)).toBe(
+      `roe[2024] > 0.15 and der[${year}] > 1 and revenue[${year}] < 1000`,
+    );
+    expect(repairScreenerWhere("pb_mrq < 1.5 and yield_ttm > 0.05")).toBe("pb_mrq < 1.5 and yield_ttm > 0.05");
+    expect(repairScreenerWhere("dividend_yield_ttm > 0.05")).toBe("yield_ttm > 0.05");
+  });
   it("estimasi biaya per model", () => {
     expect(estimateCost(ENDPOINT_BY_ID.get("daily")!, {})).toBe(1);
     expect(estimateCost(ENDPOINT_BY_ID.get("report")!, { sections: ["a", "b", "c"] })).toBe(3);
@@ -83,6 +103,19 @@ describe("registry", () => {
     expect(estimateCost(ENDPOINT_BY_ID.get("screener")!, { q: "bank murah" })).toBe(3);
     expect(estimateCost(ENDPOINT_BY_ID.get("top-changes")!, { classifications: ["top_gainers"], periods: ["1d"] })).toBe(1);
     expect(estimateCost(ENDPOINT_BY_ID.get("top-changes")!, { classifications: ["top_gainers", "top_losers"], periods: ["1d", "7d"] })).toBe(4);
+  });
+});
+
+describe("slots", () => {
+  it("tidak menganggap kata perintah sebagai nama belum terpetakan", () => {
+    expect(extractWithRules("Carikan saham bank dengan PER di bawah 10 dan ROE tinggi").unresolved).toEqual([]);
+    expect(extractWithRules("Bandingkan BBCA vs BBRI").symbols.sort()).toEqual(["BBCA", "BBRI"]);
+  });
+  it("kata sektor perkebunan → predicate slug yang benar", () => {
+    expect(applySectorTermFilter("ada saham apa saja di perkebunan?", "industry like '%Plantation%' or sub_sector like '%Plantation%'")).toBe("industry = 'agricultural-products'");
+    expect(applySectorTermFilter("saham sawit murah", "pe_ttm < 10")).toBe("industry = 'agricultural-products' and pe_ttm < 10");
+    expect(applySectorTermFilter("harga BRMS", "pe_ttm < 10")).toBe("pe_ttm < 10");
+    expect(extractWithRules("ada saham apa saja di perkebunan?").sectorText).toBe("perkebunan");
   });
 });
 

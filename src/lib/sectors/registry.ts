@@ -233,7 +233,6 @@ export const ENDPOINTS: EndpointDef[] = [
       where: { in: "query" },
       q: { in: "query" },
       order_by: { in: "query" },
-      desc: { in: "query" },
       limit: { in: "query" },
       offset: { in: "query" },
       include_query_values: { in: "query" },
@@ -1391,11 +1390,38 @@ export function normalizeArgs(def: EndpointDef, args: Record<string, unknown>): 
       if (key === "index_code" || key === "commodity_name" || key === "sub_sector" || key === "slug" || key === "company" || key === "mine_owner" || key === "contractor") {
         v = key === "index_code" ? v.toLowerCase() : v;
       }
+      if (def.id === "screener" && key === "where") v = repairScreenerWhere(v);
       out[key] = v;
     } else {
       out[key] = value;
     }
   }
+  if (def.id === "screener" && out.desc !== undefined) {
+    const order = String(out.order_by ?? "").replace(/^-/, "");
+    if (order) out.order_by = out.desc === false || out.desc === "false" ? order : `-${order}`;
+    delete out.desc;
+  }
+  return out;
+}
+
+const WHERE_SNAPSHOT_ALIASES: Record<string, string> = {
+  roe: "roe_ttm",
+  pb: "pb_mrq",
+  pe: "pe_ttm",
+  dividend_yield_ttm: "yield_ttm",
+  dividend_yield: "yield_ttm",
+};
+
+const WHERE_YEAR_FIELDS = new Set(["der", "roa", "revenue", "net_income", "eps", "ebit", "ebitda", "book_value", "current_ratio"]);
+
+export function repairScreenerWhere(where: string): string {
+  const year = new Date().getUTCFullYear() - 1;
+  const op = String.raw`(?=\s*(?:>=|<=|!=|=|>|<|like\s|in\b))`;
+  let out = where;
+  for (const [bare, alias] of Object.entries(WHERE_SNAPSHOT_ALIASES)) {
+    out = out.replace(new RegExp(String.raw`\b${bare}\b${op}`, "g"), alias);
+  }
+  out = out.replace(new RegExp(String.raw`\b(${[...WHERE_YEAR_FIELDS].join("|")})\b${op}`, "g"), `$1[${year}]`);
   return out;
 }
 

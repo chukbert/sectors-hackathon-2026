@@ -151,6 +151,7 @@ const NAME_STOPWORDS = new Set([
   "bagaimana", "kenapa", "mengapa", "apakah", "tolong", "coba", "cek", "lihat", "tampilkan", "berita", "berita terbaru", "fundamental", "valuasi",
   "dividen", "tren", "perkembangan", "prospek", "bandarmologi", "asing", "broker", "laporan", "keuangan", "kinerja", "analisis", "data", "info",
   "kapan", "siapa", "mana", "bulan", "tahun", "hari ini", "minggu", "kuartal", "perusahaan", "grup", "group", "tbk", "indonesia", "jakarta",
+  "carikan", "cari", "carilah", "bandingkan", "sebutkan", "rekomendasikan", "tentukan", "pilih", "hitung", "jelaskan", "cari tahu",
 ]);
 
 function findUnresolvedNames(question: string, resolved: Set<string>, resolvedNames: Set<string>): string[] {
@@ -205,7 +206,7 @@ export function extractWithRules(question: string): Slots {
   const monthMatch = text.match(/(\d+)\s*(bulan|month|mo)/);
   const yearMatch = text.match(/(\d+)\s*(tahun|year|y)/);
   const periodDays = periodMatch ? Number(periodMatch[1]) : monthMatch ? Number(monthMatch[1]) * 30 : yearMatch ? Number(yearMatch[1]) * 365 : null;
-  const sectorTerms = ["bank", "perbankan", "energi", "tambang", "pertambangan", "teknologi", "consumer", "konsumer", "properti", "kesehatan", "infrastruktur", "telekomunikasi", "transportasi", "industri", "keuangan", "rokok", "semen", "ritel", "media", "pariwisata", "agrikultur", "metal", "logam", "minyak", "gas", "otomotif", "tekstil"];
+  const sectorTerms = ["bank", "perbankan", "energi", "tambang", "pertambangan", "teknologi", "consumer", "konsumer", "properti", "kesehatan", "infrastruktur", "telekomunikasi", "transportasi", "industri", "keuangan", "rokok", "semen", "ritel", "media", "pariwisata", "agrikultur", "metal", "logam", "minyak", "gas", "otomotif", "tekstil", "perkebunan", "sawit", "pertanian", "agro"];
   const sectorText = sectorTerms.find((s) => text.includes(s)) ?? null;
   const unresolved = findUnresolvedNames(question, symbols, resolvedNames);
   return {

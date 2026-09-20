@@ -74,7 +74,7 @@ export function expandCapability(name: string, slots: Slots): PlanStep[] {
       push("foreign-flow", { symbol: sym ?? "IHSG", start: start30, end }, "Aliran asing");
       break;
     case "screening":
-      push("screener", { where: "pe_ttm > 0 and pe_ttm < 15", order_by: "market_cap", desc: true, limit: 10, include_query_values: true }, "Screening valuasi murah");
+      push("screener", { where: "pe_ttm > 0 and pe_ttm < 15", order_by: "-market_cap", limit: 10, include_query_values: true }, "Screening valuasi murah");
       break;
     case "komoditas":
       push("mining-commodities", {}, "Daftar komoditas");

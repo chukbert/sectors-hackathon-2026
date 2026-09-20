@@ -66,8 +66,15 @@ pesan v7 tidak lagi menyiratkan itu.
 ## Status per grup (path v2 asli)
 
 ### Screener & helper — ✅ (screener inti ✅, helper slug ✅ dipakai; tags ⏳)
-- `GET /v2/companies/` — `where`/`order_by`/`desc`/`limit`(≤200)/`offset`/`include_query_values`; `q` (NL) menimpa semua.
+- `GET /v2/companies/` — `where`/`order_by` (desc = awalan `-`, mis. `-market_cap`; **param `desc` ditolak API 400**)/
+  `limit`(≤200)/`offset`/`include_query_values`; `q` (NL) menimpa semua.
+  **Taksonomi screener = slug persis** (`sub_sector = 'banks'`, `industry = 'agricultural-products'` untuk perkebunan/sawit —
+  terverifikasi live 20 Sep: 56 emiten, AALI/TAPG/DSNG dkk). **Field `roe`/`pb`/`pe`/`der` polos ditolak 400** — pakai
+  `_ttm`/`_mrq` (`roe_ttm`, `pb_mrq`, `yield_ttm`) atau kurung tahun `roe[2024]`/`revenue[Q2-2025]`.
+  `like '%Plantation%'` lolos 200 tapi 0 baris → `applySectorTermFilter()` (planner) memetakan kata sektor ID → slug kanonik.
   Operator `= != > >= < <= like in`, `and`/`or`, `field[YYYY]`, `field[Qi-YYYY]` (44 field kuartalan), aritmetika.
+  **`where` menolak field telanjang `roe`/`pb`/`pe` (400 INVALID_WHERE_CLAUSE — "requires bracket notation");**
+  pakai snapshot `roe_ttm`/`pb_mrq`/`pe_ttm`/`yield_ttm` atau ber-year `roe[2024]`. `repairScreenerWhere` menormalisasi otomatis.
   Respons: `results[]` (row: `symbol`,`company_name`,`query_values?`), `pagination`, `llm_translation`.
 - `GET /v2/subsectors/`, `/v2/industries/`, `/v2/subindustries/`, `/v2/tags/` — slug resolver (1kr).
   ARUS memakai 3 pertama untuk memetakan kata sektor → `sub_sector`/`sector`/`industry` (kata tak dikenal = filter

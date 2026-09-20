@@ -145,29 +145,46 @@ function levelPlan(level: number, slots: Slots, question: string): PlanStep[] {
   return steps;
 }
 
+const SECTOR_TAXONOMY: Array<{ match: RegExp; predicate: string }> = [
+  { match: /perkebunan|sawit|kelapa|cpo|tandan|\btbs\b|pertanian|agribisnis|agro\b|agriculture|plantation/i, predicate: "industry = 'agricultural-products'" },
+  { match: /\bbank\b|perbankan/i, predicate: "sub_sector = 'banks'" },
+];
+
+export function applySectorTermFilter(question: string, where: string): string {
+  const term = SECTOR_TAXONOMY.find((t) => t.match.test(question));
+  if (!term) return where;
+  const cleaned = where
+    .split(/\s+and\s+/i)
+    .filter((p) => p.trim() && !/\b(sector|sub_sector|industry)\b/i.test(p))
+    .join(" and ");
+  return cleaned ? `${term.predicate} and ${cleaned}` : term.predicate;
+}
+
 async function screenerArgsFromQuestion(question: string): Promise<Record<string, unknown>> {
   try {
     const { data } = await chatJson<{ where: string; order_by: string; desc: boolean; limit: number }>(
       [
         "You convert an Indonesian investor screening request into a Sectors screener query.",
         "Reply JSON only: {where, order_by, desc, limit}.",
-        "Allowed operators: = != > >= < <= like in, combined with and/or. Use only snake_case Sectors fields such as pe_ttm, pb, roe, der, dividend_yield_ttm, market_cap, revenue, net_income, eps, price, volume.",
+        "Allowed operators: = != > >= < <= like in, combined with and/or. Use only these Sectors fields: pe_ttm, pb_mrq, roe_ttm, yield_ttm, payout_ratio, market_cap, price, volume, sector, sub_sector, industry.",
+        "Never write bare roe/pb/pe/der/revenue — the API rejects them; annual/quarterly metrics need bracket notation with a year, e.g. revenue[2025] or net_income[Q2-2025].",
+        "Taxonomy values must be exact slugs, e.g. sub_sector = 'banks', industry = 'agricultural-products' (perkebunan/sawit/CPO). Never invent like '%Plantation%'.",
         "Examples: PER di bawah 10 dan kapitalisasi besar -> where: pe_ttm < 10 and market_cap > 10000000000000, order_by: market_cap, desc: true.",
         "Never invent fields; if unsure use pe_ttm or market_cap.",
       ].join("\n"),
       `Request: "${question}"\n\nJSON: {"where": string, "order_by": string, "desc": boolean, "limit": number}`,
       { temperature: 0, maxTokens: 250, effort: "low" },
     );
-    const where = typeof data.where === "string" && data.where.trim() ? data.where.trim().slice(0, 200) : "pe_ttm > 0 and pe_ttm < 20";
+    const rawWhere = typeof data.where === "string" && data.where.trim() ? data.where.trim().slice(0, 200) : "pe_ttm > 0 and pe_ttm < 20";
+    const order = typeof data.order_by === "string" && data.order_by.trim() ? data.order_by.trim().replace(/^-/, "") : "market_cap";
     return {
-      where,
-      order_by: typeof data.order_by === "string" && data.order_by.trim() ? data.order_by.trim() : "market_cap",
-      desc: data.desc !== false,
+      where: applySectorTermFilter(question, rawWhere),
+      order_by: data.desc === false ? order : `-${order}`,
       limit: Math.min(50, Math.max(5, Number(data.limit) || 10)),
       include_query_values: true,
     };
   } catch {
-    return { where: "pe_ttm > 0 and pe_ttm < 20", order_by: "market_cap", desc: true, limit: 10, include_query_values: true };
+    return { where: applySectorTermFilter(question, "pe_ttm > 0 and pe_ttm < 20"), order_by: "-market_cap", limit: 10, include_query_values: true };
   }
 }
 
@@ -208,6 +225,8 @@ export function planFromIntents(intents: IntentHit[], slots: Slots, question: st
       for (const sym of symbolList) {
         const rawArgs = recipe.args({ sym, symbols, days, slots });
         const args = Object.fromEntries(Object.entries(rawArgs).filter(([, v]) => v !== undefined));
+        const endpointDef = ENDPOINT_BY_ID.get(recipe.endpoint);
+        if (endpointDef && Object.entries(endpointDef.params).some(([name, spec]) => spec.required && args[name] === undefined)) continue;
         const step = stepFor(def.id, recipe.endpoint, args, recipe.purpose, recipe.phase, recipe.optional ?? false);
         const key = `${step.endpoint}:${stableStringify(step.args)}`;
         if (seen.has(key)) continue;
