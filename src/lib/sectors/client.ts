@@ -401,5 +401,11 @@ export async function resolveEndpoint(endpointId: string, overrides: ResolveOpti
     });
   }
 
-  throw new SectorsError(error ?? `Sectors HTTP ${status}`, status, def.id);
+  const friendly =
+    status === 401 || status === 403
+      ? "autentikasi Sectors gagal — periksa SECTORS_API_KEY di .env (401/403 tidak memakai kredit)"
+      : status === 429
+        ? "rate limit Sectors (429, tanpa kredit) — coba lagi sebentar"
+        : error ?? `Sectors HTTP ${status}`;
+  throw new SectorsError(friendly, status, def.id);
 }

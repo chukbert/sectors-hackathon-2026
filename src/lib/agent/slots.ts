@@ -146,11 +146,36 @@ const COMMODITIES: Record<string, string> = {
 const RUMOR_PATTERNS = [/katanya/i, /kabarnya/i, /isunya/i, /benar\s*(gak|ga|tidak|nggak|engga)/i, /hoax/i, /beneran/i, /serius(an)?\?/i, /mau\s+(terbang|naik)/i, /auto\s*cuan/i, /pasti\s+(naik|cuank?)/i, /gaskeun/i, /goreng/i];
 const ADVICE_PATTERNS = [/harus\s+(beli|jual)/i, /sebaiknya\s+(beli|jual)/i, /rekomendasi(kan)?\s+(beli|jual|saham)/i, /kasih\s+(saran|rekomendasi)/i, /(beli|jual)\s*(gak|ga|nggak|tidak)?\s*(sekarang|hari ini)/i, /target\s+harga\s+saya/i, /ikut\s+(beli|jual)/i, /bagus\s+gak\s+buat\s+(beli|jual)/i, /layak\s+(beli|jual)/i];
 
+const NAME_STOPWORDS = new Set([
+  "berapa", "harga", "saham", "emiten", "kapitalisasi", "pasar", "sekarang", "kemarin", "hari", "ini", "itu", "yang", "apa", "apa saja", "dan", "atau",
+  "bagaimana", "kenapa", "mengapa", "apakah", "tolong", "coba", "cek", "lihat", "tampilkan", "berita", "berita terbaru", "fundamental", "valuasi",
+  "dividen", "tren", "perkembangan", "prospek", "bandarmologi", "asing", "broker", "laporan", "keuangan", "kinerja", "analisis", "data", "info",
+  "kapan", "siapa", "mana", "bulan", "tahun", "hari ini", "minggu", "kuartal", "perusahaan", "grup", "group", "tbk", "indonesia", "jakarta",
+]);
+
+function findUnresolvedNames(question: string, resolved: Set<string>, resolvedNames: Set<string>): string[] {
+  const candidates: string[] = [];
+  for (const match of question.matchAll(/(?:^|[^\w])([A-Z][a-zA-Z]{3,})/g)) {
+    const word = match[1];
+    const lower = word.toLowerCase();
+    if (resolved.has(word.toUpperCase())) continue;
+    if (resolvedNames.has(lower)) continue;
+    if (/^[A-Z]{4}$/.test(word)) continue;
+    if (NAME_STOPWORDS.has(lower)) continue;
+    candidates.push(word);
+  }
+  return [...new Set(candidates)].slice(0, 3);
+}
+
 export function extractWithRules(question: string): Slots {
   const text = question.toLowerCase();
   const symbols = new Set<string>();
+  const resolvedNames = new Set<string>();
   for (const [alias, ticker] of Object.entries(ALIASES)) {
-    if (new RegExp(`\\b${alias.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "i").test(text)) symbols.add(ticker);
+    if (new RegExp(`\\b${alias.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "i").test(text)) {
+      symbols.add(ticker);
+      resolvedNames.add(alias.toLowerCase());
+    }
   }
   const upperMatches = question.match(/\b[A-Z]{4}\b/g) ?? [];
   for (const m of upperMatches) symbols.add(m.toUpperCase());
@@ -182,8 +207,10 @@ export function extractWithRules(question: string): Slots {
   const periodDays = periodMatch ? Number(periodMatch[1]) : monthMatch ? Number(monthMatch[1]) * 30 : yearMatch ? Number(yearMatch[1]) * 365 : null;
   const sectorTerms = ["bank", "perbankan", "energi", "tambang", "pertambangan", "teknologi", "consumer", "konsumer", "properti", "kesehatan", "infrastruktur", "telekomunikasi", "transportasi", "industri", "keuangan", "rokok", "semen", "ritel", "media", "pariwisata", "agrikultur", "metal", "logam", "minyak", "gas", "otomotif", "tekstil"];
   const sectorText = sectorTerms.find((s) => text.includes(s)) ?? null;
+  const unresolved = findUnresolvedNames(question, symbols, resolvedNames);
   return {
     symbols: Array.from(symbols),
+    unresolved,
     symbolsFromMemory: symbols.size === 0 && fromMemory.length > 0,
     indexCode,
     sectorText,

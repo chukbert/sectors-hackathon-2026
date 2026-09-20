@@ -206,6 +206,12 @@ export async function runTurn(input: AgentTurnInput): Promise<TurnResult> {
   if (slots.symbolsFromMemory && slots.symbols.length) {
     notes.push(`Emiten diasumsikan dari memori sesi: ${slots.symbols.join(", ")}.`);
   }
+  const authFailure = failures.some((f) => /HTTP 40[13]/.test(f.reason));
+  if (slots.unresolved.length) {
+    notes.push(
+      `Nama berikut belum terpetakan ke emiten IDX: ${slots.unresolved.join(", ")} — bisa jadi perusahaan privat/induk usaha yang tidak tercatat di bursa.`,
+    );
+  }
 
   const compiled = buildSections(slots, results, level);
   const traces: DecisionTrace[] = [];
@@ -234,7 +240,13 @@ export async function runTurn(input: AgentTurnInput): Promise<TurnResult> {
           menengah: `Tidak ada data di cache untuk pertanyaan ini (mode replay, 0 kr). Endpoint dicoba: ${attempted}. Opsi: ganti ke mode hybrid/live (butuh kredit Sectors), atau pilih emiten yang sudah tercache.`,
           advanced: `Cache-only mode returned no facts for: ${attempted}. Switch run mode to hybrid/live (Sectors credits required) or use a cached symbol.`,
         }
-      : {
+      : authFailure
+        ? {
+            pemula: `Saya belum bisa mengambil data dari Sectors karena autentikasi gagal — kunci API belum diisi atau tidak valid (401/403, tidak memakai kredit). Isi SECTORS_API_KEY di .env, lalu coba lagi.${slots.unresolved.length ? ` Catatan: ${slots.unresolved.join(", ")} juga belum terpetakan ke emiten IDX.` : ""}`,
+            menengah: `Autentikasi Sectors gagal (401/403, 0 kr). Periksa SECTORS_API_KEY di .env lalu ulangi. Endpoint dicoba: ${attempted}.${slots.unresolved.length ? ` Nama belum terpetakan: ${slots.unresolved.join(", ")}.` : ""}`,
+            advanced: `Sectors auth failed (401/403, free). Set SECTORS_API_KEY and retry. Attempted: ${attempted}.${slots.unresolved.length ? ` Unresolved names: ${slots.unresolved.join(", ")}.` : ""}`,
+          }
+        : {
           pemula: `Data untuk pertanyaan ini belum tersedia dari Sectors (gagal atau kosong). Endpoint yang dicoba: ${attempted}. Sebutkan kode emiten yang valid atau coba lagi nanti.`,
           menengah: `Pengambilan data gagal/kosong. Endpoint dicoba: ${attempted}. Periksa kode emiten atau tanggal, lalu ulangi.`,
           advanced: `No facts retrieved from: ${attempted}. Verify symbol/date or retry; consider smaller windows to stay within endpoint limits.`,

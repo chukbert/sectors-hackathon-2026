@@ -3,6 +3,7 @@ import type { LangMode } from "@/lib/util/format";
 
 export type Slots = {
   symbols: string[];
+  unresolved: string[];
   symbolsFromMemory: boolean;
   indexCode: string | null;
   sectorText: string | null;

@@ -12,6 +12,7 @@ import type { NarratorOutput } from "@/lib/agent/narrator";
 
 const slots = {
   symbols: ["BRMS"],
+  unresolved: [],
   symbolsFromMemory: false,
   indexCode: null,
   sectorText: null,
