@@ -51,6 +51,10 @@ export async function decide(
   if (!res.ok) {
     const body = (await res.text()).slice(0, 300);
     logCall({ ts: new Date().toISOString(), position: meta.position, ok: false, status: res.status, body, latencyMs: Date.now() - started, sessionId: meta.sessionId, turnId: meta.turnId });
+    if ((res.status === 429 || res.status >= 500) && !(meta as { retried?: boolean }).retried) {
+      await new Promise((resolve) => setTimeout(resolve, 1600));
+      return decide(state, questions, { ...meta, retried: true } as typeof meta);
+    }
     throw new JevError(`Jev HTTP ${res.status}: ${body}`);
   }
   const data = (await res.json()) as {

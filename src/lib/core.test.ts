@@ -167,6 +167,14 @@ describe("verifikasi kode", () => {
     const check = codeCitationCheck(narration("Harganya 730 rupiah"), [fact("a", "price", 730)]);
     expect(check.ok).toBe(false);
   });
+  it("mengizinkan tahun tanpa placeholder", () => {
+    const check = codeCitationCheck(narration("Data per penutupan 18 September 2026 menunjukkan harga {{f:a|number}}"), [fact("a", "price", 730)]);
+    expect(check.ok).toBe(true);
+  });
+  it("menangkap persentase mentah", () => {
+    const check = codeCitationCheck(narration("Yield-nya 7,5% tahun ini"), [fact("a", "%", 0.075)]);
+    expect(check.ok).toBe(false);
+  });
   it("menerima placeholder yang valid", () => {
     const check = codeCitationCheck(narration("Harga {{f:a|number}} dan yield {{f:b|percent}}"), [fact("a", "price", 730), fact("b", "%", 0.05)]);
     expect(check.ok).toBe(true);

@@ -43,9 +43,9 @@ export function classifyByRules(question: string, slots: Slots): { level: number
     level = 5;
     reasons.push("perbandingan multi-emiten");
   }
-  if (slots.symbols.length >= 3 && level < 5) {
+  if (slots.symbols.length >= 2 && level < 5) {
     level = 5;
-    reasons.push("≥3 emiten");
+    reasons.push("≥2 emiten → disajikan sejajar");
   }
   if (question.trim().length < 25 && slots.symbols.length === 1 && level < 3) {
     reasons.push("pertanyaan singkat 1 emiten");

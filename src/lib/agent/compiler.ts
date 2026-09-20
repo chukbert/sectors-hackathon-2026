@@ -229,6 +229,74 @@ export function buildSections(slots: Slots, results: ResolveResult[], level: num
       if (revPoints.length > 1) blocks.push({ kind: "series", title: "Revenue kuartalan", unit: "idr", points: revPoints });
     }
 
+    if (group.id === "harga" && slots.symbols.length >= 2) {
+      const dailyBySymbol = new Map<string, Fact[]>();
+      for (const r of results.filter((x) => x.endpoint === "daily")) {
+        const sym = String(r.args.symbol ?? "");
+        dailyBySymbol.set(sym, [...(dailyBySymbol.get(sym) ?? []), ...r.facts]);
+      }
+      if (dailyBySymbol.size >= 2) {
+        const rowSpecs: Array<{ key: string; label: string }> = [
+          { key: "close", label: "Harga penutupan" },
+          { key: "close_change", label: "Perubahan harian" },
+          { key: "market_cap", label: "Kapitalisasi pasar" },
+          { key: "volume", label: "Volume" },
+        ];
+        const symbolsInOrder = slots.symbols.filter((sym) => dailyBySymbol.has(sym));
+        const rows = rowSpecs
+          .map((spec) => ({
+            label: spec.label,
+            cells: symbolsInOrder.map((sym) => {
+              const fact = dailyBySymbol.get(sym)?.find((f) => f.key === spec.key);
+              return fact ? { column: sym, factId: fact.id } : null;
+            }),
+          }))
+          .filter((row) => row.cells.some((c) => c !== null))
+          .map((row) => ({ label: row.label, cells: row.cells.filter((c): c is { column: string; factId: string } => c !== null) }));
+        if (rows.length)
+          blocks.push({
+            kind: "compare",
+            title: `Perbandingan sejajar: ${symbolsInOrder.join(" vs ")}`,
+            columns: symbolsInOrder.map((sym) => ({ key: sym, label: sym })),
+            rows,
+          });
+      }
+    }
+
+    if (group.id === "valuasi" && slots.symbols.length >= 2) {
+      const reportBySymbol = new Map<string, Fact[]>();
+      for (const r of results.filter((x) => x.endpoint === "report")) {
+        const sym = String(r.args.symbol ?? "");
+        reportBySymbol.set(sym, [...(reportBySymbol.get(sym) ?? []), ...r.facts]);
+      }
+      if (reportBySymbol.size >= 2) {
+        const rowSpecs: Array<{ key: string; label: string }> = [
+          { key: "val_pe", label: "PER (tahun terakhir)" },
+          { key: "val_pb", label: "PBV (tahun terakhir)" },
+          { key: "val_pe_peer_avg", label: "PER rata-rata peers" },
+          { key: "div_yield_ttm", label: "Yield dividen (TTM)" },
+        ];
+        const symbolsInOrder = slots.symbols.filter((sym) => reportBySymbol.has(sym));
+        const rows = rowSpecs
+          .map((spec) => ({
+            label: spec.label,
+            cells: symbolsInOrder.map((sym) => {
+              const fact = reportBySymbol.get(sym)?.find((f) => f.key === spec.key);
+              return fact ? { column: sym, factId: fact.id } : null;
+            }),
+          }))
+          .filter((row) => row.cells.some((c) => c !== null))
+          .map((row) => ({ label: row.label, cells: row.cells.filter((c): c is { column: string; factId: string } => c !== null) }));
+        if (rows.length)
+          blocks.push({
+            kind: "compare",
+            title: `Valuasi sejajar: ${symbolsInOrder.join(" vs ")}`,
+            columns: symbolsInOrder.map((sym) => ({ key: sym, label: sym })),
+            rows,
+          });
+      }
+    }
+
     const topBuyers = results.find((r) => r.endpoint === "broker-summary-top");
     if (topBuyers) {
       const b = topBuyers.facts.find((f) => f.key === "buyer_value");

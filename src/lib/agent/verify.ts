@@ -62,7 +62,11 @@ export function codeCitationCheck(narration: NarratorOutput, facts: Fact[]): { o
       if (!allowed.includes(fmt)) bad.push(`${id}:${fmt}!=>${unit}`);
     }
   }
-  const inlineNumbers = texts.filter((t) => /(^|[^\w{])(\d{3,}|\d+[.,]\d+)(?![\w}])/.test(t.replace(/\{\{[^}]+\}\}/g, "")));
+  const inlineNumbers = texts.filter((t) => {
+    const withoutPlaceholders = t.replace(/\{\{[^}]+\}\}/g, " ");
+    const withoutYears = withoutPlaceholders.replace(/\b(19|20)\d{2}\b/g, " ");
+    return /\d+[.,]\d+|\d{1,3}\s?%|\b\d{3,}\b/.test(withoutYears);
+  });
   return { ok: bad.length === 0 && inlineNumbers.length === 0, bad: [...bad, ...inlineNumbers.map(() => "angka-mentah")] };
 }
 
@@ -187,7 +191,8 @@ export async function verifyNarration(input: VerifyInput, sections: SectionFacts
       degraded: narration.degraded || !recheck.ok,
     };
   } catch (err) {
-    traces.push({ position: "verifier", model: "fallback", outcome: `gagal: ${err instanceof Error ? err.message.slice(0, 80) : "error"}`, confidence: 0, costUsd: 0 });
+    const message = err instanceof Error ? err.message.slice(0, 120) : "error";
+    traces.push({ position: "verifier", model: "fallback", outcome: `gagal: ${message}`, confidence: 0, costUsd: 0 });
     const complianceOk = compliance.ok;
     let safeNarration = narration;
     if (!complianceOk) {
@@ -197,6 +202,11 @@ export async function verifyNarration(input: VerifyInput, sections: SectionFacts
         degraded: true,
       };
       safeNarration = narration;
+    } else {
+      safeNarration = {
+        ...narration,
+        assumptions: [...narration.assumptions, `Verifikasi semantik Jev tidak tersedia pada turn ini (${message}); cek sitasi berbasis kode tetap dijalankan.`],
+      };
     }
     return {
       narration: safeNarration,
@@ -204,7 +214,7 @@ export async function verifyNarration(input: VerifyInput, sections: SectionFacts
       citationsOk: citations.ok,
       complianceOk,
       repairedSections: [],
-      degraded: true,
+      degraded: safeNarration.degraded,
     };
   }
 }

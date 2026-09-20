@@ -22,7 +22,8 @@ export function domainFor(level: number, slots: Slots): Domain {
   return "harga";
 }
 
-function levelPlan(level: number, slots: Slots): PlanStep[] {
+function levelPlan(level: number, slots: Slots, question: string): PlanStep[] {
+  const wantsDeep = /fundamental|valuasi|kinerja|sehat|banding|vs\b|per\b|pbv|roe|margin|dividen|laba|revenue|tumbuh|tren|likuid|risiko/i.test(question);
   const sym = slots.symbols[0];
   const symbols = slots.symbols;
   const days = slots.periodDays ?? (level >= 4 ? 90 : 30);
@@ -73,10 +74,16 @@ function levelPlan(level: number, slots: Slots): PlanStep[] {
       break;
     case 5: {
       for (const s of symbols.slice(0, 4)) {
-        steps.push(step("daily", { symbol: s, ...daysStr }, `Tren harga ${s}`, 1));
-        steps.push(step("report", { symbol: s, sections: ["valuation", "financials"] }, `Valuasi & fundamental ${s}`, 1));
+        steps.push(step("daily", { symbol: s, ...daysStr }, `Harga & market cap ${s}`, 1));
       }
-      for (const s of symbols.slice(0, 4)) steps.push(step("quarterly", { symbol: s, n_quarters: 4 }, `Kinerja kuartalan ${s}`, 2, true));
+      if (wantsDeep || symbols.length <= 2) {
+        for (const s of symbols.slice(0, 4)) {
+          steps.push(step("report", { symbol: s, sections: wantsDeep ? ["valuation", "financials"] : ["valuation"] }, `Valuasi ${s}`, 2));
+        }
+      }
+      if (wantsDeep) {
+        for (const s of symbols.slice(0, 4)) steps.push(step("quarterly", { symbol: s, n_quarters: 4 }, `Kinerja kuartalan ${s}`, 3, true));
+      }
       break;
     }
     case 6:
@@ -137,7 +144,7 @@ export async function planTurn(params: {
   const { level, slots, question } = params;
   const notes: string[] = [];
   const domain = domainFor(level, slots);
-  let steps = levelPlan(level, slots);
+  let steps = levelPlan(level, slots, question);
 
   if (steps.length === 0) {
     try {
@@ -152,7 +159,7 @@ export async function planTurn(params: {
       notes.push(`rute capability: ${chosen.join(", ")} (${data.reason.slice(0, 120)})`);
     } catch {
       notes.push("rute capability gagal; fallback ke topik pasar");
-      steps = levelPlan(3, slots);
+      steps = levelPlan(3, slots, question);
     }
   }
 

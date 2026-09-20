@@ -1,6 +1,6 @@
 import { config } from "@/lib/config";
 import { canonicalKey } from "@/lib/util/ids";
-import { todayJakarta } from "@/lib/util/time";
+import { setApiToday, todayJakarta } from "@/lib/util/time";
 import {
   getCache,
   getMode,
@@ -163,6 +163,23 @@ function findSliceCandidate(def: EndpointDef, args: Record<string, unknown>): { 
     }
   }
   return loose;
+}
+
+function clampArgs(args: Record<string, unknown>, today: string): Record<string, unknown> | null {
+  const out = { ...args };
+  let changed = false;
+  for (const key of ["end", "date"]) {
+    const value = out[key];
+    if (typeof value === "string" && value > today) {
+      out[key] = today;
+      changed = true;
+    }
+  }
+  if (typeof out.start === "string" && typeof out.end === "string" && out.start > out.end) {
+    out.start = out.end;
+    changed = true;
+  }
+  return changed ? out : null;
 }
 
 function resolveFromSlice(def: EndpointDef, args: Record<string, unknown>, key: string, candidate: { entry: CacheEntry; nearMiss: boolean }, opts: ResolveOptions): ResolveResult {
@@ -349,7 +366,24 @@ export async function resolveEndpoint(endpointId: string, overrides: ResolveOpti
   const slicedCandidate = mode === "hybrid" ? findSliceCandidate(def, args) : null;
   if (slicedCandidate) return resolveFromSlice(def, args, key, slicedCandidate, opts);
 
-  const { status, payload, error, latencyMs } = await fetchLive(def, args);
+  let { status, payload, error, latencyMs } = await fetchLive(def, args);
+  if (status === 400 && error) {
+    const parsed = error.match(/Today is (\d{4}-\d{2}-\d{2})/);
+    if (parsed) {
+      setApiToday(parsed[1]);
+      const adjusted = clampArgs(args, parsed[1]);
+      if (adjusted) {
+        const retry = await fetchLive(def, adjusted);
+        if (retry.status !== null && retry.status >= 200 && retry.status < 300) {
+          Object.assign(args, adjusted);
+          status = retry.status;
+          payload = retry.payload;
+          error = retry.error;
+          latencyMs += retry.latencyMs;
+        }
+      }
+    }
+  }
   const chargedKr = billedCredits(def, args, status);
   const hitId = recordHit({
     endpoint: def.id,

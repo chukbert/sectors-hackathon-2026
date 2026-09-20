@@ -46,16 +46,7 @@ export async function narrate(input: NarratorInput): Promise<NarratorOutput> {
     } catch (err2) {
       const message2 = err2 instanceof Error ? err2.message : String(err2);
       console.warn(`[narrator] percobaan 2 gagal: ${message2}`);
-      const fallbackText = () =>
-        `Data berhasil diambil (${input.sections.map((s) => s.title).join(", ")}), tetapi narasi otomatis gagal dibuat (mode aman). Angka dapat dibaca pada visual di bawah; silakan minta ulang untuk mencoba lagi.`;
-      return {
-        title: input.question.slice(0, 80),
-        conclusion: { pemula: fallbackText(), menengah: fallbackText(), advanced: `Narration failed: ${message2.slice(0, 120)}` },
-        sections: input.sections.map((s) => ({ id: s.id, variants: { pemula: "", menengah: "", advanced: "" }, cites: [] })),
-        assumptions: ["Narasi degraded karena kegagalan LLM; fakta & visual tetap valid."],
-        risks: [],
-        degraded: true,
-      };
+      return templateNarration(input, message2);
     }
   }
 }
@@ -124,8 +115,32 @@ async function narrateOnce(
   };
 }
 
-export function placeholdersIn(text: string): string[] {
-  return [...text.matchAll(PLACEHOLDER)].map((m) => m[1]);
+export function templateNarration(input: NarratorInput, reason: string): NarratorOutput {
+  const ph = (f: Fact) => `{{f:${f.id}|${formatForUnit(f.unit)}}}`;
+  const sections = input.sections.map((s) => {
+    const top = s.facts.slice(0, 4);
+    const list = top.map((f) => `${f.label} = ${ph(f)}`).join("; ");
+    return {
+      id: s.id,
+      variants: {
+        pemula: `${s.title}: ${list}. Angka lengkap dan grafiknya ada di visual bagian ini.`,
+        menengah: `${s.title} (ringkasan data): ${list}. Konteks pembanding dan tren tersedia pada visual terkait.`,
+        advanced: `${s.title}: ${list}. Metode: nilai diambil langsung dari respons Sectors dan dihitung ulang di kode bila turunan; rentang waktu mengikuti jendela permintaan.`,
+      },
+      cites: top.map((f) => f.id),
+    };
+  });
+  const all = input.sections.flatMap((s) => s.facts).slice(0, 3);
+  const concl = all.map((f) => `${f.label} = ${ph(f)}`).join("; ");
+  const text = (tone: string) => `Narasi otomatis tidak tersedia (${tone}), jadi ini ringkasan fakta terverifikasi: ${concl || "lihat visual di bawah"}.`;
+  return {
+    title: input.question.slice(0, 80),
+    conclusion: { pemula: text("mode ringkas"), menengah: text("mode ringkas"), advanced: `${text("ringkas")} Catatan teknis: ${reason.slice(0, 120)}` },
+    sections,
+    assumptions: ["Narasi disusun oleh template kode karena LLM gagal; seluruh angka tetap bersitasi."],
+    risks: [],
+    degraded: true,
+  };
 }
 
 export function resolvePlaceholders(text: string, lookup: (id: string) => Fact | undefined, format: (fact: Fact, mode: "number" | "idr" | "percent" | "per" | "signed" | "text" | "date") => string): string {
