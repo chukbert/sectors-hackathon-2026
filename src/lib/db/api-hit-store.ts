@@ -1,4 +1,7 @@
+import fs from "node:fs";
+import path from "node:path";
 import { gzipSync, gunzipSync } from "node:zlib";
+import { createHash } from "node:crypto";
 import { getDb } from "@/lib/db";
 import { shortId } from "@/lib/util/ids";
 import { config } from "@/lib/config";
@@ -59,30 +62,54 @@ export function recordHit(hit: HitInput): string {
   return id;
 }
 
+const INLINE_LIMIT = 32 * 1024;
+
 export function putCache(entry: CacheEntry): void {
-  const blob = gzipSync(Buffer.from(JSON.stringify(entry.payload), "utf8"));
+  const raw = Buffer.from(JSON.stringify(entry.payload), "utf8");
+  const blob = gzipSync(raw);
+  const payloadSha = createHash("sha256").update(raw).digest("hex");
+  let inline: Buffer | null = blob;
+  let blobPath: string | null = null;
+  if (blob.byteLength > INLINE_LIMIT) {
+    const dir = path.join(config.paths.blobsDir, payloadSha.slice(0, 2));
+    fs.mkdirSync(dir, { recursive: true });
+    blobPath = path.join(dir, `${payloadSha}.json.gz`);
+    if (!fs.existsSync(blobPath)) fs.writeFileSync(blobPath, blob);
+    inline = null;
+  }
   getDb()
     .prepare(
-      `INSERT INTO cache_entries (cache_key, endpoint, args, status, payload, covers_from, covers_to, fetched_at, immutable, ttl_days, hit_id)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `INSERT INTO cache_entries (cache_key, endpoint, args, status, payload, covers_from, covers_to, fetched_at, immutable, ttl_days, hit_id, payload_sha, blob_path, bytes_raw, bytes_stored)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
        ON CONFLICT(cache_key) DO UPDATE SET
          status=excluded.status, payload=excluded.payload, covers_from=excluded.covers_from,
          covers_to=excluded.covers_to, fetched_at=excluded.fetched_at, immutable=excluded.immutable,
-         ttl_days=excluded.ttl_days, hit_id=excluded.hit_id`,
+         ttl_days=excluded.ttl_days, hit_id=excluded.hit_id, payload_sha=excluded.payload_sha,
+         blob_path=excluded.blob_path, bytes_raw=excluded.bytes_raw, bytes_stored=excluded.bytes_stored`,
     )
     .run(
       entry.cacheKey,
       entry.endpoint,
       JSON.stringify(entry.args),
       entry.status,
-      blob,
+      inline,
       entry.coversFrom,
       entry.coversTo,
       entry.fetchedAt,
       entry.immutable ? 1 : 0,
       entry.ttlDays,
       entry.hitId,
+      payloadSha,
+      blobPath,
+      raw.byteLength,
+      blob.byteLength,
     );
+}
+
+export function touchCache(cacheKey: string): void {
+  getDb()
+    .prepare(`UPDATE cache_entries SET hit_count = hit_count + 1, last_used_at = ? WHERE cache_key = ?`)
+    .run(new Date().toISOString(), cacheKey);
 }
 
 export function getCache(cacheKey: string): CacheEntry | null {
@@ -94,7 +121,8 @@ export function getCache(cacheKey: string): CacheEntry | null {
         endpoint: string;
         args: string;
         status: number;
-        payload: Buffer;
+        payload: Buffer | null;
+        blob_path: string | null;
         covers_from: string | null;
         covers_to: string | null;
         fetched_at: string;
@@ -106,7 +134,9 @@ export function getCache(cacheKey: string): CacheEntry | null {
   if (!row) return null;
   let payload: unknown;
   try {
-    payload = JSON.parse(gunzipSync(row.payload).toString("utf8"));
+    const buffer = row.payload ?? (row.blob_path ? fs.readFileSync(row.blob_path) : null);
+    if (!buffer) return null;
+    payload = JSON.parse(gunzipSync(buffer).toString("utf8"));
   } catch {
     return null;
   }

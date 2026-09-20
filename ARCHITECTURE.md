@@ -202,6 +202,14 @@ flowchart TD
 | 6 | **Memory Curator** | tulis fakta/tesis/profil ke `fact_memory` + recall lintas sesi | memory | L6–L10 | Jev #12 + provenance wajib |
 | 7 | **Interactive Guide** | bantu user merumuskan pertanyaan, tempel rumor, jelaskan biaya level | interface | L1–L10 (pra-query) | aturan + template |
 
+### Orkestrasi multi-agent (implementasi 21 Sep 2026)
+
+- **Planner = orkestrator.** Jev membaca pertanyaan sebagai **N intent sekaligus** (satu fan-out call: `intent_<id>` per tipe, multi-label bebas — 1, 2, 3, … intent). Level = kedalaman dari Jev + lompatan minimum bila intent banyak/rumit, dibatasi cap kredit per level.
+- **Satu Agent per intent.** Setiap agent punya resep endpoint sendiri (intent → capability → endpoint), menjalankan resolver **cache-first** (aturan API-HIT-STORE), menyusun bagian visualnya, dan menulis narasi 3 varian untuk bagian itu. Agent berjalan paralel (maks 3 sekaligus) dengan **bagian cap kredit** dari total cap level.
+- **Orkestrator menggabungkan**: fakta (dedupe by factId), bagian (dedupe per judul), bukti (dedupe endpoint+args), biaya (jumlah per agent), lalu **satu verifikasi Jev** atas seluruh narasi gabungan + satu call kesimpulan lintas-agent (fallback: gabungan kesimpulan agent).
+- **Audit tetap satu pintu**: semua panggilan agent (live, cache, irisan, memory, miss) tercatat di `api_hits`; tiap bukti diberi label agent di kolom purpose.
+- Kalau Jev gagal total, pipeline jatuh ke jalur aturan lama sebagai satu agent cadangan (fail-safe, bukan fail-open).
+
 Catatan: **Digest ketersediaan bukan LLM call** — dihasilkan kode dari store (deterministik, 0 kr), lalu disuntik ke prompt. **Narrator menulis 3 varian per jawaban** (placeholder `{{fact:id}}` diisi kode per mode) → toggle bahasa di klien instan, tanpa API/LLM/Jev lagi; satu varian gagal Jev → hanya varian itu di-Repair.
 
 ### Sengaja BUKAN peran LLM

@@ -7,11 +7,12 @@ import {
   isFresh,
   putCache,
   recordHit,
+  touchCache,
   type CacheEntry,
 } from "@/lib/db/api-hit-store";
 import { getDb } from "@/lib/db";
-import { upsertFacts } from "@/lib/db/fact-memory";
-import { ENDPOINT_BY_ID, buildUrl, defaultArgs, estimateCost, type EndpointDef } from "@/lib/sectors/registry";
+import { factsWithLastSeen, upsertFacts } from "@/lib/db/fact-memory";
+import { ENDPOINT_BY_ID, buildUrl, defaultArgs, estimateCost, normalizeArgs, type EndpointDef } from "@/lib/sectors/registry";
 import type { Fact } from "@/lib/facts";
 
 export type ResolveOptions = {
@@ -27,7 +28,7 @@ export type ResolveResult = {
   args: Record<string, unknown>;
   payload: unknown;
   status: number;
-  source: "cache" | "live" | "replay" | "derived" | "miss";
+  source: "cache" | "live" | "replay" | "derived" | "memory" | "miss";
   chargedKr: number;
   hitId: string;
   facts: Fact[];
@@ -182,8 +183,40 @@ function clampArgs(args: Record<string, unknown>, today: string): Record<string,
   return changed ? out : null;
 }
 
+function resolveFromMemory(def: EndpointDef, args: Record<string, unknown>, key: string, opts: ResolveOptions, freshness: { ttlDays: number | null; immutable: boolean }): ResolveResult | null {
+  const hit = factsWithLastSeen(def.id, args);
+  if (!hit || hit.facts.length === 0) return null;
+  if (!freshness.immutable && freshness.ttlDays != null) {
+    const ageMs = Date.now() - Date.parse(hit.lastSeen);
+    if (ageMs > freshness.ttlDays * 86_400_000) return null;
+  }
+  const hitId = recordHit({
+    endpoint: def.id,
+    args,
+    cacheKey: key,
+    status: 200,
+    chargedKr: 0,
+    source: "memory",
+    sessionId: opts.sessionId,
+    turnId: opts.turnId,
+  });
+  return {
+    endpoint: def.id,
+    args,
+    payload: null,
+    status: 200,
+    source: "memory",
+    chargedKr: 0,
+    hitId,
+    facts: hit.facts,
+    fetchedAt: hit.lastSeen,
+    staleWarning: `dari fact memory (terakhir dipakai ${hit.lastSeen.slice(0, 10)})`,
+  };
+}
+
 function resolveFromSlice(def: EndpointDef, args: Record<string, unknown>, key: string, candidate: { entry: CacheEntry; nearMiss: boolean }, opts: ResolveOptions): ResolveResult {
   const sliced = candidate.entry;
+  touchCache(sliced.cacheKey);
   const hitId = recordHit({
     endpoint: def.id,
     args,
@@ -296,7 +329,7 @@ function resolveFromDerived(def: EndpointDef, args: Record<string, unknown>, key
 export async function resolveEndpoint(endpointId: string, overrides: ResolveOptions["extraArgs"] = {}, opts: ResolveOptions = {}): Promise<ResolveResult> {
   const def = ENDPOINT_BY_ID.get(endpointId);
   if (!def) throw new SectorsError(`unknown endpoint ${endpointId}`, null, endpointId);
-  const args = defaultArgs(def, overrides);
+  const args = normalizeArgs(def, defaultArgs(def, overrides));
   for (const [name, spec] of Object.entries(def.params)) {
     if (spec.required && (args[name] === undefined || args[name] === null || args[name] === "")) {
       throw new SectorsError(`missing required param ${name} for ${endpointId}`, null, endpointId);
@@ -314,7 +347,14 @@ export async function resolveEndpoint(endpointId: string, overrides: ResolveOpti
     (mode === "replay" || isFresh(cached)) &&
     !opts.forceLive;
 
+  const memoryFirst = !SLICEABLE.has(def.id);
+  if (memoryFirst) {
+    const earlyMemory = resolveFromMemory(def, args, key, opts, { ttlDays, immutable });
+    if (earlyMemory) return earlyMemory;
+  }
+
   if (useCache) {
+    touchCache(key);
     const hitId = recordHit({
       endpoint: def.id,
       args,
@@ -347,6 +387,8 @@ export async function resolveEndpoint(endpointId: string, overrides: ResolveOpti
     if (derived) return resolveFromDerived(def, args, key, derived, opts);
     const sliced = findSliceCandidate(def, args);
     if (sliced) return resolveFromSlice(def, args, key, sliced, opts);
+    const memory = resolveFromMemory(def, args, key, opts, { ttlDays, immutable });
+    if (memory) return memory;
     const hitId = recordHit({
       endpoint: def.id,
       args,
@@ -365,6 +407,10 @@ export async function resolveEndpoint(endpointId: string, overrides: ResolveOpti
   if (derivedCandidate) return resolveFromDerived(def, args, key, derivedCandidate, opts);
   const slicedCandidate = mode === "hybrid" ? findSliceCandidate(def, args) : null;
   if (slicedCandidate) return resolveFromSlice(def, args, key, slicedCandidate, opts);
+  if (mode === "hybrid") {
+    const memoryOnly = resolveFromMemory(def, args, key, opts, { ttlDays, immutable });
+    if (memoryOnly) return memoryOnly;
+  }
 
   let { status, payload, error, latencyMs } = await fetchLive(def, args);
   if (status === 400 && error) {

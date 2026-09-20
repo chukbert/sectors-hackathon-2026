@@ -85,6 +85,36 @@ export function factsForEndpoint(endpoint: string, args: Record<string, unknown>
   }));
 }
 
+export function factsWithLastSeen(endpoint: string, args: Record<string, unknown>): { facts: Fact[]; lastSeen: string } | null {
+  const rows = getDb()
+    .prepare(`SELECT * FROM fact_memory WHERE endpoint = ? AND args = ? ORDER BY as_of DESC LIMIT 300`)
+    .all(endpoint, JSON.stringify(args)) as Array<{
+    fact_id: string;
+    label: string;
+    value_num: number | null;
+    value_text: string | null;
+    unit: string | null;
+    as_of: string;
+    endpoint: string;
+    args: string;
+    last_seen: string;
+  }>;
+  if (rows.length === 0) return null;
+  const facts: Fact[] = rows.map((r) => ({
+    id: r.fact_id,
+    label: r.label,
+    key: r.label,
+    valueNum: r.value_num ?? undefined,
+    valueText: r.value_text ?? undefined,
+    unit: (r.unit as Fact["unit"]) ?? undefined,
+    asOf: r.as_of,
+    endpoint: r.endpoint,
+    args: JSON.parse(r.args) as Record<string, unknown>,
+  }));
+  const lastSeen = rows.reduce((acc, r) => (r.last_seen > acc ? r.last_seen : acc), rows[0].last_seen);
+  return { facts, lastSeen };
+}
+
 export function factCount(): number {
   const row = getDb().prepare(`SELECT COUNT(*) AS n FROM fact_memory`).get() as { n: number };
   return row.n;

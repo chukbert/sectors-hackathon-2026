@@ -34,13 +34,19 @@ CREATE TABLE IF NOT EXISTS cache_entries (
   endpoint TEXT NOT NULL,
   args TEXT NOT NULL,
   status INTEGER NOT NULL,
-  payload BLOB NOT NULL,
+  payload BLOB,
   covers_from TEXT,
   covers_to TEXT,
   fetched_at TEXT NOT NULL,
   immutable INTEGER NOT NULL DEFAULT 0,
   ttl_days REAL,
-  hit_id TEXT
+  hit_id TEXT,
+  payload_sha TEXT,
+  blob_path TEXT,
+  bytes_raw INTEGER,
+  bytes_stored INTEGER,
+  hit_count INTEGER NOT NULL DEFAULT 0,
+  last_used_at TEXT
 );
 CREATE INDEX IF NOT EXISTS idx_cache_endpoint ON cache_entries(endpoint);
 
@@ -123,6 +129,22 @@ FROM api_hits
 GROUP BY day, session_id;
 `;
 
+function migrate(db: Db): void {
+  const cols = db.prepare(`PRAGMA table_info(cache_entries)`).all() as Array<{ name: string }>;
+  const have = new Set(cols.map((c) => c.name));
+  const add: Array<[string, string]> = [
+    ["payload_sha", "TEXT"],
+    ["blob_path", "TEXT"],
+    ["bytes_raw", "INTEGER"],
+    ["bytes_stored", "INTEGER"],
+    ["hit_count", "INTEGER NOT NULL DEFAULT 0"],
+    ["last_used_at", "TEXT"],
+  ];
+  for (const [name, type] of add) {
+    if (!have.has(name)) db.exec(`ALTER TABLE cache_entries ADD COLUMN ${name} ${type}`);
+  }
+}
+
 function open(): Db {
   fs.mkdirSync(config.paths.dataDir, { recursive: true });
   fs.mkdirSync(config.paths.blobsDir, { recursive: true });
@@ -130,6 +152,7 @@ function open(): Db {
   db.pragma("journal_mode = WAL");
   db.pragma("busy_timeout = 5000");
   db.exec(SCHEMA);
+  migrate(db);
   return db;
 }
 

@@ -1361,6 +1361,24 @@ function brokerSummaryFacts(p: unknown, ctx: ExtractCtx): Fact[] {
 
 export const ENDPOINT_BY_ID = new Map(ENDPOINTS.map((e) => [e.id, e]));
 
+export function normalizeArgs(def: EndpointDef, args: Record<string, unknown>): Record<string, unknown> {
+  const out: Record<string, unknown> = {};
+  for (const [key, value] of Object.entries(args)) {
+    if (value === undefined || value === null || value === "") continue;
+    if (typeof value === "string") {
+      let v = value.trim();
+      if (key === "symbol" || key === "_symbol") v = v.toUpperCase().replace(/\.JK$/i, "");
+      if (key === "index_code" || key === "commodity_name" || key === "sub_sector" || key === "slug" || key === "company" || key === "mine_owner" || key === "contractor") {
+        v = key === "index_code" ? v.toLowerCase() : v;
+      }
+      out[key] = v;
+    } else {
+      out[key] = value;
+    }
+  }
+  return out;
+}
+
 export function buildUrl(def: EndpointDef, args: Record<string, unknown>): string {
   let path = def.path;
   const query = new URLSearchParams();

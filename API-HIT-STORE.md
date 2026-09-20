@@ -160,6 +160,8 @@ LLM mengusulkan panggilan (mis. `GET /v2/broker-summary BBCA 2026-09-08..2026-09
 | 4. Near-miss | window terbuka hanya kurang "hari ini" | jawab dari cache + label "per <tanggal>", tawarkan refresh | 0 kr, refresh = n kr |
 | 5. Miss | benar-benar belum ada | live + cost gate (>6 kr butuh konfirmasi) | n kr |
 
+Catatan implementasi (21 Sep 2026): untuk endpoint **seri** (daily, foreign-flow, index-daily, idx-total, broker-summary/activity, most-traded) payload cache dicek lebih dulu supaya grafik tetap bisa dirender; fact memory dipakai sebagai tingkat 1 untuk endpoint non-seri dan sebagai jaring terakhir sebelum live. Keduanya **0 kr** dan tetap tercatat di `api_hits`.
+
 Contoh nyata:
 - "BBCA berapa?" → memory/cache → **0 kr** (bukan 1 kr).
 - "Laba BBRI 4 tahun" lalu "rata-rata 3 tahun terakhir?" → seri 8 kuartal sudah tersimpan → kode menghitung → **0 kr**.

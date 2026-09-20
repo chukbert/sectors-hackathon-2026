@@ -4,6 +4,9 @@ import { window } from "@/lib/util/time";
 import type { Domain } from "@/lib/config";
 import type { Plan, PlanStep, Slots } from "@/lib/agent/types";
 import { deterministicCapabilities, expandCapability } from "@/lib/agent/tools";
+import { INTENT_BY_ID } from "@/lib/agent/intents";
+import type { IntentHit } from "@/lib/agent/classifier";
+import { stableStringify } from "@/lib/util/ids";
 
 function step(endpoint: string, args: Record<string, unknown>, purpose: string, phase: 1 | 2 | 3, optional = false): PlanStep {
   const def = ENDPOINT_BY_ID.get(endpoint);
@@ -142,16 +145,126 @@ function levelPlan(level: number, slots: Slots, question: string): PlanStep[] {
   return steps;
 }
 
+async function screenerArgsFromQuestion(question: string): Promise<Record<string, unknown>> {
+  try {
+    const { data } = await chatJson<{ where: string; order_by: string; desc: boolean; limit: number }>(
+      [
+        "You convert an Indonesian investor screening request into a Sectors screener query.",
+        "Reply JSON only: {where, order_by, desc, limit}.",
+        "Allowed operators: = != > >= < <= like in, combined with and/or. Use only snake_case Sectors fields such as pe_ttm, pb, roe, der, dividend_yield_ttm, market_cap, revenue, net_income, eps, price, volume.",
+        "Examples: PER di bawah 10 dan kapitalisasi besar -> where: pe_ttm < 10 and market_cap > 10000000000000, order_by: market_cap, desc: true.",
+        "Never invent fields; if unsure use pe_ttm or market_cap.",
+      ].join("\n"),
+      `Request: "${question}"\n\nJSON: {"where": string, "order_by": string, "desc": boolean, "limit": number}`,
+      { temperature: 0, maxTokens: 250, effort: "low" },
+    );
+    const where = typeof data.where === "string" && data.where.trim() ? data.where.trim().slice(0, 200) : "pe_ttm > 0 and pe_ttm < 20";
+    return {
+      where,
+      order_by: typeof data.order_by === "string" && data.order_by.trim() ? data.order_by.trim() : "market_cap",
+      desc: data.desc !== false,
+      limit: Math.min(50, Math.max(5, Number(data.limit) || 10)),
+      include_query_values: true,
+    };
+  } catch {
+    return { where: "pe_ttm > 0 and pe_ttm < 20", order_by: "market_cap", desc: true, limit: 10, include_query_values: true };
+  }
+}
+
+export function planIntent(intent: IntentHit, slots: Slots, question: string): Plan {
+  return planFromIntents([intent], slots, question);
+}
+
+export async function intentPlanWithScreener(intent: IntentHit, slots: Slots, question: string): Promise<Plan> {
+  const plan = planIntent(intent, slots, question);
+  if (intent.id !== "screening") return plan;
+  const args = await screenerArgsFromQuestion(question);
+  const def = ENDPOINT_BY_ID.get("screener");
+  if (!def) return plan;
+  const steps = plan.steps.filter((s) => s.endpoint !== "screener");
+  steps.push({
+    id: `screener:${stableStringify(args)}`,
+    endpoint: "screener",
+    args,
+    purpose: "Screening sesuai kriteria pertanyaan",
+    estCostKr: estimateCost(def, args),
+    phase: 1,
+    optional: false,
+  });
+  return { ...plan, steps, estCostKr: steps.reduce((a, s) => a + s.estCostKr, 0), notes: [...plan.notes, `screener query: ${String(args.where)}`] };
+}
+
+export function planFromIntents(intents: IntentHit[], slots: Slots, question: string): Plan {
+  const days = slots.periodDays ?? 30;
+  const steps: PlanStep[] = [];
+  const seen = new Set<string>();
+  const notes: string[] = [`intent: ${intents.map((i) => `${i.label} (${i.probability.toFixed(2)})`).join(" + ")}`];
+  const symbols = slots.symbols.slice(0, 3);
+  for (const hit of intents) {
+    const def = INTENT_BY_ID.get(hit.id);
+    if (!def) continue;
+    for (const recipe of def.recipe) {
+      const symbolList = symbols.length ? symbols : [undefined];
+      for (const sym of symbolList) {
+        const rawArgs = recipe.args({ sym, symbols, days, slots });
+        const args = Object.fromEntries(Object.entries(rawArgs).filter(([, v]) => v !== undefined));
+        const step = stepFor(def.id, recipe.endpoint, args, recipe.purpose, recipe.phase, recipe.optional ?? false);
+        const key = `${step.endpoint}:${stableStringify(step.args)}`;
+        if (seen.has(key)) continue;
+        seen.add(key);
+        steps.push(step);
+      }
+    }
+  }
+  const estCostKr = steps.reduce((a, s) => a + s.estCostKr, 0);
+  const domain = intents[0]?.domain ?? "harga";
+  return { level: 0, domain, goal: question, steps, estCostKr, notes };
+}
+
+function stepFor(intentId: string, endpoint: string, args: Record<string, unknown>, purpose: string, phase: 1 | 2 | 3, optional: boolean): PlanStep {
+  const def = ENDPOINT_BY_ID.get(endpoint);
+  if (!def) throw new Error(`unknown endpoint in intent ${intentId}: ${endpoint}`);
+  return { id: `${endpoint}:${stableStringify(args)}`, endpoint, args, purpose, estCostKr: estimateCost(def, args), phase, optional };
+}
+
 export async function planTurn(params: {
   level: number;
   slots: Slots;
   question: string;
   memoryDigest: string;
+  intents?: IntentHit[];
 }): Promise<Plan> {
-  const { level, slots, question } = params;
+  const { level, slots, question, intents } = params;
   const notes: string[] = [];
   const domain = domainFor(level, slots);
-  let steps = levelPlan(level, slots, question);
+  let steps: PlanStep[] = [];
+
+  if (intents && intents.length) {
+    const intentPlan = planFromIntents(intents, slots, question);
+    steps = intentPlan.steps;
+    notes.push(...intentPlan.notes);
+    const screener = intents.find((i) => i.id === "screening");
+    if (screener) {
+      const args = await screenerArgsFromQuestion(question);
+      steps = steps.filter((s) => s.endpoint !== "screener");
+      const def = ENDPOINT_BY_ID.get("screener");
+      if (def) {
+        steps.push({
+          id: `screener:${stableStringify(args)}`,
+          endpoint: "screener",
+          args,
+          purpose: "Screening sesuai kriteria pertanyaan",
+          estCostKr: estimateCost(def, args),
+          phase: 1,
+          optional: false,
+        });
+      }
+      notes.push(`screener query: ${String(args.where)}`);
+    }
+    if (steps.length === 0) steps = levelPlan(level, slots, question);
+  } else {
+    steps = levelPlan(level, slots, question);
+  }
 
   if (steps.length === 0) {
     try {

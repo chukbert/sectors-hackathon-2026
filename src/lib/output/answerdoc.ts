@@ -139,6 +139,18 @@ export const answerDocSchema = z.object({
   evidence: z.array(evidenceSchema),
   traces: z.array(traceSchema),
   notes: z.array(z.string()).default([]),
+  agents: z
+    .array(
+      z.object({
+        id: z.string(),
+        label: z.string(),
+        status: z.enum(["ok", "partial", "failed"]),
+        creditsKr: z.number(),
+        facts: z.number(),
+        sections: z.number(),
+      }),
+    )
+    .default([]),
   credits: z.object({ total: z.number(), byEndpoint: z.record(z.string(), z.number()) }),
   verified: z.object({ citations: z.boolean(), compliance: z.boolean(), degraded: z.boolean() }),
   generatedAt: z.string(),

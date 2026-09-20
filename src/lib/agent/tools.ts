@@ -110,8 +110,8 @@ export type GovernedPlan = {
   spendTodayKr: number;
 };
 
-export function govern(plan: Plan, opts: { level: number; allowLive: boolean; spendTodayKr: number }): GovernedPlan {
-  const capKr = LEVEL_CAPS_KR[Math.min(10, Math.max(1, opts.level))] ?? 8;
+export function govern(plan: Plan, opts: { level: number; allowLive: boolean; spendTodayKr: number; capKr?: number }): GovernedPlan {
+  const capKr = opts.capKr ?? LEVEL_CAPS_KR[Math.min(10, Math.max(1, opts.level))] ?? 8;
   const dailyLeft = Math.max(0, config.run.dailyBudgetKr - opts.spendTodayKr);
   let budget = Math.min(capKr, dailyLeft);
   const executable: PlanStep[] = [];

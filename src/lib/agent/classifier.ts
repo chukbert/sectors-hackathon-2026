@@ -1,5 +1,7 @@
-import { decide, choiceOf } from "@/lib/llm/jev";
+import { decide, choiceOf, noulOf } from "@/lib/llm/jev";
 import type { DecisionTrace, Slots } from "@/lib/agent/types";
+import { INTENTS, INTENT_BY_ID, intentQuestions } from "@/lib/agent/intents";
+import type { Domain } from "@/lib/config";
 
 export type LevelVerdict = {
   level: number;
@@ -62,6 +64,146 @@ export function classifyByRules(question: string, slots: Slots): { level: number
     }
   }
   return { level, reasons };
+}
+
+export type IntentHit = { id: string; label: string; domain: Domain; section: string; probability: number };
+
+export type IntentVerdict = {
+  intents: IntentHit[];
+  depth: number | null;
+  wantsRecommendation: boolean;
+  rumor: boolean;
+  inScope: boolean | null;
+  traces: DecisionTrace[];
+  failed: boolean;
+};
+
+const INTENT_THRESHOLD = 0.65;
+const MAX_INTENTS = 4;
+
+export async function detectIntents(
+  question: string,
+  ledgerSummary: string,
+  meta: { sessionId: string; turnId: string },
+): Promise<IntentVerdict> {
+  const traces: DecisionTrace[] = [];
+  const state: Record<string, unknown> = {
+    question,
+    session_ledger: ledgerSummary.slice(-1200),
+    level_definitions: {
+      L1: "single fact lookup",
+      L2: "fact plus meaning",
+      L3: "directed summary",
+      L4: "derived trend",
+      L5: "comparison between entities or many facts side by side",
+      L6: "comprehensive fundamental picture",
+      L7: "claim/rumour verification or advice request",
+      L8: "broker/flow analysis",
+      L9: "valuation & scenarios",
+      L10: "decision-grade dossier",
+    },
+  };
+  try {
+    const res = await decide(
+      state,
+      {
+        ...intentQuestions(),
+        depth: {
+          type: "choice",
+          instructions:
+            "Pick the analysis depth required by `question` given `level_definitions`. If several intents are needed, pick the depth that covers all of them.",
+          criteria: {
+            L1: "One data point only",
+            L2: "One data point plus meaning",
+            L3: "Directed summary of news/calendar/sentiment",
+            L4: "Trend or growth over time",
+            L5: "Side-by-side comparison or several facts from different dimensions",
+            L6: "Full fundamental picture",
+            L7: "Claim verification or advice request",
+            L8: "Broker/flow analysis",
+            L9: "Valuation, scenarios, fair value",
+            L10: "Decision-grade dossier",
+          },
+        },
+        wants_recommendation: { type: "noul", instructions: "The user asks for a buy/sell call, price target, or guaranteed profit." },
+        rumor: { type: "noul", instructions: "The question quotes or implies a claim/rumour about a stock's future performance that needs verification." },
+        in_scope: { type: "noul", instructions: "The question is about Indonesian equities, IDX market data, company fundamentals, ownership, commodities or related financial data. Off-topic chat is NOT in scope." },
+      },
+      { position: "intent_router", sessionId: meta.sessionId, turnId: meta.turnId },
+    );
+
+    const hits: IntentHit[] = [];
+    for (const intent of INTENTS) {
+      const verdict = noulOf(res.answers[`intent_${intent.id}`], false);
+      if (verdict.value && (res.answers[`intent_${intent.id}`] as { noul?: number } | undefined)?.noul !== undefined) {
+        const probability = (res.answers[`intent_${intent.id}`] as { noul: number }).noul;
+        if (probability >= INTENT_THRESHOLD) {
+          hits.push({ id: intent.id, label: intent.label, domain: intent.domain, section: intent.section, probability });
+        }
+      }
+    }
+    hits.sort((a, b) => b.probability - a.probability);
+    if (hits.length === 0) {
+      const fallback = intentFallback();
+      hits.push(fallback);
+    }
+    const intents = hits.slice(0, MAX_INTENTS);
+
+    const picked = choiceOf(res.answers.depth, "L1");
+    const parsed = Number(picked.value.replace(/[^0-9]/g, ""));
+    const depth = Number.isFinite(parsed) && parsed >= 1 && parsed <= 10 && picked.confidence >= 0.5 ? parsed : null;
+    const recommendation = noulOf(res.answers.wants_recommendation, false);
+    const rumor = noulOf(res.answers.rumor, false);
+    const scope = noulOf(res.answers.in_scope, true);
+
+    traces.push({
+      position: "intent_router",
+      model: res.model,
+      outcome: `intents: ${intents.map((i) => `${i.id}(${i.probability.toFixed(2)})`).join(", ")} | depth ${picked.value} (conf ${picked.confidence.toFixed(2)})`,
+      confidence: picked.confidence,
+      costUsd: res.costUsd,
+    });
+
+    return {
+      intents,
+      depth,
+      wantsRecommendation: recommendation.value,
+      rumor: rumor.value,
+      inScope: (res.answers.in_scope as { noul?: number } | undefined)?.noul !== undefined ? scope.value : null,
+      traces,
+      failed: false,
+    };
+  } catch (err) {
+    traces.push({
+      position: "intent_router",
+      model: "fallback",
+      outcome: `gagal: ${err instanceof Error ? err.message.slice(0, 100) : "error"}`,
+      confidence: 0,
+      costUsd: 0,
+    });
+    return { intents: [intentFallback()], depth: null, wantsRecommendation: false, rumor: false, inScope: null, traces, failed: true };
+  }
+}
+
+function intentFallback(): IntentHit {
+  const intent = INTENT_BY_ID.get("pasar_umum") ?? INTENTS[0];
+  return { id: intent.id, label: intent.label, domain: intent.domain, section: intent.section, probability: 0.3 };
+}
+
+export function composeLevel(intents: IntentHit[], depth: number | null, rumor: boolean, wantsRecommendation: boolean): number {
+  const deepIntent = intents.some((i) => ["valuasi", "fundamental", "verifikasi_klaim", "kepemilikan"].includes(i.id));
+  const screenerOnly = intents.length > 0 && intents.every((i) => ["screening", "top_movers"].includes(i.id));
+  let level = Math.max(depth ?? 1, 2 + (intents.length - 1) * 2);
+  if (intents.length >= 3 || deepIntent) level = Math.max(level, 6);
+  if (intents.some((i) => ["bandarmologi", "aliran_asing"].includes(i.id))) level = Math.max(level, 8);
+  if (rumor || wantsRecommendation) level = Math.max(level, 7);
+  if (screenerOnly) level = Math.min(level, 5);
+  return Math.min(10, Math.max(1, level));
+}
+
+export function domainLabel(intents: IntentHit[]): string {
+  const domains = [...new Set(intents.map((i) => i.domain))];
+  return domains.length ? domains.join("+") : "harga";
 }
 
 export function appliedScreenerCap(question: string): boolean {
