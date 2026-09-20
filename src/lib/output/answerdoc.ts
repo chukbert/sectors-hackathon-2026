@@ -30,6 +30,8 @@ const series = z.object({
   unit: z.enum(["price", "idr", "volume", "percent", "count"]),
   points: z.array(z.object({ date: z.string(), value: z.number() })),
   factId: z.string().optional(),
+  hi: z.number().optional(),
+  lo: z.number().optional(),
 });
 
 const compare = z.object({
@@ -96,7 +98,42 @@ const note = z.object({
   text: z.string(),
 });
 
-export const blockSchema = z.discriminatedUnion("kind", [narrative, metricRow, series, compare, table, news, calendar, flow, scenarios, distribution, definition, note]);
+const heroCard = z.object({
+  label: z.string(),
+  factId: z.string(),
+  deltaFactId: z.string().optional(),
+  viz: z.enum(["sparkline", "donut", "minibars", "none"]).default("none"),
+  points: z.array(z.object({ date: z.string(), value: z.number() })).default([]),
+  parts: z.array(z.object({ label: z.string(), value: z.number() })).default([]),
+});
+
+const hero = z.object({
+  kind: z.literal("hero"),
+  items: z.array(heroCard),
+});
+
+const shareDonut = z.object({
+  kind: z.literal("share_donut"),
+  title: z.string(),
+  factId: z.string().optional(),
+  parts: z.array(z.object({ label: z.string(), value: z.number(), color: z.string().optional() })),
+});
+
+const brokerTornado = z.object({
+  kind: z.literal("broker_tornado"),
+  title: z.string(),
+  factId: z.string().optional(),
+  buyers: z.array(z.object({ code: z.string(), value: z.number() })),
+  sellers: z.array(z.object({ code: z.string(), value: z.number() })),
+});
+
+const caveats = z.object({
+  kind: z.literal("caveats"),
+  title: z.string(),
+  items: z.array(z.object({ tone: z.enum(["asumsi", "risiko", "limit"]), text: z.string() })),
+});
+
+export const blockSchema = z.discriminatedUnion("kind", [narrative, metricRow, series, compare, table, news, calendar, flow, scenarios, distribution, definition, note, hero, shareDonut, brokerTornado, caveats]);
 export type Block = z.infer<typeof blockSchema>;
 
 export const sectionSchema = z.object({

@@ -8,6 +8,7 @@ import { verifyNarration, codeComplianceCheck } from "@/lib/agent/verify";
 import type { NarratorOutput } from "@/lib/agent/narrator";
 import { chatJson } from "@/lib/llm/openrouter";
 import { answerDocSchema, type AnswerDoc, type Block, type Evidence, type Section } from "@/lib/output/answerdoc";
+import { buildHero } from "@/lib/output/report";
 import { appendTurn, latestAnswedoc, ledgerLines, memoryDigest, nextSeq, putMemory, updateSessionLevelMax } from "@/lib/db/session-store";
 import { langMode } from "@/lib/util/format";
 import { shortId, stableStringify } from "@/lib/util/ids";
@@ -256,6 +257,8 @@ export async function runTurn(input: AgentTurnInput): Promise<TurnResult> {
   const seenRef = new Set<string>();
   const uniqueRefs = factRefs.filter((r) => (seenRef.has(r.id) ? false : (seenRef.add(r.id), true)));
 
+  const heroBlock = buildHero(mergedFacts, slots.symbols[0]);
+
   const sectionFactsResolved = sections.map((s) => {
     for (const agent of agentResults) {
       const group = agent.compiled.bySection.get(s.id);
@@ -344,9 +347,14 @@ export async function runTurn(input: AgentTurnInput): Promise<TurnResult> {
       ];
     }
     conclusion = verification.narration.conclusion;
-    const assumptionsRisks = [...verification.narration.assumptions.map((a) => `Asumsi: ${a}`), ...verification.narration.risks.map((r) => `Risiko: ${r}`)].join(" ");
-    if (assumptionsRisks) finalSections = [...finalSections, { id: "catatan", title: "Asumsi & risiko", blocks: [{ kind: "note", tone: "warning", text: assumptionsRisks }] }];
+    const caveatItems = [
+      ...verification.narration.assumptions.map((a) => ({ tone: "asumsi" as const, text: a })),
+      ...verification.narration.risks.map((r) => ({ tone: "risiko" as const, text: r })),
+    ];
+    if (caveatItems.length) finalSections = [...finalSections, { id: "catatan", title: "Asumsi & risiko", blocks: [{ kind: "caveats", title: "Asumsi & Risiko", items: caveatItems }] }];
   }
+
+  if (heroBlock) finalSections = [{ id: "hero", title: "Ringkasan", blocks: [heroBlock] }, ...finalSections];
 
   const creditsByEndpoint: Record<string, number> = {};
   for (const e of evidence) creditsByEndpoint[e.endpoint] = (creditsByEndpoint[e.endpoint] ?? 0) + e.chargedKr;

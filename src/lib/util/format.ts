@@ -41,3 +41,27 @@ export function formatSigned(value: number, mode: LangMode = "menengah"): string
   const s = formatNumber(Math.abs(value), mode);
   return value > 0 ? `+${s}` : value < 0 ? `-${s}` : "0";
 }
+
+export function formatCompact(value: number, mode: LangMode = "menengah"): string {
+  const abs = Math.abs(value);
+  const sign = value < 0 ? "-" : "";
+  if (abs >= 1e12) return `${sign}${formatNumber(abs / 1e12, mode)} T`;
+  if (abs >= 1e9) return `${sign}${formatNumber(abs / 1e9, mode)} M`;
+  if (abs >= 1e6) return `${sign}${formatNumber(abs / 1e6, mode)} jt`;
+  if (abs >= 1e3) return `${sign}${formatNumber(abs / 1e3, mode)} rb`;
+  return `${sign}${formatNumber(abs, mode)}`;
+}
+
+export function formatDateId(iso: string | undefined): string {
+  if (!iso) return "";
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return iso;
+  return new Intl.DateTimeFormat("id-ID", { day: "2-digit", month: "short", year: "numeric" }).format(d);
+}
+
+export type Tone = "pos" | "neg" | "neu";
+
+export function signedTone(value: number | undefined): Tone {
+  if (value === undefined || !Number.isFinite(value) || value === 0) return "neu";
+  return value > 0 ? "pos" : "neg";
+}

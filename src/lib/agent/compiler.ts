@@ -205,11 +205,14 @@ export function buildSections(slots: Slots, results: ResolveResult[], level: num
   const factRefs = allFacts.map(toFactRef);
   const sections: Section[] = [];
 
+  const res = (endpoint: string) => results.filter((r) => r.endpoint === endpoint);
+  const factNum = (endpoint: string, key: string) => facts.find((f) => f.endpoint === endpoint && f.key === key && f.valueNum !== undefined)?.valueNum;
+
   for (const group of sectionOrder) {
     const groupFacts = facts.filter((f) => group.endpoints.includes(f.endpoint));
     const derivedForGroup = derived.filter((d) => {
       if (group.id === "fundamental" && d.key.startsWith("derived_") && (d.key.includes("margin") || d.key.includes("turnover") || d.key.includes("revenue"))) return true;
-      if (group.id === "valuasi" && d.key.includes("pe") ) return true;
+      if (group.id === "valuasi" && d.key.includes("pe")) return true;
       if (group.id === "aliran" && d.key.includes("broker")) return true;
       if (group.id === "dividen" && d.key.includes("payout")) return true;
       return false;
@@ -219,34 +222,171 @@ export function buildSections(slots: Slots, results: ResolveResult[], level: num
 
     const blocks: Section["blocks"] = [];
 
-    const bySource = (endpoint: string) => results.filter((r) => r.endpoint === endpoint);
-    const daily = bySource("daily");
-    const ff = bySource("foreign-flow");
-    const idx = bySource("index-daily");
-    const quarterly = bySource("quarterly");
+    if (group.id === "harga") {
+      const daily = res("daily");
+      if (daily.length && slots.symbols.length <= 1) {
+        const rows = daily.flatMap((r) => r.facts.filter((f) => f.key === "close_pt" && f.valueNum !== undefined).map((f) => ({ date: f.asOf, value: f.valueNum as number })));
+        if (rows.length > 1)
+          blocks.push({
+            kind: "series",
+            title: `Harga penutupan ${slots.symbols[0] ?? ""}`.trim(),
+            unit: "price",
+            points: rows,
+            factId: daily[0].facts.find((f) => f.key === "close")?.id,
+            hi: factNum("daily", "high_window"),
+            lo: factNum("daily", "low_window"),
+          });
+      }
+      const idx = res("index-daily");
+      if (idx.length) {
+        const rows = idx.flatMap((r) => r.facts.filter((f) => f.key === "level_pt" && f.valueNum !== undefined).map((f) => ({ date: f.asOf, value: f.valueNum as number })));
+        if (rows.length > 1) blocks.push({ kind: "series", title: `Level ${String(idx[0].args.index_code).toUpperCase()}`, unit: "price", points: rows });
+      }
+      const topChanges = res("top-changes");
+      if (topChanges.length) {
+        const rows = topChanges
+          .flatMap((r) => r.facts)
+          .filter((f) => f.key.endsWith("_lead") && f.valueNum !== undefined)
+          .map((f) => [f.label, "", `${(f.valueNum as number) * 100 > 0 ? "+" : ""}${((f.valueNum as number) * 100).toFixed(2)}%`]);
+        if (rows.length) blocks.push({ kind: "table", title: "Pergerakan teratas", columns: ["Emiten", "Klasifikasi", "Perubahan"], rows });
+      }
+    }
 
-    if (daily.length) {
-      const rows = daily.flatMap((r) => r.facts.filter((f) => f.key === "close" && f.valueNum !== undefined).map((f) => ({ date: f.asOf, value: f.valueNum as number })));
-      if (rows.length > 1) blocks.push({ kind: "series", title: `Harga penutupan ${slots.symbols.join(", ")}`, unit: "price", points: rows, factId: daily[0].facts.find((f) => f.key === "close")?.id });
+    if (group.id === "aliran") {
+      const ff = res("foreign-flow");
+      if (ff.length) {
+        const rows = ff.flatMap((r) => r.facts.filter((f) => f.key === "net_pt" && f.valueNum !== undefined).map((f) => ({ date: f.asOf, value: f.valueNum as number })));
+        if (rows.length > 1) blocks.push({ kind: "series", title: "Net foreign flow harian", unit: "idr", points: rows });
+      }
+      const bt = res("broker-summary-top")[0];
+      if (bt) {
+        const buyers = bt.facts
+          .filter((f) => f.key.startsWith("buyer_") && f.key !== "buyer_list" && f.key !== "buyer_value" && f.valueNum !== undefined)
+          .map((f) => ({ code: f.key.slice(6), value: f.valueNum as number }));
+        const sellers = bt.facts
+          .filter((f) => f.key.startsWith("seller_") && f.key !== "seller_list" && f.key !== "seller_value" && f.valueNum !== undefined)
+          .map((f) => ({ code: f.key.slice(7), value: Math.abs(f.valueNum as number) }));
+        const bv = bt.facts.find((f) => f.key === "buyer_value");
+        const sv = bt.facts.find((f) => f.key === "seller_value");
+        const bFinal = buyers.length ? buyers : bv?.valueNum !== undefined ? [{ code: "Buy", value: bv.valueNum }] : [];
+        const sFinal = sellers.length ? sellers : sv?.valueNum !== undefined ? [{ code: "Sell", value: Math.abs(sv.valueNum) }] : [];
+        if (bFinal.length || sFinal.length)
+          blocks.push({ kind: "broker_tornado", title: `Top broker ${slots.symbols[0] ?? "emiten"}`, buyers: bFinal, sellers: sFinal, factId: bv?.id ?? sv?.id });
+      }
     }
-    if (idx.length) {
-      const rows = idx.flatMap((r) => r.facts.filter((f) => f.key === "level" && f.valueNum !== undefined).map((f) => ({ date: f.asOf, value: f.valueNum as number })));
-      if (rows.length > 1) blocks.push({ kind: "series", title: `Level ${String(idx[0].args.index_code).toUpperCase()}`, unit: "price", points: rows });
+
+    if (group.id === "fundamental") {
+      const quarterly = res("quarterly");
+      if (quarterly.length) {
+        const revPoints = quarterly
+          .flatMap((r) => r.facts.filter((f) => f.key === "revenue" && f.valueNum !== undefined).map((f) => ({ date: f.asOf, value: f.valueNum as number })))
+          .sort((a, b) => a.date.localeCompare(b.date));
+        if (revPoints.length > 1) blocks.push({ kind: "series", title: "Revenue kuartalan", unit: "idr", points: revPoints });
+      }
+      const foreign = facts.find((f) => f.endpoint === "shareholders" && f.key === "foreign_pct" && f.valueNum !== undefined);
+      const local = facts.find((f) => f.endpoint === "shareholders" && f.key === "local_pct" && f.valueNum !== undefined);
+      if (foreign?.valueNum !== undefined) {
+        const parts = [{ label: "Asing", value: foreign.valueNum }];
+        if (local?.valueNum !== undefined) parts.push({ label: "Lokal", value: local.valueNum });
+        const rest = 1 - foreign.valueNum - (local?.valueNum ?? 0);
+        if (rest > 0.02) parts.push({ label: "Free float", value: rest });
+        blocks.push({ kind: "share_donut", title: `Komposisi kepemilikan ${slots.symbols[0] ?? ""}`.trim(), parts, factId: foreign.id });
+      }
     }
-    if (ff.length) {
-      const rows = ff.flatMap((r) => r.facts.filter((f) => f.key === "net_last" && f.valueNum !== undefined).map((f) => ({ date: f.asOf, value: f.valueNum as number })));
-      if (rows.length > 1) blocks.push({ kind: "series", title: "Net foreign flow harian", unit: "idr", points: rows });
+
+    if (group.id === "berita") {
+      const newsResults = res("news");
+      if (newsResults.length) {
+        const items = newsResults.flatMap((r) =>
+          r.facts
+            .filter((f) => f.key.startsWith("headline"))
+            .slice(0, 6)
+            .map((f) => ({ title: f.valueText ?? f.label, date: f.asOf, source: undefined, symbols: slots.symbols.slice(0, 1), factId: f.id })),
+        );
+        if (items.length) blocks.push({ kind: "news", title: "Berita terbaru", items });
+      }
+      const filings = res("filings");
+      if (filings.length) {
+        const buys = filings.flatMap((r) => r.facts.filter((f) => f.key === "buy_count"));
+        const sells = filings.flatMap((r) => r.facts.filter((f) => f.key === "sell_count"));
+        if (buys.length && sells.length)
+          blocks.push({ kind: "metric_row", items: [{ label: "Filing beli", factId: buys[0].id }, { label: "Filing jual", factId: sells[0].id }] });
+      }
     }
-    if (quarterly.length) {
-      const revPoints = quarterly
-        .flatMap((r) => r.facts.filter((f) => f.key === "revenue" && f.valueNum !== undefined).map((f) => ({ date: f.asOf, value: f.valueNum as number })))
-        .sort((a, b) => a.date.localeCompare(b.date));
-      if (revPoints.length > 1) blocks.push({ kind: "series", title: "Revenue kuartalan", unit: "idr", points: revPoints });
+
+    if (group.id === "dividen") {
+      const caResults = results.filter((r) => r.endpoint === "corporate-actions" || r.endpoint === "corporate-actions-symbol");
+      if (caResults.length) {
+        const events = caResults.flatMap((r) =>
+          r.facts
+            .filter((f) => f.key.startsWith("next_") || f.key === "last_dividend")
+            .map((f) => ({ date: f.asOf, label: f.label, symbol: slots.symbols[0], type: f.key.split("_")[0] })),
+        );
+        if (events.length) blocks.push({ kind: "calendar", title: "Agenda & aksi korporasi", events });
+      }
+    }
+
+    if (group.id === "valuasi") {
+      if (slots.symbols.length >= 2) {
+        const reportBySymbol = new Map<string, Fact[]>();
+        for (const r of res("report")) {
+          const sym = String(r.args.symbol ?? "");
+          reportBySymbol.set(sym, [...(reportBySymbol.get(sym) ?? []), ...r.facts]);
+        }
+        if (reportBySymbol.size >= 2) {
+          const rowSpecs: Array<{ key: string; label: string }> = [
+            { key: "val_pe", label: "PER (tahun terakhir)" },
+            { key: "val_pb", label: "PBV (tahun terakhir)" },
+            { key: "val_pe_peer_avg", label: "PER rata-rata peers" },
+            { key: "div_yield_ttm", label: "Yield dividen (TTM)" },
+          ];
+          const symbolsInOrder = slots.symbols.filter((sym) => reportBySymbol.has(sym));
+          const rows = rowSpecs
+            .map((spec) => ({
+              label: spec.label,
+              cells: symbolsInOrder.map((sym) => {
+                const fact = reportBySymbol.get(sym)?.find((f) => f.key === spec.key);
+                return fact ? { column: sym, factId: fact.id } : null;
+              }),
+            }))
+            .filter((row) => row.cells.some((c) => c !== null))
+            .map((row) => ({ label: row.label, cells: row.cells.filter((c): c is { column: string; factId: string } => c !== null) }));
+          if (rows.length) blocks.push({ kind: "compare", title: `Valuasi sejajar: ${symbolsInOrder.join(" vs ")}`, columns: symbolsInOrder.map((sym) => ({ key: sym, label: sym })), rows });
+        }
+      }
+      const screener = res("screener")[0];
+      if (screener) {
+        const rows = screener.facts
+          .filter((f) => f.key.startsWith("row") && f.valueNum !== undefined)
+          .map((f) => [f.label.split(" — ")[0], f.label.split(" — ")[1] ?? "", String(f.valueNum)]);
+        if (rows.length) blocks.push({ kind: "table", title: "Hasil screener (top 5)", columns: ["Emiten", "Metrik", "Nilai"], rows });
+      }
+    }
+
+    if (group.id === "komoditas") {
+      const mining = res("mining-price")[0];
+      if (mining) {
+        const pts = seriesFrom(mining.facts, "mining-price", "price");
+        if (pts.length) blocks.push({ kind: "series", title: "Harga komoditas (USD/ton)", unit: "price", points: pts });
+      }
+      const licenses = res("mining-licenses")[0];
+      if (licenses) {
+        const note = licenses.facts.find((f) => f.key === "next_expiry");
+        if (note?.valueText) blocks.push({ kind: "note", tone: "warning", text: `${note.label} — ${note.valueText}` });
+      }
+    }
+
+    if (group.id === "pasar") {
+      const mostTraded = res("most-traded")[0];
+      if (mostTraded) {
+        const t = mostTraded.facts.find((f) => f.key === "top_symbol");
+        if (t?.valueText) blocks.push({ kind: "note", tone: "info", text: `Konteks pasar — paling ramai hari ini: ${t.valueText}` });
+      }
     }
 
     if (group.id === "harga" && slots.symbols.length >= 2) {
       const dailyBySymbol = new Map<string, Fact[]>();
-      for (const r of results.filter((x) => x.endpoint === "daily")) {
+      for (const r of res("daily")) {
         const sym = String(r.args.symbol ?? "");
         dailyBySymbol.set(sym, [...(dailyBySymbol.get(sym) ?? []), ...r.facts]);
       }
@@ -268,129 +408,8 @@ export function buildSections(slots: Slots, results: ResolveResult[], level: num
           }))
           .filter((row) => row.cells.some((c) => c !== null))
           .map((row) => ({ label: row.label, cells: row.cells.filter((c): c is { column: string; factId: string } => c !== null) }));
-        if (rows.length)
-          blocks.push({
-            kind: "compare",
-            title: `Perbandingan sejajar: ${symbolsInOrder.join(" vs ")}`,
-            columns: symbolsInOrder.map((sym) => ({ key: sym, label: sym })),
-            rows,
-          });
+        if (rows.length) blocks.push({ kind: "compare", title: `Perbandingan sejajar: ${symbolsInOrder.join(" vs ")}`, columns: symbolsInOrder.map((sym) => ({ key: sym, label: sym })), rows });
       }
-    }
-
-    if (group.id === "valuasi" && slots.symbols.length >= 2) {
-      const reportBySymbol = new Map<string, Fact[]>();
-      for (const r of results.filter((x) => x.endpoint === "report")) {
-        const sym = String(r.args.symbol ?? "");
-        reportBySymbol.set(sym, [...(reportBySymbol.get(sym) ?? []), ...r.facts]);
-      }
-      if (reportBySymbol.size >= 2) {
-        const rowSpecs: Array<{ key: string; label: string }> = [
-          { key: "val_pe", label: "PER (tahun terakhir)" },
-          { key: "val_pb", label: "PBV (tahun terakhir)" },
-          { key: "val_pe_peer_avg", label: "PER rata-rata peers" },
-          { key: "div_yield_ttm", label: "Yield dividen (TTM)" },
-        ];
-        const symbolsInOrder = slots.symbols.filter((sym) => reportBySymbol.has(sym));
-        const rows = rowSpecs
-          .map((spec) => ({
-            label: spec.label,
-            cells: symbolsInOrder.map((sym) => {
-              const fact = reportBySymbol.get(sym)?.find((f) => f.key === spec.key);
-              return fact ? { column: sym, factId: fact.id } : null;
-            }),
-          }))
-          .filter((row) => row.cells.some((c) => c !== null))
-          .map((row) => ({ label: row.label, cells: row.cells.filter((c): c is { column: string; factId: string } => c !== null) }));
-        if (rows.length)
-          blocks.push({
-            kind: "compare",
-            title: `Valuasi sejajar: ${symbolsInOrder.join(" vs ")}`,
-            columns: symbolsInOrder.map((sym) => ({ key: sym, label: sym })),
-            rows,
-          });
-      }
-    }
-
-    const topBuyers = results.find((r) => r.endpoint === "broker-summary-top");
-    if (topBuyers) {
-      const b = topBuyers.facts.find((f) => f.key === "buyer_value");
-      const s = topBuyers.facts.find((f) => f.key === "seller_value");
-      const bars: Array<{ label: string; value: number }> = [];
-      if (b?.valueNum !== undefined) bars.push({ label: "Top buyer (net)", value: b.valueNum });
-      if (s?.valueNum !== undefined) bars.push({ label: "Top seller (net)", value: s.valueNum });
-      if (bars.length) blocks.push({ kind: "distribution", title: `Dominasi sisi ${slots.symbols[0] ?? "emiten"}`, unit: "idr", bars });
-      const buyers = topBuyers.facts.find((f) => f.key === "buyer_list")?.valueText;
-      if (buyers) blocks.push({ kind: "note", tone: "info", text: `Top buyer: ${buyers}` });
-    }
-
-    const newsResults = bySource("news");
-    if (newsResults.length) {
-      const items = newsResults.flatMap((r) =>
-        r.facts
-          .filter((f) => f.key.startsWith("headline"))
-          .slice(0, 6)
-          .map((f) => ({ title: f.valueText ?? f.label, date: f.asOf, source: undefined, symbols: slots.symbols.slice(0, 1), factId: f.id })),
-      );
-      if (items.length) blocks.push({ kind: "news", title: "Berita terbaru", items });
-    }
-
-    const caResults = results.filter((r) => r.endpoint === "corporate-actions" || r.endpoint === "corporate-actions-symbol");
-    if (caResults.length) {
-      const events = caResults.flatMap((r) =>
-        r.facts
-          .filter((f) => f.key.startsWith("next_") || f.key === "last_dividend")
-          .map((f) => ({ date: f.asOf, label: f.label, symbol: slots.symbols[0], type: f.key.split("_")[0] })),
-      );
-      if (events.length) blocks.push({ kind: "calendar", title: "Agenda & aksi korporasi", events });
-    }
-
-    const filings = bySource("filings");
-    if (filings.length) {
-      const buys = filings.flatMap((r) => r.facts.filter((f) => f.key === "buy_count"));
-      const sells = filings.flatMap((r) => r.facts.filter((f) => f.key === "sell_count"));
-      if (buys.length && sells.length)
-        blocks.push({
-          kind: "metric_row",
-          items: [
-            { label: "Filing beli", factId: buys[0].id },
-            { label: "Filing jual", factId: sells[0].id },
-          ],
-        });
-    }
-
-    const screener = results.find((r) => r.endpoint === "screener");
-    if (screener) {
-      const rows = screener.facts
-        .filter((f) => f.key.startsWith("row") && f.valueNum !== undefined)
-        .map((f) => [f.label.split(" — ")[0], f.label.split(" — ")[1] ?? "", String(f.valueNum)]);
-      if (rows.length) blocks.push({ kind: "table", title: "Hasil screener (top 5)", columns: ["Emiten", "Metrik", "Nilai"], rows });
-    }
-
-    const mostTraded = results.find((r) => r.endpoint === "most-traded");
-    if (mostTraded) {
-      const t = mostTraded.facts.find((f) => f.key === "top_symbol");
-      if (t?.valueText) blocks.push({ kind: "note", tone: "info", text: `Paling ramai: ${t.valueText}` });
-    }
-
-    const topChanges = results.find((r) => r.endpoint === "top-changes");
-    if (topChanges) {
-      const rows = topChanges.facts
-        .filter((f) => f.key.endsWith("_lead") && f.valueNum !== undefined)
-        .map((f) => [f.label, "", `${(f.valueNum as number) * 100 > 0 ? "+" : ""}${((f.valueNum as number) * 100).toFixed(2)}%`]);
-      if (rows.length) blocks.push({ kind: "table", title: "Pergerakan teratas", columns: ["Emiten", "Klasifikasi", "Perubahan"], rows });
-    }
-
-    const mining = results.find((r) => r.endpoint === "mining-price");
-    if (mining) {
-      const pts = seriesFrom(mining.facts, "mining-price", "price");
-      if (pts.length) blocks.push({ kind: "series", title: `Harga komoditas (USD/ton)`, unit: "price", points: pts });
-    }
-
-    const licenses = results.find((r) => r.endpoint === "mining-licenses");
-    if (licenses) {
-      const note = licenses.facts.find((f) => f.key === "next_expiry");
-      if (note?.valueText) blocks.push({ kind: "note", tone: "warning", text: `${note.label} — ${note.valueText}` });
     }
 
     if (blocks.length || relevant.some((f) => f.unit !== "text")) {
@@ -398,7 +417,7 @@ export function buildSections(slots: Slots, results: ResolveResult[], level: num
         blocks.unshift({
           kind: "metric_row",
           items: prioritizeByQuestion(relevant, question)
-            .filter((f) => f.valueNum !== undefined)
+            .filter((f) => f.valueNum !== undefined && !f.key.endsWith("_pt"))
             .slice(0, 6)
             .map((f) => ({ label: f.label, factId: f.id })),
         });

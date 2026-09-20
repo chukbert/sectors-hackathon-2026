@@ -2,7 +2,17 @@
 
 import type { ReactNode } from "react";
 import type { FactRef } from "@/lib/output/answerdoc";
-import { formatIdr, formatNumber, formatPer, formatPercent, formatSigned, type LangMode } from "@/lib/util/format";
+import {
+  formatCompact,
+  formatIdr,
+  formatNumber,
+  formatPer,
+  formatPercent,
+  formatSigned,
+  type LangMode,
+  type Tone,
+} from "@/lib/util/format";
+import { useCite } from "@/components/answer/cite";
 
 export function formatFactRef(ref: FactRef, mode: LangMode): string {
   if (ref.valueNum === undefined) {
@@ -27,11 +37,36 @@ export function formatFactRef(ref: FactRef, mode: LangMode): string {
   }
 }
 
+export function heroValue(ref: FactRef, mode: LangMode): { text: string; tone: Tone } {
+  if (ref.valueNum === undefined) return { text: ref.valueText ?? "—", tone: "neu" };
+  const tone: Tone = ref.valueNum < 0 ? "neg" : "neu";
+  switch (ref.format) {
+    case "idr":
+      return { text: formatIdr(ref.valueNum, mode), tone };
+    case "percent":
+      return { text: formatPercent(ref.valueNum, mode), tone };
+    case "signed":
+      return { text: formatSigned(ref.valueNum, mode), tone };
+    case "per":
+      return { text: formatPer(ref.valueNum, mode), tone: "neu" };
+    default:
+      if (ref.unit === "volume" || ref.unit === "count") return { text: formatCompact(ref.valueNum, mode), tone: "neu" };
+      return { text: formatNumber(ref.valueNum, mode), tone: "neu" };
+  }
+}
+
+export function toneClass(tone: Tone): string {
+  return tone === "pos" ? "text-positive" : tone === "neg" ? "text-negative" : "";
+}
+
 export function FactChip({ fact, children }: { fact: FactRef; children: ReactNode }) {
+  const cite = useCite();
+  const n = cite.numbers.get(fact.id);
   const detail = `${fact.label}\nas of ${fact.asOf} · sumber: ${fact.source}${fact.valueNum !== undefined ? ` · nilai mentah: ${fact.valueNum}` : ""}`;
   return (
     <span className="fact-chip tabular" title={detail} data-fact-id={fact.id}>
       {children}
+      {n !== undefined ? <sup className="cite-sup">[{n}]</sup> : null}
     </span>
   );
 }

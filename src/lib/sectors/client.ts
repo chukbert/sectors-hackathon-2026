@@ -347,12 +347,6 @@ export async function resolveEndpoint(endpointId: string, overrides: ResolveOpti
     (mode === "replay" || isFresh(cached)) &&
     !opts.forceLive;
 
-  const memoryFirst = !SLICEABLE.has(def.id);
-  if (memoryFirst) {
-    const earlyMemory = resolveFromMemory(def, args, key, opts, { ttlDays, immutable });
-    if (earlyMemory) return earlyMemory;
-  }
-
   if (useCache) {
     touchCache(key);
     const hitId = recordHit({

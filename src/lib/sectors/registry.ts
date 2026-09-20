@@ -140,6 +140,10 @@ export const ENDPOINTS: EndpointDef[] = [
         out.push(baseFact(ctx, "daily", "high_window", `Harga tertinggi ${SYM(ctx)} dalam jendela`, hi, "price"));
       if (lo !== undefined)
         out.push(baseFact(ctx, "daily", "low_window", `Harga terendah ${SYM(ctx)} dalam jendela`, lo, "price"));
+      for (const r of rows.slice(-120)) {
+        const c = num(r.close);
+        if (c !== undefined && r.date) out.push(baseFact(ctx, "daily", "close_pt", `Harga ${SYM(ctx)} ${r.date}`, c, "price", String(r.date)));
+      }
       return out;
     },
   },
@@ -167,6 +171,10 @@ export const ENDPOINTS: EndpointDef[] = [
       const sells = windowRows.reduce((a, r) => a + (num(r.foreign_sell_idr) ?? 0), 0);
       if (buys) out.push(baseFact(ctx, "foreign-flow", "foreign_buy", `Total beli asing ${SYM(ctx, "IHSG")} dalam jendela`, buys, "IDR"));
       if (sells) out.push(baseFact(ctx, "foreign-flow", "foreign_sell", `Total jual asing ${SYM(ctx, "IHSG")} dalam jendela`, sells, "IDR"));
+      for (const r of windowRows.slice(-120)) {
+        const v = num(r.net_foreign_inflow);
+        if (v !== undefined && r.date) out.push(baseFact(ctx, "foreign-flow", "net_pt", `Net foreign ${SYM(ctx, "IHSG")} ${r.date}`, v, "IDR", String(r.date)));
+      }
       return out;
     },
   },
@@ -189,6 +197,10 @@ export const ENDPOINTS: EndpointDef[] = [
       const startLev = num(firstRow?.price);
       if (lev !== undefined && startLev)
         out.push(baseFact(ctx, "index-daily", "level_change", `Perubahan ${String(ctx.args.index_code).toUpperCase()} dalam jendela`, (lev - startLev) / startLev, "%", String(last?.date)));
+      for (const r of rows.slice(-120)) {
+        const v = num(r.price);
+        if (v !== undefined && r.date) out.push(baseFact(ctx, "index-daily", "level_pt", `Level ${String(ctx.args.index_code).toUpperCase()} ${r.date}`, v, "price", String(r.date)));
+      }
       return out;
     },
   },
@@ -774,17 +786,25 @@ export const ENDPOINTS: EndpointDef[] = [
       const sellers = Array.isArray(d?.top_sellers) ? (d.top_sellers as AnyRec[]) : [];
       if (buyers.length) {
         const top = buyers[0];
-        out.push(baseFact(ctx, "broker-summary-top", "top_buyer", `Top buyer ${SYM(ctx)}: ${top.broker_code}`, num(top.nval) ?? num(top.net_value), "IDR"));
+        out.push(baseFact(ctx, "broker-summary-top", "top_buyer", `Top buyer ${SYM(ctx)}: ${top.broker_code}`, num(top.net_idr) ?? num(top.nval) ?? num(top.net_value), "IDR"));
         out.push(baseFact(ctx, "broker-summary-top", "buyer_list", `Daftar top buyer ${SYM(ctx)}`, undefined, "text", ctx.asOf, buyers.slice(0, 5).map((b) => String(b.broker_code)).join(", ")));
-        const totalBuy = buyers.reduce((a, b) => a + (num(b.nval) ?? num(b.net_value) ?? 0), 0);
+        const totalBuy = buyers.reduce((a, b) => a + (num(b.net_idr) ?? num(b.nval) ?? num(b.net_value) ?? 0), 0);
         if (totalBuy) out.push(baseFact(ctx, "broker-summary-top", "buyer_value", `Total net buy top buyer ${SYM(ctx)}`, totalBuy, "IDR"));
+        for (const b of buyers.slice(0, 5)) {
+          const v = num(b.net_idr) ?? num(b.net_value) ?? num(b.nval);
+          if (v !== undefined && b.broker_code) out.push(baseFact(ctx, "broker-summary-top", `buyer_${b.broker_code}`, `Net buy ${b.broker_code}`, v, "IDR"));
+        }
       }
       if (sellers.length) {
         const top = sellers[0];
-        out.push(baseFact(ctx, "broker-summary-top", "top_seller", `Top seller ${SYM(ctx)}: ${top.broker_code}`, num(top.nval) ?? num(top.net_value), "IDR"));
+        out.push(baseFact(ctx, "broker-summary-top", "top_seller", `Top seller ${SYM(ctx)}: ${top.broker_code}`, num(top.net_idr) ?? num(top.nval) ?? num(top.net_value), "IDR"));
         out.push(baseFact(ctx, "broker-summary-top", "seller_list", `Daftar top seller ${SYM(ctx)}`, undefined, "text", ctx.asOf, sellers.slice(0, 5).map((b) => String(b.broker_code)).join(", ")));
-        const totalSell = sellers.reduce((a, b) => a + (num(b.nval) ?? num(b.net_value) ?? 0), 0);
+        const totalSell = sellers.reduce((a, b) => a + (num(b.net_idr) ?? num(b.nval) ?? num(b.net_value) ?? 0), 0);
         if (totalSell) out.push(baseFact(ctx, "broker-summary-top", "seller_value", `Total net sell top seller ${SYM(ctx)}`, totalSell, "IDR"));
+        for (const s of sellers.slice(0, 5)) {
+          const v = num(s.net_idr) ?? num(s.net_value) ?? num(s.nval);
+          if (v !== undefined && s.broker_code) out.push(baseFact(ctx, "broker-summary-top", `seller_${s.broker_code}`, `Net sell ${s.broker_code}`, v, "IDR"));
+        }
       }
       return out;
     },

@@ -143,6 +143,44 @@ function migrate(db: Db): void {
   for (const [name, type] of add) {
     if (!have.has(name)) db.exec(`ALTER TABLE cache_entries ADD COLUMN ${name} ${type}`);
   }
+
+  // Older databases created cache_entries with `payload BLOB NOT NULL`, which breaks
+  // blob-spill (large payloads stored out-of-line leave the inline column NULL).
+  // Rebuild the table to make payload nullable, preserving every cached row.
+  const payloadCol = (db.prepare(`PRAGMA table_info(cache_entries)`).all() as Array<{ name: string; notnull: number }>).find((c) => c.name === "payload");
+  if (payloadCol && payloadCol.notnull === 1) {
+    const colList = (db.prepare(`PRAGMA table_info(cache_entries)`).all() as Array<{ name: string }>).map((c) => c.name).join(", ");
+    db.exec(`PRAGMA foreign_keys=off`);
+    const rebuild = db.transaction(() => {
+      db.exec(`
+        CREATE TABLE cache_entries_new (
+          cache_key TEXT PRIMARY KEY,
+          endpoint TEXT NOT NULL,
+          args TEXT NOT NULL,
+          status INTEGER NOT NULL,
+          payload BLOB,
+          covers_from TEXT,
+          covers_to TEXT,
+          fetched_at TEXT NOT NULL,
+          immutable INTEGER NOT NULL DEFAULT 0,
+          ttl_days REAL,
+          hit_id TEXT,
+          payload_sha TEXT,
+          blob_path TEXT,
+          bytes_raw INTEGER,
+          bytes_stored INTEGER,
+          hit_count INTEGER NOT NULL DEFAULT 0,
+          last_used_at TEXT
+        );
+      `);
+      db.exec(`INSERT INTO cache_entries_new (${colList}) SELECT ${colList} FROM cache_entries;`);
+      db.exec(`DROP TABLE cache_entries;`);
+      db.exec(`ALTER TABLE cache_entries_new RENAME TO cache_entries;`);
+    });
+    rebuild();
+    db.exec(`CREATE INDEX IF NOT EXISTS idx_cache_endpoint ON cache_entries(endpoint);`);
+    db.exec(`PRAGMA foreign_keys=on`);
+  }
 }
 
 function open(): Db {

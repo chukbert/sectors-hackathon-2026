@@ -77,7 +77,7 @@ export async function runIntentAgent(params: {
   }
 
   const compiled = buildSections(slots, results, level, question);
-  const sectionFacts = compiled.sections.map((s) => ({ id: s.id, title: s.title, facts: compiled.bySection.get(s.id)?.facts ?? [] }));
+  const sectionFacts = compiled.sections.map((s) => ({ id: s.id, title: s.title, facts: (compiled.bySection.get(s.id)?.facts ?? []).filter((f) => !f.key.endsWith("_pt")) }));
 
   let narration: NarratorOutput | null = null;
   const notes: string[] = [];
