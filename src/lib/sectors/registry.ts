@@ -406,6 +406,15 @@ export const ENDPOINTS: EndpointDef[] = [
       const own = d?.ownership as AnyRec | undefined;
       if (own) {
         const seenKeys = new Set<string>();
+        const holders = Array.isArray(own.major_shareholders) ? (own.major_shareholders as AnyRec[]) : [];
+        for (const h of holders) {
+          const name = typeof h.name === "string" ? h.name.trim() : "";
+          const pct = num(h.share_percentage);
+          if (!name || pct === undefined || seenKeys.has(`holder:${name}`)) continue;
+          seenKeys.add(`holder:${name}`);
+          if (/^(public|masyarakat|treasury)/i.test(name)) continue;
+          out.push(baseFact(ctx, "report", `own_holder_${name.slice(0, 28)}`, `Pemegang saham utama ${SYM(ctx)}: ${name}`, pct, "%"));
+        }
         const walk = (value: unknown, depth: number) => {
           if (depth > 3 || value === null || typeof value !== "object") return;
           if (Array.isArray(value)) {

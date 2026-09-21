@@ -1,11 +1,13 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import type { AnswerDoc } from "@/lib/output/answerdoc";
 import type { LangMode } from "@/lib/util/format";
 import AnswerCard from "@/components/answer/AnswerCard";
 import Composer from "@/components/chat/Composer";
 import ProgressFeed from "@/components/chat/ProgressFeed";
+import OnboardingForm from "@/components/portfolio/OnboardingForm";
 import Sidebar, { type MemoryInfo, type SessionInfo } from "@/components/chat/Sidebar";
 
 type ProgressEvent = { phase: string; message: string; detail?: string };
@@ -35,17 +37,20 @@ export default function ChatShell() {
   const [langMode, setLangMode] = useState<LangMode>("menengah");
   const [status, setStatus] = useState<StatusInfo | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [portfolio, setPortfolio] = useState<{ count: number } | null | undefined>(undefined);
   const threadRef = useRef<HTMLDivElement>(null);
 
   const refreshSide = useCallback(async () => {
-    const [s, m, st] = await Promise.all([
+    const [s, m, st, pf] = await Promise.all([
       fetch("/api/sessions").then((r) => r.json()),
       fetch("/api/memory").then((r) => r.json()),
       fetch(`/api/status${activeId ? `?sessionId=${activeId}` : ""}`).then((r) => r.json()),
+      fetch("/api/portfolio").then((r) => r.json()),
     ]);
     setSessions(s.sessions ?? []);
     setMemory(m.memory ?? []);
     setStatus(st);
+    setPortfolio(pf.profile ? { count: (pf.profile.items as unknown[]).length } : null);
   }, [activeId]);
 
   useEffect(() => {
@@ -152,8 +157,13 @@ export default function ChatShell() {
     void refreshSide();
   };
 
+  if (portfolio === undefined) {
+    return <div className="flex h-dvh items-center justify-center text-sm text-muted">Memuat profil portofolio…</div>;
+  }
+
   return (
     <div className="flex h-dvh">
+      {portfolio === null ? <OnboardingForm onDone={() => void refreshSide()} /> : null}
       <Sidebar sessions={sessions} activeId={activeId} memory={memory} onSelect={setActiveId} onNew={newSession} onDeleteMemory={deleteMemory} />
 
       <main className="flex min-w-0 flex-1 flex-col">
@@ -162,6 +172,11 @@ export default function ChatShell() {
             <span className="text-sm font-medium">Thread</span>
             {activeId ? <span className="chip tabular">{messages.filter((m) => m.role === "user").length} pertanyaan</span> : null}
             <span className="chip border-accent2/40 text-accent2">memori aktif {memory.length}</span>
+            {portfolio ? (
+              <Link href="/portofolio" className="chip border-accent/50 text-accent hover:bg-accent/10" title="Graph konglomerasi portofolio Anda">
+                portofolio {portfolio.count}/8 →
+              </Link>
+            ) : null}
           </div>
           <div className="flex items-center gap-2 text-xs">
             <span className="chip tabular">kredit hari ini {status ? status.spentTodayKr.toFixed(0) : "–"} kr</span>

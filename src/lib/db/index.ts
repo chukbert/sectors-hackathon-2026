@@ -118,6 +118,21 @@ CREATE TABLE IF NOT EXISTS memory_items (
 CREATE INDEX IF NOT EXISTS idx_memory_session ON memory_items(session_id, kind);
 CREATE INDEX IF NOT EXISTS idx_memory_kind ON memory_items(kind, entity);
 
+CREATE TABLE IF NOT EXISTS portfolio_profile (
+  id INTEGER PRIMARY KEY CHECK (id = 1),
+  profile TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS portfolio_graphs (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  status TEXT NOT NULL,
+  credits_kr REAL NOT NULL DEFAULT 0,
+  error TEXT,
+  graph TEXT,
+  created_at TEXT NOT NULL
+);
+
 CREATE VIEW IF NOT EXISTS credit_ledger AS
 SELECT
   substr(ts, 1, 10) AS day,

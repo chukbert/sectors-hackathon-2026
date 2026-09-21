@@ -10,6 +10,7 @@ import { chatJson } from "@/lib/llm/openrouter";
 import { answerDocSchema, type AnswerDoc, type Block, type Evidence, type Section } from "@/lib/output/answerdoc";
 import { buildHero } from "@/lib/output/report";
 import { appendTurn, latestAnswedoc, ledgerLines, memoryDigest, nextSeq, putMemory, updateSessionLevelMax } from "@/lib/db/session-store";
+import { getProfile, getLatestGraph, portfolioOneLiner } from "@/lib/db/portfolio-store";
 import { langMode } from "@/lib/util/format";
 import { shortId, stableStringify } from "@/lib/util/ids";
 import { getMode, spentToday } from "@/lib/db/api-hit-store";
@@ -179,6 +180,19 @@ export async function runTurn(input: AgentTurnInput): Promise<TurnResult> {
   }
 
   const digest = buildDigest(slots);
+  const portfolio = getProfile();
+  const portfolioGraph = portfolio ? getLatestGraph() : null;
+  if (portfolio) {
+    const clusters = portfolioGraph?.graph?.clusters ?? [];
+    const clusterLines = clusters
+      .filter((c) => c.nodeIds.some((id) => portfolio.items.some((i) => i.symbol === id)))
+      .slice(0, 6)
+      .map((c) => {
+        const members = c.nodeIds.map((id) => portfolioGraph?.graph?.nodes.find((n) => n.id === id)).filter(Boolean);
+        return `- ${c.label}: ${members.map((m) => (m?.kind === "entity" ? m.name : m?.symbol ?? "")).filter(Boolean).join(" ↔ ")}`;
+      });
+    digest.text += `\nPORTOFOLIO USER (wajib dijadikan konteks, bukan dasar rekomendasi):\n- ${portfolioOneLiner(portfolio)}\n${clusterLines.join("\n")}`;
+  }
   const totalCap = LEVEL_CAPS_KR[Math.min(10, Math.max(1, level))] ?? 8;
   const capKr = Math.max(2, Math.floor(totalCap / Math.max(1, intents.length)));
   emit("plan", `Orkestrasi ${intents.length} agent · cap total L${level} ${totalCap} kr (per agent ${capKr} kr)`);
@@ -213,6 +227,7 @@ export async function runTurn(input: AgentTurnInput): Promise<TurnResult> {
 
   const failures: string[] = agentResults.flatMap((a) => a.failures);
   const notes: string[] = [...agentResults.flatMap((a) => a.notes)];
+  if (portfolio) notes.push(`Jawaban dikaitkan dengan portofolio Anda (${portfolio.items.length} emiten, profil ${portfolio.risk}).`);
   const skipped = agentResults.reduce((acc, a) => acc + a.skipped, 0);
   const attempted = [...new Set(agentResults.flatMap((a) => a.plan.steps.map((s) => s.endpoint)))].join(", ");
   const authFailure = failures.some((f) => /HTTP 40[13]/.test(f));

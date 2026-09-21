@@ -4,6 +4,8 @@
 
 Asisten riset saham IDX berbasis data: **angka 100% dari Sectors REST API, semua perhitungan & keputusan alur di kode milik kami, LLM hanya menulis bahasa**. Setiap jawaban membawa jejak audit: endpoint mana, kapan, berapa kredit, fakta mana mendukung kalimat mana.
 
+**Grounding portofolio (wajib di awal):** pengguna menceritakan hingga **8 emiten** miliknya; INVESTIGRAPH lalu melakukan **investigasi sekali jalan (cap 80 kr)** — laporan kepemilikan tiap emiten + penelusuran silang nama pemegang ke IDX — menghasilkan **graph konglomerasi** (grup Danantara, Saratoga↔MDKA, INDF→ICBP, dst.) yang disimpan. Sejak itu **setiap jawaban dikaitkan dengan portofolio & grup ekonomi penggunanya** — dua orang dengan pertanyaan sama mendapat analisis risiko yang berbeda (konsentrasi lintas-grup, eksposur entitas induk), tetap tanpa rekomendasi.
+
 Doktrin produk: **Masteri Konstan, Cakupan Variabel** — 10 level analisis (L1–L10); biaya kredit mengikuti kesulitan pertanyaan, bukan panjang chat.
 
 > Bukan rekomendasi jual/beli dan tanpa eksekusi order (lihat §Kepatuhan). Semua angka bersitasi; keputusan tetap tanggung jawab pengguna.
@@ -17,7 +19,7 @@ Track mensyaratkan *custom-built agent logic*, bukan "klien siap pakai + prompt"
 | **Multi-step reasoning flows** | Pipeline 9 tahap deterministik: guardrail → intent classifier → planner → Credit Governor → resolver cache-first → Argument Compiler → Narrator → verifier → AnswerDoc (`src/lib/agent/pipeline.ts`) |
 | **Custom tool-use pipelines** | Registry **48 endpoint** Sectors (IDX + Mining) dengan ekstraktor fakta per-endpoint, normalisasi argumen, repair klausa `where`, dan aturan billing own-case (`src/lib/sectors/registry.ts`) |
 | **Routing antara sumber data** | 17 intent recipe × 13 domain × 10 level; classifier hybrid aturan+LLM; resolver memilih memory → cache → irisan window → derivasi lintas-cache → live, per mode `replay/hybrid/live` |
-| **Memory / state management** | Fact memory lintas-turn (fakta tak kedaluwarsa dipakai ulang 0 kr), session memory untuk follow-up ("kalau yang kemarin?"), digest jawaban, ledger kredit per panggilan |
+| **Memory / state management** | Fact memory lintas-turn (fakta tak kedaluwarsa dipakai ulang 0 kr), session memory untuk follow-up ("kalau yang kemarin?"), digest jawaban, ledger kredit per panggilan, **profil portofolio pengguna (≤8 emiten) + graph konglomerasi tersimpan** yang menjadi konteks setiap jawaban |
 | **Autonomous task execution** | Planner menyusun langkah sendiri dari pertanyaan (fan-out multi-intent, fase 1/2/3 dengan opsi lewat saat cap kredit habis); LLM screener-to-query dengan guard deterministik di depan & repair di belakang |
 | **Purpose-built interface** | Kontrak `AnswerDoc` (zod) + Visual Registry (Recharts/SVG/tabel) + 3 varian narasi (Pemula/Menengah/Advanced) yang berganti **instan, 0 kr, 0 panggilan LLM** — narasi disimpan bertiga sekaligus |
 
@@ -136,7 +138,10 @@ src/lib/llm/jev.ts             klien keputusan Jev + logging audit
 src/lib/agent/                 guardrail · slots · classifier · digest · planner · governor ·
                                intents(17) · tools · compiler · narrator · verify · pipeline
 src/lib/output/answerdoc.ts    kontrak AnswerDoc (zod) — termasuk spec visual & placeholder fakta
+src/lib/portfolio/             graph konglomerasi murni (buildGraphResult, layout) + investigator ≤80 kr (cache-first)
+src/lib/db/portfolio-store.ts  profil portofolio (maks 8 emiten) + hasil investigasi tersimpan
 src/components/                shell chat + Visual Registry (Recharts/SVG/tabel) + render placeholder
+                               + onboarding portofolio + halaman /portofolio (graph SVG)
 scripts/                       seed · smoke · sweep · mastery
 riset/                         dokumentasi verifikasi live API (coverage, pain points, pola Jev)
 ```

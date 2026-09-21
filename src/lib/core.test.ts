@@ -8,6 +8,8 @@ import { codeCitationCheck, codeComplianceCheck } from "@/lib/agent/verify";
 import { classifyByRules } from "@/lib/agent/classifier";
 import { extractWithRules } from "@/lib/agent/slots";
 import { applySectorTermFilter } from "@/lib/agent/planner";
+import { buildGraphResult, layoutGraph, normCompanyName, distinctiveToken, type GraphNode, type GraphRecord } from "@/lib/portfolio/graph";
+import { profileSchema } from "@/lib/db/portfolio-store";
 import type { Plan } from "@/lib/agent/types";
 import type { Fact } from "@/lib/facts";
 import type { NarratorOutput } from "@/lib/agent/narrator";
@@ -117,6 +119,42 @@ describe("slots", () => {
     expect(applySectorTermFilter("saham sawit murah", "pe_ttm < 10")).toBe("industry = 'agricultural-products' and pe_ttm < 10");
     expect(applySectorTermFilter("harga BRMS", "pe_ttm < 10")).toBe("pe_ttm < 10");
     expect(extractWithRules("ada saham apa saja di perkebunan?").sectorText).toBe("perkebunan");
+  });
+});
+
+describe("portfolio", () => {
+  it("buildGraphResult: induk antar-emiten → edge; publik dibuang; kluster terbentuk", () => {
+    const records: GraphRecord[] = [
+      { symbol: "INDF", companyName: "PT Indofood Sukses Makmur Tbk", marketCap: 6e13, inPortfolio: true, holders: [{ name: "First Pacific Investment Management Ltd", pct: 0.5 }], factIds: [] },
+      { symbol: "ICBP", companyName: "PT Indofood CBP Sukses Makmur Tbk", marketCap: 2e14, inPortfolio: true, holders: [{ name: "PT Indofood Sukses Makmur Tbk", pct: 0.8053, factId: "f1" }, { name: "Public", pct: 0.1947 }], factIds: [] },
+    ];
+    const { nodes, edges, clusters } = buildGraphResult(records, { INDF: 60, ICBP: 40 });
+    expect(edges.find((e) => e.from === "INDF" && e.to === "ICBP")?.pct).toBeCloseTo(0.8053);
+    expect(edges.find((e) => e.from === "INDF" && e.to === "ICBP")?.factId).toBe("f1");
+    expect(edges.some((e) => e.to === "INDF" && e.from.startsWith("ent:"))).toBe(true);
+    expect(nodes.filter((n) => /public/i.test(n.name))).toHaveLength(0);
+    expect(clusters).toHaveLength(1);
+    expect(clusters[0].nodeIds).toEqual(expect.arrayContaining(["INDF", "ICBP", "ent:first pacific investment management ltd"]));
+  });
+  it("normCompanyName + distinctiveToken", () => {
+    expect(normCompanyName("PT Bank Central Asia Tbk")).toBe(normCompanyName("Bank Central Asia"));
+    expect(distinctiveToken("PT Saratoga Investama Sedaya Tbk")).toBe("saratoga");
+  });
+  it("profileSchema: maks 8, kode harus 4 huruf, simbol dinormalisasi", () => {
+    const ok = profileSchema.safeParse({ risk: "moderat", items: [{ symbol: "bbca.jk", lots: 5 }] });
+    expect(ok.success).toBe(true);
+    expect(ok.success && ok.data.items[0].symbol).toBe("BBCA");
+    expect(profileSchema.safeParse({ risk: "moderat", items: Array.from({ length: 9 }, (_, i) => ({ symbol: `AB${i}C` })) }).success).toBe(false);
+    expect(profileSchema.safeParse({ risk: "moderat", items: [{ symbol: "ABC12" }] }).success).toBe(false);
+  });
+  it("layoutGraph memberi koordinat untuk semua node", () => {
+    const nodes: GraphNode[] = [
+      { id: "INDF", kind: "holding", name: "Indofood", symbol: "INDF", marketCap: 1, weightPct: 60, clusterId: "grup-0", factIds: [] },
+      { id: "ICBP", kind: "holding", name: "ICBP", symbol: "ICBP", marketCap: 2, weightPct: 40, clusterId: "grup-0", factIds: [] },
+    ];
+    const { positioned } = layoutGraph(nodes);
+    expect(positioned).toHaveLength(2);
+    expect(positioned.every((p) => Number.isFinite(p.x) && Number.isFinite(p.y))).toBe(true);
   });
 });
 

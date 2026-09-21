@@ -243,7 +243,7 @@ function resolveFromSlice(def: EndpointDef, args: Record<string, unknown>, key: 
   };
 }
 
-function findDerivedCandidate(def: EndpointDef, args: Record<string, unknown>): { payload: unknown; warning: string; fetchedAt: string } | null {
+function findDerivedCandidate(def: EndpointDef, args: Record<string, unknown>, requireComplete = false): { payload: unknown; warning: string; fetchedAt: string } | null {
   const rows = getDb()
     .prepare(`SELECT cache_key FROM cache_entries WHERE endpoint = ? AND status >= 200 AND status < 300`)
     .all(def.id) as Array<{ cache_key: string }>;
@@ -274,6 +274,7 @@ function findDerivedCandidate(def: EndpointDef, args: Record<string, unknown>): 
     }
     if (!available.length) return null;
     const missing = requested.filter((s) => !available.includes(s));
+    if (requireComplete && missing.length) return null;
     return {
       payload: merged,
       warning: missing.length ? `cache section: ${available.join(", ")}; belum ada: ${missing.join(", ")}` : `gabungan cache section: ${available.join(", ")}`,
@@ -397,7 +398,7 @@ export async function resolveEndpoint(endpointId: string, overrides: ResolveOpti
     throw Object.assign(new SectorsError(`data tidak tersedia (${mode === "replay" ? "cache miss" : "live diblokir"})`, null, def.id), { hitId });
   }
 
-  const derivedCandidate = mode === "hybrid" ? findDerivedCandidate(def, args) : null;
+  const derivedCandidate = mode === "hybrid" ? findDerivedCandidate(def, args, true) : null;
   if (derivedCandidate) return resolveFromDerived(def, args, key, derivedCandidate, opts);
   const slicedCandidate = mode === "hybrid" ? findSliceCandidate(def, args) : null;
   if (slicedCandidate) return resolveFromSlice(def, args, key, slicedCandidate, opts);
