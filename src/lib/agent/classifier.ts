@@ -78,7 +78,7 @@ export type IntentVerdict = {
   failed: boolean;
 };
 
-const INTENT_THRESHOLD = 0.65;
+const INTENT_THRESHOLD = 0.55;
 const MAX_INTENTS = 4;
 
 export async function detectIntents(
@@ -193,7 +193,10 @@ function intentFallback(): IntentHit {
 export function composeLevel(intents: IntentHit[], depth: number | null, rumor: boolean, wantsRecommendation: boolean): number {
   const deepIntent = intents.some((i) => ["valuasi", "fundamental", "verifikasi_klaim", "kepemilikan"].includes(i.id));
   const screenerOnly = intents.length > 0 && intents.every((i) => ["screening", "top_movers"].includes(i.id));
-  let level = Math.max(depth ?? 1, 2 + (intents.length - 1) * 2);
+  // Intent tunggal non-deep menghormati depth Jev (L1 faktual murni tetap L1);
+  // lompatan minimum hanya untuk multi-intent.
+  let level = depth ?? 1;
+  if (intents.length > 1) level = Math.max(level, 2 + (intents.length - 1) * 2);
   if (intents.length >= 3 || deepIntent) level = Math.max(level, 6);
   if (intents.some((i) => ["bandarmologi", "aliran_asing"].includes(i.id))) level = Math.max(level, 8);
   if (rumor || wantsRecommendation) level = Math.max(level, 7);

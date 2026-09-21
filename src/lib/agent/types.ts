@@ -12,6 +12,7 @@ export type Slots = {
   wantsAdvice: boolean;
   isComparison: boolean;
   commodity: string | null;
+  sectorPredicate: string | null;
 };
 
 export type PlanStep = {

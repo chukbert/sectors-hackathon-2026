@@ -1,5 +1,6 @@
 import { ENDPOINT_BY_ID, estimateCost } from "@/lib/sectors/registry";
-import { chatJson } from "@/lib/llm/openrouter";
+import { chatJson, chatStructured } from "@/lib/llm/openrouter";
+import { z } from "zod";
 import { window } from "@/lib/util/time";
 import type { Domain } from "@/lib/config";
 import type { Plan, PlanStep, Slots } from "@/lib/agent/types";
@@ -38,7 +39,9 @@ function levelPlan(level: number, slots: Slots, question: string): PlanStep[] {
     steps.push(step("index-daily", { index_code: slots.indexCode, ...daysStr }, `Level & pergerakan ${slots.indexCode.toUpperCase()}`, 1));
     if (level >= 4) steps.push(step("idx-total", { ...daysStr }, "Kapitalisasi pasar total IDX sebagai konteks", 1));
     steps.push(step("foreign-flow", { symbol: "IHSG", ...daysStr }, "Aliran dana asing di pasar", 2));
-    if (level >= 5) steps.push(step("subsector-report", { sub_sector: "banks", sections: ["statistics"] }, "Konteks subsektor pembanding", 3, true));
+    // Konteks subsektor hanya bila sektor diketahui — tidak ada lagi default "banks".
+    const subsector = subsectorFromPredicate(slots.sectorPredicate) ?? (/bank|perbankan/i.test(slots.sectorText ?? "") ? "banks" : null);
+    if (level >= 5 && subsector) steps.push(step("subsector-report", { sub_sector: subsector, sections: ["statistics"] }, "Konteks subsektor pembanding", 3, true));
     return steps;
   }
 
@@ -101,7 +104,6 @@ function levelPlan(level: number, slots: Slots, question: string): PlanStep[] {
         steps.push(step("free-float", { _symbol: sym }, "Free float & likuiditas", 2, true));
         steps.push(step("segments", { symbol: sym }, `Segmen pendapatan ${sym}`, 3, true));
       }
-      if (slots.commodity) steps.push(step("mining-company-performance", { slug: "pt-alamtri-resources-indonesia-tbk" }, "Produksi & cadangan tambang", 3, true));
       break;
     case 7:
       steps.push(step("news", { symbols: sym, ...window(30), limit: 8 }, `Berita pendukung/penyanggah klaim ${sym}`, 1));
@@ -138,7 +140,6 @@ function levelPlan(level: number, slots: Slots, question: string): PlanStep[] {
       steps.push(step("news", { symbols: sym, ...window(30), limit: 8 }, `Berita terbaru ${sym}`, 3, true));
       steps.push(step("filings", { symbol: sym, ...window(30), limit: 10 }, `Filings insider ${sym}`, 3, true));
       steps.push(step("corporate-actions-symbol", { symbol: sym }, `Aksi korporasi & dividen ${sym}`, 3, true));
-      if (slots.commodity) steps.push(step("mining-company-performance", { slug: "pt-alamtri-resources-indonesia-tbk" }, "Produksi & cadangan tambang", 3, true));
       break;
     }
   }
@@ -150,17 +151,28 @@ const SECTOR_TAXONOMY: Array<{ match: RegExp; predicate: string }> = [
   { match: /\bbank\b|perbankan/i, predicate: "sub_sector = 'banks'" },
 ];
 
-export function applySectorTermFilter(question: string, where: string): string {
-  const term = SECTOR_TAXONOMY.find((t) => t.match.test(question));
-  if (!term) return where;
+export function applySectorTermFilter(question: string, where: string, sectorPredicate?: string | null): string {
   const cleaned = where
     .split(/\s+and\s+/i)
     .filter((p) => p.trim() && !/\b(sector|sub_sector|industry)\b/i.test(p))
     .join(" and ");
+  // Predikat LLM terstruktur (sudah divalidasi bentuknya) mengalahkan regex taksonomi.
+  if (sectorPredicate && /^(sector|sub_sector|industry)\s*=\s*'[A-Za-z0-9_\-]+'$/.test(sectorPredicate.trim())) {
+    const pred = sectorPredicate.trim();
+    return cleaned ? `${pred} and ${cleaned}` : pred;
+  }
+  const term = SECTOR_TAXONOMY.find((t) => t.match.test(question));
+  if (!term) return where;
   return cleaned ? `${term.predicate} and ${cleaned}` : term.predicate;
 }
 
-async function screenerArgsFromQuestion(question: string): Promise<Record<string, unknown>> {
+export function subsectorFromPredicate(sectorPredicate?: string | null): string | null {
+  if (!sectorPredicate) return null;
+  const m = sectorPredicate.trim().match(/^sub_sector\s*=\s*'([^']+)'$/);
+  return m ? m[1] : null;
+}
+
+async function screenerArgsFromQuestion(question: string, sectorPredicate?: string | null): Promise<Record<string, unknown>> {
   try {
     const { data } = await chatJson<{ where: string; order_by: string; desc: boolean; limit: number }>(
       [
@@ -178,13 +190,13 @@ async function screenerArgsFromQuestion(question: string): Promise<Record<string
     const rawWhere = typeof data.where === "string" && data.where.trim() ? data.where.trim().slice(0, 200) : "pe_ttm > 0 and pe_ttm < 20";
     const order = typeof data.order_by === "string" && data.order_by.trim() ? data.order_by.trim().replace(/^-/, "") : "market_cap";
     return {
-      where: applySectorTermFilter(question, rawWhere),
+      where: applySectorTermFilter(question, rawWhere, sectorPredicate),
       order_by: data.desc === false ? order : `-${order}`,
       limit: Math.min(50, Math.max(5, Number(data.limit) || 10)),
       include_query_values: true,
     };
   } catch {
-    return { where: applySectorTermFilter(question, "pe_ttm > 0 and pe_ttm < 20"), order_by: "-market_cap", limit: 10, include_query_values: true };
+    return { where: applySectorTermFilter(question, "pe_ttm > 0 and pe_ttm < 20", sectorPredicate), order_by: "-market_cap", limit: 10, include_query_values: true };
   }
 }
 
@@ -192,10 +204,135 @@ export function planIntent(intent: IntentHit, slots: Slots, question: string): P
   return planFromIntents([intent], slots, question);
 }
 
-export async function intentPlanWithScreener(intent: IntentHit, slots: Slots, question: string): Promise<Plan> {
+const reviseSchema = z.strictObject({
+  keep: z.array(z.string()),
+  drop: z.array(z.string()),
+  add: z.array(
+    z.strictObject({
+      endpoint: z.string(),
+      args_json: z.string(),
+      purpose: z.string(),
+      phase: z.union([z.literal(1), z.literal(2), z.literal(3)]),
+      optional: z.boolean(),
+    }),
+  ),
+  reason: z.string(),
+});
+
+export type PlanRevision = z.infer<typeof reviseSchema>;
+
+export function sanitizeRevisedPlan(proposal: Plan, revision: PlanRevision): { plan: Plan; notes: string[] } {
+  const notes: string[] = [];
+  const drop = new Set(revision.drop);
+  const steps: PlanStep[] = [];
+  const seen = new Set<string>();
+  const push = (s: PlanStep) => {
+    const key = `${s.endpoint}:${stableStringify(s.args)}`;
+    if (seen.has(key)) return;
+    seen.add(key);
+    steps.push(s);
+  };
+  for (const s of proposal.steps) {
+    if (drop.has(s.id)) {
+      notes.push(`revisi: buang ${s.endpoint}`);
+      continue;
+    }
+    push(s);
+  }
+  for (const a of revision.add) {
+    const def = ENDPOINT_BY_ID.get(a.endpoint);
+    if (!def) {
+      notes.push(`revisi: endpoint tak dikenal "${a.endpoint}" — dibuang`);
+      continue;
+    }
+    let args: Record<string, unknown>;
+    try {
+      const parsed: unknown = JSON.parse(a.args_json);
+      if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) throw new Error("bukan objek");
+      args = parsed as Record<string, unknown>;
+    } catch {
+      notes.push(`revisi: args_json ${a.endpoint} bukan JSON objek — dibuang`);
+      continue;
+    }
+    const missing = Object.entries(def.params)
+      .filter(([name, spec]) => spec.required && args[name] === undefined)
+      .map(([name]) => name);
+    if (missing.length) {
+      notes.push(`revisi: ${a.endpoint} kurang param wajib (${missing.join(", ")}) — dibuang`);
+      continue;
+    }
+    push(stepFor("revised", a.endpoint, args, a.purpose.slice(0, 120) || def.id, a.phase, a.optional));
+  }
+  const estCostKr = steps.reduce((a, s) => a + s.estCostKr, 0);
+  return { plan: { ...proposal, steps, estCostKr }, notes };
+}
+
+export function shouldRevisePlan(level: number, intentCount: number, stepCount: number): boolean {
+  if (stepCount === 0) return true;
+  if (level >= 7) return true;
+  if (intentCount >= 3) return true;
+  return false;
+}
+
+export async function revisePlanWithLLM(
+  current: Plan,
+  slots: Slots,
+  question: string,
+  ctx: { level: number; observations?: string; sessionId?: string; turnId?: string },
+): Promise<{ plan: Plan; revised: boolean; notes: string[] }> {
+  try {
+    const allowed = [...ENDPOINT_BY_ID.keys()].join(", ");
+    const listing =
+      current.steps
+        .map((s) => `- ${s.id} | ${s.endpoint} ${JSON.stringify(s.args)} | fase ${s.phase}${s.optional ? " (opsional)" : ""} | ~${s.estCostKr} kr`)
+        .join("\n") || "(rencana kosong)";
+    const { data } = await chatStructured(
+      "plan_revise",
+      reviseSchema,
+      [
+        "You edit a data-fetching plan for an Indonesian stock-market question. Reply with keep/drop/add step IDs.",
+        "Rules: keep[] = step IDs to keep (omit unknown IDs); drop[] = step IDs to remove; add[] = NEW steps using ONLY endpoints from the allowed list, with args_json as a JSON object string containing all required parameters (symbol/index_code/where/etc).",
+        "Prefer fewer, cheaper steps that directly answer the question. Mark nice-to-have steps optional:true with phase 3.",
+        "Never add buy/sell recommendation steps — this planner only fetches data.",
+      ].join("\n"),
+      [
+        `Question: "${question}"`,
+        `Level: L${ctx.level} · symbols: ${slots.symbols.join(", ") || "-"} · index: ${slots.indexCode ?? "-"} · commodity: ${slots.commodity ?? "-"} · sector: ${slots.sectorText ?? slots.sectorPredicate ?? "-"}`,
+        ctx.observations ? `Observations so far:\n${ctx.observations}` : "",
+        `Current proposal:\n${listing}`,
+        `Allowed endpoints: ${allowed}`,
+      ]
+        .filter(Boolean)
+        .join("\n"),
+      { temperature: 0, maxTokens: 800, effort: "low" },
+    );
+    const { plan, notes } = sanitizeRevisedPlan(current, data);
+    return { plan, revised: true, notes: [`revisi planner: ${data.reason.slice(0, 140)}`, ...notes] };
+  } catch {
+    return { plan: current, revised: false, notes: ["revisi planner gagal; memakai proposal awal"] };
+  }
+}
+
+export async function intentPlanWithScreener(
+  intent: IntentHit,
+  slots: Slots,
+  question: string,
+  opts: { level?: number; intentCount?: number; observations?: string; sessionId?: string; turnId?: string } = {},
+): Promise<Plan> {
   const plan = planIntent(intent, slots, question);
-  if (intent.id !== "screening") return plan;
-  const args = await screenerArgsFromQuestion(question);
+  if (intent.id !== "screening") {
+    if (shouldRevisePlan(opts.level ?? 0, opts.intentCount ?? 1, plan.steps.length)) {
+      const { plan: revised, notes } = await revisePlanWithLLM(plan, slots, question, {
+        level: opts.level ?? 0,
+        observations: opts.observations,
+        sessionId: opts.sessionId,
+        turnId: opts.turnId,
+      });
+      return { ...revised, notes: [...revised.notes, ...notes] };
+    }
+    return plan;
+  }
+  const args = await screenerArgsFromQuestion(question, slots.sectorPredicate);
   const def = ENDPOINT_BY_ID.get("screener");
   if (!def) return plan;
   const steps = plan.steps.filter((s) => s.endpoint !== "screener");
@@ -264,7 +401,7 @@ export async function planTurn(params: {
     notes.push(...intentPlan.notes);
     const screener = intents.find((i) => i.id === "screening");
     if (screener) {
-      const args = await screenerArgsFromQuestion(question);
+      const args = await screenerArgsFromQuestion(question, slots.sectorPredicate);
       steps = steps.filter((s) => s.endpoint !== "screener");
       const def = ENDPOINT_BY_ID.get("screener");
       if (def) {

@@ -1,4 +1,5 @@
 import { config } from "@/lib/config";
+import { z } from "zod";
 
 export type ChatMessage = { role: "system" | "user" | "assistant"; content: string };
 
@@ -12,7 +13,14 @@ export type ChatResult = {
 
 export class LlmError extends Error {}
 
-async function post(messages: ChatMessage[], json: boolean, temperature: number, maxTokens: number, effort?: string): Promise<ChatResult> {
+async function post(
+  messages: ChatMessage[],
+  json: boolean,
+  temperature: number,
+  maxTokens: number,
+  effort?: string,
+  jsonSchema?: { name: string; schema: Record<string, unknown> },
+): Promise<ChatResult> {
   if (!config.openrouter.apiKey) throw new LlmError("OPENROUTER_API_KEY belum diisi");
   const body: Record<string, unknown> = {
     model: config.openrouter.model,
@@ -21,7 +29,12 @@ async function post(messages: ChatMessage[], json: boolean, temperature: number,
     max_tokens: maxTokens,
     reasoning: { effort: effort ?? config.openrouter.reasoningEffort },
   };
-  if (json) body.response_format = { type: "json_object" };
+  if (jsonSchema) {
+    body.response_format = { type: "json_schema", json_schema: { name: jsonSchema.name, strict: true, schema: jsonSchema.schema } };
+    body.provider = { require_parameters: true };
+  } else if (json) {
+    body.response_format = { type: "json_object" };
+  }
   const res = await fetch(config.openrouter.chatUrl, {
     method: "POST",
     headers: {
@@ -88,4 +101,36 @@ export function parseJsonLoose<T>(text: string): T {
 export async function chatJson<T>(system: string, user: string, opts: { temperature?: number; maxTokens?: number; effort?: string } = {}): Promise<{ data: T; result: ChatResult }> {
   const result = await chat(system, user, opts);
   return { data: parseJsonLoose<T>(result.text), result };
+}
+
+export async function chatStructured<T>(
+  name: string,
+  schema: z.ZodType<T>,
+  system: string,
+  user: string,
+  opts: { temperature?: number; maxTokens?: number; effort?: string } = {},
+): Promise<{ data: T; result: ChatResult }> {
+  const jsonSchema = z.toJSONSchema(schema, { target: "draft-2020-12" }) as Record<string, unknown>;
+  let lastError: unknown;
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    try {
+      const result = await post(
+        [
+          { role: "system", content: system },
+          { role: "user", content: user },
+        ],
+        false,
+        opts.temperature ?? 0,
+        opts.maxTokens ?? 400,
+        opts.effort,
+        { name, schema: jsonSchema },
+      );
+      return { data: schema.parse(JSON.parse(result.text)), result };
+    } catch (err) {
+      lastError = err;
+      const retriable = err instanceof LlmError && /HTTP (429|5\d\d)/.test(err.message);
+      if (retriable && attempt === 0) await new Promise((resolve) => setTimeout(resolve, 1500));
+    }
+  }
+  throw lastError instanceof Error ? lastError : new LlmError(String(lastError));
 }

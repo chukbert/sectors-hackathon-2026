@@ -1,4 +1,5 @@
-import { chatJson } from "@/lib/llm/openrouter";
+import { chatStructured } from "@/lib/llm/openrouter";
+import { z } from "zod";
 import type { Slots } from "@/lib/agent/types";
 import { listMemory, putMemory } from "@/lib/db/session-store";
 
@@ -147,7 +148,7 @@ const RUMOR_PATTERNS = [/katanya/i, /kabarnya/i, /isunya/i, /benar\s*(gak|ga|tid
 const ADVICE_PATTERNS = [/harus\s+(beli|jual)/i, /sebaiknya\s+(beli|jual)/i, /rekomendasi(kan)?\s+(beli|jual|saham)/i, /kasih\s+(saran|rekomendasi)/i, /(beli|jual)\s*(gak|ga|nggak|tidak)?\s*(sekarang|hari ini)/i, /target\s+harga\s+saya/i, /ikut\s+(beli|jual)/i, /bagus\s+gak\s+buat\s+(beli|jual)/i, /layak\s+(beli|jual)/i];
 
 const NAME_STOPWORDS = new Set([
-  "berapa", "harga", "saham", "emiten", "kapitalisasi", "pasar", "sekarang", "kemarin", "hari", "ini", "itu", "yang", "apa", "apa saja", "dan", "atau",
+  "berapa", "seberapa", "harga", "saham", "emiten", "kapitalisasi", "pasar", "sekarang", "kemarin", "hari", "ini", "itu", "yang", "apa", "apa saja", "dan", "atau",
   "bagaimana", "kenapa", "mengapa", "apakah", "tolong", "coba", "cek", "lihat", "tampilkan", "berita", "berita terbaru", "fundamental", "valuasi",
   "dividen", "tren", "perkembangan", "prospek", "bandarmologi", "asing", "broker", "laporan", "keuangan", "kinerja", "analisis", "data", "info",
   "kapan", "siapa", "mana", "bulan", "tahun", "hari ini", "minggu", "kuartal", "perusahaan", "grup", "group", "tbk", "indonesia", "jakarta",
@@ -220,39 +221,90 @@ export function extractWithRules(question: string): Slots {
     wantsAdvice: ADVICE_PATTERNS.some((r) => r.test(text)),
     isComparison: /\bvs\b|banding|dibanding|versus|lebih baik|mana yang/i.test(text),
     commodity,
+    sectorPredicate: null,
   };
 }
 
+const slotsSchema = z.strictObject({
+  symbols: z.array(z.string()),
+  index_code: z.string().nullable(),
+  commodity: z.string().nullable(),
+  sector: z.string().nullable(),
+  period_days: z.number().nullable(),
+  is_rumor: z.boolean(),
+  wants_advice: z.boolean(),
+  is_comparison: z.boolean(),
+  sector_predicate: z.string().nullable(),
+});
+
+const PREDICATE_SHAPE = /^(sector|sub_sector|industry)\s*=\s*'[A-Za-z0-9_\-]+'$/;
+
+export function isValidSectorPredicate(predicate: string | null | undefined): predicate is string {
+  return typeof predicate === "string" && PREDICATE_SHAPE.test(predicate.trim());
+}
+
+const INDEX_CODES = new Set(Object.values(INDEXES));
+const COMMODITY_SLUGS = new Set(Object.values(COMMODITIES));
+
+const SLOT_SYSTEM = `You extract structured slots from Indonesian stock-market questions about the IDX (Bursa Efek Indonesia).
+- symbols: IDX tickers, exactly 4 uppercase letters. Resolve company names, brands and nicknames to their ticker (e.g. "BCA"/"bank biru"→BBCA, "Mandiri"→BMRI, "BRI"→BBRI, "Telkom"→TLKM, "Antam"→ANTM, "Astra"→ASII, "Indomie"→ICBP, "Alfamart"→AMRT, "Bukit Asam"→PTBA, "Freeport"→MDKA, "Vale"→INCO, "Gojek"/"Tokopedia"→GOTO, "Unilever"→UNVR, "Sido Muncul"→SIDO, "Wijaya Karya"→WIKA). Only include a ticker you are confident is IDX-listed; use [] for generic market/sector/screening questions.
+- index_code: one of ${[...INDEX_CODES].join(", ")} — else null.
+- commodity: one of ${[...COMMODITY_SLUGS].join(", ")} — else null.
+- sector: one Indonesian sector keyword if mentioned (bank, energi, tambang, teknologi, consumer, properti, kesehatan, infrastruktur, telekomunikasi, transportasi, pertanian, perkebunan) — else null.
+- period_days: implied lookback window in days ("kemarin"/"hari ini"=1, "seminggu"=7, "2 minggu"=14, "sebulan"=30, "3 bulan"=90, "6 bulan"=180, "setahun"=365, "2 tahun"=730) — else null.
+- is_rumor: true if the user quotes or asks to verify a claim/rumour ("katanya", "benar gak", "auto cuan", promises of a pump).
+- wants_advice: true if the user asks for a buy/sell recommendation or personal price target.
+- is_comparison: true if comparing two or more stocks or asking "mana yang lebih ...".
+- sector_predicate: a Sectors screener filter for the mentioned sector, EXACTLY in the form "sub_sector = 'banks'" or "industry = 'agricultural-products'" or "sector = 'finance'". Known mappings: bank/perbankan→sub_sector = 'banks', sawit/perkebunan/CPO/pertanian→industry = 'agricultural-products'. Use null if no sector is mentioned or you are unsure of the exact slug. NEVER invent slug values.
+- symbols: if the user asks to FIND or IDENTIFY companies ("siapa mereka", "cari saham yang ...", "saham apa", "emiten mana") WITHOUT naming any company, symbols MUST be []. NEVER invent tickers for a discovery question.`;
+
 export async function extractSlots(question: string): Promise<Slots> {
   const rules = extractWithRules(question);
-  const followUpLike = isFollowUp(question, rules.symbols.length > 0);
-  if (rules.symbols.length > 0 || rules.indexCode || rules.commodity) return rules;
   try {
-    const { data } = await chatJson<{ symbols: string[]; index_code: string | null; commodity: string | null; sector: string | null; period_days: number | null }>(
-      "You extract stock entities from Indonesian investor questions. Reply ONLY JSON. Ticker format: 4 uppercase letters (IDX). If none, empty array.",
-      `Question: "${question}"\n\nJSON schema: {"symbols": string[], "index_code": string|null, "commodity": string|null, "sector": string|null, "period_days": number|null}`,
-      { temperature: 0, maxTokens: 200 },
-    );
-    const mem = followUpLike ? listMemory().filter((m) => m.kind === "fact" && m.key === "symbol") : [];
-    const symbols = data.symbols.map((s) => s.toUpperCase()).filter((s) => /^[A-Z]{4}$/.test(s));
+    const { data } = await chatStructured("slots", slotsSchema, SLOT_SYSTEM, `Question: "${question}"`, {
+      temperature: 0,
+      maxTokens: 500,
+      effort: "minimal",
+    });
+    const symbols = [...new Set(data.symbols.map((s) => s.toUpperCase().trim()).filter((s) => /^[A-Z]{4}$/.test(s)))].slice(0, 6);
+    const followUpLike = isFollowUp(question, symbols.length > 0);
+    // Guard discovery: pertanyaan "cari/siapa" tanpa nama eksplisit tidak boleh membawa
+    // simbol karangan LLM MAUPUN simbol basi dari memory sesi lama.
+    const discoveryNoEntity = isDiscoveryQuestion(question) && rules.symbols.length === 0;
+    const memoryAllowed = followUpLike && !discoveryNoEntity;
+    const mem = memoryAllowed ? listMemory().filter((m) => m.kind === "fact" && m.key === "symbol") : [];
+    const finalSymbols = discoveryNoEntity ? [] : symbols.length ? symbols : mem.slice(0, 2).map((m) => String(m.value));
+    const indexCode = data.index_code && INDEX_CODES.has(data.index_code.toLowerCase()) ? data.index_code.toLowerCase() : rules.indexCode;
+    const commodity = data.commodity && COMMODITY_SLUGS.has(data.commodity.toLowerCase()) ? data.commodity.toLowerCase() : rules.commodity;
     return {
-      ...rules,
-      symbols: symbols.length ? symbols : mem.slice(0, 2).map((m) => String(m.value)),
-      symbolsFromMemory: symbols.length === 0 && mem.length > 0,
-      indexCode: data.index_code ?? rules.indexCode,
-      commodity: data.commodity ?? rules.commodity,
+      symbols: finalSymbols,
+      unresolved: memoryAllowed && finalSymbols.length === 0 ? [] : rules.unresolved,
+      symbolsFromMemory: finalSymbols.length === 0 && mem.length > 0,
+      indexCode,
       sectorText: data.sector ?? rules.sectorText,
       periodDays: data.period_days ?? rules.periodDays,
+      isRumor: data.is_rumor || rules.isRumor,
+      wantsAdvice: data.wants_advice || rules.wantsAdvice,
+      isComparison: data.is_comparison || rules.isComparison,
+      commodity,
+      sectorPredicate: isValidSectorPredicate(data.sector_predicate) ? data.sector_predicate.trim() : null,
     };
   } catch {
-    const mem = followUpLike ? listMemory().filter((m) => m.kind === "fact" && m.key === "symbol") : [];
-    return { ...rules, symbols: mem.slice(0, 2).map((m) => String(m.value)), symbolsFromMemory: mem.length > 0 };
+    const memoryAllowed = isFollowUp(question, rules.symbols.length > 0) && !(isDiscoveryQuestion(question) && rules.symbols.length === 0);
+    const mem = memoryAllowed ? listMemory().filter((m) => m.kind === "fact" && m.key === "symbol") : [];
+    return { ...rules, symbols: rules.symbols.length ? rules.symbols : mem.slice(0, 2).map((m) => String(m.value)), symbolsFromMemory: rules.symbols.length === 0 && mem.length > 0 };
   }
 }
 
 export function isFollowUp(question: string, hasExplicitSymbols: boolean): boolean {
   if (hasExplicitSymbols) return false;
   return question.length < 48 || /\b(nya|itu|tadi|lagi|kalau|gimana dengan|bagaimana dengan|lanjut)\b/i.test(question);
+}
+
+const DISCOVERY_PATTERNS = [/cari(k(an|lah))?\s+saham/i, /saham (apa|saja|yang|mana)/i, /emiten (apa|mana|yang)/i, /\bsiapa\b.*(mereka|itu|saja)/i, /daftar saham/i, /ada saham/i];
+
+export function isDiscoveryQuestion(question: string): boolean {
+  return DISCOVERY_PATTERNS.some((p) => p.test(question));
 }
 
 export function looksFinancial(question: string): boolean {

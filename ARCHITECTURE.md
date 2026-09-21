@@ -95,7 +95,7 @@ flowchart TD
     d13["Tag dan Klasifikasi · tags, industries, subindustries, subsectors"]
   end
 
-  subgraph JEV["JEV · 13 posisi · sekitar 0,001 USD per sesi"]
+  subgraph JEV["JEV · 14 posisi · sekitar 0,001 USD per sesi"]
     direction LR
     j1["#1 Level classifier + intent · semua level"]
     j2["#2 Guardrail input · L7-L10"]
@@ -110,6 +110,7 @@ flowchart TD
     j11["#11 Ranker prioritas · L8-L10"]
     j12["#12 Ekstraktor tesis ke memory · L9, L10"]
     j13["#13 Pemeriksa kelengkapan · L3, L10"]
+    j14["#14 Judge kecukupan bukti · per fase agent → stop/lanjut/replan/eskalasi"]
   end
 
   subgraph OUT["OUTPUT CONTRACT · lantai minimum per level"]
@@ -167,7 +168,7 @@ flowchart TD
   note -.- res5
 ```
 
-**Cakupan gambar:** 10/10 level · 13/13 domain (54 endpoint) · 13/13 posisi Jev · **7/7 peran LLM** (+ digest kode) · 5/5 tangga resolver · **5/5 tabel store** · 7/7 kontrak output.
+**Cakupan gambar:** 10/10 level · 13/13 domain (54 endpoint) · 14/14 posisi Jev · **7/7 peran LLM** (+ digest kode) · 5/5 tangga resolver · **5/5 tabel store** · 7/7 kontrak output.
 
 **Detail output ke user:** lihat [`OUTPUT-LAYER.md`](./OUTPUT-LAYER.md) — kontrak `AnswerDoc` + Visual Registry + komposisi visual per level & per domain (dark-first, motion, drill-down cache-first, ekspor PNG).
 
@@ -194,7 +195,7 @@ flowchart TD
 
 | # | Peran | Fungsi | Syarat | Level aktif | Penjaga |
 |---|---|---|---|---|---|
-| 1 | **Planner** | pecah pertanyaan → langkah + capability + kondisi berhenti | multi-step | L4–L10 | Jev preflight |
+| 1 | **Planner** | proposal deterministik (resep/level) → **direvisi LLM** bila kompleks (L7+, multi-intent, replan); kondisi berhenti dari judge | multi-step | L4–L10 (revisi: L7+ / kita kompleks) | Jev preflight + validator kode (endpoint & param wajib) |
 | 2 | **Narrator** | narasi Bahasa Indonesia per level; **3 varian sekaligus** (pemula/menengah/advanced), angka via placeholder diisi kode; sintesis dossier | interface | L2–L10 | Jev kritik narasi + verifier (per varian) |
 | 3 | **Devil's advocate** | argumen lawan & pembalik tesis | multi-step | L7–L10 | Jev battery |
 | 4 | **Repair** | tulis ulang saat kritik/compliance Jev menolak | multi-step | L4–L10 | Jev compliance (fail-closed) |
@@ -206,6 +207,7 @@ flowchart TD
 
 - **Planner = orkestrator.** Jev membaca pertanyaan sebagai **N intent sekaligus** (satu fan-out call: `intent_<id>` per tipe, multi-label bebas — 1, 2, 3, … intent). Level = kedalaman dari Jev + lompatan minimum bila intent banyak/rumit, dibatasi cap kredit per level.
 - **Satu Agent per intent.** Setiap agent punya resep endpoint sendiri (intent → capability → endpoint), menjalankan resolver **cache-first** (aturan API-HIT-STORE), menyusun bagian visualnya, dan menulis narasi 3 varian untuk bagian itu. Agent berjalan paralel (maks 3 sekaligus) dengan **bagian cap kredit** dari total cap level.
+- **Loop agen per fase (bukan eksekusi resep sampai habis).** Tiap fase → **Jev #14 judge kecukupan bukti** → `stop` (hemat kredit) / `continue_plan` / `replan` (Planner-LLM ubah sisa rencana, boleh berkali-kali, cap anti-loop 3x) / `escalate` (lapor batasan jujur, M7). Pre-check kode dulu (belum ada observasi / sisa biaya 0 → tanpa panggil Jev).
 - **Orkestrator menggabungkan**: fakta (dedupe by factId), bagian (dedupe per judul), bukti (dedupe endpoint+args), biaya (jumlah per agent), lalu **satu verifikasi Jev** atas seluruh narasi gabungan + satu call kesimpulan lintas-agent (fallback: gabungan kesimpulan agent).
 - **Audit tetap satu pintu**: semua panggilan agent (live, cache, irisan, memory, miss) tercatat di `api_hits`; tiap bukti diberi label agent di kolom purpose.
 - Kalau Jev gagal total, pipeline jatuh ke jalur aturan lama sebagai satu agent cadangan (fail-safe, bukan fail-open).

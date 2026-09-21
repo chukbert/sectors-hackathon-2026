@@ -23,6 +23,7 @@ const slots = {
   wantsAdvice: false,
   isComparison: false,
   commodity: null,
+  sectorPredicate: null,
 };
 
 describe("format", () => {

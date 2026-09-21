@@ -155,7 +155,7 @@ export const INTENTS: IntentDef[] = [
     triggers: "komoditas, batubara, nikel, emas, tembaga, timah, produksi tambang, izin tambang, cadangan, ekspor",
     domain: "komoditas",
     label: "komoditas & tambang",
-    criteria: "asks about commodity prices (coal, nickel, gold, copper, tin), national production, mining licences, resources/reserves, mining company operations or export destinations",
+    criteria: "mentions a commodity (coal, nickel, gold, copper, tin) or a mining asset/operation — as the main topic OR as context/driver inside a broader question (e.g. nickel mine acquisition rumour, mining sector comparison). Also covers national production, mining licences, resources/reserves, or export destinations",
     section: "Komoditas & tambang",
     recipe: [
       { endpoint: "mining-commodities", args: () => ({}), purpose: "Daftar komoditas tersedia", phase: 1, optional: true },
@@ -181,7 +181,7 @@ export const INTENTS: IntentDef[] = [
     triggers: "berita, news, sentimen, headline, kabar terbaru",
     domain: "klaim",
     label: "berita & sentimen",
-    criteria: "asks for latest news, headlines, or general sentiment around a company or sector",
+    criteria: "asks for latest news, headlines, or general sentiment around a company or sector — as the main topic OR as evidence for a corporate event mentioned in the question (CEO resignation, corruption case, lawsuit, suspension). Any clause needing news backing triggers this, even inside a multi-part question",
     section: "Berita & filings",
     recipe: [
       { endpoint: "news", args: ({ sym }) => ({ symbols: sym, ...d(30), limit: 8 }), purpose: "Berita terbaru", phase: 1 },
@@ -193,7 +193,7 @@ export const INTENTS: IntentDef[] = [
     triggers: "katanya, kabarnya, benar gak, rumor, hoax, cek fakta, minta rekomendasi beli/jual",
     domain: "klaim",
     label: "verifikasi klaim/rumor",
-    criteria: "user carries a claim, rumour or promise about a stock (will rise, is being pumped, guaranteed profit) and wants it checked against data, or asks for a buy/sell recommendation",
+    criteria: "the question contains an unverified claim, rumour or promise about a stock — as the main topic OR as background in any clause (will rise, is being pumped, acquisition rumour, guaranteed profit, 'katanya/kabarnya/benar gak') — that should be checked against data, or the user asks for a buy/sell recommendation",
     section: "Verifikasi klaim",
     recipe: [
       { endpoint: "news", args: ({ sym }) => ({ symbols: sym, ...d(60), limit: 8 }), purpose: "Berita pendukung/penyanggah", phase: 1 },
@@ -272,7 +272,7 @@ export function intentQuestions(): Record<string, { type: "noul"; instructions: 
   for (const intent of INTENTS) {
     questions[`intent_${intent.id}`] = {
       type: "noul",
-      instructions: `The user's question requires this kind of data or analysis: ${intent.criteria}. Typical trigger words (Indonesian): ${intent.triggers}. If the question explicitly asks for this topic, answer true; if the topic is only mentioned in passing while another topic is the actual request, answer false. Judge independently from the other intent questions — several intents can be true at once.`,
+      instructions: `The user's question requires this kind of data or analysis: ${intent.criteria}. Typical trigger words (Indonesian): ${intent.triggers}. If ANY clause of the question asks for this topic — including inside a multi-part question where other topics are also requested — answer true. Answer false only if the topic is truly incidental background with no data need (e.g. a word appearing inside an unrelated idiom). Judge independently from the other intent questions — several intents can be true at once.`,
     };
   }
   return questions;
