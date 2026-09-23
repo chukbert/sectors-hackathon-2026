@@ -104,3 +104,26 @@ def test_normalize_does_not_mutate_input():
     out = normalize("/v2/company/report/BBCA", {"sections": ["overview"]}, raw)
     assert raw == before
     assert out["sections"]["overview"]["52w_low"] == 4820
+
+
+def test_normalize_idempotent_for_all_adapters():
+    """Normalisasi dua kali harus sama — migrasi ulang tidak boleh merusak cache."""
+    cases = [
+        ("/v2/company/report/BBCA", {"sections": ["overview"]},
+         {"symbol": "BBCA.JK", "overview": {"last_close_price": 6200, "52w_low": None,
+                                            "all_time_price": {"52_w_low": {"d": 4820}}}}),
+        ("/v2/company/daily/BBCA", {}, [{"date": "2026-09-23", "close": 7275}]),
+        ("/v2/index/daily", {"symbol": "IHSG"}, {"symbol": "ihsg", "data": [{"date": "2026-09-23", "level": 7200}]}),
+        ("/v2/movers/top", {"type": "losers"},
+         {"top_losers": {"1d": [{"symbol": "WSKT.JK", "price_change": -0.051, "latest_close_date": "2026-09-23"}]}}),
+        ("/v2/movers/most-traded", {}, {"2026-09-23": [["BBCA.JK", "BCA", 1, 2]]}),
+        ("/v2/foreign-flow/BBCA", {},
+         {"symbol": "BBCA.JK", "data": [{"date": "2026-06-25", "net_foreign_inflow": 10, "foreign_share": 0.6}]}),
+        ("/v2/companies", {}, {"data": [{"symbol": "BBCA.JK", "last_close_price": 6200}]}),
+    ]
+    for endpoint, params, raw in cases:
+        once = normalize(endpoint, params, raw)
+        twice = normalize(endpoint, params, once)
+        assert once == twice, f"tidak idempoten: {endpoint}"
+    foreign = normalize("/v2/foreign-flow/BBCA", {}, cases[5][2])
+    assert len(foreign["per_symbol"]["BBCA"]) == 1

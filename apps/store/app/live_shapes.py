@@ -189,6 +189,8 @@ def _normalize_most_traded(body: Any) -> Any:
 def _normalize_foreign(params: dict, path: str, body: Any) -> Any:
     if not isinstance(body, dict):
         return body
+    if isinstance(body.get("per_symbol"), dict):
+        return body  # sudah kanonis — jangan diutak-atik (idempoten)
     seg = [s for s in strip_host(path).split("?")[0].split("/") if s]
     sym = _sym(body.get("symbol")) or (_sym(seg[2]) if len(seg) >= 3 else None)
     rows = []
