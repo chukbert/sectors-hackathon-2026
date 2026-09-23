@@ -23,3 +23,6 @@ packages/evals/last_results/
 
 # OS
 .DS_Store
+
+# TS incremental build
+*.tsbuildinfo

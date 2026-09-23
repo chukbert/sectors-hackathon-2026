@@ -117,7 +117,11 @@ export function PlanCard({
                 />
                 <span>
                   {node.label}{" "}
-                  {node.hit ? <span className="hit">· hit</span> : node.credits_spent ? <span className="live">· {node.credits_spent} kredit</span> : null}
+                  {node.source === "store-hit" ? (
+                    <span className="hit">· hit</span>
+                  ) : node.credits_spent ? (
+                    <span className="live">· {node.credits_spent} kredit</span>
+                  ) : null}
                 </span>
               </div>
             ))}

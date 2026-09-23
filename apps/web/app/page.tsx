@@ -294,8 +294,8 @@ export default function Page() {
                 : " · 0 kredit"}
             </span>
             {typeof storeStats?.credit_remaining === "number" ? (
-              <span className="chip" title="Sisa kredit menurut catatan IDXMACA (saldo awal diisi manual; portal hackathon tetap sumber resmi)">
-                Sisa {storeStats.credit_remaining as number}/{typeof storeStats?.credit_start === "number" ? (storeStats.credit_start as number) : "—"} kredit
+              <span className="chip" title="Sisa kredit menurut catatan IDXMACA (baseline disinkronkan manual ke portal hackathon; portal tetap sumber resmi)">
+                Sisa {storeStats.credit_remaining as number} kredit
               </span>
             ) : null}
             <div className="avatar">A</div>

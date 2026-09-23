@@ -29,6 +29,7 @@ sekaligus pemetaan endpoint internal → path resmi Sectors v2.
    dengan 0 kredit supaya tidak ada 404 yang tetap berbiaya.
 5. **Chip "sisa"** — `sisa = IDXMACA_CREDIT_START − credits_spent`. `IDXMACA_CREDIT_START`
    diisi manual dari portal (bukan hasil API; Sectors tidak menyediakan endpoint saldo).
+   Re-sync aman kapan saja: `IDXMACA_CREDIT_START = saldo_portal + credits_spent`.
    Angka ini hanya mencakup panggilan **lewat IDXMACA**, bukan pemakaian key yang sama oleh
    anggota tim lain.
 

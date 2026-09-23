@@ -291,8 +291,13 @@ def sector_heatmap(labels: list[str], values: list[float], *, suffix: str = "%",
     return opt
 
 
-def price_position(rows: list[dict], *, height: int = 200) -> dict:
+def price_position(rows: list[dict], *, height: int = 200) -> dict | None:
     """Bar rentang 52 minggu + titik harga kini (bar+scatter, JSON murni — tanpa renderItem)."""
+    def _ok(r: dict) -> bool:
+        return all(isinstance(r.get(k), (int, float)) for k in ("low", "high", "close"))
+    rows = [r for r in rows if _ok(r)]
+    if not rows:
+        return None
     symbols = [r["symbol"] for r in rows]
     low_min = min(r["low"] for r in rows) * 0.97
     high_max = max(r["high"] for r in rows) * 1.03
