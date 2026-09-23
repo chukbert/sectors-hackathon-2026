@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IDXMACA — Mockup Chat ala Gemini (data ilustrasi)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+<style>
+:root{
+  --blue:#1b4dd8; --ink:#1f1f1f; --ink2:#444746; --muted:#747775;
+  --line:#e3e3e3; --line2:#c4c7c5;
+  --bg:#ffffff; --side:#f0f4f9; --bubble:#e9eef6; --pill:#d3e3fd;
+  --primary:#0b57d0;
+  --green:#15803d; --green-bg:#e7f6ec; --red:#b91c1c; --amber:#b45309; --amber-bg:#fdf3e3;
+  --grad:linear-gradient(74deg,#4285f4 0%,#9b72cb 34%,#d96570 68%,#8b5cf6 100%);
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;font-family:"Google Sans Flex","Google Sans","Google Sans Text",Roboto,Arial,sans-serif;
+  background:var(--bg);color:var(--ink);font-size:15px;display:flex;overflow:hidden}
+/* ===== sidebar ===== */
+#side{width:280px;flex:none;background:var(--side);display:flex;flex-direction:column;padding:12px 10px;transition:margin .25s}
+body.navcol #side{margin-left:-280px}
+.iconbtn{width:40px;height:40px;border-radius:50%;border:0;background:transparent;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;color:var(--ink2)}
+.iconbtn:hover{background:#dde3ea}
+.newchat{display:flex;align-items:center;gap:12px;margin:6px 4px 14px;padding:10px 12px;border-radius:16px;border:0;background:transparent;cursor:pointer;font-family:inherit;font-size:14px;color:var(--ink2);width:calc(100% - 8px);text-align:left}
+.newchat:hover{background:#dde3ea}
+.navsec{font-size:13px;color:var(--ink2);padding:8px 14px 4px;font-weight:500}
+.navitem{display:flex;align-items:center;gap:12px;padding:9px 14px;border-radius:24px;font-size:14px;color:var(--ink);cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.navitem:hover{background:#dde3ea}
+.navitem.active{background:var(--pill)}
+.navsp{flex:1}
+.navbot{font-size:13px;color:var(--ink2)}
+/* ===== main ===== */
+#main{flex:1;display:flex;flex-direction:column;min-width:0;position:relative}
+#topbar{display:flex;align-items:center;gap:8px;padding:8px 16px}
+.modelpill{display:flex;align-items:center;gap:8px;border:0;background:transparent;cursor:pointer;font-family:inherit;font-size:17px;color:var(--ink);padding:8px 10px;border-radius:12px}
+.modelpill:hover{background:var(--side)}
+.modelpill small{font-size:11px;color:var(--muted);font-weight:400}
+#topright{margin-left:auto;display:flex;align-items:center;gap:10px}
+.credchip{font-size:12px;color:var(--ink2);background:var(--side);border-radius:20px;padding:6px 12px}
+.avatarme{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#0b57d0,#9b72cb);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center}
+/* glow ambient */
+#glow{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+#glow:before,#glow:after{content:"";position:absolute;border-radius:50%;filter:blur(110px);opacity:.35}
+#glow:before{width:520px;height:520px;left:-140px;top:-160px;background:radial-gradient(circle,#c2e7ff 0%,transparent 65%)}
+#glow:after{width:620px;height:620px;right:-200px;top:6%;background:radial-gradient(circle,#e8d7fb 0%,#ffd9e3 55%,transparent 70%)}
+/* ===== thread ===== */
+#scroll{flex:1;overflow-y:auto;position:relative}
+.thread{max-width:800px;margin:0 auto;padding:24px 20px 16px;position:relative}
+.welcome{padding:8vh 0 10px}
+.greet{font-size:clamp(34px,5vw,52px);line-height:1.15;margin:0;font-weight:500;letter-spacing:-.5px;
+  background:linear-gradient(74deg,#4285f4 5%,#9b72cb 35%,#d96570 65%,#444746 95%);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.greet-sub{font-size:clamp(20px,3vw,28px);color:var(--ink2);margin:10px 0 26px;font-weight:400}
+.sugg{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.sugg button{border:1px solid var(--line);background:#fff;border-radius:20px;padding:14px;text-align:left;font-family:inherit;font-size:13.5px;color:var(--ink);cursor:pointer;min-height:96px}
+.sugg button:hover{background:var(--side)}
+.sugg button b{display:block;margin-bottom:6px}
+.sugg button span{color:var(--muted);font-size:12.5px}
+/* messages */
+.msg{display:flex;gap:14px;margin:22px 0}
+.spark{width:34px;height:34px;flex:none}
+.msg.user{justify-content:flex-end}
+.msg.user .bubble{background:var(--bubble);border-radius:24px;padding:12px 20px;max-width:78%;font-size:15px}
+.msg.agent .bubble{min-width:0;flex:1}
+.mactions{display:flex;gap:2px;margin-top:6px}
+.mactions button{border:0;background:transparent;cursor:pointer;color:var(--muted);border-radius:50%;width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center}
+.mactions button:hover{background:var(--side);color:var(--ink)}
+/* plan trace ala show-thinking */
+.plan{margin:2px 0 12px}
+.plan summary{cursor:pointer;list-style:none;display:inline-flex;gap:8px;align-items:center;font-size:13.5px;color:var(--ink2);padding:6px 0}
+.plan summary::-webkit-details-marker{display:none}
+.plan .pbody{border-left:2px solid var(--line2);margin:4px 0 4px 6px;padding:2px 0 2px 16px}
+.planrow{display:flex;justify-content:space-between;gap:12px;font-size:13px;padding:6px 0;border-bottom:1px dashed var(--line)}
+.hit{color:var(--green);font-weight:700}.live{color:var(--amber);font-weight:700}
+.btn{border:0;border-radius:24px;padding:10px 22px;font-size:14px;font-weight:500;cursor:pointer;background:var(--primary);color:#fff;margin-top:10px;font-family:inherit}
+.btn:disabled{opacity:.55}
+.btn.ghost{background:#fff;border:1px solid var(--line2);color:var(--ink)}
+/* rich cards */
+.card2{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;margin:12px 0}
+.card2 h4{margin:0 0 2px;font-size:16px;font-weight:500}
+.card2 .sub{font-size:12.5px;color:var(--muted);margin:0 0 8px}
+.echart{width:100%}
+.ev{color:var(--primary);cursor:pointer}
+table.data{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}
+table.data th,table.data td{border:1px solid var(--line);padding:7px 9px;text-align:right}
+table.data th:first-child,table.data td:first-child{text-align:left}
+td.good{background:var(--green-bg)}
+.src{font-size:12px;color:var(--muted);margin-top:8px}
+.src b{color:var(--ink)}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:14px;padding:8px 0;border-bottom:1px dashed var(--line)}
+.dot{width:20px;height:20px;border-radius:50%;flex:none;text-align:center;font-size:12px;line-height:20px;font-weight:700;color:#fff}
+.dot.ok{background:var(--green)}.dot.no{background:var(--red)}
+.tl{position:relative;margin:12px 0 4px;padding-left:20px;border-left:2px solid var(--line)}
+.tl .ev2{position:relative;padding:0 0 12px 8px;font-size:13.5px}
+.tl .ev2:before{content:"";position:absolute;left:-27px;top:3px;width:10px;height:10px;border-radius:50%;background:var(--primary)}
+.tl .ev2.warn:before{background:var(--amber)}.tl .ev2.good:before{background:var(--green)}
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:10px 0}
+.kpi{border:1px solid var(--line);border-radius:12px;padding:9px}
+.kpi .v{font-size:16px;font-weight:700}.kpi .l{font-size:11px;color:var(--muted)}
+.fups{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 2px}
+.fups button{border:1px solid var(--line2);color:var(--ink);background:#fff;border-radius:22px;padding:9px 16px;font-size:13px;cursor:pointer;font-family:inherit}
+.fups button:hover{background:var(--side)}
+.disclaimer{font-size:12px;color:var(--muted);background:var(--side);border-radius:12px;padding:10px 12px;margin-top:12px}
+.typing{display:inline-flex;gap:6px;padding:14px 4px}
+.typing i{width:8px;height:8px;border-radius:50%;background:var(--line2);animation:bl 1s infinite}
+.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+@keyframes bl{50%{opacity:.25}}
+.skel{border-radius:12px;background:linear-gradient(90deg,#eef1f6 25%,#e0e6ef 50%,#eef1f6 75%);background-size:200% 100%;animation:sh 1.2s infinite;height:110px;margin:10px 0}
+@keyframes sh{to{background-position:-200% 0}}
+/* ===== composer ===== */
+#composerzone{padding:6px 20px 14px;position:relative}
+#composer{max-width:800px;margin:0 auto}
+#ctxline{font-size:12px;color:var(--muted);margin:0 8px 8px}
+#ctxline b{color:var(--ink2)}
+.cbox{background:var(--side);border-radius:28px;padding:8px 8px 8px 20px}
+.cbox textarea{width:100%;border:0;outline:0;resize:none;background:transparent;font-family:inherit;font-size:16px;padding:10px 0;min-height:30px;color:var(--ink)}
+.crow{display:flex;align-items:center;gap:4px}
+.crow .sp{flex:1}
+#sendbtn{width:40px;height:40px;border-radius:50%;border:0;background:var(--ink);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center}
+#sendbtn:disabled{opacity:.3}
+#sendbtn.lit{background:var(--ink)}
+.hint{text-align:center;font-size:11px;color:var(--amber);margin-top:8px}
+/* modal + toast */
+#evmodal{position:fixed;inset:0;background:rgba(31,31,31,.4);display:none;align-items:center;justify-content:center;z-index:60;padding:16px}
+#evmodal .box{background:#fff;border-radius:28px;padding:24px;max-width:540px;width:100%;font-size:14px}
+#toast{position:fixed;bottom:120px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 22px;border-radius:24px;font-size:13px;display:none;z-index:70}
+@media(max-width:900px){#side{display:none}.sugg{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<nav id="side">
+  <div><button class="iconbtn" id="menubtn" title="Menu">☰</button></div>
+  <button class="newchat" id="newchat">✎&nbsp;&nbsp;Chat baru</button>
+  <div class="navsec">Gems</div>
+  <div class="navitem">✦&nbsp;&nbsp;Jelajahi Gems</div>
+  <div class="navsec">Recent</div>
+  <div class="navitem">Memo BBCA Q2-2026</div>
+  <div class="navitem">Comps bank 6 peer</div>
+  <div class="navitem">Credit scan 10 debitur</div>
+  <div class="navsec">Tim</div>
+  <div class="navitem active">✦&nbsp;&nbsp;Meja analis IDX</div>
+  <div class="navsp"></div>
+  <div class="navbot">
+    <div class="navitem">⚙&nbsp;&nbsp;Setelan & bantuan</div>
+    <div class="navitem">●&nbsp;&nbsp;Jakarta · IDX · 612 kredit</div>
+  </div>
+</nav>
+
+<div id="main">
+  <div id="glow"></div>
+  <div id="topbar">
+    <button class="iconbtn" id="menubtn2" title="Menu" style="display:none">☰</button>
+    <button class="modelpill" id="modelpill">
+      <svg width="22" height="22" viewBox="0 0 24 24"><defs><linearGradient id="spk" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4285f4"/><stop offset=".5" stop-color="#9b72cb"/><stop offset="1" stop-color="#d96570"/></linearGradient></defs><path fill="url(#spk)" d="M12 2c.6 4.8 2.4 7.6 4.6 9.4 1.5 1.2 3.4 2 5.4 2.4-2 .4-3.9 1.2-5.4 2.4C14.4 18 12.6 20.8 12 25.6 11.4 20.8 9.6 18 7.4 16.2c-1.5-1.2-3.4-2-5.4-2.4 2-.4 3.9-1.2 5.4-2.4C9.6 9.6 11.4 6.8 12 2z" transform="scale(.92) translate(1,0)"/></svg>
+      IDXMACA <span style="color:var(--muted)">▾</span><br>
+    </button>
+    <div id="topright">
+      <span class="credchip" id="credlabel">612 / 1.000 kredit</span>
+      <div class="avatarme">A</div>
+    </div>
+  </div>
+
+  <div id="scroll">
+    <div class="thread" id="thread">
+      <div class="welcome" id="welcome">
+        <h1 class="greet">Halo, Analis</h1>
+        <p class="greet-sub">Mau analisis emiten apa hari ini?</p>
+        <div class="sugg">
+          <button data-q="Bandingkan BBCA, BMRI, BBRI kuartal terakhir + siapa yang akumulasi + risiko kreditnya?"><b>Bandingkan 3 bank</b><span>Valuasi, flow broker & asing, red-flag</span></button>
+          <button data-q="Screening bank dengan dividen di atas 4% lalu bandingkan valuasinya"><b>Screener bank dividen</b><span>Filter natural → tabel comps</span></button>
+          <button data-q="Scan red-flag 10 debitur: mana yang memburuk kuartal ini?"><b>Red-flag scan</b><span>Skor bahaya + bukti per aturan</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="composerzone">
+    <div id="composer">
+      <p id="ctxline">Konteks sesi: <b>belum ada — mulai dengan satu pertanyaan</b></p>
+      <div class="cbox">
+        <textarea id="qin" rows="1" placeholder="Tanyakan IDXMACA"></textarea>
+        <div class="crow">
+          <button class="iconbtn" title="Lampirkan" onclick="toast('Mockup: lampiran belum aktif')">＋</button>
+          <span class="sp"></span>
+          <button class="iconbtn" title="Dikte" onclick="toast('Mockup: dikte belum aktif')">🎙</button>
+          <button id="sendbtn" title="Kirim" disabled><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+        </div>
+      </div>
+      <div class="hint">MOCKUP — angka ilustrasi, bukan data real · ECharts via CDN · <span id="storeline">Store hit-rate sesi: —</span></div>
+    </div>
+  </div>
+</div>
+
+<div id="evmodal"><div class="box"><div id="evcontent"></div><br><button class="btn ghost" id="evclose" style="border-radius:24px">Tutup</button></div></div>
+<div id="toast"></div>
+
+<script>
+const BLUE="#1b4dd8",GREY="#94a3b8",GREEN="#15803d",RED="#b91c1c",AMBER="#b45309";
+const FONT="'Google Sans Flex','Google Sans','Google Sans Text',Roboto,Arial,sans-serif";
+const F1=v=>v.toFixed(1).replace(".",",");
+const Q8=["Q3-24","Q4-24","Q1-25","Q2-25","Q3-25","Q4-25","Q1-26","Q2-26"];
+const MO12=["Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des","Jan","Feb","Mar"];
+const session={tickers:[],spent:0,hits:0,live:0};
+let credits=612;
+
+const EV = {
+  q:{t:"NIM BBCA 5,7% (Q2-2026)",e:"GET /v2/company/report/BBCA/?sections=financials",p:"symbol=BBCA · section=financials",w:"23 Sep 2026 15:40 WIB",s:"Store-hit · 0 kredit"},
+  val:{t:"Premi valuasi 8% vs rata-rata 5 tahun",e:"GET /v2/company/report/BBCA/?sections=valuation",p:"symbol=BBCA · dihitung: (13,2−12,2)/12,2",w:"23 Sep 2026 15:40 WIB",s:"Store-hit · 0 kredit"},
+  flow:{t:"Net asing −Rp1,2 T (5 hari, 3 bank)",e:"GET /v2/foreign-flow/?symbols=BBCA,BMRI,BBRI",p:"range=14 hari (clamp) · diagregasi 5 hari",w:"23 Sep 2026 15:42 WIB",s:"Sectors-live · 3 kredit"},
+  comp:{t:"Median P/E peer 12,0x (6 bank)",e:"GET /v2/company/report/{s}/?sections=valuation ×6",p:"peer set: subsektor Banks, cap >Rp50 T",w:"23 Sep 2026 15:41 WIB",s:"Store-hit · 0 kredit"},
+  insider:{t:"Direksi BMRI jual Rp5,1 M",e:"GET /v2/filings/?symbol=BMRI",p:"symbol=BMRI · holder_type=insider · since=2026-08-01",w:"23 Sep 2026 15:42 WIB",s:"Sectors-live · 1 kredit"},
+  susp:{t:"0 suspensi 12 bulan (3 bank)",e:"GET /v2/suspensions/?symbols=BBCA,BMRI,BBRI",p:"range=12 bulan",w:"23 Sep 2026 15:42 WIB",s:"Sectors-live · 1 kredit"},
+  sgx:{t:"P/E DBS 11,8x vs BBCA 13,2x",e:"GET /v2/sgx/company/report/D05/?sections=valuation",p:"symbol=D05 · format dossier identik IDX",w:"23 Sep 2026 15:47 WIB",s:"Sectors-live · 2 kredit"},
+  div:{t:"Yield BBRI 4,9% tertinggi",e:"GET /v2/company/report/{s}/?sections=dividend ×4",p:"symbols=BBCA,BMRI,BBRI,DBS",w:"23 Sep 2026 15:47 WIB",s:"Store-hit · 0 kredit"}
+};
+
+/* ---------- ECharts options ---------- */
+const ECOPT = {
+P1:()=>({color:[BLUE,GREEN,AMBER],textStyle:{fontFamily:FONT},
+  grid:{left:46,right:70,top:16,bottom:56},legend:{bottom:0,textStyle:{fontSize:11}},
+  tooltip:{trigger:"axis",valueFormatter:v=>typeof v==="number"?F1(v)+"x":v},
+  xAxis:{type:"category",data:Q8,axisLabel:{fontSize:10,color:"#747775",interval:1}},
+  yAxis:{type:"value",min:9.5,max:14,axisLabel:{fontSize:10,color:"#747775",formatter:"{value}x"}},
+  series:[
+    {name:"Rata-rata 5 thn",type:"line",data:Array(8).fill(12.2),symbol:"none",
+     lineStyle:{color:GREY,type:"dashed",width:1.5},
+     markArea:{silent:true,itemStyle:{color:"rgba(27,77,216,0.10)"},label:{show:false},data:[[{yAxis:11.3},{yAxis:13.1}]]}},
+    {name:"BBCA",type:"line",smooth:true,symbolSize:5,data:[12.1,12.4,12.0,12.8,13.1,12.9,13.4,13.2],endLabel:{show:true,formatter:"BBCA {c}x",fontWeight:"bold"},emphasis:{focus:"series"}},
+    {name:"BMRI",type:"line",smooth:true,symbolSize:5,data:[10.2,10.8,10.5,11.1,11.4,11.0,11.6,11.3],endLabel:{show:true,formatter:"BMRI {c}x",fontWeight:"bold"},emphasis:{focus:"series"}},
+    {name:"BBRI",type:"line",smooth:true,symbolSize:5,data:[11.0,10.6,11.2,10.9,11.5,11.8,11.4,11.9],endLabel:{show:true,formatter:"BBRI {c}x",fontWeight:"bold"},emphasis:{focus:"series"}}
+  ]}),
+P2:()=>({color:[BLUE,GREEN],textStyle:{fontFamily:FONT},
+  grid:{left:44,right:48,top:20,bottom:56},legend:{bottom:0,textStyle:{fontSize:11}},tooltip:{trigger:"axis"},
+  xAxis:{type:"category",data:Q8,axisLabel:{fontSize:10,color:"#747775",interval:1}},
+  yAxis:[{type:"value",name:"Rp T",nameTextStyle:{fontSize:10,color:"#747775"},axisLabel:{fontSize:10,color:"#747775"}},
+    {type:"value",name:"NIM %",min:25,max:37,nameTextStyle:{fontSize:10,color:"#747775"},axisLabel:{fontSize:10,color:"#747775",formatter:"{value}%"}}],
+  series:[
+    {name:"Laba bersih",type:"bar",data:[12.1,13.4,11.8,12.9,13.6,14.2,13.1,14.8],
+     itemStyle:{color:BLUE,borderRadius:[3,3,0,0]},
+     label:{show:true,position:"top",fontSize:10,fontWeight:"bold",color:"#33415c",formatter:p=>p.dataIndex%2?F1(p.value):""},
+     tooltip:{valueFormatter:v=>F1(v)+" Rp T"}},
+    {name:"NIM",type:"line",yAxisIndex:1,symbolSize:5,data:[31,32,30,32,33,33,32,34],
+     endLabel:{show:true,formatter:"NIM {c}%",fontWeight:"bold"},tooltip:{valueFormatter:v=>F1(v)+"%"}}
+  ]}),
+P3:()=>({color:[BLUE,GREEN,AMBER],textStyle:{fontFamily:FONT},
+  grid:{left:46,right:60,top:16,bottom:88},legend:{bottom:44,textStyle:{fontSize:11}},tooltip:{trigger:"axis"},
+  dataZoom:[{type:"inside"},{type:"slider",height:16,bottom:2}],
+  xAxis:{type:"category",data:MO12,axisLabel:{fontSize:9,color:"#747775",interval:1}},
+  yAxis:[{type:"value",min:96,max:120,axisLabel:{fontSize:10,color:"#747775"}},{type:"value",max:100,show:false}],
+  series:[
+    {name:"BBCA",type:"line",smooth:true,symbolSize:4,data:[100,101,99,102,104,103,106,108,107,110,112,111],
+     endLabel:{show:true,formatter:"BBCA {c}"},
+     markPoint:{symbol:"circle",symbolSize:22,label:{fontSize:10,fontWeight:"bold",color:"#fff"},
+       data:[{name:"Dividen",xAxis:"Jun",yAxis:99,value:"D",itemStyle:{color:GREEN}},
+             {name:"Insider",xAxis:"Sep",yAxis:103,value:"I",itemStyle:{color:AMBER}},
+             {name:"Aksi korporasi",xAxis:"Nov",yAxis:108,value:"$",itemStyle:{color:BLUE}}]},
+     tooltip:{valueFormatter:v=>"indeks "+F1(v)}},
+    {name:"BMRI",type:"line",smooth:true,symbolSize:4,data:[100,99,101,100,103,105,104,107,109,108,111,113],endLabel:{show:true,formatter:"BMRI {c}"},tooltip:{valueFormatter:v=>"indeks "+F1(v)}},
+    {name:"BBRI",type:"line",smooth:true,symbolSize:4,data:[100,102,104,103,106,108,107,110,112,114,115,117],endLabel:{show:true,formatter:"BBRI {c}"},tooltip:{valueFormatter:v=>"indeks "+F1(v)}},
+    {name:"Volume BBCA",type:"bar",yAxisIndex:1,barWidth:"42%",data:[40,55,48,62,70,58,75,66,80,72,88,95],itemStyle:{color:"#cbd5e1"},tooltip:{valueFormatter:v=>v+" jt lot"}}
+  ]}),
+P4:()=>({textStyle:{fontFamily:FONT},
+  grid:{left:96,right:76,top:8,bottom:20},legend:{bottom:0,textStyle:{fontSize:11}},
+  tooltip:{trigger:"axis",valueFormatter:v=>"Rp"+v+" M"},
+  xAxis:{type:"value",axisLabel:{fontSize:10,color:"#747775",formatter:v=>"Rp"+Math.abs(v)+" M"}},
+  yAxis:{type:"category",data:["ZP · asing","AK · domestik","DX · asing","BK · asing","CC · ritel"],axisLabel:{fontSize:11,color:"#1f1f1f"}},
+  series:[
+    {name:"Beli",type:"bar",stack:"t",data:[420,310,150,0,0],itemStyle:{color:GREEN},
+     label:{show:true,position:"right",fontSize:11,fontWeight:"bold",formatter:p=>p.value?"+Rp"+p.value+" M":""}},
+    {name:"Jual",type:"bar",stack:"t",data:[0,0,0,-280,-190],itemStyle:{color:RED},
+     label:{show:true,position:"left",fontSize:11,fontWeight:"bold",formatter:p=>p.value?"Rp"+p.value+" M":""}}
+  ]}),
+P8:()=>({textStyle:{fontFamily:FONT},
+  series:[{type:"gauge",min:0,max:100,startAngle:180,endAngle:0,radius:"100%",center:["50%","68%"],
+    progress:{show:true,width:14,itemStyle:{color:AMBER}},
+    axisLine:{lineStyle:{width:14,color:[[1,"#e3e3e3"]]}},
+    axisTick:{show:false},splitLine:{show:false},axisLabel:{show:false},pointer:{show:false},anchor:{show:false},
+    title:{show:true,offsetCenter:[0,"32%"],fontSize:11,color:"#747775"},
+    detail:{valueAnimation:true,formatter:"{value}",fontSize:30,fontWeight:"bold",color:AMBER,offsetCenter:[0,"-2%"]},
+    data:[{value:72,name:"skor bahaya / 100"}]
+  }]}),
+YD:()=>({color:[BLUE],textStyle:{fontFamily:FONT},
+  grid:{left:46,right:70,top:16,bottom:24},
+  tooltip:{trigger:"axis",valueFormatter:v=>F1(v)+"%"},
+  xAxis:{type:"category",data:["BBRI","BMRI","BBCA","DBS"],axisLabel:{fontSize:11,color:"#1f1f1f"}},
+  yAxis:{type:"value",axisLabel:{fontSize:10,color:"#747775",formatter:"{value}%"}},
+  series:[{name:"Yield TTM",type:"bar",data:[4.9,6.1,5.7,5.2],
+    itemStyle:{color:BLUE,borderRadius:[4,4,0,0]},
+    label:{show:true,position:"top",fontSize:12,fontWeight:"bold",formatter:p=>F1(p.value)+"%"}}]})
+};
+const ECHEIGHT={P1:280,P2:280,P3:320,P4:230,P8:190,YD:240};
+const ECINST={};
+
+/* ---------- kartu ---------- */
+function ecDiv(pid){return `<div class="echart" data-pid="${pid}" style="height:${ECHEIGHT[pid]}px"></div>`}
+function src(html){return `<div class="src">${html}</div>`}
+function card(title,sub,bodyHtml){
+  return `<div class="card2"><h4>${title}</h4><p class="sub">${sub}</p>${bodyHtml}</div>`;
+}
+function spark(){return `<svg class="spark" viewBox="0 0 24 24"><defs><linearGradient id="spk" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4285f4"/><stop offset=".5" stop-color="#9b72cb"/><stop offset="1" stop-color="#d96570"/></linearGradient></defs><path fill="url(#spk)" d="M12 2c.6 4.8 2.4 7.6 4.6 9.4 1.5 1.2 3.4 2 5.4 2.4-2 .4-3.9 1.2-5.4 2.4-2.2 1.8-4 4.6-4.6 9.4-.6-4.8-2.4-7.6-4.6-9.4-1.5-1.2-3.4-2-5.4-2.4 2-.4 3.9-1.2 5.4-2.4C9.6 9.6 11.4 6.8 12 2z"/></svg>`}
+function compsTable(){
+  const R=[["BBCA","13,2","3,1","16,4","5,7","0,4"],["BMRI","11,3","2,2","14,1","6,1","0,5"],["BBRI","11,9","2,4","15,8","4,9","0,6"],["BBNI","10,8","1,8","13,2","6,4","0,5"],["BRIS","12,5","2,0","18,3","3,8","0,7"],["ARTO","21,4","4,2","9,6","2,1","0,3"]];
+  let h=`<table class="data"><tr><th>Bank</th><th>P/E</th><th>P/B</th><th>ROE %</th><th>Yield %</th><th>DER</th></tr>`;
+  R.forEach(r=>{h+=`<tr><td><b>${r[0]}</b></td><td class="${parseFloat(r[1].replace(",","."))<12?"good":""}">${r[1]}</td><td>${r[2]}</td><td class="${parseFloat(r[3].replace(",","."))>15?"good":""}">${r[3]}</td><td>${r[4]}</td><td>${r[5]}</td></tr>`});
+  return h+`<tr><td><b>Median</b></td><td><b>12,0</b></td><td><b>2,3</b></td><td><b>15,0</b></td><td><b>5,3</b></td><td><b>0,5</b></td></tr></table>`
+    +src("Peer: subsektor Banks, cap >Rp50 T · hijau = lebih baik dari median · <span class='ev' data-ev='comp'>Lihat bukti</span>");
+}
+function sgxTable(){
+  return `<table class="data"><tr><th>Bank</th><th>P/E</th><th>P/B</th><th>ROE %</th><th>Yield %</th></tr>
+  <tr><td><b>DBS</b></td><td>11,8</td><td class="good">1,9</td><td class="good">17,2</td><td>5,2</td></tr>
+  <tr><td><b>UOB</b></td><td>12,4</td><td>1,7</td><td>14,8</td><td>4,6</td></tr>
+  <tr><td><b>BBCA</b></td><td>13,2</td><td>3,1</td><td>16,4</td><td>5,7</td></tr></table>`
+  +src("Format dossier identik IDX (IO-35) · DBS juga aktif buyback kuartal ini (IO-36) · <span class='ev' data-ev='sgx'>Lihat bukti</span>");
+}
+function flagList(){
+  return `<div>
+    <div class="check"><span class="dot ok">✓</span><span>Ekuitas positif, DER 0,4x — <span class="ev" data-ev="q">bukti</span></span></div>
+    <div class="check"><span class="dot no">!</span><span><b>Insider jual Rp5,1 M (BMRI)</b> — <span class="ev" data-ev="insider">bukti</span></span></div>
+    <div class="check"><span class="dot ok">✓</span><span>0 suspensi 12 bulan — <span class="ev" data-ev="susp">bukti</span></span></div>
+    <div class="check"><span class="dot no">!</span><span>Asing net sell 5 hari — <span class="ev" data-ev="flow">bukti</span></span></div></div>`;
+}
+function kpiStrip(){
+  return `<div class="kpis">
+    <div class="kpi"><div class="v">BBCA</div><div class="l">P/E 13,2x · tertinggi</div></div>
+    <div class="kpi"><div class="v">+5,1%</div><div class="l">Return BBRI 30 hari</div></div>
+    <div class="kpi"><div class="v">−Rp1,2 T</div><div class="l">Net asing 5 hari</div></div>
+    <div class="kpi"><div class="v">1 flag</div><div class="l">Insider jual BMRI</div></div>
+    <div class="kpi"><div class="v">0</div><div class="l">Suspensi 12 bln</div></div></div>`;
+}
+const DISCLAIMER=`<div class="disclaimer">Alat informasi dan analisis, <b>bukan rekomendasi investasi</b>. Verifikasi ke sumber primer (IDX/keterbukaan informasi) sebelum keputusan.</div>`;
+function acts(){return `<div class="mactions">
+  <button title="Bagus" onclick="toast('Mockup: feedback dicatat')">👍</button>
+  <button title="Kurang" onclick="toast('Mockup: feedback dicatat')">👎</button>
+  <button title="Salin" onclick="toast('Mockup: jawaban disalin')">⧉</button>
+  <button title="Export" onclick="toast('Mockup: export DOCX/XLSX/PDF')">⤓</button></div>`}
+
+/* ---------- chat engine (mockup) ---------- */
+const thread=document.getElementById("thread");
+const scrollbox=document.getElementById("scroll");
+function scrollDown(){scrollbox.scrollTo({top:scrollbox.scrollHeight,behavior:"smooth"})}
+function toast(m){const t=document.getElementById("toast");t.textContent=m;t.style.display="block";setTimeout(()=>t.style.display="none",2600)}
+function userBubble(t){
+  document.getElementById("welcome").style.display="none";
+  thread.insertAdjacentHTML("beforeend",`<div class="msg user"><div class="bubble">${t}</div></div>`);scrollDown();
+}
+function agentShell(){
+  thread.insertAdjacentHTML("beforeend",`<div class="msg agent">${spark()}<div class="bubble"><div class="typing"><i></i><i></i><i></i></div></div></div>`);
+  const b=thread.lastElementChild.querySelector(".bubble");scrollDown();return b;
+}
+function mountECharts(root){
+  const boxes=root.querySelectorAll?root.querySelectorAll(".echart:not([data-done])"):[];
+  if(typeof echarts==="undefined"){boxes.forEach(d=>{d.dataset.done=1;d.innerHTML="<p style='font-size:12px;color:var(--amber)'>ECharts CDN tidak termuat (offline).</p>"});return;}
+  boxes.forEach(d=>{d.dataset.done=1;
+    try{const inst=echarts.init(d);inst.setOption(ECOPT[d.dataset.pid]());ECINST[d.dataset.pid+Date.now()]=inst;}
+    catch(e){d.innerHTML="<p style='font-size:12px'>Gagal merender chart.</p>"}});
+}
+window.addEventListener("resize",()=>{Object.values(ECINST).forEach(c=>{try{c.resize()}catch(e){}})});
+function bindEv(root){root.querySelectorAll(".ev[data-ev]").forEach(el=>el.onclick=e=>{e.stopPropagation();showEv(el.dataset.ev)})}
+function showEv(k){
+  const d=EV[k];if(!d)return;
+  document.getElementById("evcontent").innerHTML=`<p><b>${d.t}</b></p>
+    <div class="planrow"><span>Endpoint</span><span><b>${d.e}</b></span></div>
+    <div class="planrow"><span>Parameter</span><span>${d.p}</span></div>
+    <div class="planrow"><span>Ditarik</span><span>${d.w}</span></div>
+    <div class="planrow"><span>Status</span><span class="${d.s.includes("0 kredit")?"hit":"live"}">${d.s}</span></div>`;
+  document.getElementById("evmodal").style.display="flex";
+}
+document.getElementById("evclose").onclick=()=>document.getElementById("evmodal").style.display="none";
+document.getElementById("evmodal").onclick=e=>{if(e.target.id==="evmodal")e.target.style.display="none"};
+function planBlock(rows,total){
+  return `<details class="plan"><summary>✦&nbsp;Rencana agen · ${total}</summary><div class="pbody">${rows}
+    <button class="btn" data-approve>Setujui & jalankan</button></div></details><div class="cards"></div>`;
+}
+function setCtx(){document.getElementById("ctxline").innerHTML="Konteks sesi: <b>"+(session.tickers.length?session.tickers.join(", ")+" · "+session.tickers.length+" emiten":"belum ada — mulai dengan satu pertanyaan")+"</b>";
+  const t=session.hits+session.live;document.getElementById("storeline").textContent="Store hit-rate sesi: "+(t?Math.round(session.hits/t*100)+"% ("+session.hits+" hit / "+t+")":"—");}
+function spend(n,liveN){credits-=n;session.live+=liveN||0;session.hits+=4;
+  document.getElementById("credlabel").textContent=credits+" / 1.000 kredit";setCtx();}
+function fups(list){return `<div class="fups">${list.map(x=>`<button data-f="${x}">${x}</button>`).join("")}</div>`}
+function bindFups(root){root.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>send(b.dataset.f))}
+function addCards(cardsEl,defs,done){
+  let i=0;
+  const step=()=>{
+    if(i<defs.length){
+      cardsEl.insertAdjacentHTML("beforeend",defs[i]());
+      const el=cardsEl.lastElementChild;mountECharts(el);bindEv(el);bindFups(el);scrollDown();i++;setTimeout(step,450);
+    } else {
+      cardsEl.insertAdjacentHTML("beforeend",acts());
+      cardsEl.querySelectorAll(".mactions button").forEach(b=>b.onclick=()=>toast("Mockup: "+b.title));
+      if(done)done();
+    }
+  };step();
+}
+
+function answerFull(bubble){
+  bubble.querySelector(".typing").outerHTML=planBlock(
+    `<div class="planrow"><span>8 intent · valuasi, kinerja, pasar, flow, event, peer, risiko</span><span class="hit">Store · 0</span></div>
+     <div class="planrow"><span>broker summary + foreign flow + filings + news</span><span class="live">Live · ~7</span></div>
+     <div class="planrow"><span>Writer L3 sintesis</span><span>xhigh · $0.04</span></div>`,"≈ 7 kredit");
+  const btn=bubble.querySelector("[data-approve]");
+  btn.onclick=()=>{
+    btn.disabled=true;btn.textContent="Menjalankan…";
+    const cards=bubble.querySelector(".cards");
+    cards.innerHTML=`<div class="skel"></div>`;
+    setTimeout(()=>{
+      cards.innerHTML="";
+      session.tickers=["BBCA","BMRI","BBRI"];setCtx();
+      addCards(cards,[
+        ()=>kpiStrip()+`<p style="font-size:14.5px">Tiga bank melebar marginnya; tekanan minggu ini dari <span class="ev" data-ev="flow">arus asing keluar</span>, bukan fundamental. Valuasi <span class="ev" data-ev="val">premi 8% vs histori</span>.</p>`,
+        ()=>card("Valuasi: P/E 13,2x, premi 8% vs rata-rata 5 tahun","IO-02 · garis + band ±1σ",ecDiv("P1")+src("Sumber: <b>company/report sections=valuation ×3</b> · Store-hit · <span class='ev' data-ev='val'>Lihat bukti</span>")),
+        ()=>card("Kinerja: laba naik 3 kuartal beruntun, NIM 34%","IO-03 · bar laba + garis NIM",ecDiv("P2")+src("Sumber: <b>quarterly financials BBCA</b> · Store-hit · <span class='ev' data-ev='q'>Lihat bukti</span>")),
+        ()=>card("Pasar: BBRI +17% vs base; volume memuncak saat cum-date","IO-16,18,19,25,26 · terindeks + overlay event",ecDiv("P3")+src("Sumber: <b>daily ×3 + corp actions + filings</b> · Store-hit · <span class='ev' data-ev='flow'>Lihat bukti</span>")),
+        ()=>card("Flow: ZP akumulasi Rp420 M; asing net sell","IO-21,24 · diverging bar per broker",ecDiv("P4")+src("Sumber: <b>broker summary/top + registry</b> · Live 2 kredit · <span class='ev' data-ev='flow'>Lihat bukti</span>")),
+        ()=>card("Peer & comps: median P/E 12,0x","IO-08,11 · heatmap + median",compsTable()),
+        ()=>card("Risiko: skor 72, 2 dari 4 aturan terpicu","IO-38,26,27 · gauge + checklist bukti",ecDiv("P8")+flagList()),
+        ()=>`<div>${fups(["Tambahkan DBS untuk perbandingan","Mana yang yield-nya tertinggi?","Jelaskan risiko kreditnya saja"])}${DISCLAIMER}</div>`
+      ],()=>{spend(7,3);btn.textContent="Selesai · 7 kredit";toast("Run selesai: 7 kredit Sectors + $0.04 LLM");scrollDown();});
+    },600);
+  };
+}
+
+function answerFollow(bubble,q){
+  const t=q.toLowerCase();
+  const mem=session.tickers.length?`Mengingat konteks sesi (${session.tickers.join(", ")}): `:"";
+  let defs,planEst,intro;
+  if(/dbs|uob|singapur|sgx/.test(t)){
+    if(!session.tickers.includes("DBS"))session.tickers.push("DBS");setCtx();
+    intro=`${mem}DBS (SGX: D05) masuk akal sebagai pembanding — dossier diambil dengan format identik IDX.`;
+    planEst=`<div class="planrow"><span>SGX dossier + short/buyback/insider</span><span class="live">Live · ~2</span></div>`;
+    defs=[()=>card("DBS vs BBCA: apel-ke-apel lintas bursa","IO-35,36 · dossier SGX format identik",sgxTable()),
+      ()=>`<div>${fups(["Mana yang yield-nya tertinggi?","Bandingkan buyback DBS vs BRIS"])}${DISCLAIMER}</div>`];
+  } else if(/dividen|yield|div/.test(t)){
+    intro=`${mem}peringkat yield dari emiten yang sedang dibahas:`;
+    planEst=`<div class="planrow"><span>report sections=dividend ×4</span><span class="hit">Store · 0</span></div>`;
+    defs=[()=>card("Yield TTM: BBRI 4,9% tertinggi","IO-05 · bar yield",ecDiv("YD")+src("Sumber: <b>sections=dividend ×4</b> · Store-hit · <span class='ev' data-ev='div'>Lihat bukti</span>")),
+      ()=>`<div>${fups(["Jadwal dividen mendekat apa saja?","Tambahkan DBS untuk perbandingan"])}${DISCLAIMER}</div>`];
+  } else if(/risiko|kredit|red|bahaya|aman/.test(t)){
+    intro=`${mem}fokus lensa kredit untuk emiten yang sama — tanpa tembakan baru, dibaca dari ledger:`;
+    planEst=`<div class="planrow"><span>dibaca dari ledger run sebelumnya</span><span class="hit">Store · 0</span></div>`;
+    defs=[()=>card("Risiko: skor 72, 2 dari 4 aturan terpicu","IO-38 · gauge + checklist",ecDiv("P8")+flagList()),
+      ()=>`<div>${fups(["Jelaskan pemicu skor 72 satu per satu","Scan 10 debitur lain"])}${DISCLAIMER}</div>`];
+  } else if(/flow|asing|broker|akumulasi|bandar/.test(t)){
+    intro=`${mem}update flow terbaru:`;
+    planEst=`<div class="planrow"><span>broker summary + foreign flow (since run lalu)</span><span class="live">Live · ~2</span></div>`;
+    defs=[()=>card("Flow: ZP akumulasi Rp420 M; asing net sell","IO-21,24",ecDiv("P4")+src("Sumber: <b>broker summary/top + registry</b> · Live 2 kredit · <span class='ev' data-ev='flow'>Lihat bukti</span>")),
+      ()=>`<div>${fups(["Broker mana yang paling agresif seminggu ini?","Asing beli apa hari ini?"])}${DISCLAIMER}</div>`];
+  } else if(/banding|comps|peer|murah|mahal/.test(t)){
+    intro=`${mem}perbandingan peer se-subsektor:`;
+    planEst=`<div class="planrow"><span>dibaca dari ledger + screener bila peer baru</span><span class="hit">Store · 0</span></div>`;
+    defs=[()=>card("Peer & comps: median P/E 12,0x","IO-08,11",compsTable()),
+      ()=>`<div>${fups(["Tambahkan DBS untuk perbandingan","Mana yang yield-nya tertinggi?"])}${DISCLAIMER}</div>`];
+  } else {
+    intro=`${mem}saya sajikan ringkasannya — pilih lanjutan di bawah atau tanya bebas:`;
+    planEst=`<div class="planrow"><span>dibaca dari ledger sesi ini</span><span class="hit">Store · 0</span></div>`;
+    defs=[()=>card("Ringkasan sesi","Ledger: "+(session.tickers.join(", ")||"—"),
+      `<p style="font-size:14px">Valuasi <span class="ev" data-ev="val">premi 8%</span> · <span class="ev" data-ev="flow">asing net sell</span> · <span class="ev" data-ev="insider">1 insider jual</span> · <span class="ev" data-ev="susp">0 suspensi</span>.</p>`),
+      ()=>`<div>${fups(["Tambahkan DBS untuk perbandingan","Mana yang yield-nya tertinggi?","Jelaskan risiko kreditnya saja"])}${DISCLAIMER}</div>`];
+  }
+  bubble.querySelector(".typing").outerHTML=planBlock(planEst,"estimasi otomatis");
+  const btn=bubble.querySelector("[data-approve]");
+  btn.onclick=()=>{
+    btn.disabled=true;btn.textContent="Menjalankan…";
+    const cards=bubble.querySelector(".cards");
+    cards.innerHTML=`<p style="font-size:14px">${intro}</p><div class="skel"></div>`;
+    setTimeout(()=>{cards.querySelector(".skel").remove();
+      addCards(cards,defs,()=>{const c=planEst.includes("~2")?2:0;if(c)spend(c,2);btn.textContent=c?("Selesai · "+c+" kredit"):"Selesai · 0 kredit";scrollDown();});
+    },600);
+  };
+}
+
+let firstDone=false;
+const qin=document.getElementById("qin"),sendbtn=document.getElementById("sendbtn");
+qin.addEventListener("input",()=>{qin.style.height="auto";qin.style.height=Math.min(qin.scrollHeight,160)+"px";sendbtn.disabled=!qin.value.trim()});
+function send(text){
+  const q=(text||qin.value).trim();
+  if(!q)return;
+  qin.value="";qin.style.height="auto";sendbtn.disabled=true;
+  userBubble(q.replace(/</g,"&lt;"));
+  const b=agentShell();
+  setTimeout(()=>{ if(!firstDone&&/bank|bbca|banding|screener|red-flag|debitur/.test(q.toLowerCase())){firstDone=true;answerFull(b);} else {firstDone=true;answerFollow(b,q);} },700);
+}
+sendbtn.onclick=()=>send();
+qin.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();send()}});
+document.querySelectorAll("[data-q]").forEach(x=>x.onclick=()=>send(x.dataset.q));
+document.getElementById("menubtn").onclick=()=>document.body.classList.toggle("navcol");
+document.getElementById("newchat").onclick=()=>{
+  thread.querySelectorAll(".msg").forEach(m=>m.remove());
+  document.getElementById("welcome").style.display="block";
+  session.tickers=[];setCtx();Object.values(ECINST).forEach(c=>{try{c.dispose()}catch(e){}});
+  for(const k in ECINST)delete ECINST[k];
+  scrollbox.scrollTo({top:0});toast("Sesi baru dimulai — memori sesi dikosongkan");
+};
+document.getElementById("modelpill").onclick=()=>toast("Mockup: model terkunci muse-spark-1.3");
+setCtx();
+</script>
+</body>
+</html>

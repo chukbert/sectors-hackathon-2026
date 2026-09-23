@@ -1,46 +1,25 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
 
-# dependencies
-/node_modules
-/.pnp
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
+# Data & logs runtime
+.data/
+.logs/
 
-# testing
-/coverage
+# Node / Next.js
+node_modules/
+.next/
+out/
 
-# next.js
-/.next/
-/out/
+# Eval artifacts
+packages/evals/last_results/
 
-# production
-/build
-
-# misc
-.DS_Store
+# Env & secrets — repo wajib bersih dari key
+.env
+.env.local
 *.pem
 
-# debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.pnpm-debug.log*
-
-# env files (can opt-in for committing if needed)
-.env*
-!.env.example
-
-# local data (API hit store, sqlite, blobs)
-/data/
-*.log
-
-# vercel
-.vercel
-
-# typescript
-*.tsbuildinfo
-next-env.d.ts
+# OS
+.DS_Store
