@@ -1,0 +1,236 @@
+{
+ "subsectors": {
+  "Banks": {
+   "slug": "banks",
+   "symbols": [
+    "BBCA",
+    "BMRI",
+    "BBRI",
+    "BBNI",
+    "BRIS",
+    "ARTO"
+   ]
+  },
+  "Energy": {
+   "slug": "energy",
+   "symbols": [
+    "BUMI",
+    "ADRO",
+    "PTBA",
+    "ITMG",
+    "HRUM",
+    "INDY",
+    "ENRG",
+    "AADI",
+    "MEDC"
+   ]
+  },
+  "Basic Materials": {
+   "slug": "basic-materials",
+   "symbols": [
+    "ANTM",
+    "MDKA",
+    "INCO",
+    "SMGR"
+   ]
+  },
+  "Infrastructure": {
+   "slug": "infrastructure",
+   "symbols": [
+    "WSKT"
+   ]
+  },
+  "Industrials": {
+   "slug": "industrials",
+   "symbols": [
+    "BNBR"
+   ]
+  },
+  "Transportation": {
+   "slug": "transportation",
+   "symbols": [
+    "GIAA"
+   ]
+  },
+  "Telecommunications": {
+   "slug": "telecommunications",
+   "symbols": [
+    "TLKM"
+   ]
+  },
+  "Consumer Cyclicals": {
+   "slug": "consumer-cyclicals",
+   "symbols": [
+    "ASII"
+   ]
+  },
+  "Consumer Non-Cyclicals": {
+   "slug": "consumer-non-cyclicals",
+   "symbols": [
+    "UNVR",
+    "ICBP"
+   ]
+  },
+  "Technology": {
+   "slug": "technology",
+   "symbols": [
+    "GOTO"
+   ]
+  },
+  "Healthcare": {
+   "slug": "healthcare",
+   "symbols": [
+    "KLBF"
+   ]
+  }
+ },
+ "industries": {
+  "Financials": [
+   "BBCA",
+   "BMRI",
+   "BBRI",
+   "BBNI",
+   "BRIS",
+   "ARTO"
+  ],
+  "Energy": [
+   "BUMI",
+   "ADRO",
+   "PTBA",
+   "ITMG",
+   "HRUM",
+   "INDY",
+   "ANTM",
+   "MDKA",
+   "ENRG",
+   "MEDC",
+   "AADI"
+  ],
+  "Basic Materials": [
+   "ANTM",
+   "MDKA",
+   "INCO",
+   "SMGR"
+  ],
+  "Infrastructure": [
+   "WSKT"
+  ],
+  "Industrials": [
+   "BNBR"
+  ],
+  "Transportation": [
+   "GIAA"
+  ],
+  "Telecommunications": [
+   "TLKM"
+  ],
+  "Consumer Cyclicals": [
+   "ASII"
+  ],
+  "Consumer Non-Cyclicals": [
+   "UNVR",
+   "ICBP"
+  ],
+  "Technology": [
+   "GOTO"
+  ],
+  "Healthcare": [
+   "KLBF"
+  ]
+ },
+ "tags": [
+  "dividend",
+  "value",
+  "growth",
+  "blue-chip",
+  "high-roe",
+  "high-der",
+  "syariah",
+  "esg"
+ ],
+ "subindustries": {
+  "Banks": {
+   "slug": "banks",
+   "symbols": [
+    "BBCA",
+    "BMRI",
+    "BBRI",
+    "BBNI",
+    "BRIS",
+    "ARTO"
+   ]
+  },
+  "Energy": {
+   "slug": "energy",
+   "symbols": [
+    "BUMI",
+    "ADRO",
+    "PTBA",
+    "ITMG",
+    "HRUM",
+    "INDY",
+    "ENRG",
+    "AADI",
+    "MEDC"
+   ]
+  },
+  "Basic Materials": {
+   "slug": "basic-materials",
+   "symbols": [
+    "ANTM",
+    "MDKA",
+    "INCO",
+    "SMGR"
+   ]
+  },
+  "Infrastructure": {
+   "slug": "infrastructure",
+   "symbols": [
+    "WSKT"
+   ]
+  },
+  "Industrials": {
+   "slug": "industrials",
+   "symbols": [
+    "BNBR"
+   ]
+  },
+  "Transportation": {
+   "slug": "transportation",
+   "symbols": [
+    "GIAA"
+   ]
+  },
+  "Telecommunications": {
+   "slug": "telecommunications",
+   "symbols": [
+    "TLKM"
+   ]
+  },
+  "Consumer Cyclicals": {
+   "slug": "consumer-cyclicals",
+   "symbols": [
+    "ASII"
+   ]
+  },
+  "Consumer Non-Cyclicals": {
+   "slug": "consumer-non-cyclicals",
+   "symbols": [
+    "UNVR",
+    "ICBP"
+   ]
+  },
+  "Technology": {
+   "slug": "technology",
+   "symbols": [
+    "GOTO"
+   ]
+  },
+  "Healthcare": {
+   "slug": "healthcare",
+   "symbols": [
+    "KLBF"
+   ]
+  }
+ }
+}

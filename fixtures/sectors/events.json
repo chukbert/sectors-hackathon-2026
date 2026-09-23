@@ -1,0 +1,1937 @@
+{
+ "corporate_actions": {
+  "BBCA": [
+   {
+    "type": "dividend",
+    "ex_date": "2026-10-18",
+    "cum_date": "2026-10-16",
+    "payment_date": "2026-11-01",
+    "amount": 299,
+    "status": "announced",
+    "description": "Dividen interim BBCA"
+   },
+   {
+    "type": "buyback",
+    "ex_date": "2026-08-14",
+    "cum_date": null,
+    "payment_date": null,
+    "amount": 487273539866,
+    "status": "active",
+    "description": "Program buyback BBCA"
+   }
+  ],
+  "BMRI": [
+   {
+    "type": "dividend",
+    "ex_date": "2026-11-13",
+    "cum_date": "2026-11-11",
+    "payment_date": "2026-11-27",
+    "amount": 178,
+    "status": "announced",
+    "description": "Dividen interim BMRI"
+   },
+   {
+    "type": "buyback",
+    "ex_date": "2026-09-06",
+    "cum_date": null,
+    "payment_date": null,
+    "amount": 507064898129,
+    "status": "active",
+    "description": "Program buyback BMRI"
+   }
+  ],
+  "BBRI": [
+   {
+    "type": "dividend",
+    "ex_date": "2026-10-01",
+    "cum_date": "2026-09-29",
+    "payment_date": "2026-10-15",
+    "amount": 91,
+    "status": "announced",
+    "description": "Dividen interim BBRI"
+   },
+   {
+    "type": "buyback",
+    "ex_date": "2026-09-12",
+    "cum_date": null,
+    "payment_date": null,
+    "amount": 294419575101,
+    "status": "active",
+    "description": "Program buyback BBRI"
+   }
+  ],
+  "BBNI": [
+   {
+    "type": "dividend",
+    "ex_date": "2026-10-31",
+    "cum_date": "2026-10-29",
+    "payment_date": "2026-11-14",
+    "amount": 234,
+    "status": "announced",
+    "description": "Dividen interim BBNI"
+   },
+   {
+    "type": "buyback",
+    "ex_date": "2026-08-30",
+    "cum_date": null,
+    "payment_date": null,
+    "amount": 273183379566,
+    "status": "active",
+    "description": "Program buyback BBNI"
+   }
+  ],
+  "BRIS": [
+   {
+    "type": "dividend",
+    "ex_date": "2026-10-08",
+    "cum_date": "2026-10-06",
+    "payment_date": "2026-10-22",
+    "amount": 137,
+    "status": "announced",
+    "description": "Dividen interim BRIS"
+   },
+   {
+    "type": "buyback",
+    "ex_date": "2026-08-22",
+    "cum_date": null,
+    "payment_date": null,
+    "amount": 816964715885,
+    "status": "active",
+    "description": "Program buyback BRIS"
+   }
+  ],
+  "ARTO": [
+   {
+    "type": "dividend",
+    "ex_date": "2026-11-04",
+    "cum_date": "2026-11-02",
+    "payment_date": "2026-11-18",
+    "amount": 124,
+    "status": "announced",
+    "description": "Dividen interim ARTO"
+   },
+   {
+    "type": "buyback",
+    "ex_date": "2026-08-31",
+    "cum_date": null,
+    "payment_date": null,
+    "amount": 234827521226,
+    "status": "active",
+    "description": "Program buyback ARTO"
+   }
+  ],
+  "BUMI": [
+   {
+    "type": "dividend",
+    "ex_date": "2026-10-11",
+    "cum_date": "2026-10-09",
+    "payment_date": "2026-10-25",
+    "amount": 2,
+    "status": "announced",
+    "description": "Dividen interim BUMI"
+   },
+   {
+    "type": "buyback",
+    "ex_date": "2026-09-11",
+    "cum_date": null,
+    "payment_date": null,
+    "amount": 301006006461,
+    "status": "active",
+    "description": "Program buyback BUMI"
+   }
+  ],
+  "ADRO": [
+   {
+    "type": "dividend",
+    "ex_date": "2026-09-25",
+    "cum_date": "2026-09-23",
+    "payment_date": "2026-10-09",
+    "amount": 121,
+    "status": "announced",
+    "description": "Dividen interim ADRO"
+   },
+   {
+    "type": "buyback",
+    "ex_date": "2026-08-29",
+    "cum_date": null,
+    "payment_date": null,
+    "amount": 185998567530,
+    "status": "active",
+    "description": "Program buyback ADRO"
+   }
+  ],
+  "PTBA": [
+   {
+    "type": "dividend",
+    "ex_date": "2026-10-02",
+    "cum_date": "2026-09-30",
+    "payment_date": "2026-10-16",
+    "amount": 124,
+    "status": "announced",
+    "description": "Dividen interim PTBA"
+   },
+   {
+    "type": "buyback",
+    "ex_date": "2026-08-30",
+    "cum_date": null,
+    "payment_date": null,
+    "amount": 740057110355,
+    "status": "active",
+    "description": "Program buyback PTBA"
+   }
+  ],
+  "ITMG": [
+   {
+    "type": "dividend",
+    "ex_date": "2026-10-01",
+    "cum_date": "2026-09-29",
+    "payment_date": "2026-10-15",
+    "amount": 1334,
+    "status": "announced",
+    "description": "Dividen interim ITMG"
+   },
+   {
+    "type": "buyback",
+    "ex_date": "2026-08-20",
+    "cum_date": null,
+    "payment_date": null,
+    "amount": 235785599845,
+    "status": "active",
+    "description": "Program buyback ITMG"
+   }
+  ],
+  "HRUM": [
+   {
+    "type": "dividend",
+    "ex_date": "2026-10-18",
+    "cum_date": "2026-10-16",
+    "payment_date": "2026-11-01",
+    "amount": 27,
+    "status": "announced",
+    "description": "Dividen interim HRUM"
+   },
+   {
+    "type": "buyback",
+    "ex_date": "2026-09-02",
+    "cum_date": null,
+    "payment_date": null,
+    "amount": 714473218025,
+    "status": "active",
+    "description": "Program buyback HRUM"
+   }
+  ],
+  "INDY": [
+   {
+    "type": "dividend",
+    "ex_date": "2026-10-21",
+    "cum_date": "2026-10-19",
+    "payment_date": "2026-11-04",
+    "amount": 81,
+    "status": "announced",
+    "description": "Dividen interim INDY"
+   },
+   {
+    "type": "buyback",
+    "ex_date": "2026-08-30",
+    "cum_date": null,
+    "payment_date": null,
+    "amount": 205093796695,
+    "status": "active",
+    "description": "Program buyback INDY"
+   }
+  ],
+  "ANTM": [
+   {
+    "type": "dividend",
+    "ex_date": "2026-10-05",
+    "cum_date": "2026-10-03",
+    "payment_date": "2026-10-19",
+    "amount": 58,
+    "status": "announced",
+    "description": "Dividen interim ANTM"
+   },
+   {
+    "type": "buyback",
+    "ex_date": "2026-08-15",
+    "cum_date": null,
+    "payment_date": null,
+    "amount": 134991494455,
+    "status": "active",
+    "description": "Program buyback ANTM"
+   }
+  ],
+  "MDKA": [
+   {
+    "type": "dividend",
+    "ex_date": "2026-10-14",
+    "cum_date": "2026-10-12",
+    "payment_date": "2026-10-28",
+    "amount": 22,
+    "status": "announced",
+    "description": "Dividen interim MDKA"
+   },
+   {
+    "type": "buyback",
+    "ex_date": "2026-08-20",
+    "cum_date": null,
+    "payment_date": null,
+    "amount": 697023719829,
+    "status": "active",
+    "description": "Program buyback MDKA"
+   }
+  ],
+  "WSKT": [
+   {
+    "type": "dividend",
+    "ex_date": "2026-11-17",
+    "cum_date": "2026-11-15",
+    "payment_date": "2026-12-01",
+    "amount": 3,
+    "status": "announced",
+    "description": "Dividen interim WSKT"
+   },
+   {
+    "type": "buyback",
+    "ex_date": "2026-08-22",
+    "cum_date": null,
+    "payment_date": null,
+    "amount": 308530855614,
+    "status": "active",
+    "description": "Program buyback WSKT"
+   }
+  ],
+  "BNBR": [
+   {
+    "type": "dividend",
+    "ex_date": "2026-10-27",
+    "cum_date": "2026-10-25",
+    "payment_date": "2026-11-10",
+    "amount": 4,
+    "status": "announced",
+    "description": "Dividen interim BNBR"
+   },
+   {
+    "type": "buyback",
+    "ex_date": "2026-08-26",
+    "cum_date": null,
+    "payment_date": null,
+    "amount": 578720955484,
+    "status": "active",
+    "description": "Program buyback BNBR"
+   }
+  ],
+  "GIAA": [
+   {
+    "type": "dividend",
+    "ex_date": "2026-09-28",
+    "cum_date": "2026-09-26",
+    "payment_date": "2026-10-12",
+    "amount": 14,
+    "status": "announced",
+    "description": "Dividen interim GIAA"
+   },
+   {
+    "type": "buyback",
+    "ex_date": "2026-08-26",
+    "cum_date": null,
+    "payment_date": null,
+    "amount": 133100533901,
+    "status": "active",
+    "description": "Program buyback GIAA"
+   }
+  ],
+  "ENRG": [
+   {
+    "type": "dividend",
+    "ex_date": "2026-11-10",
+    "cum_date": "2026-11-08",
+    "payment_date": "2026-11-24",
+    "amount": 12,
+    "status": "announced",
+    "description": "Dividen interim ENRG"
+   },
+   {
+    "type": "buyback",
+    "ex_date": "2026-09-02",
+    "cum_date": null,
+    "payment_date": null,
+    "amount": 366506306690,
+    "status": "active",
+    "description": "Program buyback ENRG"
+   }
+  ],
+  "TLKM": [
+   {
+    "type": "dividend",
+    "ex_date": "2026-11-18",
+    "cum_date": "2026-11-16",
+    "payment_date": "2026-12-02",
+    "amount": 159,
+    "status": "announced",
+    "description": "Dividen interim TLKM"
+   },
+   {
+    "type": "buyback",
+    "ex_date": "2026-09-09",
+    "cum_date": null,
+    "payment_date": null,
+    "amount": 408279778407,
+    "status": "active",
+    "description": "Program buyback TLKM"
+   }
+  ],
+  "ASII": [
+   {
+    "type": "dividend",
+    "ex_date": "2026-10-01",
+    "cum_date": "2026-09-29",
+    "payment_date": "2026-10-15",
+    "amount": 144,
+    "status": "announced",
+    "description": "Dividen interim ASII"
+   },
+   {
+    "type": "buyback",
+    "ex_date": "2026-08-29",
+    "cum_date": null,
+    "payment_date": null,
+    "amount": 863523237001,
+    "status": "active",
+    "description": "Program buyback ASII"
+   }
+  ],
+  "UNVR": [
+   {
+    "type": "dividend",
+    "ex_date": "2026-11-17",
+    "cum_date": "2026-11-15",
+    "payment_date": "2026-12-01",
+    "amount": 25,
+    "status": "announced",
+    "description": "Dividen interim UNVR"
+   },
+   {
+    "type": "buyback",
+    "ex_date": "2026-08-14",
+    "cum_date": null,
+    "payment_date": null,
+    "amount": 283670529970,
+    "status": "active",
+    "description": "Program buyback UNVR"
+   }
+  ],
+  "ICBP": [
+   {
+    "type": "dividend",
+    "ex_date": "2026-10-01",
+    "cum_date": "2026-09-29",
+    "payment_date": "2026-10-15",
+    "amount": 320,
+    "status": "announced",
+    "description": "Dividen interim ICBP"
+   },
+   {
+    "type": "buyback",
+    "ex_date": "2026-08-27",
+    "cum_date": null,
+    "payment_date": null,
+    "amount": 367386345626,
+    "status": "active",
+    "description": "Program buyback ICBP"
+   }
+  ],
+  "GOTO": [
+   {
+    "type": "dividend",
+    "ex_date": "2026-10-25",
+    "cum_date": "2026-10-23",
+    "payment_date": "2026-11-08",
+    "amount": 4,
+    "status": "announced",
+    "description": "Dividen interim GOTO"
+   },
+   {
+    "type": "buyback",
+    "ex_date": "2026-08-15",
+    "cum_date": null,
+    "payment_date": null,
+    "amount": 520363776568,
+    "status": "active",
+    "description": "Program buyback GOTO"
+   }
+  ],
+  "AADI": [
+   {
+    "type": "dividend",
+    "ex_date": "2026-10-18",
+    "cum_date": "2026-10-16",
+    "payment_date": "2026-11-01",
+    "amount": 205,
+    "status": "announced",
+    "description": "Dividen interim AADI"
+   },
+   {
+    "type": "buyback",
+    "ex_date": "2026-09-06",
+    "cum_date": null,
+    "payment_date": null,
+    "amount": 280183440143,
+    "status": "active",
+    "description": "Program buyback AADI"
+   }
+  ],
+  "MEDC": [
+   {
+    "type": "dividend",
+    "ex_date": "2026-10-07",
+    "cum_date": "2026-10-05",
+    "payment_date": "2026-10-21",
+    "amount": 33,
+    "status": "announced",
+    "description": "Dividen interim MEDC"
+   },
+   {
+    "type": "buyback",
+    "ex_date": "2026-08-21",
+    "cum_date": null,
+    "payment_date": null,
+    "amount": 434346647419,
+    "status": "active",
+    "description": "Program buyback MEDC"
+   }
+  ],
+  "INCO": [
+   {
+    "type": "dividend",
+    "ex_date": "2026-11-11",
+    "cum_date": "2026-11-09",
+    "payment_date": "2026-11-25",
+    "amount": 95,
+    "status": "announced",
+    "description": "Dividen interim INCO"
+   },
+   {
+    "type": "buyback",
+    "ex_date": "2026-09-09",
+    "cum_date": null,
+    "payment_date": null,
+    "amount": 129888054294,
+    "status": "active",
+    "description": "Program buyback INCO"
+   }
+  ],
+  "SMGR": [
+   {
+    "type": "dividend",
+    "ex_date": "2026-11-08",
+    "cum_date": "2026-11-06",
+    "payment_date": "2026-11-22",
+    "amount": 58,
+    "status": "announced",
+    "description": "Dividen interim SMGR"
+   },
+   {
+    "type": "buyback",
+    "ex_date": "2026-08-24",
+    "cum_date": null,
+    "payment_date": null,
+    "amount": 568998937866,
+    "status": "active",
+    "description": "Program buyback SMGR"
+   }
+  ],
+  "KLBF": [
+   {
+    "type": "dividend",
+    "ex_date": "2026-10-03",
+    "cum_date": "2026-10-01",
+    "payment_date": "2026-10-17",
+    "amount": 47,
+    "status": "announced",
+    "description": "Dividen interim KLBF"
+   },
+   {
+    "type": "buyback",
+    "ex_date": "2026-08-17",
+    "cum_date": null,
+    "payment_date": null,
+    "amount": 865300007446,
+    "status": "active",
+    "description": "Program buyback KLBF"
+   }
+  ]
+ },
+ "calendar": [
+  {
+   "date": "2026-09-24",
+   "event": "RUPS Tahunan BBCA"
+  },
+  {
+   "date": "2026-09-25",
+   "event": "Ex-date dividen BBRI"
+  },
+  {
+   "date": "2026-09-26",
+   "event": "Listing perdana emiten baru"
+  },
+  {
+   "date": "2026-09-27",
+   "event": "Publikasi LK Q3 mulai"
+  }
+ ],
+ "filings": {
+  "BBCA": [
+   {
+    "date": "2026-08-14",
+    "type": "insider",
+    "title": "Transaksi insider BBCA",
+    "person": "Direksi BBCA",
+    "action": "buy",
+    "value": 7037214054,
+    "shares": 1336304,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/BBCA-insider-0.pdf"
+   },
+   {
+    "date": "2026-08-06",
+    "type": "insider",
+    "title": "Transaksi insider BBCA",
+    "person": "Direksi BBCA",
+    "action": "buy",
+    "value": 1875556074,
+    "shares": 876293,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/BBCA-insider-1.pdf"
+   }
+  ],
+  "BMRI": [
+   {
+    "date": "2026-09-09",
+    "type": "insider",
+    "title": "Transaksi insider BMRI",
+    "person": "Direktur Utama BMRI",
+    "action": "sell",
+    "value": 5100000000.0,
+    "shares": 842975,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/BMRI-insider-0.pdf"
+   }
+  ],
+  "BBRI": [
+   {
+    "date": "2026-09-10",
+    "type": "insider",
+    "title": "Transaksi insider BBRI",
+    "person": "Direksi BBRI",
+    "action": "buy",
+    "value": 1077600210,
+    "shares": 1784946,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/BBRI-insider-0.pdf"
+   },
+   {
+    "date": "2026-07-11",
+    "type": "insider",
+    "title": "Transaksi insider BBRI",
+    "person": "Direksi BBRI",
+    "action": "buy",
+    "value": 3893104059,
+    "shares": 1520949,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/BBRI-insider-1.pdf"
+   },
+   {
+    "date": "2026-07-20",
+    "type": "insider",
+    "title": "Transaksi insider BBRI",
+    "person": "Direksi BBRI",
+    "action": "buy",
+    "value": 7276691011,
+    "shares": 587977,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/BBRI-insider-2.pdf"
+   }
+  ],
+  "BBNI": [
+   {
+    "date": "2026-09-17",
+    "type": "insider",
+    "title": "Transaksi insider BBNI",
+    "person": "Direksi BBNI",
+    "action": "buy",
+    "value": 4585159792,
+    "shares": 1953094,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/BBNI-insider-0.pdf"
+   },
+   {
+    "date": "2026-07-09",
+    "type": "insider",
+    "title": "Transaksi insider BBNI",
+    "person": "Direksi BBNI",
+    "action": "buy",
+    "value": 356422083,
+    "shares": 1895107,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/BBNI-insider-1.pdf"
+   },
+   {
+    "date": "2026-08-15",
+    "type": "insider",
+    "title": "Transaksi insider BBNI",
+    "person": "Direksi BBNI",
+    "action": "buy",
+    "value": 5789597479,
+    "shares": 1854401,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/BBNI-insider-2.pdf"
+   }
+  ],
+  "BRIS": [
+   {
+    "date": "2026-08-18",
+    "type": "insider",
+    "title": "Transaksi insider BRIS",
+    "person": "Direksi BRIS",
+    "action": "buy",
+    "value": 4529574698,
+    "shares": 1226658,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/BRIS-insider-0.pdf"
+   },
+   {
+    "date": "2026-08-19",
+    "type": "insider",
+    "title": "Transaksi insider BRIS",
+    "person": "Direksi BRIS",
+    "action": "buy",
+    "value": 242935721,
+    "shares": 191501,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/BRIS-insider-1.pdf"
+   },
+   {
+    "date": "2026-08-22",
+    "type": "insider",
+    "title": "Transaksi insider BRIS",
+    "person": "Direksi BRIS",
+    "action": "buy",
+    "value": 1216598060,
+    "shares": 1255903,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/BRIS-insider-2.pdf"
+   }
+  ],
+  "ARTO": [
+   {
+    "date": "2026-09-06",
+    "type": "insider",
+    "title": "Transaksi insider ARTO",
+    "person": "Direksi ARTO",
+    "action": "buy",
+    "value": 1240441842,
+    "shares": 198319,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/ARTO-insider-0.pdf"
+   },
+   {
+    "date": "2026-08-30",
+    "type": "insider",
+    "title": "Transaksi insider ARTO",
+    "person": "Direksi ARTO",
+    "action": "buy",
+    "value": 2423300284,
+    "shares": 980725,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/ARTO-insider-1.pdf"
+   }
+  ],
+  "BUMI": [
+   {
+    "date": "2026-08-17",
+    "type": "insider",
+    "title": "Transaksi insider BUMI",
+    "person": "Direksi BUMI",
+    "action": "buy",
+    "value": 1309105069,
+    "shares": 194287,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/BUMI-insider-0.pdf"
+   },
+   {
+    "date": "2026-09-01",
+    "type": "insider",
+    "title": "Transaksi insider BUMI",
+    "person": "Direksi BUMI",
+    "action": "buy",
+    "value": 1378539333,
+    "shares": 68210,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/BUMI-insider-1.pdf"
+   }
+  ],
+  "ADRO": [
+   {
+    "date": "2026-09-18",
+    "type": "insider",
+    "title": "Transaksi insider ADRO",
+    "person": "Direksi ADRO",
+    "action": "sell",
+    "value": 5553894357,
+    "shares": 139858,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/ADRO-insider-0.pdf"
+   }
+  ],
+  "PTBA": [
+   {
+    "date": "2026-07-28",
+    "type": "insider",
+    "title": "Transaksi insider PTBA",
+    "person": "Direksi PTBA",
+    "action": "buy",
+    "value": 3684974643,
+    "shares": 1851321,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/PTBA-insider-0.pdf"
+   }
+  ],
+  "ITMG": [
+   {
+    "date": "2026-07-28",
+    "type": "insider",
+    "title": "Transaksi insider ITMG",
+    "person": "Direksi ITMG",
+    "action": "buy",
+    "value": 4826539639,
+    "shares": 224749,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/ITMG-insider-0.pdf"
+   },
+   {
+    "date": "2026-08-31",
+    "type": "insider",
+    "title": "Transaksi insider ITMG",
+    "person": "Direksi ITMG",
+    "action": "buy",
+    "value": 4039458621,
+    "shares": 860504,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/ITMG-insider-1.pdf"
+   },
+   {
+    "date": "2026-07-14",
+    "type": "insider",
+    "title": "Transaksi insider ITMG",
+    "person": "Direksi ITMG",
+    "action": "buy",
+    "value": 432498920,
+    "shares": 237960,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/ITMG-insider-2.pdf"
+   }
+  ],
+  "HRUM": [
+   {
+    "date": "2026-07-12",
+    "type": "insider",
+    "title": "Transaksi insider HRUM",
+    "person": "Direksi HRUM",
+    "action": "buy",
+    "value": 6121332621,
+    "shares": 91900,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/HRUM-insider-0.pdf"
+   },
+   {
+    "date": "2026-07-27",
+    "type": "insider",
+    "title": "Transaksi insider HRUM",
+    "person": "Direksi HRUM",
+    "action": "buy",
+    "value": 2795488032,
+    "shares": 1350496,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/HRUM-insider-1.pdf"
+   },
+   {
+    "date": "2026-08-16",
+    "type": "insider",
+    "title": "Transaksi insider HRUM",
+    "person": "Direksi HRUM",
+    "action": "buy",
+    "value": 1818392613,
+    "shares": 266347,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/HRUM-insider-2.pdf"
+   }
+  ],
+  "INDY": [
+   {
+    "date": "2026-07-13",
+    "type": "insider",
+    "title": "Transaksi insider INDY",
+    "person": "Direksi INDY",
+    "action": "buy",
+    "value": 4149903077,
+    "shares": 162230,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/INDY-insider-0.pdf"
+   },
+   {
+    "date": "2026-07-06",
+    "type": "insider",
+    "title": "Transaksi insider INDY",
+    "person": "Direksi INDY",
+    "action": "buy",
+    "value": 4975460819,
+    "shares": 1301249,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/INDY-insider-1.pdf"
+   },
+   {
+    "date": "2026-08-18",
+    "type": "insider",
+    "title": "Transaksi insider INDY",
+    "person": "Direksi INDY",
+    "action": "buy",
+    "value": 4233309563,
+    "shares": 1020876,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/INDY-insider-2.pdf"
+   }
+  ],
+  "ANTM": [
+   {
+    "date": "2026-07-18",
+    "type": "insider",
+    "title": "Transaksi insider ANTM",
+    "person": "Direksi ANTM",
+    "action": "buy",
+    "value": 2072451097,
+    "shares": 916242,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/ANTM-insider-0.pdf"
+   }
+  ],
+  "MDKA": [
+   {
+    "date": "2026-09-16",
+    "type": "insider",
+    "title": "Transaksi insider MDKA",
+    "person": "Direksi MDKA",
+    "action": "buy",
+    "value": 4614282518,
+    "shares": 774297,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/MDKA-insider-0.pdf"
+   },
+   {
+    "date": "2026-07-26",
+    "type": "insider",
+    "title": "Transaksi insider MDKA",
+    "person": "Direksi MDKA",
+    "action": "buy",
+    "value": 2376161999,
+    "shares": 1240370,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/MDKA-insider-1.pdf"
+   }
+  ],
+  "WSKT": [
+   {
+    "date": "2026-06-08",
+    "type": "financial_report",
+    "title": "Keterlambatan penyampaian LK WSKT",
+    "person": "Perseroan",
+    "action": null,
+    "value": null,
+    "shares": null,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/WSKT-late.pdf"
+   },
+   {
+    "date": "2026-07-25",
+    "type": "insider",
+    "title": "Transaksi insider WSKT",
+    "person": "Direksi WSKT",
+    "action": "sell",
+    "value": 4839433858,
+    "shares": 93709,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/WSKT-insider-0.pdf"
+   },
+   {
+    "date": "2026-08-24",
+    "type": "insider",
+    "title": "Transaksi insider WSKT",
+    "person": "Direksi WSKT",
+    "action": "buy",
+    "value": 4778864351,
+    "shares": 1703744,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/WSKT-insider-1.pdf"
+   }
+  ],
+  "BNBR": [
+   {
+    "date": "2026-09-10",
+    "type": "financial_report",
+    "title": "Keterlambatan penyampaian LK BNBR",
+    "person": "Perseroan",
+    "action": null,
+    "value": null,
+    "shares": null,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/BNBR-late.pdf"
+   },
+   {
+    "date": "2026-07-04",
+    "type": "insider",
+    "title": "Transaksi insider BNBR",
+    "person": "Direksi BNBR",
+    "action": "sell",
+    "value": 6960286413,
+    "shares": 1041336,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/BNBR-insider-0.pdf"
+   }
+  ],
+  "GIAA": [
+   {
+    "date": "2026-09-07",
+    "type": "financial_report",
+    "title": "Keterlambatan penyampaian LK GIAA",
+    "person": "Perseroan",
+    "action": null,
+    "value": null,
+    "shares": null,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/GIAA-late.pdf"
+   },
+   {
+    "date": "2026-09-18",
+    "type": "insider",
+    "title": "Transaksi insider GIAA",
+    "person": "Direksi GIAA",
+    "action": "sell",
+    "value": 568720885,
+    "shares": 1396527,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/GIAA-insider-0.pdf"
+   },
+   {
+    "date": "2026-09-05",
+    "type": "insider",
+    "title": "Transaksi insider GIAA",
+    "person": "Direksi GIAA",
+    "action": "buy",
+    "value": 4377149921,
+    "shares": 1782588,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/GIAA-insider-1.pdf"
+   },
+   {
+    "date": "2026-08-05",
+    "type": "insider",
+    "title": "Transaksi insider GIAA",
+    "person": "Direksi GIAA",
+    "action": "sell",
+    "value": 420062988,
+    "shares": 1565755,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/GIAA-insider-2.pdf"
+   }
+  ],
+  "ENRG": [
+   {
+    "date": "2026-09-12",
+    "type": "financial_report",
+    "title": "Keterlambatan penyampaian LK ENRG",
+    "person": "Perseroan",
+    "action": null,
+    "value": null,
+    "shares": null,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/ENRG-late.pdf"
+   },
+   {
+    "date": "2026-08-19",
+    "type": "insider",
+    "title": "Transaksi insider ENRG",
+    "person": "Direksi ENRG",
+    "action": "buy",
+    "value": 3038286087,
+    "shares": 1292119,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/ENRG-insider-0.pdf"
+   },
+   {
+    "date": "2026-09-11",
+    "type": "insider",
+    "title": "Transaksi insider ENRG",
+    "person": "Direksi ENRG",
+    "action": "buy",
+    "value": 1318640833,
+    "shares": 1504005,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/ENRG-insider-1.pdf"
+   }
+  ],
+  "TLKM": [
+   {
+    "date": "2026-08-04",
+    "type": "insider",
+    "title": "Transaksi insider TLKM",
+    "person": "Direksi TLKM",
+    "action": "buy",
+    "value": 5993547092,
+    "shares": 62925,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/TLKM-insider-0.pdf"
+   },
+   {
+    "date": "2026-08-13",
+    "type": "insider",
+    "title": "Transaksi insider TLKM",
+    "person": "Direksi TLKM",
+    "action": "buy",
+    "value": 1963303424,
+    "shares": 802814,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/TLKM-insider-1.pdf"
+   }
+  ],
+  "ASII": [
+   {
+    "date": "2026-08-26",
+    "type": "insider",
+    "title": "Transaksi insider ASII",
+    "person": "Direksi ASII",
+    "action": "buy",
+    "value": 968523105,
+    "shares": 140106,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/ASII-insider-0.pdf"
+   },
+   {
+    "date": "2026-07-13",
+    "type": "insider",
+    "title": "Transaksi insider ASII",
+    "person": "Direksi ASII",
+    "action": "buy",
+    "value": 3156347239,
+    "shares": 875803,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/ASII-insider-1.pdf"
+   },
+   {
+    "date": "2026-08-22",
+    "type": "insider",
+    "title": "Transaksi insider ASII",
+    "person": "Direksi ASII",
+    "action": "buy",
+    "value": 4834280880,
+    "shares": 1499975,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/ASII-insider-2.pdf"
+   }
+  ],
+  "UNVR": [
+   {
+    "date": "2026-08-09",
+    "type": "insider",
+    "title": "Transaksi insider UNVR",
+    "person": "Direksi UNVR",
+    "action": "buy",
+    "value": 6485334077,
+    "shares": 1772828,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/UNVR-insider-0.pdf"
+   }
+  ],
+  "ICBP": [
+   {
+    "date": "2026-08-09",
+    "type": "insider",
+    "title": "Transaksi insider ICBP",
+    "person": "Direksi ICBP",
+    "action": "buy",
+    "value": 6124654539,
+    "shares": 691166,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/ICBP-insider-0.pdf"
+   },
+   {
+    "date": "2026-09-18",
+    "type": "insider",
+    "title": "Transaksi insider ICBP",
+    "person": "Direksi ICBP",
+    "action": "buy",
+    "value": 3442588022,
+    "shares": 1646251,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/ICBP-insider-1.pdf"
+   },
+   {
+    "date": "2026-08-08",
+    "type": "insider",
+    "title": "Transaksi insider ICBP",
+    "person": "Direksi ICBP",
+    "action": "buy",
+    "value": 4402286000,
+    "shares": 451982,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/ICBP-insider-2.pdf"
+   }
+  ],
+  "GOTO": [
+   {
+    "date": "2026-09-20",
+    "type": "insider",
+    "title": "Transaksi insider GOTO",
+    "person": "Direksi GOTO",
+    "action": "buy",
+    "value": 4707309690,
+    "shares": 547897,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/GOTO-insider-0.pdf"
+   },
+   {
+    "date": "2026-08-13",
+    "type": "insider",
+    "title": "Transaksi insider GOTO",
+    "person": "Direksi GOTO",
+    "action": "buy",
+    "value": 4656095880,
+    "shares": 375325,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/GOTO-insider-1.pdf"
+   },
+   {
+    "date": "2026-08-28",
+    "type": "insider",
+    "title": "Transaksi insider GOTO",
+    "person": "Direksi GOTO",
+    "action": "buy",
+    "value": 1532829616,
+    "shares": 1339530,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/GOTO-insider-2.pdf"
+   }
+  ],
+  "AADI": [
+   {
+    "date": "2026-08-15",
+    "type": "insider",
+    "title": "Transaksi insider AADI",
+    "person": "Direksi AADI",
+    "action": "buy",
+    "value": 7899864775,
+    "shares": 773023,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/AADI-insider-0.pdf"
+   },
+   {
+    "date": "2026-08-27",
+    "type": "insider",
+    "title": "Transaksi insider AADI",
+    "person": "Direksi AADI",
+    "action": "buy",
+    "value": 5479737981,
+    "shares": 895223,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/AADI-insider-1.pdf"
+   },
+   {
+    "date": "2026-08-27",
+    "type": "insider",
+    "title": "Transaksi insider AADI",
+    "person": "Direksi AADI",
+    "action": "buy",
+    "value": 4177740698,
+    "shares": 1460320,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/AADI-insider-2.pdf"
+   }
+  ],
+  "MEDC": [
+   {
+    "date": "2026-09-17",
+    "type": "insider",
+    "title": "Transaksi insider MEDC",
+    "person": "Direksi MEDC",
+    "action": "buy",
+    "value": 5016917926,
+    "shares": 207521,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/MEDC-insider-0.pdf"
+   }
+  ],
+  "INCO": [
+   {
+    "date": "2026-09-14",
+    "type": "insider",
+    "title": "Transaksi insider INCO",
+    "person": "Direksi INCO",
+    "action": "buy",
+    "value": 686715492,
+    "shares": 1434469,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/INCO-insider-0.pdf"
+   }
+  ],
+  "SMGR": [
+   {
+    "date": "2026-08-17",
+    "type": "insider",
+    "title": "Transaksi insider SMGR",
+    "person": "Direksi SMGR",
+    "action": "buy",
+    "value": 2212740945,
+    "shares": 203825,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/SMGR-insider-0.pdf"
+   },
+   {
+    "date": "2026-08-19",
+    "type": "insider",
+    "title": "Transaksi insider SMGR",
+    "person": "Direksi SMGR",
+    "action": "buy",
+    "value": 746324556,
+    "shares": 1268891,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/SMGR-insider-1.pdf"
+   }
+  ],
+  "KLBF": [
+   {
+    "date": "2026-09-18",
+    "type": "insider",
+    "title": "Transaksi insider KLBF",
+    "person": "Direksi KLBF",
+    "action": "buy",
+    "value": 5337548334,
+    "shares": 1410393,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/KLBF-insider-0.pdf"
+   },
+   {
+    "date": "2026-08-24",
+    "type": "insider",
+    "title": "Transaksi insider KLBF",
+    "person": "Direksi KLBF",
+    "action": "buy",
+    "value": 2520667442,
+    "shares": 1384725,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/KLBF-insider-1.pdf"
+   },
+   {
+    "date": "2026-09-20",
+    "type": "insider",
+    "title": "Transaksi insider KLBF",
+    "person": "Direksi KLBF",
+    "action": "buy",
+    "value": 1424508884,
+    "shares": 1700425,
+    "pdf_url": "https://www.idx.co.id/keterbukaan/KLBF-insider-2.pdf"
+   }
+  ]
+ },
+ "suspensions": {
+  "BBCA": [],
+  "BMRI": [],
+  "BBRI": [],
+  "BBNI": [],
+  "BRIS": [],
+  "ARTO": [],
+  "BUMI": [
+   {
+    "start": "2024-06-10",
+    "end": "2024-06-14",
+    "reason": "UMA",
+    "pdf_url": "https://www.idx.co.id/uma.pdf",
+    "active": false
+   }
+  ],
+  "ADRO": [],
+  "PTBA": [],
+  "ITMG": [],
+  "HRUM": [],
+  "INDY": [],
+  "ANTM": [],
+  "MDKA": [],
+  "WSKT": [
+   {
+    "start": "2026-08-08",
+    "end": null,
+    "reason": "Penundaan kewajiban pembayaran utang",
+    "pdf_url": "https://www.idx.co.id/pengumuman/WSKT-suspensi.pdf",
+    "active": true
+   }
+  ],
+  "BNBR": [
+   {
+    "start": "2026-05-25",
+    "end": null,
+    "reason": "Permintaan keterangan atas fluktuasi harga",
+    "pdf_url": "https://www.idx.co.id/pengumuman/BNBR-suspensi.pdf",
+    "active": true
+   }
+  ],
+  "GIAA": [
+   {
+    "start": "2026-05-28",
+    "end": null,
+    "reason": "Permintaan keterangan atas fluktuasi harga",
+    "pdf_url": "https://www.idx.co.id/pengumuman/GIAA-suspensi.pdf",
+    "active": true
+   }
+  ],
+  "ENRG": [],
+  "TLKM": [],
+  "ASII": [],
+  "UNVR": [],
+  "ICBP": [],
+  "GOTO": [],
+  "AADI": [],
+  "MEDC": [],
+  "INCO": [],
+  "SMGR": [],
+  "KLBF": []
+ },
+ "news": {
+  "BBCA": [
+   {
+    "date": "2026-09-11",
+    "title": "Bank Central Asia Tbk. laporkan kinerja kuartalan",
+    "source": "Bisnis.com",
+    "url": "https://news.example.com/bbca-kinerja",
+    "tags": [
+     "banks"
+    ]
+   },
+   {
+    "date": "2026-08-30",
+    "title": "Analis soroti valuasi BBCA",
+    "source": "Kontan",
+    "url": "https://news.example.com/bbca-valuasi",
+    "tags": [
+     "valuasi"
+    ]
+   },
+   {
+    "date": "2026-09-18",
+    "title": "Asing catat net sell di saham bank besar, BBCA terdampak",
+    "source": "Bloomberg Technoz",
+    "url": "https://news.example.com/asing-net-sell",
+    "tags": [
+     "asing",
+     "flow",
+     "bank"
+    ]
+   }
+  ],
+  "BMRI": [
+   {
+    "date": "2026-09-04",
+    "title": "Bank Mandiri (Persero) Tbk. laporkan kinerja kuartalan",
+    "source": "Bisnis.com",
+    "url": "https://news.example.com/bmri-kinerja",
+    "tags": [
+     "banks"
+    ]
+   },
+   {
+    "date": "2026-09-07",
+    "title": "Analis soroti valuasi BMRI",
+    "source": "Kontan",
+    "url": "https://news.example.com/bmri-valuasi",
+    "tags": [
+     "valuasi"
+    ]
+   },
+   {
+    "date": "2026-09-18",
+    "title": "Asing catat net sell di saham bank besar, BMRI terdampak",
+    "source": "Bloomberg Technoz",
+    "url": "https://news.example.com/asing-net-sell",
+    "tags": [
+     "asing",
+     "flow",
+     "bank"
+    ]
+   }
+  ],
+  "BBRI": [
+   {
+    "date": "2026-09-20",
+    "title": "Bank Rakyat Indonesia (Persero) Tbk. laporkan kinerja kuartalan",
+    "source": "Bisnis.com",
+    "url": "https://news.example.com/bbri-kinerja",
+    "tags": [
+     "banks"
+    ]
+   },
+   {
+    "date": "2026-09-11",
+    "title": "Analis soroti valuasi BBRI",
+    "source": "Kontan",
+    "url": "https://news.example.com/bbri-valuasi",
+    "tags": [
+     "valuasi"
+    ]
+   },
+   {
+    "date": "2026-09-18",
+    "title": "Asing catat net sell di saham bank besar, BBRI terdampak",
+    "source": "Bloomberg Technoz",
+    "url": "https://news.example.com/asing-net-sell",
+    "tags": [
+     "asing",
+     "flow",
+     "bank"
+    ]
+   }
+  ],
+  "BBNI": [
+   {
+    "date": "2026-09-12",
+    "title": "Bank Negara Indonesia (Persero) Tbk. laporkan kinerja kuartalan",
+    "source": "Bisnis.com",
+    "url": "https://news.example.com/bbni-kinerja",
+    "tags": [
+     "banks"
+    ]
+   },
+   {
+    "date": "2026-08-31",
+    "title": "Analis soroti valuasi BBNI",
+    "source": "Kontan",
+    "url": "https://news.example.com/bbni-valuasi",
+    "tags": [
+     "valuasi"
+    ]
+   }
+  ],
+  "BRIS": [
+   {
+    "date": "2026-09-18",
+    "title": "Bank Syariah Indonesia Tbk. laporkan kinerja kuartalan",
+    "source": "Bisnis.com",
+    "url": "https://news.example.com/bris-kinerja",
+    "tags": [
+     "banks"
+    ]
+   },
+   {
+    "date": "2026-09-05",
+    "title": "Analis soroti valuasi BRIS",
+    "source": "Kontan",
+    "url": "https://news.example.com/bris-valuasi",
+    "tags": [
+     "valuasi"
+    ]
+   }
+  ],
+  "ARTO": [
+   {
+    "date": "2026-09-10",
+    "title": "Bank Jago Tbk. laporkan kinerja kuartalan",
+    "source": "Bisnis.com",
+    "url": "https://news.example.com/arto-kinerja",
+    "tags": [
+     "banks"
+    ]
+   },
+   {
+    "date": "2026-09-22",
+    "title": "Analis soroti valuasi ARTO",
+    "source": "Kontan",
+    "url": "https://news.example.com/arto-valuasi",
+    "tags": [
+     "valuasi"
+    ]
+   }
+  ],
+  "BUMI": [
+   {
+    "date": "2026-09-20",
+    "title": "Bumi Resources Tbk. laporkan kinerja kuartalan",
+    "source": "Bisnis.com",
+    "url": "https://news.example.com/bumi-kinerja",
+    "tags": [
+     "energy"
+    ]
+   },
+   {
+    "date": "2026-09-07",
+    "title": "Analis soroti valuasi BUMI",
+    "source": "Kontan",
+    "url": "https://news.example.com/bumi-valuasi",
+    "tags": [
+     "valuasi"
+    ]
+   }
+  ],
+  "ADRO": [
+   {
+    "date": "2026-09-19",
+    "title": "Alamtri Resources Indonesia Tbk. laporkan kinerja kuartalan",
+    "source": "Bisnis.com",
+    "url": "https://news.example.com/adro-kinerja",
+    "tags": [
+     "energy"
+    ]
+   },
+   {
+    "date": "2026-08-26",
+    "title": "Analis soroti valuasi ADRO",
+    "source": "Kontan",
+    "url": "https://news.example.com/adro-valuasi",
+    "tags": [
+     "valuasi"
+    ]
+   }
+  ],
+  "PTBA": [
+   {
+    "date": "2026-09-02",
+    "title": "Bukit Asam Tbk. laporkan kinerja kuartalan",
+    "source": "Bisnis.com",
+    "url": "https://news.example.com/ptba-kinerja",
+    "tags": [
+     "energy"
+    ]
+   },
+   {
+    "date": "2026-09-19",
+    "title": "Analis soroti valuasi PTBA",
+    "source": "Kontan",
+    "url": "https://news.example.com/ptba-valuasi",
+    "tags": [
+     "valuasi"
+    ]
+   }
+  ],
+  "ITMG": [
+   {
+    "date": "2026-09-02",
+    "title": "Indo Tambangraya Megah Tbk. laporkan kinerja kuartalan",
+    "source": "Bisnis.com",
+    "url": "https://news.example.com/itmg-kinerja",
+    "tags": [
+     "energy"
+    ]
+   },
+   {
+    "date": "2026-09-08",
+    "title": "Analis soroti valuasi ITMG",
+    "source": "Kontan",
+    "url": "https://news.example.com/itmg-valuasi",
+    "tags": [
+     "valuasi"
+    ]
+   }
+  ],
+  "HRUM": [
+   {
+    "date": "2026-09-10",
+    "title": "Harum Energy Tbk. laporkan kinerja kuartalan",
+    "source": "Bisnis.com",
+    "url": "https://news.example.com/hrum-kinerja",
+    "tags": [
+     "energy"
+    ]
+   },
+   {
+    "date": "2026-09-16",
+    "title": "Analis soroti valuasi HRUM",
+    "source": "Kontan",
+    "url": "https://news.example.com/hrum-valuasi",
+    "tags": [
+     "valuasi"
+    ]
+   }
+  ],
+  "INDY": [
+   {
+    "date": "2026-09-08",
+    "title": "Indika Energy Tbk. laporkan kinerja kuartalan",
+    "source": "Bisnis.com",
+    "url": "https://news.example.com/indy-kinerja",
+    "tags": [
+     "energy"
+    ]
+   },
+   {
+    "date": "2026-09-01",
+    "title": "Analis soroti valuasi INDY",
+    "source": "Kontan",
+    "url": "https://news.example.com/indy-valuasi",
+    "tags": [
+     "valuasi"
+    ]
+   }
+  ],
+  "ANTM": [
+   {
+    "date": "2026-08-23",
+    "title": "Aneka Tambang Tbk. laporkan kinerja kuartalan",
+    "source": "Bisnis.com",
+    "url": "https://news.example.com/antm-kinerja",
+    "tags": [
+     "basic materials"
+    ]
+   },
+   {
+    "date": "2026-09-08",
+    "title": "Analis soroti valuasi ANTM",
+    "source": "Kontan",
+    "url": "https://news.example.com/antm-valuasi",
+    "tags": [
+     "valuasi"
+    ]
+   }
+  ],
+  "MDKA": [
+   {
+    "date": "2026-09-15",
+    "title": "Merdeka Copper Gold Tbk. laporkan kinerja kuartalan",
+    "source": "Bisnis.com",
+    "url": "https://news.example.com/mdka-kinerja",
+    "tags": [
+     "basic materials"
+    ]
+   },
+   {
+    "date": "2026-09-19",
+    "title": "Analis soroti valuasi MDKA",
+    "source": "Kontan",
+    "url": "https://news.example.com/mdka-valuasi",
+    "tags": [
+     "valuasi"
+    ]
+   }
+  ],
+  "WSKT": [
+   {
+    "date": "2026-09-12",
+    "title": "Waskita Karya (Persero) Tbk. laporkan kinerja kuartalan",
+    "source": "Bisnis.com",
+    "url": "https://news.example.com/wskt-kinerja",
+    "tags": [
+     "infrastructure"
+    ]
+   },
+   {
+    "date": "2026-08-30",
+    "title": "Analis soroti valuasi WSKT",
+    "source": "Kontan",
+    "url": "https://news.example.com/wskt-valuasi",
+    "tags": [
+     "valuasi"
+    ]
+   }
+  ],
+  "BNBR": [
+   {
+    "date": "2026-08-30",
+    "title": "Bakrie & Brothers Tbk. laporkan kinerja kuartalan",
+    "source": "Bisnis.com",
+    "url": "https://news.example.com/bnbr-kinerja",
+    "tags": [
+     "industrials"
+    ]
+   },
+   {
+    "date": "2026-09-18",
+    "title": "Analis soroti valuasi BNBR",
+    "source": "Kontan",
+    "url": "https://news.example.com/bnbr-valuasi",
+    "tags": [
+     "valuasi"
+    ]
+   }
+  ],
+  "GIAA": [
+   {
+    "date": "2026-09-03",
+    "title": "Garuda Indonesia (Persero) Tbk. laporkan kinerja kuartalan",
+    "source": "Bisnis.com",
+    "url": "https://news.example.com/giaa-kinerja",
+    "tags": [
+     "transportation"
+    ]
+   },
+   {
+    "date": "2026-09-15",
+    "title": "Analis soroti valuasi GIAA",
+    "source": "Kontan",
+    "url": "https://news.example.com/giaa-valuasi",
+    "tags": [
+     "valuasi"
+    ]
+   }
+  ],
+  "ENRG": [
+   {
+    "date": "2026-09-11",
+    "title": "Energi Mega Persada Tbk. laporkan kinerja kuartalan",
+    "source": "Bisnis.com",
+    "url": "https://news.example.com/enrg-kinerja",
+    "tags": [
+     "energy"
+    ]
+   },
+   {
+    "date": "2026-09-05",
+    "title": "Analis soroti valuasi ENRG",
+    "source": "Kontan",
+    "url": "https://news.example.com/enrg-valuasi",
+    "tags": [
+     "valuasi"
+    ]
+   }
+  ],
+  "TLKM": [
+   {
+    "date": "2026-09-16",
+    "title": "Telkom Indonesia (Persero) Tbk. laporkan kinerja kuartalan",
+    "source": "Bisnis.com",
+    "url": "https://news.example.com/tlkm-kinerja",
+    "tags": [
+     "telecommunications"
+    ]
+   },
+   {
+    "date": "2026-08-29",
+    "title": "Analis soroti valuasi TLKM",
+    "source": "Kontan",
+    "url": "https://news.example.com/tlkm-valuasi",
+    "tags": [
+     "valuasi"
+    ]
+   }
+  ],
+  "ASII": [
+   {
+    "date": "2026-09-19",
+    "title": "Astra International Tbk. laporkan kinerja kuartalan",
+    "source": "Bisnis.com",
+    "url": "https://news.example.com/asii-kinerja",
+    "tags": [
+     "consumer cyclicals"
+    ]
+   },
+   {
+    "date": "2026-08-27",
+    "title": "Analis soroti valuasi ASII",
+    "source": "Kontan",
+    "url": "https://news.example.com/asii-valuasi",
+    "tags": [
+     "valuasi"
+    ]
+   }
+  ],
+  "UNVR": [
+   {
+    "date": "2026-09-13",
+    "title": "Unilever Indonesia Tbk. laporkan kinerja kuartalan",
+    "source": "Bisnis.com",
+    "url": "https://news.example.com/unvr-kinerja",
+    "tags": [
+     "consumer non-cyclicals"
+    ]
+   },
+   {
+    "date": "2026-09-09",
+    "title": "Analis soroti valuasi UNVR",
+    "source": "Kontan",
+    "url": "https://news.example.com/unvr-valuasi",
+    "tags": [
+     "valuasi"
+    ]
+   }
+  ],
+  "ICBP": [
+   {
+    "date": "2026-08-31",
+    "title": "Indofood CBP Sukses Makmur Tbk. laporkan kinerja kuartalan",
+    "source": "Bisnis.com",
+    "url": "https://news.example.com/icbp-kinerja",
+    "tags": [
+     "consumer non-cyclicals"
+    ]
+   },
+   {
+    "date": "2026-08-30",
+    "title": "Analis soroti valuasi ICBP",
+    "source": "Kontan",
+    "url": "https://news.example.com/icbp-valuasi",
+    "tags": [
+     "valuasi"
+    ]
+   }
+  ],
+  "GOTO": [
+   {
+    "date": "2026-08-29",
+    "title": "GoTo Gojek Tokopedia Tbk. laporkan kinerja kuartalan",
+    "source": "Bisnis.com",
+    "url": "https://news.example.com/goto-kinerja",
+    "tags": [
+     "technology"
+    ]
+   },
+   {
+    "date": "2026-08-25",
+    "title": "Analis soroti valuasi GOTO",
+    "source": "Kontan",
+    "url": "https://news.example.com/goto-valuasi",
+    "tags": [
+     "valuasi"
+    ]
+   }
+  ],
+  "AADI": [
+   {
+    "date": "2026-09-18",
+    "title": "Adaro Andalan Indonesia Tbk. laporkan kinerja kuartalan",
+    "source": "Bisnis.com",
+    "url": "https://news.example.com/aadi-kinerja",
+    "tags": [
+     "energy"
+    ]
+   },
+   {
+    "date": "2026-09-13",
+    "title": "Analis soroti valuasi AADI",
+    "source": "Kontan",
+    "url": "https://news.example.com/aadi-valuasi",
+    "tags": [
+     "valuasi"
+    ]
+   }
+  ],
+  "MEDC": [
+   {
+    "date": "2026-09-14",
+    "title": "Medco Energi Internasional Tbk. laporkan kinerja kuartalan",
+    "source": "Bisnis.com",
+    "url": "https://news.example.com/medc-kinerja",
+    "tags": [
+     "energy"
+    ]
+   },
+   {
+    "date": "2026-09-10",
+    "title": "Analis soroti valuasi MEDC",
+    "source": "Kontan",
+    "url": "https://news.example.com/medc-valuasi",
+    "tags": [
+     "valuasi"
+    ]
+   }
+  ],
+  "INCO": [
+   {
+    "date": "2026-08-31",
+    "title": "Vale Indonesia Tbk. laporkan kinerja kuartalan",
+    "source": "Bisnis.com",
+    "url": "https://news.example.com/inco-kinerja",
+    "tags": [
+     "basic materials"
+    ]
+   },
+   {
+    "date": "2026-09-09",
+    "title": "Analis soroti valuasi INCO",
+    "source": "Kontan",
+    "url": "https://news.example.com/inco-valuasi",
+    "tags": [
+     "valuasi"
+    ]
+   }
+  ],
+  "SMGR": [
+   {
+    "date": "2026-08-23",
+    "title": "Semen Indonesia (Persero) Tbk. laporkan kinerja kuartalan",
+    "source": "Bisnis.com",
+    "url": "https://news.example.com/smgr-kinerja",
+    "tags": [
+     "basic materials"
+    ]
+   },
+   {
+    "date": "2026-09-17",
+    "title": "Analis soroti valuasi SMGR",
+    "source": "Kontan",
+    "url": "https://news.example.com/smgr-valuasi",
+    "tags": [
+     "valuasi"
+    ]
+   }
+  ],
+  "KLBF": [
+   {
+    "date": "2026-09-11",
+    "title": "Kalbe Farma Tbk. laporkan kinerja kuartalan",
+    "source": "Bisnis.com",
+    "url": "https://news.example.com/klbf-kinerja",
+    "tags": [
+     "healthcare"
+    ]
+   },
+   {
+    "date": "2026-08-26",
+    "title": "Analis soroti valuasi KLBF",
+    "source": "Kontan",
+    "url": "https://news.example.com/klbf-valuasi",
+    "tags": [
+     "valuasi"
+    ]
+   }
+  ]
+ }
+}

@@ -1,0 +1,955 @@
+{
+ "sgx_companies": {
+  "D05": {
+   "name": "DBS Group Holdings",
+   "exchange": "SGX",
+   "price": 43.8,
+   "currency": "SGD",
+   "pe": 11.8,
+   "pb": 1.9,
+   "roe": 17.2,
+   "dividend_yield": 5.2,
+   "market_cap": 124600000000.0
+  },
+  "U11": {
+   "name": "United Overseas Bank",
+   "exchange": "SGX",
+   "price": 36.4,
+   "currency": "SGD",
+   "pe": 12.4,
+   "pb": 1.7,
+   "roe": 14.8,
+   "dividend_yield": 4.6,
+   "market_cap": 61200000000.0
+  },
+  "O39": {
+   "name": "OCBC Bank",
+   "exchange": "SGX",
+   "price": 19.2,
+   "currency": "SGD",
+   "pe": 11.2,
+   "pb": 1.5,
+   "roe": 13.9,
+   "dividend_yield": 5.5,
+   "market_cap": 86400000000.0
+  },
+  "Z74": {
+   "name": "Singtel",
+   "exchange": "SGX",
+   "price": 4.32,
+   "currency": "SGD",
+   "pe": 14.1,
+   "pb": 2.4,
+   "roe": 16.0,
+   "dividend_yield": 3.9,
+   "market_cap": 71000000000.0
+  }
+ },
+ "klse_companies": {
+  "1155": {
+   "name": "Malayan Banking (Maybank)",
+   "exchange": "KLSE",
+   "price": 10.62,
+   "currency": "MYR",
+   "pe": 11.6,
+   "pb": 1.3,
+   "roe": 11.4,
+   "dividend_yield": 5.6,
+   "market_cap": 128100000000.0
+  },
+  "1023": {
+   "name": "CIMB Group",
+   "exchange": "KLSE",
+   "price": 7.44,
+   "currency": "MYR",
+   "pe": 10.4,
+   "pb": 1.2,
+   "roe": 11.8,
+   "dividend_yield": 5.1,
+   "market_cap": 79400000000.0
+  },
+  "1295": {
+   "name": "Public Bank",
+   "exchange": "KLSE",
+   "price": 4.28,
+   "currency": "MYR",
+   "pe": 12.8,
+   "pb": 1.5,
+   "roe": 12.2,
+   "dividend_yield": 4.4,
+   "market_cap": 83000000000.0
+  }
+ },
+ "sgx_short_sell": {
+  "D05": [
+   {
+    "date": "2026-08-12",
+    "short_value": 2368273,
+    "short_pct": 0.342
+   },
+   {
+    "date": "2026-08-13",
+    "short_value": 19202514,
+    "short_pct": 0.743
+   },
+   {
+    "date": "2026-08-14",
+    "short_value": 29199084,
+    "short_pct": 0.922
+   },
+   {
+    "date": "2026-08-17",
+    "short_value": 7458874,
+    "short_pct": 1.262
+   },
+   {
+    "date": "2026-08-18",
+    "short_value": 7103079,
+    "short_pct": 0.466
+   },
+   {
+    "date": "2026-08-19",
+    "short_value": 28442127,
+    "short_pct": 1.091
+   },
+   {
+    "date": "2026-08-20",
+    "short_value": 3496500,
+    "short_pct": 0.085
+   },
+   {
+    "date": "2026-08-21",
+    "short_value": 7595725,
+    "short_pct": 0.641
+   },
+   {
+    "date": "2026-08-24",
+    "short_value": 17897020,
+    "short_pct": 0.547
+   },
+   {
+    "date": "2026-08-25",
+    "short_value": 18659436,
+    "short_pct": 0.635
+   },
+   {
+    "date": "2026-08-26",
+    "short_value": 19462985,
+    "short_pct": 0.191
+   },
+   {
+    "date": "2026-08-27",
+    "short_value": 15353189,
+    "short_pct": 0.942
+   },
+   {
+    "date": "2026-08-28",
+    "short_value": 1625311,
+    "short_pct": 1.394
+   },
+   {
+    "date": "2026-08-31",
+    "short_value": 8905623,
+    "short_pct": 0.662
+   },
+   {
+    "date": "2026-09-01",
+    "short_value": 8760274,
+    "short_pct": 1.059
+   },
+   {
+    "date": "2026-09-02",
+    "short_value": 22659721,
+    "short_pct": 0.615
+   },
+   {
+    "date": "2026-09-03",
+    "short_value": 10270835,
+    "short_pct": 1.391
+   },
+   {
+    "date": "2026-09-04",
+    "short_value": 24588028,
+    "short_pct": 1.018
+   },
+   {
+    "date": "2026-09-07",
+    "short_value": 16386083,
+    "short_pct": 0.75
+   },
+   {
+    "date": "2026-09-08",
+    "short_value": 17634093,
+    "short_pct": 0.77
+   },
+   {
+    "date": "2026-09-09",
+    "short_value": 19085131,
+    "short_pct": 0.709
+   },
+   {
+    "date": "2026-09-10",
+    "short_value": 15381963,
+    "short_pct": 1.126
+   },
+   {
+    "date": "2026-09-11",
+    "short_value": 21752558,
+    "short_pct": 0.15
+   },
+   {
+    "date": "2026-09-14",
+    "short_value": 7439311,
+    "short_pct": 0.06
+   },
+   {
+    "date": "2026-09-15",
+    "short_value": 7814358,
+    "short_pct": 0.841
+   },
+   {
+    "date": "2026-09-16",
+    "short_value": 7152307,
+    "short_pct": 0.241
+   },
+   {
+    "date": "2026-09-17",
+    "short_value": 15146103,
+    "short_pct": 0.999
+   },
+   {
+    "date": "2026-09-18",
+    "short_value": 27535152,
+    "short_pct": 0.085
+   },
+   {
+    "date": "2026-09-21",
+    "short_value": 13102485,
+    "short_pct": 1.052
+   },
+   {
+    "date": "2026-09-22",
+    "short_value": 17036353,
+    "short_pct": 0.532
+   }
+  ],
+  "U11": [
+   {
+    "date": "2026-08-12",
+    "short_value": 16124229,
+    "short_pct": 1.219
+   },
+   {
+    "date": "2026-08-13",
+    "short_value": 14817455,
+    "short_pct": 0.766
+   },
+   {
+    "date": "2026-08-14",
+    "short_value": 18574461,
+    "short_pct": 0.69
+   },
+   {
+    "date": "2026-08-17",
+    "short_value": 28102853,
+    "short_pct": 0.698
+   },
+   {
+    "date": "2026-08-18",
+    "short_value": 4728136,
+    "short_pct": 1.07
+   },
+   {
+    "date": "2026-08-19",
+    "short_value": 11249782,
+    "short_pct": 0.835
+   },
+   {
+    "date": "2026-08-20",
+    "short_value": 28754294,
+    "short_pct": 1.344
+   },
+   {
+    "date": "2026-08-21",
+    "short_value": 18835943,
+    "short_pct": 0.222
+   },
+   {
+    "date": "2026-08-24",
+    "short_value": 23955846,
+    "short_pct": 1.372
+   },
+   {
+    "date": "2026-08-25",
+    "short_value": 17949931,
+    "short_pct": 0.735
+   },
+   {
+    "date": "2026-08-26",
+    "short_value": 5418078,
+    "short_pct": 0.575
+   },
+   {
+    "date": "2026-08-27",
+    "short_value": 22730716,
+    "short_pct": 0.72
+   },
+   {
+    "date": "2026-08-28",
+    "short_value": 17764023,
+    "short_pct": 1.269
+   },
+   {
+    "date": "2026-08-31",
+    "short_value": 22168078,
+    "short_pct": 1.303
+   },
+   {
+    "date": "2026-09-01",
+    "short_value": 23379063,
+    "short_pct": 0.224
+   },
+   {
+    "date": "2026-09-02",
+    "short_value": 23813425,
+    "short_pct": 0.783
+   },
+   {
+    "date": "2026-09-03",
+    "short_value": 12904812,
+    "short_pct": 0.076
+   },
+   {
+    "date": "2026-09-04",
+    "short_value": 3322052,
+    "short_pct": 0.931
+   },
+   {
+    "date": "2026-09-07",
+    "short_value": 12815160,
+    "short_pct": 0.943
+   },
+   {
+    "date": "2026-09-08",
+    "short_value": 10649354,
+    "short_pct": 1.007
+   },
+   {
+    "date": "2026-09-09",
+    "short_value": 8338166,
+    "short_pct": 0.086
+   },
+   {
+    "date": "2026-09-10",
+    "short_value": 12554937,
+    "short_pct": 0.305
+   },
+   {
+    "date": "2026-09-11",
+    "short_value": 4088324,
+    "short_pct": 0.108
+   },
+   {
+    "date": "2026-09-14",
+    "short_value": 13899238,
+    "short_pct": 0.351
+   },
+   {
+    "date": "2026-09-15",
+    "short_value": 12813375,
+    "short_pct": 0.471
+   },
+   {
+    "date": "2026-09-16",
+    "short_value": 25276576,
+    "short_pct": 0.087
+   },
+   {
+    "date": "2026-09-17",
+    "short_value": 14340288,
+    "short_pct": 0.486
+   },
+   {
+    "date": "2026-09-18",
+    "short_value": 22003030,
+    "short_pct": 1.175
+   },
+   {
+    "date": "2026-09-21",
+    "short_value": 25514178,
+    "short_pct": 1.348
+   },
+   {
+    "date": "2026-09-22",
+    "short_value": 9282226,
+    "short_pct": 0.234
+   }
+  ],
+  "O39": [
+   {
+    "date": "2026-08-12",
+    "short_value": 2421118,
+    "short_pct": 0.091
+   },
+   {
+    "date": "2026-08-13",
+    "short_value": 9478776,
+    "short_pct": 0.092
+   },
+   {
+    "date": "2026-08-14",
+    "short_value": 21218137,
+    "short_pct": 1.294
+   },
+   {
+    "date": "2026-08-17",
+    "short_value": 10503924,
+    "short_pct": 1.159
+   },
+   {
+    "date": "2026-08-18",
+    "short_value": 17212007,
+    "short_pct": 0.07
+   },
+   {
+    "date": "2026-08-19",
+    "short_value": 6919006,
+    "short_pct": 0.247
+   },
+   {
+    "date": "2026-08-20",
+    "short_value": 28941499,
+    "short_pct": 0.443
+   },
+   {
+    "date": "2026-08-21",
+    "short_value": 18342160,
+    "short_pct": 0.172
+   },
+   {
+    "date": "2026-08-24",
+    "short_value": 6080408,
+    "short_pct": 0.312
+   },
+   {
+    "date": "2026-08-25",
+    "short_value": 11089441,
+    "short_pct": 1.396
+   },
+   {
+    "date": "2026-08-26",
+    "short_value": 6121969,
+    "short_pct": 0.808
+   },
+   {
+    "date": "2026-08-27",
+    "short_value": 23108391,
+    "short_pct": 0.273
+   },
+   {
+    "date": "2026-08-28",
+    "short_value": 15777574,
+    "short_pct": 0.396
+   },
+   {
+    "date": "2026-08-31",
+    "short_value": 8362681,
+    "short_pct": 1.16
+   },
+   {
+    "date": "2026-09-01",
+    "short_value": 13855081,
+    "short_pct": 0.393
+   },
+   {
+    "date": "2026-09-02",
+    "short_value": 14600045,
+    "short_pct": 0.838
+   },
+   {
+    "date": "2026-09-03",
+    "short_value": 1228336,
+    "short_pct": 0.94
+   },
+   {
+    "date": "2026-09-04",
+    "short_value": 4553426,
+    "short_pct": 0.902
+   },
+   {
+    "date": "2026-09-07",
+    "short_value": 20049683,
+    "short_pct": 0.08
+   },
+   {
+    "date": "2026-09-08",
+    "short_value": 6022517,
+    "short_pct": 1.326
+   },
+   {
+    "date": "2026-09-09",
+    "short_value": 13556525,
+    "short_pct": 0.743
+   },
+   {
+    "date": "2026-09-10",
+    "short_value": 4405053,
+    "short_pct": 0.457
+   },
+   {
+    "date": "2026-09-11",
+    "short_value": 5506953,
+    "short_pct": 0.974
+   },
+   {
+    "date": "2026-09-14",
+    "short_value": 10377910,
+    "short_pct": 0.413
+   },
+   {
+    "date": "2026-09-15",
+    "short_value": 19056567,
+    "short_pct": 1.398
+   },
+   {
+    "date": "2026-09-16",
+    "short_value": 15783065,
+    "short_pct": 0.282
+   },
+   {
+    "date": "2026-09-17",
+    "short_value": 7641882,
+    "short_pct": 0.451
+   },
+   {
+    "date": "2026-09-18",
+    "short_value": 3461118,
+    "short_pct": 0.54
+   },
+   {
+    "date": "2026-09-21",
+    "short_value": 7302378,
+    "short_pct": 0.975
+   },
+   {
+    "date": "2026-09-22",
+    "short_value": 13760129,
+    "short_pct": 0.121
+   }
+  ],
+  "Z74": [
+   {
+    "date": "2026-08-12",
+    "short_value": 28635120,
+    "short_pct": 0.251
+   },
+   {
+    "date": "2026-08-13",
+    "short_value": 2834001,
+    "short_pct": 0.5
+   },
+   {
+    "date": "2026-08-14",
+    "short_value": 2643276,
+    "short_pct": 1.256
+   },
+   {
+    "date": "2026-08-17",
+    "short_value": 13881902,
+    "short_pct": 1.266
+   },
+   {
+    "date": "2026-08-18",
+    "short_value": 24818983,
+    "short_pct": 1.15
+   },
+   {
+    "date": "2026-08-19",
+    "short_value": 4742884,
+    "short_pct": 0.802
+   },
+   {
+    "date": "2026-08-20",
+    "short_value": 16717467,
+    "short_pct": 0.717
+   },
+   {
+    "date": "2026-08-21",
+    "short_value": 16659388,
+    "short_pct": 0.369
+   },
+   {
+    "date": "2026-08-24",
+    "short_value": 4155081,
+    "short_pct": 0.789
+   },
+   {
+    "date": "2026-08-25",
+    "short_value": 28955631,
+    "short_pct": 1.069
+   },
+   {
+    "date": "2026-08-26",
+    "short_value": 26605467,
+    "short_pct": 1.359
+   },
+   {
+    "date": "2026-08-27",
+    "short_value": 18573617,
+    "short_pct": 1.251
+   },
+   {
+    "date": "2026-08-28",
+    "short_value": 9138459,
+    "short_pct": 0.407
+   },
+   {
+    "date": "2026-08-31",
+    "short_value": 13458273,
+    "short_pct": 0.624
+   },
+   {
+    "date": "2026-09-01",
+    "short_value": 23692474,
+    "short_pct": 0.715
+   },
+   {
+    "date": "2026-09-02",
+    "short_value": 12891115,
+    "short_pct": 0.118
+   },
+   {
+    "date": "2026-09-03",
+    "short_value": 14683969,
+    "short_pct": 1.218
+   },
+   {
+    "date": "2026-09-04",
+    "short_value": 27883181,
+    "short_pct": 0.137
+   },
+   {
+    "date": "2026-09-07",
+    "short_value": 11303894,
+    "short_pct": 0.642
+   },
+   {
+    "date": "2026-09-08",
+    "short_value": 6450773,
+    "short_pct": 0.499
+   },
+   {
+    "date": "2026-09-09",
+    "short_value": 22327938,
+    "short_pct": 0.773
+   },
+   {
+    "date": "2026-09-10",
+    "short_value": 4463806,
+    "short_pct": 1.149
+   },
+   {
+    "date": "2026-09-11",
+    "short_value": 26500688,
+    "short_pct": 0.38
+   },
+   {
+    "date": "2026-09-14",
+    "short_value": 22963093,
+    "short_pct": 0.112
+   },
+   {
+    "date": "2026-09-15",
+    "short_value": 24627145,
+    "short_pct": 0.194
+   },
+   {
+    "date": "2026-09-16",
+    "short_value": 7800516,
+    "short_pct": 0.402
+   },
+   {
+    "date": "2026-09-17",
+    "short_value": 19236977,
+    "short_pct": 0.154
+   },
+   {
+    "date": "2026-09-18",
+    "short_value": 16374465,
+    "short_pct": 0.884
+   },
+   {
+    "date": "2026-09-21",
+    "short_value": 11911767,
+    "short_pct": 1.231
+   },
+   {
+    "date": "2026-09-22",
+    "short_value": 10017794,
+    "short_pct": 0.563
+   }
+  ]
+ },
+ "sgx_buybacks": {
+  "D05": [
+   {
+    "date": "2026-09-08",
+    "shares": 2649980,
+    "value": 66867721,
+    "pct_of_issued": 0.107
+   },
+   {
+    "date": "2026-09-02",
+    "shares": 1598953,
+    "value": 73161434,
+    "pct_of_issued": 0.142
+   },
+   {
+    "date": "2026-08-31",
+    "shares": 2096937,
+    "value": 52069117,
+    "pct_of_issued": 0.175
+   }
+  ],
+  "U11": [
+   {
+    "date": "2026-09-01",
+    "shares": 1941505,
+    "value": 27986079,
+    "pct_of_issued": 0.043
+   },
+   {
+    "date": "2026-08-30",
+    "shares": 542301,
+    "value": 40198519,
+    "pct_of_issued": 0.3
+   },
+   {
+    "date": "2026-09-17",
+    "shares": 890286,
+    "value": 57499358,
+    "pct_of_issued": 0.268
+   }
+  ],
+  "O39": [
+   {
+    "date": "2026-09-10",
+    "shares": 2248103,
+    "value": 77145720,
+    "pct_of_issued": 0.126
+   },
+   {
+    "date": "2026-09-19",
+    "shares": 1774591,
+    "value": 79693071,
+    "pct_of_issued": 0.149
+   },
+   {
+    "date": "2026-09-05",
+    "shares": 2546433,
+    "value": 42371417,
+    "pct_of_issued": 0.197
+   }
+  ],
+  "Z74": [
+   {
+    "date": "2026-09-11",
+    "shares": 1074054,
+    "value": 69907574,
+    "pct_of_issued": 0.105
+   },
+   {
+    "date": "2026-09-21",
+    "shares": 956120,
+    "value": 20994684,
+    "pct_of_issued": 0.278
+   },
+   {
+    "date": "2026-09-08",
+    "shares": 1115921,
+    "value": 60238373,
+    "pct_of_issued": 0.16
+   }
+  ]
+ },
+ "sgx_filings": {
+  "D05": [
+   {
+    "date": "2026-08-09",
+    "title": "D05 share buyback notice",
+    "type": "buyback",
+    "person": "Company",
+    "action": null,
+    "value": 52733330
+   },
+   {
+    "date": "2026-08-28",
+    "title": "D05 share buyback notice",
+    "type": "buyback",
+    "person": "Company",
+    "action": null,
+    "value": 38294751
+   }
+  ],
+  "U11": [
+   {
+    "date": "2026-08-19",
+    "title": "U11 share buyback notice",
+    "type": "buyback",
+    "person": "Company",
+    "action": null,
+    "value": 4999212
+   },
+   {
+    "date": "2026-09-14",
+    "title": "U11 share buyback notice",
+    "type": "buyback",
+    "person": "Company",
+    "action": null,
+    "value": 34889079
+   }
+  ],
+  "O39": [
+   {
+    "date": "2026-08-24",
+    "title": "O39 share buyback notice",
+    "type": "buyback",
+    "person": "Company",
+    "action": null,
+    "value": 30796887
+   },
+   {
+    "date": "2026-09-15",
+    "title": "O39 share buyback notice",
+    "type": "buyback",
+    "person": "Company",
+    "action": null,
+    "value": 46216887
+   }
+  ],
+  "Z74": [
+   {
+    "date": "2026-09-15",
+    "title": "Z74 share buyback notice",
+    "type": "buyback",
+    "person": "Company",
+    "action": null,
+    "value": 17484758
+   },
+   {
+    "date": "2026-08-12",
+    "title": "Z74 share buyback notice",
+    "type": "buyback",
+    "person": "Company",
+    "action": null,
+    "value": 52926920
+   }
+  ]
+ },
+ "sgx_news": {
+  "D05": [
+   {
+    "date": "2026-09-04",
+    "title": "DBS Group Holdings posts steady quarter",
+    "source": "Business Times",
+    "url": "https://news.example.com/sgx",
+    "tags": [
+     "bank",
+     "regional"
+    ]
+   }
+  ],
+  "U11": [
+   {
+    "date": "2026-09-09",
+    "title": "United Overseas Bank posts steady quarter",
+    "source": "Business Times",
+    "url": "https://news.example.com/sgx",
+    "tags": [
+     "bank",
+     "regional"
+    ]
+   }
+  ],
+  "O39": [
+   {
+    "date": "2026-09-06",
+    "title": "OCBC Bank posts steady quarter",
+    "source": "Business Times",
+    "url": "https://news.example.com/sgx",
+    "tags": [
+     "bank",
+     "regional"
+    ]
+   }
+  ],
+  "Z74": [
+   {
+    "date": "2026-09-16",
+    "title": "Singtel posts steady quarter",
+    "source": "Business Times",
+    "url": "https://news.example.com/sgx",
+    "tags": [
+     "bank",
+     "regional"
+    ]
+   }
+  ]
+ },
+ "klse_reports": {
+  "1155": {
+   "report": {
+    "name": "Malayan Banking (Maybank)",
+    "exchange": "KLSE",
+    "price": 10.62,
+    "currency": "MYR",
+    "pe": 11.6,
+    "pb": 1.3,
+    "roe": 11.4,
+    "dividend_yield": 5.6,
+    "market_cap": 128100000000.0
+   },
+   "peers": [
+    "1155",
+    "1023",
+    "1295"
+   ]
+  },
+  "1023": {
+   "report": {
+    "name": "CIMB Group",
+    "exchange": "KLSE",
+    "price": 7.44,
+    "currency": "MYR",
+    "pe": 10.4,
+    "pb": 1.2,
+    "roe": 11.8,
+    "dividend_yield": 5.1,
+    "market_cap": 79400000000.0
+   },
+   "peers": [
+    "1155",
+    "1023",
+    "1295"
+   ]
+  },
+  "1295": {
+   "report": {
+    "name": "Public Bank",
+    "exchange": "KLSE",
+    "price": 4.28,
+    "currency": "MYR",
+    "pe": 12.8,
+    "pb": 1.5,
+    "roe": 12.2,
+    "dividend_yield": 4.4,
+    "market_cap": 83000000000.0
+   },
+   "peers": [
+    "1155",
+    "1023",
+    "1295"
+   ]
+  }
+ }
+}

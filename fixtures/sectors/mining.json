@@ -1,0 +1,3640 @@
+{
+ "companies": [
+  {
+   "symbol": "BUMI",
+   "name": "Bumi Resources",
+   "sector": "Energy",
+   "commodity": "Coal",
+   "market_cap": 51200000000000,
+   "price": 138.0
+  },
+  {
+   "symbol": "ADRO",
+   "name": "Alamtri Resources",
+   "sector": "Energy",
+   "commodity": "Coal",
+   "market_cap": 74300000000000,
+   "price": 2410.0
+  },
+  {
+   "symbol": "PTBA",
+   "name": "Bukit Asam",
+   "sector": "Energy",
+   "commodity": "Coal",
+   "market_cap": 33000000000000,
+   "price": 2870.0
+  },
+  {
+   "symbol": "ITMG",
+   "name": "Indo Tambangraya",
+   "sector": "Energy",
+   "commodity": "Coal",
+   "market_cap": 28700000000000,
+   "price": 25400.0
+  },
+  {
+   "symbol": "HRUM",
+   "name": "Harum Energy",
+   "sector": "Energy",
+   "commodity": "Coal",
+   "market_cap": 15900000000000,
+   "price": 1185.0
+  },
+  {
+   "symbol": "INDY",
+   "name": "Indika Energy",
+   "sector": "Energy",
+   "commodity": "Coal",
+   "market_cap": 7900000000000,
+   "price": 1520.0
+  },
+  {
+   "symbol": "AADI",
+   "name": "Adaro Andalan",
+   "sector": "Energy",
+   "commodity": "Coal",
+   "market_cap": 96500000000000,
+   "price": 6890.0
+  },
+  {
+   "symbol": "ANTM",
+   "name": "Aneka Tambang",
+   "sector": "Basic Materials",
+   "commodity": "Gold & Nickel",
+   "market_cap": 40000000000000,
+   "price": 1665.0
+  },
+  {
+   "symbol": "MDKA",
+   "name": "Merdeka Copper Gold",
+   "sector": "Basic Materials",
+   "commodity": "Copper & Gold",
+   "market_cap": 45100000000000,
+   "price": 1860.0
+  },
+  {
+   "symbol": "INCO",
+   "name": "Vale Indonesia",
+   "sector": "Basic Materials",
+   "commodity": "Nickel",
+   "market_cap": 37300000000000,
+   "price": 3760.0
+  },
+  {
+   "symbol": "MEDC",
+   "name": "Medco Energi",
+   "sector": "Energy",
+   "commodity": "Oil & Gas",
+   "market_cap": 34800000000000,
+   "price": 1385.0
+  }
+ ],
+ "detail": {
+  "BUMI": {
+   "symbol": "BUMI",
+   "name": "Bumi Resources",
+   "sector": "Energy",
+   "commodity": "Coal",
+   "market_cap": 51200000000000,
+   "price": 138.0,
+   "pits": 3,
+   "employees": 16816,
+   "listing_date": "2005-06-15",
+   "profile": "Produsen Coal dengan operasi di KPC/Arutmin."
+  },
+  "ADRO": {
+   "symbol": "ADRO",
+   "name": "Alamtri Resources",
+   "sector": "Energy",
+   "commodity": "Coal",
+   "market_cap": 74300000000000,
+   "price": 2410.0,
+   "pits": 3,
+   "employees": 10414,
+   "listing_date": "2005-06-15",
+   "profile": "Produsen Coal dengan operasi di Adaro Indonesia."
+  },
+  "PTBA": {
+   "symbol": "PTBA",
+   "name": "Bukit Asam",
+   "sector": "Energy",
+   "commodity": "Coal",
+   "market_cap": 33000000000000,
+   "price": 2870.0,
+   "pits": 3,
+   "employees": 5702,
+   "listing_date": "2005-06-15",
+   "profile": "Produsen Coal dengan operasi di Tanjung Enim."
+  },
+  "ITMG": {
+   "symbol": "ITMG",
+   "name": "Indo Tambangraya",
+   "sector": "Energy",
+   "commodity": "Coal",
+   "market_cap": 28700000000000,
+   "price": 25400.0,
+   "pits": 3,
+   "employees": 4897,
+   "listing_date": "2005-06-15",
+   "profile": "Produsen Coal dengan operasi di Bontang."
+  },
+  "HRUM": {
+   "symbol": "HRUM",
+   "name": "Harum Energy",
+   "sector": "Energy",
+   "commodity": "Coal",
+   "market_cap": 15900000000000,
+   "price": 1185.0,
+   "pits": 1,
+   "employees": 13807,
+   "listing_date": "2005-06-15",
+   "profile": "Produsen Coal dengan operasi di KPC."
+  },
+  "INDY": {
+   "symbol": "INDY",
+   "name": "Indika Energy",
+   "sector": "Energy",
+   "commodity": "Coal",
+   "market_cap": 7900000000000,
+   "price": 1520.0,
+   "pits": 1,
+   "employees": 5770,
+   "listing_date": "2005-06-15",
+   "profile": "Produsen Coal dengan operasi di Kideco."
+  },
+  "AADI": {
+   "symbol": "AADI",
+   "name": "Adaro Andalan",
+   "sector": "Energy",
+   "commodity": "Coal",
+   "market_cap": 96500000000000,
+   "price": 6890.0,
+   "pits": 1,
+   "employees": 14613,
+   "listing_date": "2005-06-15",
+   "profile": "Produsen Coal dengan operasi di Adaro Indonesia."
+  },
+  "ANTM": {
+   "symbol": "ANTM",
+   "name": "Aneka Tambang",
+   "sector": "Basic Materials",
+   "commodity": "Gold & Nickel",
+   "market_cap": 40000000000000,
+   "price": 1665.0,
+   "pits": 1,
+   "employees": 8600,
+   "listing_date": "2005-06-15",
+   "profile": "Produsen Gold & Nickel dengan operasi di Pongkor."
+  },
+  "MDKA": {
+   "symbol": "MDKA",
+   "name": "Merdeka Copper Gold",
+   "sector": "Basic Materials",
+   "commodity": "Copper & Gold",
+   "market_cap": 45100000000000,
+   "price": 1860.0,
+   "pits": 1,
+   "employees": 13331,
+   "listing_date": "2005-06-15",
+   "profile": "Produsen Copper & Gold dengan operasi di Tujuh Bukit."
+  },
+  "INCO": {
+   "symbol": "INCO",
+   "name": "Vale Indonesia",
+   "sector": "Basic Materials",
+   "commodity": "Nickel",
+   "market_cap": 37300000000000,
+   "price": 3760.0,
+   "pits": 1,
+   "employees": 15082,
+   "listing_date": "2005-06-15",
+   "profile": "Produsen Nickel dengan operasi di Sorowako."
+  },
+  "MEDC": {
+   "symbol": "MEDC",
+   "name": "Medco Energi",
+   "sector": "Energy",
+   "commodity": "Oil & Gas",
+   "market_cap": 34800000000000,
+   "price": 1385.0,
+   "pits": 1,
+   "employees": 13372,
+   "listing_date": "2005-06-15",
+   "profile": "Produsen Oil & Gas dengan operasi di Riau."
+  }
+ },
+ "ownership": {
+  "BUMI": {
+   "parents": [
+    {
+     "name": "Grup BUMI Holding",
+     "pct": 84.7
+    },
+    {
+     "name": "Publik",
+     "pct": 39.14
+    }
+   ],
+   "subsidiaries": [
+    {
+     "name": "BUMI Mining Unit",
+     "pct": 84.9
+    }
+   ],
+   "layers": 3
+  },
+  "ADRO": {
+   "parents": [
+    {
+     "name": "Grup ADRO Holding",
+     "pct": 77.02
+    },
+    {
+     "name": "Publik",
+     "pct": 32.38
+    }
+   ],
+   "subsidiaries": [
+    {
+     "name": "ADRO Mining Unit",
+     "pct": 69.5
+    }
+   ],
+   "layers": 1
+  },
+  "PTBA": {
+   "parents": [
+    {
+     "name": "Grup PTBA Holding",
+     "pct": 55.01
+    },
+    {
+     "name": "Publik",
+     "pct": 16.95
+    }
+   ],
+   "subsidiaries": [
+    {
+     "name": "PTBA Mining Unit",
+     "pct": 88.7
+    }
+   ],
+   "layers": 1
+  },
+  "ITMG": {
+   "parents": [
+    {
+     "name": "Grup ITMG Holding",
+     "pct": 80.27
+    },
+    {
+     "name": "Publik",
+     "pct": 19.1
+    }
+   ],
+   "subsidiaries": [
+    {
+     "name": "ITMG Mining Unit",
+     "pct": 60.0
+    }
+   ],
+   "layers": 1
+  },
+  "HRUM": {
+   "parents": [
+    {
+     "name": "Grup HRUM Holding",
+     "pct": 53.67
+    },
+    {
+     "name": "Publik",
+     "pct": 21.26
+    }
+   ],
+   "subsidiaries": [
+    {
+     "name": "HRUM Mining Unit",
+     "pct": 84.5
+    }
+   ],
+   "layers": 1
+  },
+  "INDY": {
+   "parents": [
+    {
+     "name": "Grup INDY Holding",
+     "pct": 58.88
+    },
+    {
+     "name": "Publik",
+     "pct": 22.0
+    }
+   ],
+   "subsidiaries": [
+    {
+     "name": "INDY Mining Unit",
+     "pct": 83.8
+    }
+   ],
+   "layers": 1
+  },
+  "AADI": {
+   "parents": [
+    {
+     "name": "Grup AADI Holding",
+     "pct": 83.94
+    },
+    {
+     "name": "Publik",
+     "pct": 28.18
+    }
+   ],
+   "subsidiaries": [
+    {
+     "name": "AADI Mining Unit",
+     "pct": 63.1
+    }
+   ],
+   "layers": 1
+  },
+  "ANTM": {
+   "parents": [
+    {
+     "name": "Grup ANTM Holding",
+     "pct": 65.05
+    },
+    {
+     "name": "Publik",
+     "pct": 25.64
+    }
+   ],
+   "subsidiaries": [
+    {
+     "name": "ANTM Mining Unit",
+     "pct": 84.0
+    }
+   ],
+   "layers": 1
+  },
+  "MDKA": {
+   "parents": [
+    {
+     "name": "Grup MDKA Holding",
+     "pct": 59.15
+    },
+    {
+     "name": "Publik",
+     "pct": 46.6
+    }
+   ],
+   "subsidiaries": [
+    {
+     "name": "MDKA Mining Unit",
+     "pct": 93.3
+    }
+   ],
+   "layers": 1
+  },
+  "INCO": {
+   "parents": [
+    {
+     "name": "Grup INCO Holding",
+     "pct": 77.11
+    },
+    {
+     "name": "Publik",
+     "pct": 26.74
+    }
+   ],
+   "subsidiaries": [
+    {
+     "name": "INCO Mining Unit",
+     "pct": 79.6
+    }
+   ],
+   "layers": 1
+  },
+  "MEDC": {
+   "parents": [
+    {
+     "name": "Grup MEDC Holding",
+     "pct": 82.93
+    },
+    {
+     "name": "Publik",
+     "pct": 39.77
+    }
+   ],
+   "subsidiaries": [
+    {
+     "name": "MEDC Mining Unit",
+     "pct": 71.2
+    }
+   ],
+   "layers": 1
+  }
+ },
+ "sites": {
+  "BUMI": [
+   {
+    "name": "KPC/Arutmin",
+    "province": "Kalimantan Timur",
+    "lat": -5.1551,
+    "lon": 118.8486,
+    "status": "operasi",
+    "area_ha": 33755
+   }
+  ],
+  "ADRO": [
+   {
+    "name": "Adaro Indonesia",
+    "province": "Kalimantan Selatan",
+    "lat": -1.6075,
+    "lon": 120.8572,
+    "status": "operasi",
+    "area_ha": 47029
+   }
+  ],
+  "PTBA": [
+   {
+    "name": "Tanjung Enim",
+    "province": "Sumatera Selatan",
+    "lat": -2.3078,
+    "lon": 135.9559,
+    "status": "operasi",
+    "area_ha": 25291
+   }
+  ],
+  "ITMG": [
+   {
+    "name": "Bontang",
+    "province": "Kalimantan Timur",
+    "lat": -7.6167,
+    "lon": 112.7987,
+    "status": "operasi",
+    "area_ha": 23601
+   }
+  ],
+  "HRUM": [
+   {
+    "name": "KPC",
+    "province": "Kalimantan Timur",
+    "lat": -1.032,
+    "lon": 134.1859,
+    "status": "operasi",
+    "area_ha": 18060
+   }
+  ],
+  "INDY": [
+   {
+    "name": "Kideco",
+    "province": "Kalimantan Timur",
+    "lat": 1.9976,
+    "lon": 132.4205,
+    "status": "operasi",
+    "area_ha": 42854
+   }
+  ],
+  "AADI": [
+   {
+    "name": "Adaro Indonesia",
+    "province": "Kalimantan Selatan",
+    "lat": -6.5978,
+    "lon": 106.3446,
+    "status": "operasi",
+    "area_ha": 35304
+   }
+  ],
+  "ANTM": [
+   {
+    "name": "Pongkor",
+    "province": "Banten",
+    "lat": -2.7947,
+    "lon": 118.6781,
+    "status": "operasi",
+    "area_ha": 23113
+   }
+  ],
+  "MDKA": [
+   {
+    "name": "Tujuh Bukit",
+    "province": "Jawa Timur",
+    "lat": -3.5797,
+    "lon": 115.0881,
+    "status": "operasi",
+    "area_ha": 12898
+   }
+  ],
+  "INCO": [
+   {
+    "name": "Sorowako",
+    "province": "Sulawesi Selatan",
+    "lat": 2.1162,
+    "lon": 98.9197,
+    "status": "operasi",
+    "area_ha": 40095
+   }
+  ],
+  "MEDC": [
+   {
+    "name": "Riau",
+    "province": "Riau",
+    "lat": 0.6634,
+    "lon": 124.0383,
+    "status": "operasi",
+    "area_ha": 48851
+   }
+  ]
+ },
+ "production": {
+  "BUMI": [
+   {
+    "year": 2021,
+    "volume_mt": 70.7,
+    "strip_ratio": 7.04,
+    "cash_cost_usd": 47.9
+   },
+   {
+    "year": 2022,
+    "volume_mt": 70.2,
+    "strip_ratio": 5.24,
+    "cash_cost_usd": 51.7
+   },
+   {
+    "year": 2023,
+    "volume_mt": 72.6,
+    "strip_ratio": 3.67,
+    "cash_cost_usd": 46.0
+   },
+   {
+    "year": 2024,
+    "volume_mt": 75.6,
+    "strip_ratio": 4.53,
+    "cash_cost_usd": 32.3
+   },
+   {
+    "year": 2025,
+    "volume_mt": 74.4,
+    "strip_ratio": 5.84,
+    "cash_cost_usd": 39.8
+   },
+   {
+    "year": 2026,
+    "volume_mt": 80.0,
+    "strip_ratio": 5.35,
+    "cash_cost_usd": 47.5
+   }
+  ],
+  "ADRO": [
+   {
+    "year": 2021,
+    "volume_mt": 75.2,
+    "strip_ratio": 6.26,
+    "cash_cost_usd": 36.6
+   },
+   {
+    "year": 2022,
+    "volume_mt": 81.5,
+    "strip_ratio": 4.75,
+    "cash_cost_usd": 42.1
+   },
+   {
+    "year": 2023,
+    "volume_mt": 81.5,
+    "strip_ratio": 4.05,
+    "cash_cost_usd": 50.9
+   },
+   {
+    "year": 2024,
+    "volume_mt": 82.1,
+    "strip_ratio": 4.78,
+    "cash_cost_usd": 43.8
+   },
+   {
+    "year": 2025,
+    "volume_mt": 92.5,
+    "strip_ratio": 5.62,
+    "cash_cost_usd": 32.6
+   },
+   {
+    "year": 2026,
+    "volume_mt": 93.1,
+    "strip_ratio": 5.66,
+    "cash_cost_usd": 47.6
+   }
+  ],
+  "PTBA": [
+   {
+    "year": 2021,
+    "volume_mt": 54.1,
+    "strip_ratio": 5.85,
+    "cash_cost_usd": 47.1
+   },
+   {
+    "year": 2022,
+    "volume_mt": 55.4,
+    "strip_ratio": 6.05,
+    "cash_cost_usd": 44.8
+   },
+   {
+    "year": 2023,
+    "volume_mt": 53.6,
+    "strip_ratio": 5.16,
+    "cash_cost_usd": 36.2
+   },
+   {
+    "year": 2024,
+    "volume_mt": 56.9,
+    "strip_ratio": 6.26,
+    "cash_cost_usd": 47.9
+   },
+   {
+    "year": 2025,
+    "volume_mt": 56.3,
+    "strip_ratio": 5.03,
+    "cash_cost_usd": 38.3
+   },
+   {
+    "year": 2026,
+    "volume_mt": 61.2,
+    "strip_ratio": 4.74,
+    "cash_cost_usd": 38.8
+   }
+  ],
+  "ITMG": [
+   {
+    "year": 2021,
+    "volume_mt": 79.3,
+    "strip_ratio": 7.27,
+    "cash_cost_usd": 47.5
+   },
+   {
+    "year": 2022,
+    "volume_mt": 75.5,
+    "strip_ratio": 3.77,
+    "cash_cost_usd": 30.3
+   },
+   {
+    "year": 2023,
+    "volume_mt": 84.8,
+    "strip_ratio": 5.03,
+    "cash_cost_usd": 40.8
+   },
+   {
+    "year": 2024,
+    "volume_mt": 83.4,
+    "strip_ratio": 3.51,
+    "cash_cost_usd": 41.5
+   },
+   {
+    "year": 2025,
+    "volume_mt": 84.4,
+    "strip_ratio": 5.94,
+    "cash_cost_usd": 38.5
+   },
+   {
+    "year": 2026,
+    "volume_mt": 87.4,
+    "strip_ratio": 3.6,
+    "cash_cost_usd": 40.0
+   }
+  ],
+  "HRUM": [
+   {
+    "year": 2021,
+    "volume_mt": 62.0,
+    "strip_ratio": 5.27,
+    "cash_cost_usd": 43.1
+   },
+   {
+    "year": 2022,
+    "volume_mt": 62.5,
+    "strip_ratio": 5.14,
+    "cash_cost_usd": 36.7
+   },
+   {
+    "year": 2023,
+    "volume_mt": 64.3,
+    "strip_ratio": 4.74,
+    "cash_cost_usd": 50.9
+   },
+   {
+    "year": 2024,
+    "volume_mt": 68.7,
+    "strip_ratio": 5.85,
+    "cash_cost_usd": 38.5
+   },
+   {
+    "year": 2025,
+    "volume_mt": 67.7,
+    "strip_ratio": 3.53,
+    "cash_cost_usd": 32.6
+   },
+   {
+    "year": 2026,
+    "volume_mt": 72.6,
+    "strip_ratio": 5.67,
+    "cash_cost_usd": 48.5
+   }
+  ],
+  "INDY": [
+   {
+    "year": 2021,
+    "volume_mt": 55.4,
+    "strip_ratio": 5.85,
+    "cash_cost_usd": 42.2
+   },
+   {
+    "year": 2022,
+    "volume_mt": 57.2,
+    "strip_ratio": 6.55,
+    "cash_cost_usd": 44.1
+   },
+   {
+    "year": 2023,
+    "volume_mt": 61.4,
+    "strip_ratio": 4.3,
+    "cash_cost_usd": 38.6
+   },
+   {
+    "year": 2024,
+    "volume_mt": 58.9,
+    "strip_ratio": 5.69,
+    "cash_cost_usd": 47.1
+   },
+   {
+    "year": 2025,
+    "volume_mt": 64.0,
+    "strip_ratio": 7.34,
+    "cash_cost_usd": 41.3
+   },
+   {
+    "year": 2026,
+    "volume_mt": 61.5,
+    "strip_ratio": 5.88,
+    "cash_cost_usd": 44.8
+   }
+  ],
+  "AADI": [
+   {
+    "year": 2021,
+    "volume_mt": 75.8,
+    "strip_ratio": 5.09,
+    "cash_cost_usd": 33.6
+   },
+   {
+    "year": 2022,
+    "volume_mt": 73.2,
+    "strip_ratio": 4.28,
+    "cash_cost_usd": 49.6
+   },
+   {
+    "year": 2023,
+    "volume_mt": 76.7,
+    "strip_ratio": 5.23,
+    "cash_cost_usd": 28.1
+   },
+   {
+    "year": 2024,
+    "volume_mt": 83.9,
+    "strip_ratio": 4.5,
+    "cash_cost_usd": 36.1
+   },
+   {
+    "year": 2025,
+    "volume_mt": 78.3,
+    "strip_ratio": 6.23,
+    "cash_cost_usd": 38.5
+   },
+   {
+    "year": 2026,
+    "volume_mt": 87.5,
+    "strip_ratio": 6.08,
+    "cash_cost_usd": 33.8
+   }
+  ],
+  "ANTM": [
+   {
+    "year": 2021,
+    "volume_mt": 45.3,
+    "strip_ratio": 3.91,
+    "cash_cost_usd": 29.1
+   },
+   {
+    "year": 2022,
+    "volume_mt": 48.8,
+    "strip_ratio": 5.0,
+    "cash_cost_usd": 50.7
+   },
+   {
+    "year": 2023,
+    "volume_mt": 50.9,
+    "strip_ratio": 7.23,
+    "cash_cost_usd": 31.6
+   },
+   {
+    "year": 2024,
+    "volume_mt": 50.9,
+    "strip_ratio": 4.09,
+    "cash_cost_usd": 43.4
+   },
+   {
+    "year": 2025,
+    "volume_mt": 56.3,
+    "strip_ratio": 4.89,
+    "cash_cost_usd": 43.6
+   },
+   {
+    "year": 2026,
+    "volume_mt": 56.2,
+    "strip_ratio": 4.48,
+    "cash_cost_usd": 30.7
+   }
+  ],
+  "MDKA": [
+   {
+    "year": 2021,
+    "volume_mt": 41.7,
+    "strip_ratio": 4.05,
+    "cash_cost_usd": 41.8
+   },
+   {
+    "year": 2022,
+    "volume_mt": 41.1,
+    "strip_ratio": 7.06,
+    "cash_cost_usd": 29.8
+   },
+   {
+    "year": 2023,
+    "volume_mt": 42.8,
+    "strip_ratio": 6.93,
+    "cash_cost_usd": 29.0
+   },
+   {
+    "year": 2024,
+    "volume_mt": 43.3,
+    "strip_ratio": 3.66,
+    "cash_cost_usd": 39.1
+   },
+   {
+    "year": 2025,
+    "volume_mt": 44.5,
+    "strip_ratio": 4.5,
+    "cash_cost_usd": 41.0
+   },
+   {
+    "year": 2026,
+    "volume_mt": 47.4,
+    "strip_ratio": 4.3,
+    "cash_cost_usd": 41.8
+   }
+  ],
+  "INCO": [
+   {
+    "year": 2021,
+    "volume_mt": 61.1,
+    "strip_ratio": 4.6,
+    "cash_cost_usd": 41.5
+   },
+   {
+    "year": 2022,
+    "volume_mt": 66.4,
+    "strip_ratio": 4.68,
+    "cash_cost_usd": 36.2
+   },
+   {
+    "year": 2023,
+    "volume_mt": 63.4,
+    "strip_ratio": 5.0,
+    "cash_cost_usd": 50.7
+   },
+   {
+    "year": 2024,
+    "volume_mt": 67.8,
+    "strip_ratio": 5.19,
+    "cash_cost_usd": 46.0
+   },
+   {
+    "year": 2025,
+    "volume_mt": 66.4,
+    "strip_ratio": 4.39,
+    "cash_cost_usd": 32.0
+   },
+   {
+    "year": 2026,
+    "volume_mt": 73.5,
+    "strip_ratio": 3.98,
+    "cash_cost_usd": 47.9
+   }
+  ],
+  "MEDC": [
+   {
+    "year": 2021,
+    "volume_mt": 36.3,
+    "strip_ratio": 5.85,
+    "cash_cost_usd": 40.6
+   },
+   {
+    "year": 2022,
+    "volume_mt": 36.8,
+    "strip_ratio": 4.87,
+    "cash_cost_usd": 37.1
+   },
+   {
+    "year": 2023,
+    "volume_mt": 37.7,
+    "strip_ratio": 5.52,
+    "cash_cost_usd": 38.8
+   },
+   {
+    "year": 2024,
+    "volume_mt": 39.4,
+    "strip_ratio": 4.88,
+    "cash_cost_usd": 48.3
+   },
+   {
+    "year": 2025,
+    "volume_mt": 39.2,
+    "strip_ratio": 6.73,
+    "cash_cost_usd": 31.1
+   },
+   {
+    "year": 2026,
+    "volume_mt": 37.8,
+    "strip_ratio": 4.71,
+    "cash_cost_usd": 41.6
+   }
+  ]
+ },
+ "licenses": {
+  "BUMI": [
+   {
+    "type": "IUPK",
+    "number": "IUP/BUMI/2020",
+    "holder": "BUMI Mining Unit",
+    "expiry": "2027-05-18",
+    "status": "aktif",
+    "area_ha": 16875
+   },
+   {
+    "type": "IUPK",
+    "number": "IUP/BUMI/2020",
+    "holder": "BUMI Mining Unit",
+    "expiry": "2030-10-31",
+    "status": "aktif",
+    "area_ha": 35520
+   }
+  ],
+  "ADRO": [
+   {
+    "type": "IUPK",
+    "number": "IUP/ADRO/2020",
+    "holder": "ADRO Mining Unit",
+    "expiry": "2030-10-31",
+    "status": "aktif",
+    "area_ha": 30809
+   },
+   {
+    "type": "IUPK",
+    "number": "IUP/ADRO/2020",
+    "holder": "ADRO Mining Unit",
+    "expiry": "2028-08-22",
+    "status": "aktif",
+    "area_ha": 8304
+   }
+  ],
+  "PTBA": [
+   {
+    "type": "IUP",
+    "number": "IUP/PTBA/2020",
+    "holder": "PTBA Mining Unit",
+    "expiry": "2030-10-31",
+    "status": "aktif",
+    "area_ha": 33974
+   },
+   {
+    "type": "IUP",
+    "number": "IUP/PTBA/2020",
+    "holder": "PTBA Mining Unit",
+    "expiry": "2028-08-22",
+    "status": "aktif",
+    "area_ha": 13944
+   }
+  ],
+  "ITMG": [
+   {
+    "type": "IUP",
+    "number": "IUP/ITMG/2020",
+    "holder": "ITMG Mining Unit",
+    "expiry": "2027-05-09",
+    "status": "aktif",
+    "area_ha": 21428
+   },
+   {
+    "type": "IUP",
+    "number": "IUP/ITMG/2020",
+    "holder": "ITMG Mining Unit",
+    "expiry": "2028-08-22",
+    "status": "aktif",
+    "area_ha": 13131
+   }
+  ],
+  "HRUM": [
+   {
+    "type": "IUP",
+    "number": "IUP/HRUM/2020",
+    "holder": "HRUM Mining Unit",
+    "expiry": "2027-04-10",
+    "status": "aktif",
+    "area_ha": 42975
+   },
+   {
+    "type": "IUP",
+    "number": "IUP/HRUM/2020",
+    "holder": "HRUM Mining Unit",
+    "expiry": "2027-04-10",
+    "status": "aktif",
+    "area_ha": 25132
+   }
+  ],
+  "INDY": [
+   {
+    "type": "IUP",
+    "number": "IUP/INDY/2020",
+    "holder": "INDY Mining Unit",
+    "expiry": "2028-08-22",
+    "status": "aktif",
+    "area_ha": 21183
+   },
+   {
+    "type": "IUP",
+    "number": "IUP/INDY/2020",
+    "holder": "INDY Mining Unit",
+    "expiry": "2027-04-10",
+    "status": "aktif",
+    "area_ha": 30454
+   }
+  ],
+  "AADI": [
+   {
+    "type": "IUP",
+    "number": "IUP/AADI/2020",
+    "holder": "AADI Mining Unit",
+    "expiry": "2027-07-19",
+    "status": "aktif",
+    "area_ha": 26160
+   },
+   {
+    "type": "IUP",
+    "number": "IUP/AADI/2020",
+    "holder": "AADI Mining Unit",
+    "expiry": "2030-10-31",
+    "status": "aktif",
+    "area_ha": 16335
+   }
+  ],
+  "ANTM": [
+   {
+    "type": "IUP",
+    "number": "IUP/ANTM/2020",
+    "holder": "ANTM Mining Unit",
+    "expiry": "2027-04-10",
+    "status": "aktif",
+    "area_ha": 32725
+   },
+   {
+    "type": "IUP",
+    "number": "IUP/ANTM/2020",
+    "holder": "ANTM Mining Unit",
+    "expiry": "2027-07-19",
+    "status": "aktif",
+    "area_ha": 39346
+   }
+  ],
+  "MDKA": [
+   {
+    "type": "IUP",
+    "number": "IUP/MDKA/2020",
+    "holder": "MDKA Mining Unit",
+    "expiry": "2027-04-10",
+    "status": "aktif",
+    "area_ha": 9155
+   },
+   {
+    "type": "IUP",
+    "number": "IUP/MDKA/2020",
+    "holder": "MDKA Mining Unit",
+    "expiry": "2030-10-31",
+    "status": "aktif",
+    "area_ha": 36428
+   }
+  ],
+  "INCO": [
+   {
+    "type": "IUP",
+    "number": "IUP/INCO/2020",
+    "holder": "INCO Mining Unit",
+    "expiry": "2027-07-19",
+    "status": "aktif",
+    "area_ha": 49356
+   },
+   {
+    "type": "IUP",
+    "number": "IUP/INCO/2020",
+    "holder": "INCO Mining Unit",
+    "expiry": "2028-08-22",
+    "status": "aktif",
+    "area_ha": 30551
+   }
+  ],
+  "MEDC": [
+   {
+    "type": "IUP",
+    "number": "IUP/MEDC/2020",
+    "holder": "MEDC Mining Unit",
+    "expiry": "2027-07-19",
+    "status": "aktif",
+    "area_ha": 16524
+   },
+   {
+    "type": "IUP",
+    "number": "IUP/MEDC/2020",
+    "holder": "MEDC Mining Unit",
+    "expiry": "2027-04-10",
+    "status": "aktif",
+    "area_ha": 31220
+   }
+  ]
+ },
+ "auctions": [
+  {
+   "id": "WIUP-2026-BUMI",
+   "commodity": "Coal",
+   "location": "Kalimantan",
+   "status": "pemenang ditetapkan",
+   "announced": "2026-09-01",
+   "closing": "2026-10-21"
+  },
+  {
+   "id": "WIUP-2026-ADRO",
+   "commodity": "Coal",
+   "location": "Kalimantan",
+   "status": "pengumuman",
+   "announced": "2026-08-28",
+   "closing": "2026-11-15"
+  },
+  {
+   "id": "WIUP-2026-PTBA",
+   "commodity": "Coal",
+   "location": "Kalimantan",
+   "status": "lelang",
+   "announced": "2026-09-09",
+   "closing": "2026-10-06"
+  },
+  {
+   "id": "WIUP-2026-ITMG",
+   "commodity": "Coal",
+   "location": "Kalimantan",
+   "status": "pemenang ditetapkan",
+   "announced": "2026-08-20",
+   "closing": "2026-11-13"
+  },
+  {
+   "id": "WIUP-2026-HRUM",
+   "commodity": "Coal",
+   "location": "Kalimantan",
+   "status": "lelang",
+   "announced": "2026-09-13",
+   "closing": "2026-10-16"
+  },
+  {
+   "id": "WIUP-2026-INDY",
+   "commodity": "Coal",
+   "location": "Kalimantan",
+   "status": "lelang",
+   "announced": "2026-09-09",
+   "closing": "2026-11-08"
+  },
+  {
+   "id": "WIUP-2026-AADI",
+   "commodity": "Coal",
+   "location": "Kalimantan",
+   "status": "pemenang ditetapkan",
+   "announced": "2026-08-30",
+   "closing": "2026-11-16"
+  },
+  {
+   "id": "WIUP-2026-ANTM",
+   "commodity": "Gold & Nickel",
+   "location": "Kalimantan",
+   "status": "pemenang ditetapkan",
+   "announced": "2026-09-02",
+   "closing": "2026-11-11"
+  },
+  {
+   "id": "WIUP-2026-MDKA",
+   "commodity": "Copper & Gold",
+   "location": "Kalimantan",
+   "status": "pengumuman",
+   "announced": "2026-08-15",
+   "closing": "2026-10-25"
+  },
+  {
+   "id": "WIUP-2026-INCO",
+   "commodity": "Nickel",
+   "location": "Kalimantan",
+   "status": "lelang",
+   "announced": "2026-08-27",
+   "closing": "2026-10-19"
+  },
+  {
+   "id": "WIUP-2026-MEDC",
+   "commodity": "Oil & Gas",
+   "location": "Kalimantan",
+   "status": "lelang",
+   "announced": "2026-08-16",
+   "closing": "2026-11-08"
+  }
+ ],
+ "financials": {
+  "BUMI": {
+   "currency": "IDR",
+   "annual": [
+    {
+     "year": 2021,
+     "revenue": 5226469494,
+     "net_income": 653105843,
+     "ebitda": 3147548238
+    },
+    {
+     "year": 2022,
+     "revenue": 4564981562,
+     "net_income": 1395575727,
+     "ebitda": 3008926682
+    },
+    {
+     "year": 2023,
+     "revenue": 5000327176,
+     "net_income": 1481997552,
+     "ebitda": 2164148782
+    },
+    {
+     "year": 2024,
+     "revenue": 4662216018,
+     "net_income": 1837935915,
+     "ebitda": 3336494350
+    },
+    {
+     "year": 2025,
+     "revenue": 8177992940,
+     "net_income": 1464731123,
+     "ebitda": 4291749842
+    },
+    {
+     "year": 2026,
+     "revenue": 5489250841,
+     "net_income": 1266503403,
+     "ebitda": 2441255257
+    }
+   ]
+  },
+  "ADRO": {
+   "currency": "USD",
+   "annual": [
+    {
+     "year": 2021,
+     "revenue": 5292110763,
+     "net_income": 2346413050,
+     "ebitda": 2564570359
+    },
+    {
+     "year": 2022,
+     "revenue": 9019077290,
+     "net_income": 1991762100,
+     "ebitda": 3241126014
+    },
+    {
+     "year": 2023,
+     "revenue": 7363839219,
+     "net_income": 1781199748,
+     "ebitda": 2638979232
+    },
+    {
+     "year": 2024,
+     "revenue": 5380484297,
+     "net_income": 2222342234,
+     "ebitda": 4661595820
+    },
+    {
+     "year": 2025,
+     "revenue": 5101531173,
+     "net_income": 1922415758,
+     "ebitda": 4617082877
+    },
+    {
+     "year": 2026,
+     "revenue": 7964466935,
+     "net_income": 1803775222,
+     "ebitda": 5479877091
+    }
+   ]
+  },
+  "PTBA": {
+   "currency": "USD",
+   "annual": [
+    {
+     "year": 2021,
+     "revenue": 4316262341,
+     "net_income": 880859340,
+     "ebitda": 1478939993
+    },
+    {
+     "year": 2022,
+     "revenue": 5829877296,
+     "net_income": 834173234,
+     "ebitda": 2818120246
+    },
+    {
+     "year": 2023,
+     "revenue": 5274685072,
+     "net_income": 642571038,
+     "ebitda": 1741270159
+    },
+    {
+     "year": 2024,
+     "revenue": 6513171706,
+     "net_income": 1852036015,
+     "ebitda": 1690042934
+    },
+    {
+     "year": 2025,
+     "revenue": 3484247240,
+     "net_income": 996131020,
+     "ebitda": 3111557816
+    },
+    {
+     "year": 2026,
+     "revenue": 5795456695,
+     "net_income": 2086462299,
+     "ebitda": 3310125860
+    }
+   ]
+  },
+  "ITMG": {
+   "currency": "USD",
+   "annual": [
+    {
+     "year": 2021,
+     "revenue": 6166751835,
+     "net_income": 1773919406,
+     "ebitda": 3258303956
+    },
+    {
+     "year": 2022,
+     "revenue": 4738351972,
+     "net_income": 2161623545,
+     "ebitda": 2502383564
+    },
+    {
+     "year": 2023,
+     "revenue": 8944777389,
+     "net_income": 1771902764,
+     "ebitda": 2967513968
+    },
+    {
+     "year": 2024,
+     "revenue": 4732263162,
+     "net_income": 2551838553,
+     "ebitda": 2342000939
+    },
+    {
+     "year": 2025,
+     "revenue": 7670619966,
+     "net_income": 1753912906,
+     "ebitda": 4765771225
+    },
+    {
+     "year": 2026,
+     "revenue": 6975452168,
+     "net_income": 1325058253,
+     "ebitda": 3435551533
+    }
+   ]
+  },
+  "HRUM": {
+   "currency": "IDR",
+   "annual": [
+    {
+     "year": 2021,
+     "revenue": 5737996589,
+     "net_income": 1586007619,
+     "ebitda": 2216942894
+    },
+    {
+     "year": 2022,
+     "revenue": 5310748505,
+     "net_income": 1144105179,
+     "ebitda": 2357135425
+    },
+    {
+     "year": 2023,
+     "revenue": 5392521347,
+     "net_income": 1254432294,
+     "ebitda": 3298039002
+    },
+    {
+     "year": 2024,
+     "revenue": 7338004153,
+     "net_income": 637292897,
+     "ebitda": 1979454962
+    },
+    {
+     "year": 2025,
+     "revenue": 5748259763,
+     "net_income": 1283078610,
+     "ebitda": 3799183926
+    },
+    {
+     "year": 2026,
+     "revenue": 6412195861,
+     "net_income": 1475684125,
+     "ebitda": 2561141474
+    }
+   ]
+  },
+  "INDY": {
+   "currency": "IDR",
+   "annual": [
+    {
+     "year": 2021,
+     "revenue": 4169897030,
+     "net_income": 1668654127,
+     "ebitda": 2822440814
+    },
+    {
+     "year": 2022,
+     "revenue": 3690082112,
+     "net_income": 1249155894,
+     "ebitda": 1560542864
+    },
+    {
+     "year": 2023,
+     "revenue": 3683370080,
+     "net_income": 761132678,
+     "ebitda": 3341872165
+    },
+    {
+     "year": 2024,
+     "revenue": 3312250018,
+     "net_income": 1144100192,
+     "ebitda": 3153157140
+    },
+    {
+     "year": 2025,
+     "revenue": 6143199132,
+     "net_income": 1726145836,
+     "ebitda": 2116949009
+    },
+    {
+     "year": 2026,
+     "revenue": 4861658958,
+     "net_income": 1846063014,
+     "ebitda": 2838918214
+    }
+   ]
+  },
+  "AADI": {
+   "currency": "IDR",
+   "annual": [
+    {
+     "year": 2021,
+     "revenue": 6923547394,
+     "net_income": 1083885972,
+     "ebitda": 2341065608
+    },
+    {
+     "year": 2022,
+     "revenue": 6344530659,
+     "net_income": 1931774624,
+     "ebitda": 2135283226
+    },
+    {
+     "year": 2023,
+     "revenue": 6581212737,
+     "net_income": 814377916,
+     "ebitda": 3096131407
+    },
+    {
+     "year": 2024,
+     "revenue": 6480855919,
+     "net_income": 1619982282,
+     "ebitda": 2680565038
+    },
+    {
+     "year": 2025,
+     "revenue": 7280601360,
+     "net_income": 1026356790,
+     "ebitda": 3454672841
+    },
+    {
+     "year": 2026,
+     "revenue": 7159916600,
+     "net_income": 1173824580,
+     "ebitda": 3756223749
+    }
+   ]
+  },
+  "ANTM": {
+   "currency": "IDR",
+   "annual": [
+    {
+     "year": 2021,
+     "revenue": 4429467447,
+     "net_income": 1062958203,
+     "ebitda": 2123392584
+    },
+    {
+     "year": 2022,
+     "revenue": 5105112696,
+     "net_income": 1481081833,
+     "ebitda": 2443281418
+    },
+    {
+     "year": 2023,
+     "revenue": 4821252384,
+     "net_income": 1657223242,
+     "ebitda": 1613081378
+    },
+    {
+     "year": 2024,
+     "revenue": 3884272813,
+     "net_income": 1666336393,
+     "ebitda": 1536486988
+    },
+    {
+     "year": 2025,
+     "revenue": 4764166434,
+     "net_income": 1752047660,
+     "ebitda": 2620719551
+    },
+    {
+     "year": 2026,
+     "revenue": 5942846368,
+     "net_income": 775810690,
+     "ebitda": 3291766527
+    }
+   ]
+  },
+  "MDKA": {
+   "currency": "IDR",
+   "annual": [
+    {
+     "year": 2021,
+     "revenue": 3519439090,
+     "net_income": 1114334157,
+     "ebitda": 1818434378
+    },
+    {
+     "year": 2022,
+     "revenue": 4512626146,
+     "net_income": 1357298658,
+     "ebitda": 1719216420
+    },
+    {
+     "year": 2023,
+     "revenue": 3529699891,
+     "net_income": 903502634,
+     "ebitda": 1962371705
+    },
+    {
+     "year": 2024,
+     "revenue": 5213808914,
+     "net_income": 1040415475,
+     "ebitda": 2450968403
+    },
+    {
+     "year": 2025,
+     "revenue": 3053896034,
+     "net_income": 1015436460,
+     "ebitda": 1794593967
+    },
+    {
+     "year": 2026,
+     "revenue": 5706119807,
+     "net_income": 600198807,
+     "ebitda": 1226455750
+    }
+   ]
+  },
+  "INCO": {
+   "currency": "USD",
+   "annual": [
+    {
+     "year": 2021,
+     "revenue": 5441468342,
+     "net_income": 1556022370,
+     "ebitda": 2737693004
+    },
+    {
+     "year": 2022,
+     "revenue": 6629004351,
+     "net_income": 1839366462,
+     "ebitda": 2271039560
+    },
+    {
+     "year": 2023,
+     "revenue": 3708289542,
+     "net_income": 787387949,
+     "ebitda": 2427215220
+    },
+    {
+     "year": 2024,
+     "revenue": 3650866167,
+     "net_income": 1384362714,
+     "ebitda": 2035600476
+    },
+    {
+     "year": 2025,
+     "revenue": 5596786065,
+     "net_income": 1301418715,
+     "ebitda": 2150497574
+    },
+    {
+     "year": 2026,
+     "revenue": 5522876089,
+     "net_income": 1555767595,
+     "ebitda": 2724507162
+    }
+   ]
+  },
+  "MEDC": {
+   "currency": "IDR",
+   "annual": [
+    {
+     "year": 2021,
+     "revenue": 3728551679,
+     "net_income": 913243492,
+     "ebitda": 1530027236
+    },
+    {
+     "year": 2022,
+     "revenue": 3785235152,
+     "net_income": 1088728475,
+     "ebitda": 1789586908
+    },
+    {
+     "year": 2023,
+     "revenue": 3861172897,
+     "net_income": 374075551,
+     "ebitda": 1708995495
+    },
+    {
+     "year": 2024,
+     "revenue": 2352405351,
+     "net_income": 907970948,
+     "ebitda": 1753365778
+    },
+    {
+     "year": 2025,
+     "revenue": 3957733712,
+     "net_income": 1259424442,
+     "ebitda": 1728975236
+    },
+    {
+     "year": 2026,
+     "revenue": 4099257495,
+     "net_income": 500956081,
+     "ebitda": 2299066411
+    }
+   ]
+  }
+ },
+ "performance": {
+  "BUMI": [
+   {
+    "year": 2021,
+    "ret": 0.5
+   },
+   {
+    "year": 2022,
+    "ret": 37.5
+   },
+   {
+    "year": 2023,
+    "ret": 17.7
+   },
+   {
+    "year": 2024,
+    "ret": -26.9
+   },
+   {
+    "year": 2025,
+    "ret": 23.2
+   },
+   {
+    "year": 2026,
+    "ret": 15.8
+   }
+  ],
+  "ADRO": [
+   {
+    "year": 2021,
+    "ret": -6.3
+   },
+   {
+    "year": 2022,
+    "ret": -13.0
+   },
+   {
+    "year": 2023,
+    "ret": 37.4
+   },
+   {
+    "year": 2024,
+    "ret": 53.0
+   },
+   {
+    "year": 2025,
+    "ret": 39.0
+   },
+   {
+    "year": 2026,
+    "ret": 33.2
+   }
+  ],
+  "PTBA": [
+   {
+    "year": 2021,
+    "ret": 54.1
+   },
+   {
+    "year": 2022,
+    "ret": 21.0
+   },
+   {
+    "year": 2023,
+    "ret": -2.8
+   },
+   {
+    "year": 2024,
+    "ret": 14.1
+   },
+   {
+    "year": 2025,
+    "ret": -14.2
+   },
+   {
+    "year": 2026,
+    "ret": -7.6
+   }
+  ],
+  "ITMG": [
+   {
+    "year": 2021,
+    "ret": 28.3
+   },
+   {
+    "year": 2022,
+    "ret": -16.1
+   },
+   {
+    "year": 2023,
+    "ret": 35.3
+   },
+   {
+    "year": 2024,
+    "ret": 22.5
+   },
+   {
+    "year": 2025,
+    "ret": 29.0
+   },
+   {
+    "year": 2026,
+    "ret": -21.0
+   }
+  ],
+  "HRUM": [
+   {
+    "year": 2021,
+    "ret": 11.0
+   },
+   {
+    "year": 2022,
+    "ret": 54.4
+   },
+   {
+    "year": 2023,
+    "ret": -4.3
+   },
+   {
+    "year": 2024,
+    "ret": -2.2
+   },
+   {
+    "year": 2025,
+    "ret": 27.1
+   },
+   {
+    "year": 2026,
+    "ret": -7.1
+   }
+  ],
+  "INDY": [
+   {
+    "year": 2021,
+    "ret": -11.5
+   },
+   {
+    "year": 2022,
+    "ret": -18.2
+   },
+   {
+    "year": 2023,
+    "ret": 48.2
+   },
+   {
+    "year": 2024,
+    "ret": 40.3
+   },
+   {
+    "year": 2025,
+    "ret": -4.8
+   },
+   {
+    "year": 2026,
+    "ret": 8.2
+   }
+  ],
+  "AADI": [
+   {
+    "year": 2021,
+    "ret": 29.8
+   },
+   {
+    "year": 2022,
+    "ret": -12.5
+   },
+   {
+    "year": 2023,
+    "ret": 1.1
+   },
+   {
+    "year": 2024,
+    "ret": 44.8
+   },
+   {
+    "year": 2025,
+    "ret": 37.7
+   },
+   {
+    "year": 2026,
+    "ret": 1.8
+   }
+  ],
+  "ANTM": [
+   {
+    "year": 2021,
+    "ret": 21.9
+   },
+   {
+    "year": 2022,
+    "ret": -5.0
+   },
+   {
+    "year": 2023,
+    "ret": 58.2
+   },
+   {
+    "year": 2024,
+    "ret": -23.2
+   },
+   {
+    "year": 2025,
+    "ret": 58.6
+   },
+   {
+    "year": 2026,
+    "ret": -28.8
+   }
+  ],
+  "MDKA": [
+   {
+    "year": 2021,
+    "ret": -2.5
+   },
+   {
+    "year": 2022,
+    "ret": -27.7
+   },
+   {
+    "year": 2023,
+    "ret": 35.1
+   },
+   {
+    "year": 2024,
+    "ret": 41.4
+   },
+   {
+    "year": 2025,
+    "ret": 32.7
+   },
+   {
+    "year": 2026,
+    "ret": 58.0
+   }
+  ],
+  "INCO": [
+   {
+    "year": 2021,
+    "ret": 20.8
+   },
+   {
+    "year": 2022,
+    "ret": -28.6
+   },
+   {
+    "year": 2023,
+    "ret": 0.4
+   },
+   {
+    "year": 2024,
+    "ret": 58.5
+   },
+   {
+    "year": 2025,
+    "ret": 34.5
+   },
+   {
+    "year": 2026,
+    "ret": 22.0
+   }
+  ],
+  "MEDC": [
+   {
+    "year": 2021,
+    "ret": 1.6
+   },
+   {
+    "year": 2022,
+    "ret": 48.0
+   },
+   {
+    "year": 2023,
+    "ret": 41.6
+   },
+   {
+    "year": 2024,
+    "ret": 47.3
+   },
+   {
+    "year": 2025,
+    "ret": -8.2
+   },
+   {
+    "year": 2026,
+    "ret": 32.8
+   }
+  ]
+ },
+ "contracts": {
+  "BUMI": [
+   {
+    "contractor": "Kontraktor BUMI",
+    "type": "overburden removal",
+    "value_usd": 266846744,
+    "period": "2024-2027"
+   },
+   {
+    "contractor": "Kontraktor BUMI",
+    "type": "overburden removal",
+    "value_usd": 78273266,
+    "period": "2024-2027"
+   }
+  ],
+  "ADRO": [
+   {
+    "contractor": "Kontraktor ADRO",
+    "type": "overburden removal",
+    "value_usd": 102142935,
+    "period": "2024-2027"
+   },
+   {
+    "contractor": "Kontraktor ADRO",
+    "type": "overburden removal",
+    "value_usd": 275750796,
+    "period": "2024-2027"
+   }
+  ],
+  "PTBA": [
+   {
+    "contractor": "Kontraktor PTBA",
+    "type": "overburden removal",
+    "value_usd": 108550023,
+    "period": "2024-2027"
+   },
+   {
+    "contractor": "Kontraktor PTBA",
+    "type": "overburden removal",
+    "value_usd": 390429966,
+    "period": "2024-2027"
+   }
+  ],
+  "ITMG": [
+   {
+    "contractor": "Kontraktor ITMG",
+    "type": "overburden removal",
+    "value_usd": 126921744,
+    "period": "2024-2027"
+   },
+   {
+    "contractor": "Kontraktor ITMG",
+    "type": "overburden removal",
+    "value_usd": 359488398,
+    "period": "2024-2027"
+   }
+  ],
+  "HRUM": [
+   {
+    "contractor": "Kontraktor HRUM",
+    "type": "overburden removal",
+    "value_usd": 328195293,
+    "period": "2024-2027"
+   },
+   {
+    "contractor": "Kontraktor HRUM",
+    "type": "overburden removal",
+    "value_usd": 357501459,
+    "period": "2024-2027"
+   }
+  ],
+  "INDY": [
+   {
+    "contractor": "Kontraktor INDY",
+    "type": "overburden removal",
+    "value_usd": 187347949,
+    "period": "2024-2027"
+   },
+   {
+    "contractor": "Kontraktor INDY",
+    "type": "overburden removal",
+    "value_usd": 92940411,
+    "period": "2024-2027"
+   }
+  ],
+  "AADI": [
+   {
+    "contractor": "Kontraktor AADI",
+    "type": "overburden removal",
+    "value_usd": 64656359,
+    "period": "2024-2027"
+   },
+   {
+    "contractor": "Kontraktor AADI",
+    "type": "overburden removal",
+    "value_usd": 36196623,
+    "period": "2024-2027"
+   }
+  ],
+  "ANTM": [
+   {
+    "contractor": "Kontraktor ANTM",
+    "type": "overburden removal",
+    "value_usd": 172245295,
+    "period": "2024-2027"
+   },
+   {
+    "contractor": "Kontraktor ANTM",
+    "type": "overburden removal",
+    "value_usd": 204064803,
+    "period": "2024-2027"
+   }
+  ],
+  "MDKA": [
+   {
+    "contractor": "Kontraktor MDKA",
+    "type": "overburden removal",
+    "value_usd": 296959700,
+    "period": "2024-2027"
+   },
+   {
+    "contractor": "Kontraktor MDKA",
+    "type": "overburden removal",
+    "value_usd": 222380856,
+    "period": "2024-2027"
+   }
+  ],
+  "INCO": [
+   {
+    "contractor": "Kontraktor INCO",
+    "type": "overburden removal",
+    "value_usd": 201237521,
+    "period": "2024-2027"
+   },
+   {
+    "contractor": "Kontraktor INCO",
+    "type": "overburden removal",
+    "value_usd": 360896703,
+    "period": "2024-2027"
+   }
+  ],
+  "MEDC": [
+   {
+    "contractor": "Kontraktor MEDC",
+    "type": "overburden removal",
+    "value_usd": 234290083,
+    "period": "2024-2027"
+   },
+   {
+    "contractor": "Kontraktor MEDC",
+    "type": "overburden removal",
+    "value_usd": 90202030,
+    "period": "2024-2027"
+   }
+  ]
+ },
+ "exports": {
+  "BUMI": [
+   {
+    "country": "China",
+    "share_pct": 60.0
+   },
+   {
+    "country": "India",
+    "share_pct": 20.4
+   },
+   {
+    "country": "Japan",
+    "share_pct": 13.1
+   },
+   {
+    "country": "Korea",
+    "share_pct": 6.3
+   },
+   {
+    "country": "Lainnya",
+    "share_pct": 0.0
+   },
+   {
+    "country": "Lainnya",
+    "share_pct": 0.1
+   }
+  ],
+  "ADRO": [
+   {
+    "country": "China",
+    "share_pct": 60.0
+   },
+   {
+    "country": "India",
+    "share_pct": 16.7
+   },
+   {
+    "country": "Japan",
+    "share_pct": 19.7
+   },
+   {
+    "country": "Korea",
+    "share_pct": 13.6
+   },
+   {
+    "country": "Lainnya",
+    "share_pct": 0.0
+   },
+   {
+    "country": "Lainnya",
+    "share_pct": 0.0
+   }
+  ],
+  "PTBA": [
+   {
+    "country": "China",
+    "share_pct": 41.9
+   },
+   {
+    "country": "India",
+    "share_pct": 28.8
+   },
+   {
+    "country": "Japan",
+    "share_pct": 14.4
+   },
+   {
+    "country": "Korea",
+    "share_pct": 14.9
+   },
+   {
+    "country": "Lainnya",
+    "share_pct": 0.0
+   },
+   {
+    "country": "Lainnya",
+    "share_pct": 0.0
+   }
+  ],
+  "ITMG": [
+   {
+    "country": "China",
+    "share_pct": 58.1
+   },
+   {
+    "country": "India",
+    "share_pct": 24.9
+   },
+   {
+    "country": "Japan",
+    "share_pct": 12.2
+   },
+   {
+    "country": "Korea",
+    "share_pct": 4.8
+   },
+   {
+    "country": "Lainnya",
+    "share_pct": 0.0
+   },
+   {
+    "country": "Lainnya",
+    "share_pct": 0.0
+   }
+  ],
+  "HRUM": [
+   {
+    "country": "China",
+    "share_pct": 43.4
+   },
+   {
+    "country": "India",
+    "share_pct": 38.0
+   },
+   {
+    "country": "Japan",
+    "share_pct": 9.5
+   },
+   {
+    "country": "Korea",
+    "share_pct": 9.1
+   },
+   {
+    "country": "Lainnya",
+    "share_pct": 0.0
+   },
+   {
+    "country": "Lainnya",
+    "share_pct": 0.0
+   }
+  ],
+  "INDY": [
+   {
+    "country": "China",
+    "share_pct": 67.1
+   },
+   {
+    "country": "India",
+    "share_pct": 14.6
+   },
+   {
+    "country": "Japan",
+    "share_pct": 8.3
+   },
+   {
+    "country": "Korea",
+    "share_pct": 10.0
+   },
+   {
+    "country": "Lainnya",
+    "share_pct": 0.0
+   },
+   {
+    "country": "Lainnya",
+    "share_pct": 0.0
+   }
+  ],
+  "AADI": [
+   {
+    "country": "China",
+    "share_pct": 60.0
+   },
+   {
+    "country": "India",
+    "share_pct": 30.2
+   },
+   {
+    "country": "Japan",
+    "share_pct": 9.2
+   },
+   {
+    "country": "Korea",
+    "share_pct": 10.4
+   },
+   {
+    "country": "Lainnya",
+    "share_pct": 0.0
+   },
+   {
+    "country": "Lainnya",
+    "share_pct": 0.0
+   }
+  ],
+  "ANTM": [
+   {
+    "country": "China",
+    "share_pct": 60.6
+   },
+   {
+    "country": "India",
+    "share_pct": 16.6
+   },
+   {
+    "country": "Japan",
+    "share_pct": 14.5
+   },
+   {
+    "country": "Korea",
+    "share_pct": 8.3
+   },
+   {
+    "country": "Lainnya",
+    "share_pct": 0.0
+   },
+   {
+    "country": "Lainnya",
+    "share_pct": 0.0
+   }
+  ],
+  "MDKA": [
+   {
+    "country": "China",
+    "share_pct": 65.2
+   },
+   {
+    "country": "India",
+    "share_pct": 22.2
+   },
+   {
+    "country": "Japan",
+    "share_pct": 8.4
+   },
+   {
+    "country": "Korea",
+    "share_pct": 4.2
+   },
+   {
+    "country": "Lainnya",
+    "share_pct": 0.0
+   },
+   {
+    "country": "Lainnya",
+    "share_pct": 0.0
+   }
+  ],
+  "INCO": [
+   {
+    "country": "China",
+    "share_pct": 40.9
+   },
+   {
+    "country": "India",
+    "share_pct": 27.5
+   },
+   {
+    "country": "Japan",
+    "share_pct": 11.9
+   },
+   {
+    "country": "Korea",
+    "share_pct": 19.8
+   },
+   {
+    "country": "Lainnya",
+    "share_pct": 0.0
+   },
+   {
+    "country": "Lainnya",
+    "share_pct": -0.1
+   }
+  ],
+  "MEDC": [
+   {
+    "country": "China",
+    "share_pct": 60.7
+   },
+   {
+    "country": "India",
+    "share_pct": 19.8
+   },
+   {
+    "country": "Japan",
+    "share_pct": 11.1
+   },
+   {
+    "country": "Korea",
+    "share_pct": 8.5
+   },
+   {
+    "country": "Lainnya",
+    "share_pct": 0.0
+   },
+   {
+    "country": "Lainnya",
+    "share_pct": -0.1
+   }
+  ]
+ },
+ "sales_destination": {
+  "BUMI": [
+   {
+    "country": "China",
+    "share_pct": 60.0
+   },
+   {
+    "country": "India",
+    "share_pct": 20.4
+   },
+   {
+    "country": "Japan",
+    "share_pct": 13.1
+   },
+   {
+    "country": "Korea",
+    "share_pct": 6.3
+   },
+   {
+    "country": "Lainnya",
+    "share_pct": 0.0
+   },
+   {
+    "country": "Lainnya",
+    "share_pct": 0.1
+   }
+  ],
+  "ADRO": [
+   {
+    "country": "China",
+    "share_pct": 60.0
+   },
+   {
+    "country": "India",
+    "share_pct": 16.7
+   },
+   {
+    "country": "Japan",
+    "share_pct": 19.7
+   },
+   {
+    "country": "Korea",
+    "share_pct": 13.6
+   },
+   {
+    "country": "Lainnya",
+    "share_pct": 0.0
+   },
+   {
+    "country": "Lainnya",
+    "share_pct": 0.0
+   }
+  ],
+  "PTBA": [
+   {
+    "country": "China",
+    "share_pct": 41.9
+   },
+   {
+    "country": "India",
+    "share_pct": 28.8
+   },
+   {
+    "country": "Japan",
+    "share_pct": 14.4
+   },
+   {
+    "country": "Korea",
+    "share_pct": 14.9
+   },
+   {
+    "country": "Lainnya",
+    "share_pct": 0.0
+   },
+   {
+    "country": "Lainnya",
+    "share_pct": 0.0
+   }
+  ],
+  "ITMG": [
+   {
+    "country": "China",
+    "share_pct": 58.1
+   },
+   {
+    "country": "India",
+    "share_pct": 24.9
+   },
+   {
+    "country": "Japan",
+    "share_pct": 12.2
+   },
+   {
+    "country": "Korea",
+    "share_pct": 4.8
+   },
+   {
+    "country": "Lainnya",
+    "share_pct": 0.0
+   },
+   {
+    "country": "Lainnya",
+    "share_pct": 0.0
+   }
+  ],
+  "HRUM": [
+   {
+    "country": "China",
+    "share_pct": 43.4
+   },
+   {
+    "country": "India",
+    "share_pct": 38.0
+   },
+   {
+    "country": "Japan",
+    "share_pct": 9.5
+   },
+   {
+    "country": "Korea",
+    "share_pct": 9.1
+   },
+   {
+    "country": "Lainnya",
+    "share_pct": 0.0
+   },
+   {
+    "country": "Lainnya",
+    "share_pct": 0.0
+   }
+  ],
+  "INDY": [
+   {
+    "country": "China",
+    "share_pct": 67.1
+   },
+   {
+    "country": "India",
+    "share_pct": 14.6
+   },
+   {
+    "country": "Japan",
+    "share_pct": 8.3
+   },
+   {
+    "country": "Korea",
+    "share_pct": 10.0
+   },
+   {
+    "country": "Lainnya",
+    "share_pct": 0.0
+   },
+   {
+    "country": "Lainnya",
+    "share_pct": 0.0
+   }
+  ],
+  "AADI": [
+   {
+    "country": "China",
+    "share_pct": 60.0
+   },
+   {
+    "country": "India",
+    "share_pct": 30.2
+   },
+   {
+    "country": "Japan",
+    "share_pct": 9.2
+   },
+   {
+    "country": "Korea",
+    "share_pct": 10.4
+   },
+   {
+    "country": "Lainnya",
+    "share_pct": 0.0
+   },
+   {
+    "country": "Lainnya",
+    "share_pct": 0.0
+   }
+  ],
+  "ANTM": [
+   {
+    "country": "China",
+    "share_pct": 60.6
+   },
+   {
+    "country": "India",
+    "share_pct": 16.6
+   },
+   {
+    "country": "Japan",
+    "share_pct": 14.5
+   },
+   {
+    "country": "Korea",
+    "share_pct": 8.3
+   },
+   {
+    "country": "Lainnya",
+    "share_pct": 0.0
+   },
+   {
+    "country": "Lainnya",
+    "share_pct": 0.0
+   }
+  ],
+  "MDKA": [
+   {
+    "country": "China",
+    "share_pct": 65.2
+   },
+   {
+    "country": "India",
+    "share_pct": 22.2
+   },
+   {
+    "country": "Japan",
+    "share_pct": 8.4
+   },
+   {
+    "country": "Korea",
+    "share_pct": 4.2
+   },
+   {
+    "country": "Lainnya",
+    "share_pct": 0.0
+   },
+   {
+    "country": "Lainnya",
+    "share_pct": 0.0
+   }
+  ],
+  "INCO": [
+   {
+    "country": "China",
+    "share_pct": 40.9
+   },
+   {
+    "country": "India",
+    "share_pct": 27.5
+   },
+   {
+    "country": "Japan",
+    "share_pct": 11.9
+   },
+   {
+    "country": "Korea",
+    "share_pct": 19.8
+   },
+   {
+    "country": "Lainnya",
+    "share_pct": 0.0
+   },
+   {
+    "country": "Lainnya",
+    "share_pct": -0.1
+   }
+  ],
+  "MEDC": [
+   {
+    "country": "China",
+    "share_pct": 60.7
+   },
+   {
+    "country": "India",
+    "share_pct": 19.8
+   },
+   {
+    "country": "Japan",
+    "share_pct": 11.1
+   },
+   {
+    "country": "Korea",
+    "share_pct": 8.5
+   },
+   {
+    "country": "Lainnya",
+    "share_pct": 0.0
+   },
+   {
+    "country": "Lainnya",
+    "share_pct": -0.1
+   }
+  ]
+ },
+ "commodities": {
+  "Coal (HBA)": {
+   "unit": "USD",
+   "yoy_pct": 15.2,
+   "latest": 121.37,
+   "series": [
+    {
+     "month": "2023-10",
+     "price": 108.99
+    },
+    {
+     "month": "2023-11",
+     "price": 108.32
+    },
+    {
+     "month": "2023-12",
+     "price": 108.81
+    },
+    {
+     "month": "2024-01",
+     "price": 107.09
+    },
+    {
+     "month": "2024-02",
+     "price": 110.35
+    },
+    {
+     "month": "2024-03",
+     "price": 111.39
+    },
+    {
+     "month": "2024-04",
+     "price": 109.53
+    },
+    {
+     "month": "2024-05",
+     "price": 107.51
+    },
+    {
+     "month": "2024-06",
+     "price": 109.01
+    },
+    {
+     "month": "2024-07",
+     "price": 113.59
+    },
+    {
+     "month": "2024-08",
+     "price": 110.57
+    },
+    {
+     "month": "2024-09",
+     "price": 114.22
+    },
+    {
+     "month": "2024-10",
+     "price": 112.13
+    },
+    {
+     "month": "2024-11",
+     "price": 111.38
+    },
+    {
+     "month": "2024-12",
+     "price": 110.44
+    },
+    {
+     "month": "2025-01",
+     "price": 112.79
+    },
+    {
+     "month": "2025-02",
+     "price": 114.01
+    },
+    {
+     "month": "2025-03",
+     "price": 113.97
+    },
+    {
+     "month": "2025-04",
+     "price": 114.75
+    },
+    {
+     "month": "2025-05",
+     "price": 119.29
+    },
+    {
+     "month": "2025-06",
+     "price": 115.08
+    },
+    {
+     "month": "2025-07",
+     "price": 114.26
+    },
+    {
+     "month": "2025-08",
+     "price": 119.05
+    },
+    {
+     "month": "2025-09",
+     "price": 117.55
+    },
+    {
+     "month": "2025-10",
+     "price": 116.24
+    },
+    {
+     "month": "2025-11",
+     "price": 118.04
+    },
+    {
+     "month": "2025-12",
+     "price": 119.57
+    },
+    {
+     "month": "2026-01",
+     "price": 120.31
+    },
+    {
+     "month": "2026-02",
+     "price": 120.34
+    },
+    {
+     "month": "2026-03",
+     "price": 119.23
+    },
+    {
+     "month": "2026-04",
+     "price": 124.01
+    },
+    {
+     "month": "2026-05",
+     "price": 123.78
+    },
+    {
+     "month": "2026-06",
+     "price": 119.05
+    },
+    {
+     "month": "2026-07",
+     "price": 121.29
+    },
+    {
+     "month": "2026-08",
+     "price": 122.53
+    },
+    {
+     "month": "2026-09",
+     "price": 121.37
+    }
+   ]
+  },
+  "Nickel LME": {
+   "unit": "USD",
+   "yoy_pct": -8.4,
+   "latest": 15527.56,
+   "series": [
+    {
+     "month": "2023-10",
+     "price": 17703.77
+    },
+    {
+     "month": "2023-11",
+     "price": 17036.16
+    },
+    {
+     "month": "2023-12",
+     "price": 17557.17
+    },
+    {
+     "month": "2024-01",
+     "price": 16779.89
+    },
+    {
+     "month": "2024-02",
+     "price": 17353.58
+    },
+    {
+     "month": "2024-03",
+     "price": 16861.9
+    },
+    {
+     "month": "2024-04",
+     "price": 17583.5
+    },
+    {
+     "month": "2024-05",
+     "price": 16649.62
+    },
+    {
+     "month": "2024-06",
+     "price": 17400.45
+    },
+    {
+     "month": "2024-07",
+     "price": 17405.05
+    },
+    {
+     "month": "2024-08",
+     "price": 17008.42
+    },
+    {
+     "month": "2024-09",
+     "price": 16802.53
+    },
+    {
+     "month": "2024-10",
+     "price": 17257.8
+    },
+    {
+     "month": "2024-11",
+     "price": 16374.71
+    },
+    {
+     "month": "2024-12",
+     "price": 17299.43
+    },
+    {
+     "month": "2025-01",
+     "price": 16897.97
+    },
+    {
+     "month": "2025-02",
+     "price": 16770.68
+    },
+    {
+     "month": "2025-03",
+     "price": 16863.0
+    },
+    {
+     "month": "2025-04",
+     "price": 16475.96
+    },
+    {
+     "month": "2025-05",
+     "price": 16356.99
+    },
+    {
+     "month": "2025-06",
+     "price": 16312.44
+    },
+    {
+     "month": "2025-07",
+     "price": 16896.6
+    },
+    {
+     "month": "2025-08",
+     "price": 16150.66
+    },
+    {
+     "month": "2025-09",
+     "price": 16317.49
+    },
+    {
+     "month": "2025-10",
+     "price": 16108.71
+    },
+    {
+     "month": "2025-11",
+     "price": 15918.67
+    },
+    {
+     "month": "2025-12",
+     "price": 16710.79
+    },
+    {
+     "month": "2026-01",
+     "price": 16258.33
+    },
+    {
+     "month": "2026-02",
+     "price": 16280.26
+    },
+    {
+     "month": "2026-03",
+     "price": 16493.68
+    },
+    {
+     "month": "2026-04",
+     "price": 15949.68
+    },
+    {
+     "month": "2026-05",
+     "price": 16180.57
+    },
+    {
+     "month": "2026-06",
+     "price": 16120.48
+    },
+    {
+     "month": "2026-07",
+     "price": 16412.75
+    },
+    {
+     "month": "2026-08",
+     "price": 15887.02
+    },
+    {
+     "month": "2026-09",
+     "price": 15527.56
+    }
+   ]
+  },
+  "Gold": {
+   "unit": "USD",
+   "yoy_pct": 22.0,
+   "latest": 2910.62,
+   "series": [
+    {
+     "month": "2023-10",
+     "price": 2298.78
+    },
+    {
+     "month": "2023-11",
+     "price": 2270.29
+    },
+    {
+     "month": "2023-12",
+     "price": 2235.24
+    },
+    {
+     "month": "2024-01",
+     "price": 2302.91
+    },
+    {
+     "month": "2024-02",
+     "price": 2335.65
+    },
+    {
+     "month": "2024-03",
+     "price": 2384.5
+    },
+    {
+     "month": "2024-04",
+     "price": 2300.31
+    },
+    {
+     "month": "2024-05",
+     "price": 2351.42
+    },
+    {
+     "month": "2024-06",
+     "price": 2423.57
+    },
+    {
+     "month": "2024-07",
+     "price": 2365.94
+    },
+    {
+     "month": "2024-08",
+     "price": 2413.08
+    },
+    {
+     "month": "2024-09",
+     "price": 2382.99
+    },
+    {
+     "month": "2024-10",
+     "price": 2510.94
+    },
+    {
+     "month": "2024-11",
+     "price": 2525.86
+    },
+    {
+     "month": "2024-12",
+     "price": 2466.36
+    },
+    {
+     "month": "2025-01",
+     "price": 2467.96
+    },
+    {
+     "month": "2025-02",
+     "price": 2473.79
+    },
+    {
+     "month": "2025-03",
+     "price": 2562.16
+    },
+    {
+     "month": "2025-04",
+     "price": 2590.78
+    },
+    {
+     "month": "2025-05",
+     "price": 2628.24
+    },
+    {
+     "month": "2025-06",
+     "price": 2624.33
+    },
+    {
+     "month": "2025-07",
+     "price": 2565.72
+    },
+    {
+     "month": "2025-08",
+     "price": 2686.54
+    },
+    {
+     "month": "2025-09",
+     "price": 2698.83
+    },
+    {
+     "month": "2025-10",
+     "price": 2614.72
+    },
+    {
+     "month": "2025-11",
+     "price": 2743.28
+    },
+    {
+     "month": "2025-12",
+     "price": 2626.69
+    },
+    {
+     "month": "2026-01",
+     "price": 2660.58
+    },
+    {
+     "month": "2026-02",
+     "price": 2789.21
+    },
+    {
+     "month": "2026-03",
+     "price": 2782.81
+    },
+    {
+     "month": "2026-04",
+     "price": 2774.2
+    },
+    {
+     "month": "2026-05",
+     "price": 2810.9
+    },
+    {
+     "month": "2026-06",
+     "price": 2828.75
+    },
+    {
+     "month": "2026-07",
+     "price": 2756.14
+    },
+    {
+     "month": "2026-08",
+     "price": 2886.58
+    },
+    {
+     "month": "2026-09",
+     "price": 2910.62
+    }
+   ]
+  },
+  "Tin": {
+   "unit": "USD",
+   "yoy_pct": 11.5,
+   "latest": 34847.06,
+   "series": [
+    {
+     "month": "2023-10",
+     "price": 29955.92
+    },
+    {
+     "month": "2023-11",
+     "price": 31194.51
+    },
+    {
+     "month": "2023-12",
+     "price": 31649.5
+    },
+    {
+     "month": "2024-01",
+     "price": 30420.1
+    },
+    {
+     "month": "2024-02",
+     "price": 31215.57
+    },
+    {
+     "month": "2024-03",
+     "price": 30915.48
+    },
+    {
+     "month": "2024-04",
+     "price": 30416.29
+    },
+    {
+     "month": "2024-05",
+     "price": 31553.17
+    },
+    {
+     "month": "2024-06",
+     "price": 30616.09
+    },
+    {
+     "month": "2024-07",
+     "price": 31470.8
+    },
+    {
+     "month": "2024-08",
+     "price": 31215.98
+    },
+    {
+     "month": "2024-09",
+     "price": 31216.97
+    },
+    {
+     "month": "2024-10",
+     "price": 31724.02
+    },
+    {
+     "month": "2024-11",
+     "price": 32221.24
+    },
+    {
+     "month": "2024-12",
+     "price": 32113.17
+    },
+    {
+     "month": "2025-01",
+     "price": 32480.39
+    },
+    {
+     "month": "2025-02",
+     "price": 33070.62
+    },
+    {
+     "month": "2025-03",
+     "price": 32893.32
+    },
+    {
+     "month": "2025-04",
+     "price": 32793.62
+    },
+    {
+     "month": "2025-05",
+     "price": 32293.92
+    },
+    {
+     "month": "2025-06",
+     "price": 33667.25
+    },
+    {
+     "month": "2025-07",
+     "price": 33708.05
+    },
+    {
+     "month": "2025-08",
+     "price": 32169.56
+    },
+    {
+     "month": "2025-09",
+     "price": 33703.78
+    },
+    {
+     "month": "2025-10",
+     "price": 33632.91
+    },
+    {
+     "month": "2025-11",
+     "price": 32809.67
+    },
+    {
+     "month": "2025-12",
+     "price": 33270.32
+    },
+    {
+     "month": "2026-01",
+     "price": 33069.7
+    },
+    {
+     "month": "2026-02",
+     "price": 33150.32
+    },
+    {
+     "month": "2026-03",
+     "price": 33751.08
+    },
+    {
+     "month": "2026-04",
+     "price": 34684.06
+    },
+    {
+     "month": "2026-05",
+     "price": 34517.42
+    },
+    {
+     "month": "2026-06",
+     "price": 33885.2
+    },
+    {
+     "month": "2026-07",
+     "price": 34202.55
+    },
+    {
+     "month": "2026-08",
+     "price": 34926.97
+    },
+    {
+     "month": "2026-09",
+     "price": 34847.06
+    }
+   ]
+  },
+  "Copper": {
+   "unit": "USD",
+   "yoy_pct": 6.2,
+   "latest": 9947.02,
+   "series": [
+    {
+     "month": "2023-10",
+     "price": 9234.99
+    },
+    {
+     "month": "2023-11",
+     "price": 9548.83
+    },
+    {
+     "month": "2023-12",
+     "price": 9436.81
+    },
+    {
+     "month": "2024-01",
+     "price": 9423.3
+    },
+    {
+     "month": "2024-02",
+     "price": 9661.64
+    },
+    {
+     "month": "2024-03",
+     "price": 9782.11
+    },
+    {
+     "month": "2024-04",
+     "price": 9505.38
+    },
+    {
+     "month": "2024-05",
+     "price": 9733.72
+    },
+    {
+     "month": "2024-06",
+     "price": 9743.21
+    },
+    {
+     "month": "2024-07",
+     "price": 9444.36
+    },
+    {
+     "month": "2024-08",
+     "price": 9734.94
+    },
+    {
+     "month": "2024-09",
+     "price": 9780.43
+    },
+    {
+     "month": "2024-10",
+     "price": 9825.97
+    },
+    {
+     "month": "2024-11",
+     "price": 9889.78
+    },
+    {
+     "month": "2024-12",
+     "price": 9813.09
+    },
+    {
+     "month": "2025-01",
+     "price": 9739.29
+    },
+    {
+     "month": "2025-02",
+     "price": 9551.61
+    },
+    {
+     "month": "2025-03",
+     "price": 9940.43
+    },
+    {
+     "month": "2025-04",
+     "price": 9763.52
+    },
+    {
+     "month": "2025-05",
+     "price": 9808.9
+    },
+    {
+     "month": "2025-06",
+     "price": 9941.65
+    },
+    {
+     "month": "2025-07",
+     "price": 9759.89
+    },
+    {
+     "month": "2025-08",
+     "price": 9862.1
+    },
+    {
+     "month": "2025-09",
+     "price": 9893.62
+    },
+    {
+     "month": "2025-10",
+     "price": 10130.34
+    },
+    {
+     "month": "2025-11",
+     "price": 10092.47
+    },
+    {
+     "month": "2025-12",
+     "price": 9602.39
+    },
+    {
+     "month": "2026-01",
+     "price": 9961.97
+    },
+    {
+     "month": "2026-02",
+     "price": 10134.92
+    },
+    {
+     "month": "2026-03",
+     "price": 9755.43
+    },
+    {
+     "month": "2026-04",
+     "price": 9731.28
+    },
+    {
+     "month": "2026-05",
+     "price": 9889.26
+    },
+    {
+     "month": "2026-06",
+     "price": 10049.59
+    },
+    {
+     "month": "2026-07",
+     "price": 9873.33
+    },
+    {
+     "month": "2026-08",
+     "price": 9755.08
+    },
+    {
+     "month": "2026-09",
+     "price": 9947.02
+    }
+   ]
+  },
+  "Crude Oil": {
+   "unit": "USD",
+   "yoy_pct": -3.1,
+   "latest": 78.63,
+   "series": [
+    {
+     "month": "2023-10",
+     "price": 78.13
+    },
+    {
+     "month": "2023-11",
+     "price": 81.83
+    },
+    {
+     "month": "2023-12",
+     "price": 82.27
+    },
+    {
+     "month": "2024-01",
+     "price": 82.21
+    },
+    {
+     "month": "2024-02",
+     "price": 81.41
+    },
+    {
+     "month": "2024-03",
+     "price": 80.19
+    },
+    {
+     "month": "2024-04",
+     "price": 81.24
+    },
+    {
+     "month": "2024-05",
+     "price": 80.24
+    },
+    {
+     "month": "2024-06",
+     "price": 80.58
+    },
+    {
+     "month": "2024-07",
+     "price": 78.89
+    },
+    {
+     "month": "2024-08",
+     "price": 81.15
+    },
+    {
+     "month": "2024-09",
+     "price": 79.74
+    },
+    {
+     "month": "2024-10",
+     "price": 77.95
+    },
+    {
+     "month": "2024-11",
+     "price": 80.57
+    },
+    {
+     "month": "2024-12",
+     "price": 80.0
+    },
+    {
+     "month": "2025-01",
+     "price": 76.96
+    },
+    {
+     "month": "2025-02",
+     "price": 80.5
+    },
+    {
+     "month": "2025-03",
+     "price": 78.01
+    },
+    {
+     "month": "2025-04",
+     "price": 80.35
+    },
+    {
+     "month": "2025-05",
+     "price": 79.11
+    },
+    {
+     "month": "2025-06",
+     "price": 79.3
+    },
+    {
+     "month": "2025-07",
+     "price": 79.89
+    },
+    {
+     "month": "2025-08",
+     "price": 76.89
+    },
+    {
+     "month": "2025-09",
+     "price": 76.72
+    },
+    {
+     "month": "2025-10",
+     "price": 76.06
+    },
+    {
+     "month": "2025-11",
+     "price": 78.03
+    },
+    {
+     "month": "2025-12",
+     "price": 79.63
+    },
+    {
+     "month": "2026-01",
+     "price": 76.0
+    },
+    {
+     "month": "2026-02",
+     "price": 80.13
+    },
+    {
+     "month": "2026-03",
+     "price": 80.36
+    },
+    {
+     "month": "2026-04",
+     "price": 78.15
+    },
+    {
+     "month": "2026-05",
+     "price": 77.39
+    },
+    {
+     "month": "2026-06",
+     "price": 76.72
+    },
+    {
+     "month": "2026-07",
+     "price": 76.07
+    },
+    {
+     "month": "2026-08",
+     "price": 78.95
+    },
+    {
+     "month": "2026-09",
+     "price": 78.63
+    }
+   ]
+  }
+ }
+}

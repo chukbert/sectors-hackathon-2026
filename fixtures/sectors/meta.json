@@ -1,0 +1,59 @@
+{
+ "generated_at": "2026-09-22T20:16:06.383502Z",
+ "last_trading_day": "2026-09-22",
+ "symbols": [
+  "BBCA",
+  "BMRI",
+  "BBRI",
+  "BBNI",
+  "BRIS",
+  "ARTO",
+  "BUMI",
+  "ADRO",
+  "PTBA",
+  "ITMG",
+  "HRUM",
+  "INDY",
+  "ANTM",
+  "MDKA",
+  "WSKT",
+  "BNBR",
+  "GIAA",
+  "ENRG",
+  "TLKM",
+  "ASII",
+  "UNVR",
+  "ICBP",
+  "GOTO",
+  "AADI",
+  "MEDC",
+  "INCO",
+  "SMGR",
+  "KLBF"
+ ],
+ "banks": [
+  "BBCA",
+  "BMRI",
+  "BBRI",
+  "BBNI",
+  "BRIS",
+  "ARTO"
+ ],
+ "miners": [
+  "BUMI",
+  "ADRO",
+  "PTBA",
+  "ITMG",
+  "HRUM",
+  "INDY",
+  "ANTM",
+  "MDKA"
+ ],
+ "distressed": [
+  "WSKT",
+  "BNBR",
+  "GIAA",
+  "ENRG"
+ ],
+ "note": "Fixture demo mode IDXMACA - angka ilustrasi, bukan data real."
+}
