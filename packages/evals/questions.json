@@ -1,0 +1,24 @@
+{
+  "questions": [
+    {"id": "E01", "lang": "id", "q": "Bandingkan BBCA, BMRI, BBRI kuartal terakhir + siapa yang akumulasi + risiko kreditnya?", "expect": "run", "must_intents": ["IO-01", "IO-21", "IO-38"]},
+    {"id": "E02", "lang": "id", "q": "Buatkan earnings flash BBCA: tren 8 kuartal, margin, valuasi vs histori, insider dan flow.", "expect": "run", "must_intents": ["IO-03", "IO-02", "IO-26"]},
+    {"id": "E03", "lang": "id", "q": "Screening bank dengan dividen di atas 4% dan ROE di atas 12%, urutkan yield.", "expect": "run", "must_intents": ["IO-11", "IO-12"]},
+    {"id": "E04", "lang": "id", "q": "Scan red-flag 10 debitur: mana yang memburuk kuartal ini?", "expect": "run", "must_intents": ["IO-38"]},
+    {"id": "E05", "lang": "id", "q": "Review portfolio 10 saham: mover, asing, insider, suspensi, dividen mendekat, likuiditas.", "expect": "run", "must_intents": ["IO-19", "IO-24", "IO-27"]},
+    {"id": "E06", "lang": "id", "q": "Buatkan dossier ADRO untuk pitch: produksi 5 tahun, finansial, ownership tree, site, harga batu bara, ekspor, lisensi.", "expect": "run", "must_intents": ["IO-30", "IO-31", "IO-34"]},
+    {"id": "E07", "lang": "id", "q": "Bandingkan bank besar IDX vs DBS Singapura: valuasi, dividen, insider/buyback/short SGX.", "expect": "run", "must_intents": ["IO-35", "IO-36"]},
+    {"id": "E08", "lang": "en", "q": "Compare BBCA and BMRI valuation versus peers and check foreign flow.", "expect": "run", "must_intents": ["IO-08", "IO-24"]},
+    {"id": "E09", "lang": "id", "q": "Cek apakah WSKT kena suspensi dan bagaimana ekuitasnya?", "expect": "run", "must_intents": ["IO-27", "IO-03"]},
+    {"id": "E10", "lang": "id", "q": "Siapa IUP yang mau kedaluwarsa di bawah 12 bulan? plus lelang WIUP terbaru.", "expect": "run", "must_intents": ["IO-34"]},
+    {"id": "E11", "lang": "id", "q": "Tinjau IHSG kemarin: sektor mana hijau, movers, most traded, arus asing.", "expect": "run", "must_intents": ["IO-17", "IO-19", "IO-24"]},
+    {"id": "E12", "lang": "id", "q": "Screener nil-skor goreng: screener saham dengan free float di bawah 10% dan kena UMA.", "expect": "run", "must_intents": ["IO-11", "IO-14"]},
+    {"id": "E13", "lang": "id", "q": "Apa itu cum-date dan ex-date?", "expect": "chat"},
+    {"id": "E14", "lang": "id", "q": "Halo, kamu bisa bantu apa?", "expect": "chat"},
+    {"id": "E15", "lang": "id", "q": "Jelaskan apa itu UMA dan ARA/ARB.", "expect": "chat"},
+    {"id": "E16", "lang": "id", "q": "bandingkan bbca sama bmri, siapa yang diakumulasi asing?", "expect": "run", "must_intents": ["IO-21", "IO-24"]},
+    {"id": "E17", "lang": "id", "q": "cek waraskita dong, ada masalah kredit tidak?", "expect": "run", "typo_symbol": "WSKT"},
+    {"id": "E18", "lang": "id", "q": "Comps 6 peer bank: median P/E, P/B, ROE, yield, DER dalam tabel.", "expect": "run", "must_intents": ["IO-08"]},
+    {"id": "E19", "lang": "id", "q": "Data ticker ZZZZ dong, valuasinya berapa?", "expect": "honest"},
+    {"id": "E20", "lang": "id", "q": "Ringkas jadi 5 poin untuk komite dan siapkan export XLSX.", "expect": "run", "followup_of": "E01"}
+  ]
+}
