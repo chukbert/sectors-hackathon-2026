@@ -21,6 +21,7 @@ from .db import StoreDB
 from .fixture_provider import respond as fixture_respond
 from .keys import canonical_public, canonical_key, clamp_params, credit_cost, normalize_path
 from .live_routes import translate
+from .live_shapes import normalize as normalize_live_shape
 from .sectors_client import SectorsClient, SectorsError
 from .ttl import data_kind, ttl_seconds
 
@@ -83,6 +84,8 @@ async def _fetch_live(endpoint: str, params: dict, key: str, ttl: int) -> tuple[
     live_endpoint, live_params = route
     status, body = await sectors.get(live_endpoint, live_params)
     credits = credit_cost(endpoint, params, status, body)
+    if 200 <= status < 300:
+        body = normalize_live_shape(endpoint, params, body)
     if status == 404:
         db.put(key, "GET", endpoint, params, body, status, credits, SETTINGS.negative_ttl_s, now, origin="live")
     elif 200 <= status < 300:
