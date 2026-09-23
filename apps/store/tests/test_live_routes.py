@@ -17,14 +17,17 @@ def test_translate_core_endpoints():
 def test_translate_screener_sort_becomes_order_by():
     path, params = translate("/v2/companies", {"sort": "-market_cap", "limit": 25})
     assert path == "/v2/companies/"
-    assert params == {"order_by": "market_cap", "desc": True, "limit": 25}
+    assert params == {"order_by": "-market_cap", "limit": 25}
+    path, params = translate("/v2/companies", {"order_by": "market_cap", "desc": True, "limit": 200})
+    assert params["order_by"] == "-market_cap" and "desc" not in params
 
 
 def test_translate_movers_and_brokers():
     path, params = translate("/v2/movers/top", {"type": "gainers", "period": "1d", "limit": 10})
     assert path == "/v2/companies/top-changes/"
     assert params == {"classifications": "top_gainers", "periods": "1d", "n_stock": 10}
-    assert translate("/v2/movers/most-traded", {"limit": 10}) == ("/v2/most-traded/", {"limit": 10})
+    assert translate("/v2/movers/most-traded", {"limit": 10}) == ("/v2/most-traded/", {"n_stock": 10})
+    assert translate("/v2/index/daily", {"symbol": "IHSG"}) == ("/v2/index-daily/ihsg/", {})
     assert translate("/v2/broker/summary/BBCA", {}) == ("/v2/broker-summary/BBCA/", {})
     assert translate("/v2/broker/top-buyers/BBCA", {}) == ("/v2/broker-summary/BBCA/top/", {})
     assert translate("/v2/broker/top", {"limit": 30}) == ("/v2/brokers/top/", {"limit": 30})

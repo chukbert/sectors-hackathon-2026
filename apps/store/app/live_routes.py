@@ -35,14 +35,14 @@ def _clean(params: dict[str, Any], drop: tuple[str, ...] = (), keep: tuple[str, 
 
 
 def _screener_params(p: dict[str, Any]) -> dict[str, Any]:
-    out = _clean(p, keep=("q", "where", "order_by", "desc", "limit", "offset"))
+    out = _clean(p, keep=("q", "where", "order_by", "limit", "offset"))
     sort = p.get("sort")
-    if sort:
-        s = str(sort)
-        out["order_by"] = s[1:] if s.startswith("-") else s
-        out["desc"] = s.startswith("-")
-    elif p.get("desc") is not None:
-        out["desc"] = bool(p["desc"])
+    field = out.get("order_by") or (str(sort)[1:] if sort else None)
+    if sort and not out.get("order_by"):
+        out["order_by"] = str(sort)
+    if field and not str(out.get("order_by", "")).startswith("-") and p.get("desc") in (True, "true"):
+        out["order_by"] = f"-{field}"
+    out.pop("desc", None)
     return out
 
 
@@ -97,7 +97,7 @@ def translate(endpoint: str, params: dict[str, Any] | None) -> tuple[str, dict[s
         return "/v2/close/", _clean(p, keep=("date", "limit", "offset"))
 
     if head == "index" and len(seg) >= 3 and seg[2].lower() == "daily":
-        code = str(p.get("symbol") or (seg[3] if len(seg) >= 4 else "IHSG")).upper()
+        code = str(p.get("symbol") or (seg[3] if len(seg) >= 4 else "IHSG")).lower()
         return f"/v2/index-daily/{code}/", _clean(p, drop=("symbol",), keep=("start", "end"))
 
     if head == "idx" and len(seg) >= 3 and seg[2].lower() in ("market-cap", "total"):
@@ -105,7 +105,9 @@ def translate(endpoint: str, params: dict[str, Any] | None) -> tuple[str, dict[s
 
     if head == "movers" and len(seg) >= 3:
         if seg[2].lower() == "most-traded":
-            return "/v2/most-traded/", _clean(p, keep=("start", "end", "limit"))
+            live = _clean(p, keep=("start", "end", "sub_sector"))
+            live["n_stock"] = int(p.get("limit") or 10)
+            return "/v2/most-traded/", live
         if seg[2].lower() == "top":
             live = _clean(p, drop=("type", "period", "limit"))
             live["classifications"] = MOVER_TYPE.get(str(p.get("type", "gainers")).lower(), "top_gainers")
