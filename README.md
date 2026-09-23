@@ -81,7 +81,7 @@ Satu model untuk semua peran — `meta/muse-spark-1.3` via OpenRouter (`POST /v1
 
 | Peran | Effort | Tugas |
 |---|---|---|
-| Router | low | query → playbook + intent + deteksi chat bebas |
+| Router | low | query → playbook + intent + deteksi chat + ekstraksi ticker IDX/SGX/KLSE (pengetahuan LLM seluruh simbol; fallback heuristik) |
 | Planner | high | DAG node, fetch-sharing, estimasi kredit via `store.lookup` |
 | Compiler NL→`where` | medium | screener terstruktur (1 kredit) alih-alih NL `q` (3 kredit) |
 | Writer panel | medium | narasi per panel + pilihan visual (whitelist chart) |

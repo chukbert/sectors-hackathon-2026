@@ -54,3 +54,18 @@ async def test_roundtrip_storage():
     assert restored.query == plan.query
     assert [n.endpoint for n in restored.nodes] == [n.endpoint for n in plan.nodes]
     assert restored.intents == plan.intents
+
+def test_merge_recommended_scope_adds_llm_symbols():
+    from app.plan_builder import merge_recommended_scope
+    from app.resolve import resolve
+
+    obj = resolve("bandingkan BBCA dan BMRI")
+    notes = merge_recommended_scope(obj, obj.as_dict(), {
+        "symbols": ["BREN", "PGEO", "IHSG", "BBC", "BBCA"],
+        "regional": [{"exchange": "sgx", "symbol": "d05"}, {"exchange": "nyse", "symbol": "AAPL"}],
+    })
+    assert "BREN" in obj.symbols and "PGEO" in obj.symbols
+    assert "BBC" not in obj.symbols          # bukan format IDX (harus 4 huruf)
+    assert obj.symbols.count("BBCA") == 1     # dedup dengan deterministik
+    assert obj.regional == [{"exchange": "sgx", "symbol": "D05", "alias": "D05"}]
+    assert any("resolver LLM menambah emiten" in n for n in notes)

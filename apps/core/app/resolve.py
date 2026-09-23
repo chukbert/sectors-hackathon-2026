@@ -41,6 +41,13 @@ REGIONAL: dict[str, tuple[str, str]] = {  # alias -> (exchange, symbol)
     "cimb": ("klse", "1023"), "public bank": ("klse", "1295"),
 }
 
+# Token 4 huruf kapital yang bukan ticker (jangan sampai jadi scope).
+TICKER_STOPWORDS = {
+    "IHSG", "IDX", "BEI", "OJK", "UMA", "ARA", "ARB", "IPO", "ROE", "DER", "EPS", "ESG",
+    "CAGR", "WACC", "HOLD", "SELL", "STOP", "MSCI", "FTSE", "ETF", "USD", "IDR", "YTD",
+    "QOQ", "YOY", "RSI", "LQ45", "IDX30", "FCF", "ROIC", "NPV", "IRR", "M&A", "PBV",
+}
+
 PRESETS: dict[str, list[str]] = {
     "3 bank besar": ["BBCA", "BMRI", "BBRI"],
     "tiga bank besar": ["BBCA", "BMRI", "BBRI"],
@@ -88,9 +95,11 @@ def is_miner(sym: str) -> bool:
     return sym.upper() in MINERS
 
 
-def subsector_slug(sym: str) -> str:
-    sub = META.get(sym.upper(), ("", "Banks"))[1]
-    return sub.lower().replace(" ", "-")
+def subsector_slug(sym: str) -> str | None:
+    meta = META.get(sym.upper())
+    if not meta:
+        return None  # di luar kurasi: jangan menebak sektor (bisa salah laporan)
+    return meta[1].lower().replace(" ", "-")
 
 EN_MARKERS = ("the ", "compare", "versus", " vs ", "risk ", "dividend yield", "market cap", "please", "show me", "screening")
 ID_MARKERS = (" dan ", " yang ", " apa ", " saham", " bandingkan", " cek ", " harga", " emiten", " risiko", " keuangan",
@@ -156,8 +165,12 @@ def resolve(text: str) -> Scope:
             scope.symbols.append(alias_sym)
 
     for sym in re.findall(r"\b[A-Z]{4}\b", text):
-        if sym in IDX and sym not in scope.symbols:
+        if sym in TICKER_STOPWORDS:
+            continue
+        if sym not in scope.symbols:
             scope.symbols.append(sym)
+            if sym not in IDX:
+                scope.notes.append(f"{sym} di luar kurasi demo — panel inti tetap live, panel sektor/tambang mengikuti ketersediaan data")
 
     m = re.search(r"(\d{1,3})\s*(saham|emiten|debitur|posisi|bank|ticker)", low)
     if m:

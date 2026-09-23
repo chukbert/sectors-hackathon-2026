@@ -13,6 +13,10 @@ stop() {
   for f in .data/store.pid .data/core.pid; do
     if [ -f "$f" ]; then kill "$(cat "$f")" 2>/dev/null || true; rm -f "$f"; fi
   done
+  # Pidfile bisa menunjuk proses mati sementara proses lama masih memegang port.
+  if command -v fuser >/dev/null 2>&1; then
+    fuser -k 8787/tcp 8788/tcp >/dev/null 2>&1 || true
+  fi
   for i in $(seq 1 40); do
     if ! curl -sf --max-time 1 http://127.0.0.1:8787/v1/health > /dev/null 2>&1 && \
        ! curl -sf --max-time 1 http://127.0.0.1:8788/v1/health > /dev/null 2>&1; then

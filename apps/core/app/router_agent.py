@@ -17,10 +17,23 @@ ROUTER_SCHEMA = {
         "persona": {"type": "string"},
         "playbooks": {"type": "array", "items": {"type": "string", "enum": list(PLAYBOOKS.keys())}},
         "intents": {"type": "array", "items": {"type": "string", "enum": list(INTENTS.keys())}},
+        "symbols": {"type": "array", "items": {"type": "string"}},
+        "regional": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "exchange": {"type": "string", "enum": ["sgx", "klse"]},
+                    "symbol": {"type": "string"},
+                },
+                "required": ["exchange", "symbol"],
+                "additionalProperties": False,
+            },
+        },
         "is_chat": {"type": "boolean"},
         "reason": {"type": "string"},
     },
-    "required": ["persona", "playbooks", "intents", "is_chat", "reason"],
+    "required": ["persona", "playbooks", "intents", "symbols", "regional", "is_chat", "reason"],
     "additionalProperties": False,
 }
 
@@ -50,7 +63,7 @@ def looks_like_chat(text: str) -> bool:
 
 async def route(text: str, session_context: list[dict] | None = None) -> dict:
     scope = resolve(text)
-    if GATEWAY.available and not looks_like_chat(text):
+    if GATEWAY.available:
         from .prompts import load as load_prompt
 
         messages = [
@@ -64,13 +77,16 @@ async def route(text: str, session_context: list[dict] | None = None) -> dict:
             result = await GATEWAY.chat("router", messages, json_schema=ROUTER_SCHEMA)
             parsed = extract_json(result["text"])
             parsed["source"] = "llm"
+            if parsed.get("is_chat") and scope.has_scope:
+                # jaring pengaman: emiten sudah terdeteksi → bukan chat bebas
+                parsed["is_chat"] = False
             return parsed
         except (LLMUnavailable, LLMFatal, ValueError, KeyError) as exc:
             log.warning("router LLM gagal, fallback template: %s", exc)
     is_chat = looks_like_chat(text)
     fallback_playbooks = [] if is_chat else None
-    return {"persona": "Analis", "playbooks": fallback_playbooks or [], "intents": [], "is_chat": is_chat,
-            "source": "template", "reason": "heuristic"}
+    return {"persona": "Analis", "playbooks": fallback_playbooks or [], "intents": [], "symbols": [], "regional": [],
+            "is_chat": is_chat, "source": "template", "reason": "heuristic"}
 
 
 FREE_CHAT_KB: dict[str, str] = {

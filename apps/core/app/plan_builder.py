@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import json
 import logging
+import re
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -16,6 +17,53 @@ from .resolve import META, Scope, resolve, subsector_slug
 from .store_client import STORE, StoreError
 
 log = logging.getLogger("idxmaca.planner")
+
+IDX_TICKER_RE = re.compile(r"^[A-Z]{4}$")
+REGIONAL_TICKER_RE = re.compile(r"^[A-Z0-9]{2,6}$")
+REGIONAL_EXCHANGES = ("sgx", "klse")
+
+
+def merge_recommended_scope(scope_obj: Scope, scope: dict[str, Any], recommended: dict[str, Any]) -> list[str]:
+    """Gabungkan emiten hasil LLM router (pengetahuan seluruh simbol IDX) ke scope deterministik.
+
+    Deterministik dipertahankan lebih dulu (andal), emiten LLM ditambahkan setelah validasi
+    pola + stopword + cap. Ini jaring pengaman: LLM mengenali nama/typo/alias yang tak terkurasi.
+    """
+    from .resolve import TICKER_STOPWORDS
+
+    notes: list[str] = []
+    syms: list[str] = list(scope.get("symbols") or [])
+    added: list[str] = []
+    for raw in (recommended.get("symbols") or [])[:24]:
+        sym = str(raw).strip().upper()
+        if not IDX_TICKER_RE.match(sym) or sym in TICKER_STOPWORDS or sym in syms:
+            continue
+        if len(syms) >= 12:
+            notes.append("emiten LLM melebihi cap 12 — sisanya dilewati")
+            break
+        syms.append(sym)
+        added.append(sym)
+    regional: list[dict[str, Any]] = list(scope.get("regional") or [])
+    added_reg: list[str] = []
+    for entry in (recommended.get("regional") or [])[:6]:
+        if not isinstance(entry, dict):
+            continue
+        exch = str(entry.get("exchange", "")).strip().lower()
+        rsym = str(entry.get("symbol", "")).strip().upper()
+        if exch not in REGIONAL_EXCHANGES or not REGIONAL_TICKER_RE.match(rsym):
+            continue
+        if any(r.get("exchange") == exch and r.get("symbol") == rsym for r in regional):
+            continue
+        regional.append({"exchange": exch, "symbol": rsym, "alias": rsym})
+        added_reg.append(f"{exch}:{rsym}")
+    if added or added_reg:
+        scope_obj.symbols = syms
+        scope_obj.regional = regional
+        if added:
+            notes.append(f"resolver LLM menambah emiten: {', '.join(added)}")
+        if added_reg:
+            notes.append(f"resolver LLM menambah regional: {', '.join(added_reg)}")
+    return notes
 
 
 @dataclass
@@ -221,6 +269,9 @@ async def build_plan(query: str, session_id: str, session_context: list[dict] | 
     scope_obj: Scope = resolve(query)
     scope: dict[str, Any] = scope_obj.as_dict()
     notes: list[str] = list(scope_obj.notes)
+    if recommended and (recommended.get("symbols") or recommended.get("regional")):
+        notes.extend(merge_recommended_scope(scope_obj, scope, recommended))
+        scope = scope_obj.as_dict()
     playbooks = select_playbooks(query, scope_obj.symbols)
     router_source = "template"
     if recommended and recommended.get("playbooks"):
@@ -270,8 +321,12 @@ async def build_plan(query: str, session_id: str, session_context: list[dict] | 
         for spec in intent.nodes:
             for expanded in spec.expanded(scope):
                 params = {k: v for k, v in expanded.params.items() if not k.startswith("$")}
-                if expanded.key.startswith("subsector") and scope_obj.symbols:
-                    params["slug"] = subsector_slug(scope_obj.symbols[0])
+                if expanded.key.startswith("subsector"):
+                    slug = subsector_slug(scope_obj.symbols[0]) if scope_obj.symbols else None
+                    if not slug:
+                        notes.append("sector report card dilewati: subsektor emiten belum terkurasi (data live tetap jalan untuk panel inti)")
+                        continue
+                    params["slug"] = slug
                 if expanded.key == "screener_query" and compiler_result:
                     if compiler_result.get("where"):
                         params["where"] = compiler_result["where"]
