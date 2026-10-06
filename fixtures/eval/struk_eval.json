@@ -1,0 +1,32 @@
+{
+  "_doc": "Set evaluasi pembacaan struk. Baris ditulis seperti singkatan di struk kasir Indonesia. expected = kode emiten pemilik merek, atau null bila pemiliknya tidak tercatat di BEI (aplikasi wajib jujur menandai 'bukan emiten').",
+  "receipts": [
+    {"id": "minimarket-a", "lines": [
+      ["INDOMIE GRG SPCL 85G", "ICBP"], ["SUPERMI AYAM BWG", "ICBP"], ["AQUA AIR MNRL 600ML", null],
+      ["TEH PUCUK HRM 350ML", "MYOR"], ["KOPIKO BROWN CF 10S", "MYOR"], ["PEPSODENT PH 190G", "UNVR"],
+      ["SEDAAP MIE GRG", null], ["ULTRA MILK CKLT 250", "ULTJ"], ["BENG BENG MAX 32G", "MYOR"]]},
+    {"id": "minimarket-b", "lines": [
+      ["CHITATO SPCY 68G", "ICBP"], ["SILVERQUEEN 58G", null], ["LE MINERALE 600ML", "MYOR"],
+      ["RINSO ANTI NODA 770G", "UNVR"], ["SO KLIN LANTAI 800ML", null], ["GERY SALUT CKLT", "GOOD"],
+      ["CHOCOLATOS 24S", "GOOD"], ["TOLAK ANGIN CAIR 5S", "SIDO"], ["FRISIAN FLAG KNTL", null],
+      ["SAMPOERNA A MILD 16", "HMSP"]]},
+    {"id": "swalayan", "lines": [
+      ["BIMOLI MINYAK 2L", "INDF"], ["SEGITIGA BIRU 1KG", "INDF"], ["ROYCO AYAM 100G", "UNVR"],
+      ["BANGO KCP MANIS 520", "UNVR"], ["SARI ROTI TWR KUPAS", "ROTI"], ["FIESTA NUGGET 500G", "CPIN"],
+      ["SO GOOD SOSIS 375G", "JPFA"], ["CIMORY YGT DRINK", "CMRY"], ["DOWNY PRFM 680ML", null],
+      ["TELUR AYAM NEGERI", null], ["GULAKU 1KG", null], ["KECAP ABC 520ML", null]]},
+    {"id": "apotek", "lines": [
+      ["PROMAG TAB 12S", "KLBF"], ["MIXAGRIP FLU", "KLBF"], ["HYDRO COCO 250ML", "KLBF"],
+      ["PANADOL MERAH", null], ["BODREX", "TSPC"], ["ENTROSTOP ANAK", "KLBF"],
+      ["KUKU BIMA ENER-G", "SIDO"], ["BETADINE 15ML", null]]},
+    {"id": "gaya-hidup-digital", "lines": [
+      ["KFC PAKET MANTAP", "FAST"], ["PIZZA HUT PAN", "PZZA"], ["STARBUCKS CAFFE LATTE", "MAPI"],
+      ["GOFOOD ONGKIR", "GOTO"], ["PULSA TELKOMSEL 50RB", "TLKM"], ["TOKEN PLN 100RB", null],
+      ["PERTAMAX 10L", null], ["MCDONALDS BIGMAC", null], ["TOP UP GOPAY", "GOTO"], ["KOPI KENANGAN", null]]},
+    {"id": "minimarket-c", "lines": [
+      ["POP MIE AYAM BWG", "ICBP"], ["TEH KOTAK JSMN 200", "ULTJ"], ["CLEO AIR MNRL 550", "CLEO"],
+      ["MILO ACTIV GO 22G", null], ["KINDER JOY", null], ["GATSBY POMADE", "TCID"],
+      ["PIXY BEDAK", "TCID"], ["ENERGEN VNL 5S", "MYOR"], ["TEH BOTOL SOSRO", null],
+      ["INDOMILK KNTL MNS", "ICBP"]]}
+  ]
+}

@@ -7,7 +7,7 @@ import logging
 import uuid
 from typing import Any
 
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response, StreamingResponse
 from pydantic import BaseModel, Field
@@ -272,10 +272,10 @@ def _sectors_off_response(exc: Exception) -> dict[str, Any]:
 
 @app.get("/v1/struk/status")
 async def struk_status():
-    from .struk import service
+    from .struk import quota, service
 
     out: dict[str, Any] = {"sectors_off": service.sectors_off(), "llm_available": GATEWAY.available, "model": SETTINGS.model,
-                           "disclaimer": DISCLAIMER}
+                           "llm_quota": quota.stats(), "disclaimer": DISCLAIMER}
     try:
         out["store"] = await STORE.stats()
     except Exception as exc:  # noqa: BLE001
@@ -284,15 +284,20 @@ async def struk_status():
 
 
 @app.post("/v1/struk/scan")
-async def struk_scan(req: StrukScanRequest):
-    from .struk import narrate, service
+async def struk_scan(req: StrukScanRequest, request: Request):
+    from .struk import narrate, quota, service
 
     if service.sectors_off():
         return _sectors_off_response(service.SectorsOff("STRUK_SECTORS_OFF=1"))
     if req.image and len(req.image) > 8_000_000:
         raise HTTPException(status_code=413, detail="Foto terlalu besar (maks ±6 MB).")
+    ip = quota.client_ip(dict(request.headers), request.client.host if request.client else None)
+    use_llm = quota.take("scan_photo" if req.image else "scan_text", ip)
+    if req.image and not use_llm:
+        raise HTTPException(status_code=429, detail="Batas foto demo untukmu sedang penuh — coba lagi beberapa menit lagi, "
+                                                    "atau ketik nama barangnya (jalur teks tetap jalan).")
     try:
-        parsed = await narrate.read_receipt(req.text, req.image)
+        parsed = await narrate.read_receipt(req.text, req.image, use_llm=use_llm)
     except Exception as exc:  # noqa: BLE001
         raise HTTPException(status_code=502, detail=f"Gagal membaca struk: {exc}") from exc
     try:
@@ -342,8 +347,8 @@ async def struk_search(q: str = Query(min_length=1)):
 
 
 @app.post("/v1/struk/reflect")
-async def struk_reflect(req: StrukReflectRequest):
-    from .struk import narrate, rules, service, universe
+async def struk_reflect(req: StrukReflectRequest, request: Request):
+    from .struk import narrate, quota, rules, service, universe
 
     rule = rules.RULES_BY_ID.get(req.rule_id)
     if not rule:
@@ -355,7 +360,10 @@ async def struk_reflect(req: StrukReflectRequest):
     rec = u["records"].get(universe.bare(req.symbol))
     if not rec or not rule.check(rec):
         raise HTTPException(status_code=400, detail="pola ini tidak berlaku untuk emiten tersebut")
-    return await narrate.reflect(rec.get("company_name") or req.symbol, rule.title, rule.question, list(rule.hints), req.answer)
+    ip = quota.client_ip(dict(request.headers), request.client.host if request.client else None)
+    use_llm = bool((req.answer or "").strip()) and quota.take("reflect", ip)
+    return await narrate.reflect(rec.get("company_name") or req.symbol, rule.title, rule.question, list(rule.hints), req.answer,
+                                 use_llm=use_llm)
 
 
 @app.on_event("shutdown")

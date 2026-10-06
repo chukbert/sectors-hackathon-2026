@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  python:
+    name: Tes Store + Core (snapshot Sectors asli, 0 kredit)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: |
+            apps/store/requirements.txt
+            apps/core/requirements.txt
+      - run: pip install -r apps/store/requirements.txt -r apps/core/requirements.txt pytest-asyncio
+      - name: Store
+        working-directory: apps/store
+        run: python -m pytest -q
+      - name: Core (termasuk uji copot Sectors & 9 rumus = total_count Sectors)
+        working-directory: apps/core
+        run: python -m pytest -q
+
+  web:
+    name: Typecheck + build web
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: apps/web/package-lock.json
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run build
+
+  docker:
+    name: Image Docker bisa di-build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker compose build

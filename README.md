@@ -11,11 +11,25 @@ dari mana uangnya datang, siapa pemiliknya, dan pertanyaan kritis yang layak kam
 ![Track](https://img.shields.io/badge/track-Market%20Intelligence-c8f046?style=flat-square&labelColor=0b0d12)
 ![Runtime credits](https://img.shields.io/badge/kredit%20runtime-0-ff7a1a?style=flat-square)
 ![AI numbers](https://img.shields.io/badge/angka%20dari%20AI-0-0b0d12?style=flat-square)
-![Tests](https://img.shields.io/badge/tes-98%20lulus-2b4bff?style=flat-square)
+![Tests](https://img.shields.io/badge/tes-102%20lulus-2b4bff?style=flat-square)
+[![CI](https://github.com/chukbert/sectors-hackathon-2026/actions/workflows/ci.yml/badge.svg)](https://github.com/chukbert/sectors-hackathon-2026/actions/workflows/ci.yml)
+
+### 🌐 Coba langsung: **[sectors.muflichlabs.online](https://sectors.muflichlabs.online)** — tanpa daftar, tanpa install
 
 <img src="docs/img/hero.png" alt="Halaman utama Struk Jadi Saham" width="100%">
 
 </div>
+
+---
+
+## Untuk juri: 60 detik
+
+- **Masalah.** Jutaan orang membeli Indomie, Pepsodent, dan pulsa Telkomsel tiap minggu tanpa tahu bahwa pemilik merek itu perusahaan terbuka yang bisa mereka pelajari. Aplikasi saham dibuat untuk orang yang *sudah* paham pasar.
+- **Yang kami bangun.** Foto struk belanja (atau satu kemasan) → setiap merek dipetakan ke emitennya → **kartu kenalan** yang 100% dibangun dari data Sectors: ukuran perusahaan dalam bahasa awam, peta uang (segmen pendapatan), rantai pemilik sampai grup konglomerasi, dan **pertanyaan kritis** yang dihitung Sectors ke seluruh bursa.
+- **Sectors adalah inti.** Jalankan dengan `STRUK_SECTORS_OFF=1` dan semua endpoint menolak: *tidak ada angka tanpa Sectors* (diuji otomatis). Setiap angka di layar bisa dibuka asal-usulnya: endpoint, field, query, waktu ambil.
+- **Pemakaian Sectors yang tidak biasa.** Seluruh bursa (962 emiten × ±50 field) diambil hanya dengan **10 panggilan Screener**, memanfaatkan `include_query_values`. Total 66 kredit untuk seluruh proyek; **0 kredit per pengguna**. 9 pola anomali adalah ekspresi `where` Sectors, dan rumus lokal kami dikunci tes agar sama persis dengan `total_count` Sectors.
+- **AI dipagari kode, bukan imbauan.** AI hanya membaca nama merek. Keluarannya ditolak bila memuat angka atau saran beli/jual. Hasil evaluasi pada 59 baris struk: **98% terpetakan benar, 0 dari 18 merek non-emiten dikarang menjadi emiten** (tabel di [§3](#ukur-sendiri-seberapa-jujur-pembacaan-struknya)).
+- **Bisa diverifikasi.** Demo live di atas · `docker compose up --build` · 102 tes + CI · semua respons Sectors mentah ada di `fixtures/snapshot/`.
 
 ---
 
@@ -130,6 +144,17 @@ Peran AI sengaja sempit:
 
 Model: `google/gemini-3.8-flash` via OpenRouter, `reasoning_effort=low`.
 
+### Ukur sendiri: seberapa jujur pembacaan struknya?
+
+`fixtures/eval/struk_eval.json` berisi 59 baris dari 6 struk (minimarket, swalayan, apotek, gaya hidup/digital) ditulis seperti singkatan kasir (`TEH PUCUK HRM 350ML`, `SO GOOD SOSIS 375G`) beserta kunci jawabannya. Sebanyak 18 baris sengaja berisi merek yang pemiliknya **tidak** tercatat di BEI (Aqua, Sedaap, Downy, Gulaku, Teh Botol Sosro, Pertamax, McDonald's, dan lainnya), yaitu jebakan untuk melihat apakah aplikasi mengarang emiten.
+
+| Jalur | Baris benar | Emiten ditemukan | Merek non-emiten dikarang jadi emiten | Emiten salah |
+|---|---|---|---|---|
+| Katalog saja (tanpa AI) | 54/59 (92%) | 36/41 (88%) | 0/18 (0%) | 0 |
+| **Aplikasi (AI + katalog + verifikasi data Sectors)** | **58/59 (98%)** | **40/41 (98%)** | **0/18 (0%)** | **0** |
+
+Satu-satunya yang meleset: `BODREX` (Tempo Scan, TSPC). Merek ini di luar katalog dan AI tidak cukup yakin, jadi aplikasi memilih **tidak menebak**. Kami sengaja tidak menambalnya ke katalog agar angka di atas tidak dicurangi. Hasil per baris ada di `fixtures/eval/struk_eval_result.json`. Ulangi sendiri dengan `python tools/eval_struk.py` (0 kredit Sectors, 6 panggilan AI).
+
 ## 4. Pemakaian Sectors API yang hemat (dan tidak biasa)
 
 Seluruh bursa (962 emiten × ±50 field) diambil hanya dengan **10 panggilan Screener**, memanfaatkan fakta bahwa
@@ -173,6 +198,14 @@ Setiap angka di UI membawa provenans yang bisa dibuka ("dari mana angka ini?"): 
 
 ## 6. Menjalankan
 
+Cara tercepat, satu perintah (butuh Docker saja):
+
+```bash
+docker compose up --build       # → http://127.0.0.1:3000
+```
+
+Tanpa Docker:
+
 ```bash
 make setup                      # venv Python + deps Node (butuh uv)
 cp .env.example .env            # isi OPENROUTER_API_KEY untuk baca foto struk
@@ -181,6 +214,7 @@ make dev                        # Store :8787 + Core :8788 + Web :3000
 ```
 
 - `IDXMACA_STORE_MODE=offline` (default) → hanya snapshot, 0 kredit Sectors. `SECTORS_API_KEY` tidak dibutuhkan untuk menjalankan aplikasi.
+- Demo publik (`PUBLIC_DEMO=1`): proxy hanya membuka endpoint Struk, dan AI dibatasi kuota per pengunjung + per hari (`apps/core/app/struk/quota.py`). Saat kuota habis, input teks otomatis memakai katalog deterministik; data Sectors tidak pernah ikut terbatasi.
 - Tanpa `OPENROUTER_API_KEY`: input teks tetap jalan (pencocokan katalog deterministik), label peta uang tampil dalam bahasa Inggris asli Sectors; input foto butuh key.
 - Uji copot Sectors: `STRUK_SECTORS_OFF=1 make dev`.
 
@@ -194,8 +228,10 @@ IDXMACA_STORE_MODE=live .venv/bin/python tools/harvest.py --budget 70 --sleep 3
 Tes:
 
 ```bash
-make test        # Store + Core, termasuk 17 tes Struk Jadi Saham terhadap snapshot asli
+make test        # 102 tes Store + Core, termasuk tes Struk Jadi Saham terhadap snapshot Sectors asli
 ```
+
+CI (GitHub Actions) menjalankan tes yang sama, ditambah typecheck dan build web serta build image Docker, di setiap push.
 
 ## 7. Batasan yang kami akui
 

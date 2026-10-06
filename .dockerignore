@@ -1,0 +1,15 @@
+# Jangan pernah membawa secret atau artefak lokal ke image
+.env
+.env.*
+!.env.example
+.git
+.venv
+.data
+.logs
+**/node_modules
+**/.next
+**/__pycache__
+**/.pytest_cache
+*.tsbuildinfo
+docs/img
+mockup

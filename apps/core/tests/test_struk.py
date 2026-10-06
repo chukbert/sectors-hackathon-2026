@@ -86,3 +86,38 @@ async def test_sectors_off_kills_the_app(monkeypatch):
         await service.company_card("ICBP")
     with pytest.raises(service.SectorsOff):
         await service.basket([{"raw": "Indomie", "brand": "Indomie"}])
+
+
+def test_quota_limits_each_visitor_and_resets_after_window():
+    from app.struk import quota
+
+    quota.reset()
+    cap = quota.PER_IP["scan_photo"]
+    assert all(quota.take("scan_photo", "1.1.1.1", now=1000.0) for _ in range(cap))
+    assert not quota.take("scan_photo", "1.1.1.1", now=1000.0)
+    assert quota.take("scan_photo", "2.2.2.2", now=1000.0)  # pengunjung lain tidak ikut terblokir
+    assert quota.take("scan_photo", "1.1.1.1", now=1000.0 + quota.WINDOW_S + 1)
+    quota.reset()
+
+
+def test_quota_daily_cap_is_global(monkeypatch):
+    from app.struk import quota
+
+    quota.reset()
+    monkeypatch.setattr(quota, "DAILY_CAP", 3)
+    assert [quota.take("reflect", f"10.0.0.{i}", now=5000.0) for i in range(4)] == [True, True, True, False]
+    quota.reset()
+
+
+def test_client_ip_prefers_first_forwarded_hop():
+    from app.struk import quota
+
+    assert quota.client_ip({"x-forwarded-for": "203.0.113.9, 10.0.0.2"}, "172.18.0.4") == "203.0.113.9"
+    assert quota.client_ip({}, "172.18.0.4") == "172.18.0.4"
+
+
+async def test_text_scan_without_quota_stays_deterministic():
+    from app.struk import narrate
+
+    out = await narrate.read_receipt("Indomie goreng, Pepsodent", use_llm=False)
+    assert out["llm"] is False and [i["raw"] for i in out["items"]] == ["Indomie goreng", "Pepsodent"]

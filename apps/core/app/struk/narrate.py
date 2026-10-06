@@ -57,9 +57,17 @@ Merek yang dikenal aplikasi (prioritaskan ejaan ini): {known}
 Balas JSON saja."""
 
 
-async def read_receipt(text: str | None = None, image_data_url: str | None = None) -> dict[str, Any]:
+def _split_text(text: str | None) -> dict[str, Any]:
+    """Jalur tanpa LLM: pisah per koma/baris, katalog yang mencocokkan."""
+    parts = [p.strip() for p in re.split(r"[,\n;]+| dan ", text or "") if p.strip()]
+    return {"store": None, "items": [{"raw": p, "brand": p, "symbol": None} for p in parts], "llm": False}
+
+
+async def read_receipt(text: str | None = None, image_data_url: str | None = None, use_llm: bool = True) -> dict[str, Any]:
     if not text and not image_data_url:
         return {"store": None, "items": [], "llm": False}
+    if not use_llm and text and not image_data_url:
+        return _split_text(text)
     known = ", ".join(sorted({b for s in brands.CATALOG for b in brands.brands_of(s)})[:400])
     content: list[dict[str, Any]] = [{"type": "text", "text": RECEIPT_PROMPT.format(known=known)}]
     if text:
@@ -75,9 +83,7 @@ async def read_receipt(text: str | None = None, image_data_url: str | None = Non
         if image_data_url and not text:
             raise
         log.warning("read_receipt fallback deterministik: %s", exc)
-        # Fallback tanpa LLM: pisah per koma/baris, cocokkan ke katalog.
-        parts = [p.strip() for p in re.split(r"[,\n;]+| dan ", text or "") if p.strip()]
-        return {"store": None, "items": [{"raw": p, "brand": p, "symbol": None} for p in parts], "llm": False}
+        return _split_text(text)
 
 
 EXPLAIN_SCHEMA = {
@@ -145,11 +151,12 @@ ATURAN: DILARANG menulis angka apa pun. DILARANG mengklaim fakta spesifik tentan
 DILARANG menyarankan beli/jual/tahan saham."""
 
 
-async def reflect(name: str, title: str, question: str, hints: list[str], answer: str) -> dict[str, Any]:
+async def reflect(name: str, title: str, question: str, hints: list[str], answer: str,
+                  use_llm: bool = True) -> dict[str, Any]:
     answer = (answer or "").strip()[:600]
     fallback = ("Pertanyaan bagus untuk dipikirkan. Beberapa kemungkinan umum: " + "; ".join(hints)
                 + ". Coba cek bagian beban dan catatan laporan tahunan perusahaan untuk melihat mana yang paling cocok.")
-    if not answer:
+    if not answer or not use_llm:
         return {"text": fallback, "llm": False}
     try:
         out = await GATEWAY.chat("struk_reflect", [{"role": "user", "content": REFLECT_PROMPT.format(
