@@ -25,17 +25,17 @@ dari mana uangnya datang, siapa pemiliknya, dan pertanyaan kritis yang layak kam
 
 ![Foto kemasan Sari Roti menjadi kartu kenalan ROTI](docs/img/demo-produk.png)
 
-Kemasan **Sari Roti** → AI membaca mereknya → katalog mencocokkan ke **ROTI** → dicek ke data Sectors → kartu kenalan PT Nippon Indosari Corpindo Tbk.
+Foto bungkus **Sari Roti Sandwich Cokelat** dari tangan → AI membaca mereknya → katalog mencocokkan ke **ROTI** → dicek ke data Sectors → kartu kenalan PT Nippon Indosari Corpindo Tbk.
 Dari setiap Rp100 pendapatannya, hanya sekitar **Rp6,9** yang jadi laba bersih — dan dividennya **259%** dari laba. Itu yang layak ditanyakan.
 
 ### 🧾 Foto satu struk → peta pemilik belanjaanmu
 
-![Struk Indomaret menjadi peta pemilik tujuh emiten](docs/img/demo-struk.png)
+![Struk swalayan asli menjadi peta pemilik](docs/img/demo-struk.png)
 
-Tujuh baris struk Indomaret → tujuh emiten, **dikelompokkan per pemilik**: Indomie, Sari Roti, dan Indomaret sendiri ternyata sama-sama bermuara ke **Grup Salim**.
-Baris pembayaran (BRImo QRIS) diabaikan; kartu merek **barang** pertama langsung terbuka.
+Struk swalayan asli, 28 baris barang, difoto miring dan buram → Promina (ICBP), Pepsodent, Bango, Rinso, Lux (UNVR), La Fonte (INDF, ditandai **dugaan AI**) — **dikelompokkan per pemilik**: ICBP dan INDF sama-sama bermuara ke **Grup Salim**.
+Milo, Kinder Joy, Downy, Hi-Lo, Pronas jujur ditandai **bukan emiten** — pemiliknya tidak tercatat di BEI, jadi kami tidak mengarang. Kartu merek **barang** pertama langsung terbuka.
 
-<sub>Gambar input di atas adalah struk dan kemasan contoh yang kami render untuk demo. Output-nya adalah screenshot asli aplikasi setelah gambar itu diunggah lewat jalur foto — tanpa disunting.</sub>
+<sub>Input adalah foto asli dari ponsel (nomor kartu pembayaran di struk kami samarkan). Output adalah screenshot asli aplikasi setelah foto itu diunggah lewat jalur foto — tanpa disunting.</sub>
 
 ---
 
