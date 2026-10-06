@@ -1,0 +1,85 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/PGAS/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-06T05:20:12+0700",
+ "fetched_at_epoch": 1791238812.358819,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "PGAS.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 40712088303632,
+    "source": "Gas trading",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 4050416797451,
+    "source": "Gas transmission",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 2786223399996,
+    "source": "Gas regasification",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 2491722716544,
+    "source": "Oil transportation",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 5727939619111,
+    "source": "Crude oil and natural gas sales",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 415637225457,
+    "source": "Gas processing",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 422247716594,
+    "source": "Telecommunication network services",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1027546116217,
+    "source": "Construction and maintenance services",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 3578898309357,
+    "source": "LNG Trading",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 48975716970745,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 12237003233614,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 8985973787331,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 3251029446283,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 3251029446283,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

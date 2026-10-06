@@ -228,6 +228,9 @@ def credit_cost(endpoint: str, params: dict[str, Any] | None = None, http_status
         return 0
 
     tail = seg[-1] if seg else ""
+    # Passthrough /sectors/v2/...: hanya endpoint ber-biaya tetap yang dipakai (screener, segments, helper).
+    if seg and seg[0] == "SECTORS":
+        return 3 if tail == "companies" and p.get("q") else 1
     # Screener (termasuk SGX/KLSE): structured 1, natural-language q= 3.
     if tail == "companies":
         return 1 if "mining" in seg else (3 if p.get("q") else 1)

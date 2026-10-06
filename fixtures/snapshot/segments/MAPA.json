@@ -1,0 +1,60 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/MAPA/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-06T05:19:53+0700",
+ "fetched_at_epoch": 1791238793.518195,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "MAPA.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 15203639000000,
+    "source": "Retail sales",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 241090000000,
+    "source": "Consignment sales",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1739697000000,
+    "source": "Non-retail sales",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 9262115000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 7922311000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 2154896000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 5767415000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 4896859000000,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 870556000000,
+    "source": "Operating Expense",
+    "target": "General and Administrative"
+   }
+  ]
+ }
+}

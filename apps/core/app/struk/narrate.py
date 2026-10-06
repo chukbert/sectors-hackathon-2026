@@ -1,0 +1,162 @@
+"""Peran LLM di Struk Jadi Saham — sengaja sempit, dan tidak boleh membawa angka sendiri.
+
+1. read_receipt   : foto/teks struk → daftar merek (+ tebakan simbol, ditandai dugaan).
+2. explain_money  : terjemahkan label segmen Sectors ke bahasa awam + 1 kalimat cara cari uang.
+3. reflect        : tanggapi jawaban pengguna atas Pertanyaan Kritis, berpijak pada data yang diberikan.
+
+Penjaga: keluaran (2) dan (3) ditolak bila memuat angka (semua angka di UI datang dari Sectors)
+atau frasa rekomendasi (verify.BANNED_RE). Gagal/LLM mati → fallback deterministik, bukan karangan.
+"""
+from __future__ import annotations
+
+import json
+import logging
+import re
+from typing import Any
+
+from ..llm import GATEWAY, LLMFatal, LLMUnavailable, extract_json
+from ..verify import BANNED_RE
+from . import brands
+
+log = logging.getLogger("struk.narrate")
+DIGIT_RE = re.compile(r"\d")
+
+RECEIPT_SCHEMA = {
+    "type": "object",
+    "additionalProperties": False,
+    "required": ["store", "items"],
+    "properties": {
+        "store": {"type": "string"},
+        "items": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "additionalProperties": False,
+                "required": ["raw", "brand", "symbol"],
+                "properties": {
+                    "raw": {"type": "string"},
+                    "brand": {"type": "string"},
+                    "symbol": {"type": "string"},
+                },
+            },
+        },
+    },
+}
+
+RECEIPT_PROMPT = """Kamu membaca struk belanja Indonesia (atau daftar barang/layanan yang diketik pengguna).
+Untuk setiap baris barang/layanan, kembalikan:
+- raw: teks baris apa adanya (singkat)
+- brand: nama MEREK yang paling mungkin (mis. "IDM GRG SPCL" → "Indomie", "PEPSODENT 190G" → "Pepsodent"); "" bila barang tanpa merek
+- symbol: kode saham IDX 4 huruf pemilik merek bila kamu cukup yakin, selain itu ""
+Juga kembalikan `store`: nama toko di struk (mis. "Indomaret", "Alfamart") atau "".
+Toko itu sendiri juga dimasukkan sebagai item (raw = nama toko, brand = nama toko).
+Abaikan baris total, pajak, kembalian, diskon, nomor kartu, dan data pribadi.
+Merek yang dikenal aplikasi (prioritaskan ejaan ini): {known}
+Balas JSON saja."""
+
+
+async def read_receipt(text: str | None = None, image_data_url: str | None = None) -> dict[str, Any]:
+    if not text and not image_data_url:
+        return {"store": None, "items": [], "llm": False}
+    known = ", ".join(sorted({b for s in brands.CATALOG for b in brands.brands_of(s)})[:400])
+    content: list[dict[str, Any]] = [{"type": "text", "text": RECEIPT_PROMPT.format(known=known)}]
+    if text:
+        content.append({"type": "text", "text": f"Input pengguna:\n{text}"})
+    if image_data_url:
+        content.append({"type": "image_url", "image_url": {"url": image_data_url}})
+    try:
+        out = await GATEWAY.chat("struk_parse", [{"role": "user", "content": content}], json_schema=RECEIPT_SCHEMA)
+        data = extract_json(out["text"])
+        items = [i for i in data.get("items") or [] if isinstance(i, dict) and (i.get("raw") or i.get("brand"))]
+        return {"store": data.get("store") or None, "items": items, "llm": True}
+    except (LLMUnavailable, LLMFatal, ValueError, json.JSONDecodeError) as exc:
+        if image_data_url and not text:
+            raise
+        log.warning("read_receipt fallback deterministik: %s", exc)
+        # Fallback tanpa LLM: pisah per koma/baris, cocokkan ke katalog.
+        parts = [p.strip() for p in re.split(r"[,\n;]+| dan ", text or "") if p.strip()]
+        return {"store": None, "items": [{"raw": p, "brand": p, "symbol": None} for p in parts], "llm": False}
+
+
+EXPLAIN_SCHEMA = {
+    "type": "object",
+    "additionalProperties": False,
+    "required": ["labels", "summary"],
+    "properties": {
+        "labels": {
+            "type": "array",
+            "items": {"type": "object", "additionalProperties": False, "required": ["en", "id"],
+                      "properties": {"en": {"type": "string"}, "id": {"type": "string"}}},
+        },
+        "summary": {"type": "string"},
+    },
+}
+
+EXPLAIN_PROMPT = """Ini label diagram aliran uang (revenue segments) perusahaan {name} dari data Sectors.
+Tugas:
+1. labels: terjemahkan SETIAP label ke Bahasa Indonesia yang mudah dipahami orang awam (maks 4 kata). Jangan ubah maknanya.
+2. summary: SATU kalimat (maks 30 kata) menjelaskan cara perusahaan ini mendapatkan uang, berdasarkan label yang ADA saja,
+   urutkan dari aliran terbesar ke terkecil sesuai urutan input.
+ATURAN: DILARANG menulis angka atau persen apa pun. DILARANG menyarankan beli/jual/tahan. Jangan menambah fakta di luar label.
+Label (urut dari nilai terbesar): {labels}
+Balas JSON saja."""
+
+_EXPLAIN_CACHE: dict[str, dict[str, Any]] = {}
+
+
+async def explain_money(symbol: str, name: str, money: dict[str, Any]) -> dict[str, Any]:
+    key = f"{symbol}:{money.get('year')}"
+    if key in _EXPLAIN_CACHE:
+        return _EXPLAIN_CACHE[key]
+    ordered = sorted(money["links"], key=lambda lk: -lk["value"])
+    labels = list(dict.fromkeys([lk["source"] for lk in ordered] + [lk["target"] for lk in ordered]))
+    result = {"labels": {lbl: lbl for lbl in labels}, "summary": None, "llm": False}
+    try:
+        out = await GATEWAY.chat("struk_explain", [{"role": "user", "content": EXPLAIN_PROMPT.format(
+            name=name, labels=json.dumps(labels, ensure_ascii=False))}], json_schema=EXPLAIN_SCHEMA)
+        data = extract_json(out["text"])
+        trans = {d["en"].strip(): d["id"].strip() for d in data.get("labels") or [] if d.get("en") and d.get("id")}
+        summary = (data.get("summary") or "").strip()
+        if summary and (DIGIT_RE.search(summary) or BANNED_RE.search(summary)):
+            log.warning("explain_money ditolak penjaga (angka/rekomendasi): %s", summary)
+            summary = None
+        result = {"labels": {lbl: (trans.get(lbl) if trans.get(lbl) and not DIGIT_RE.search(trans[lbl]) else lbl)
+                             for lbl in labels},
+                  "summary": summary or None, "llm": True}
+    except (LLMUnavailable, LLMFatal, ValueError, json.JSONDecodeError) as exc:
+        log.warning("explain_money fallback: %s", exc)
+    _EXPLAIN_CACHE[key] = result
+    return result
+
+
+REFLECT_PROMPT = """Kamu pendamping belajar yang sabar untuk pemula pasar saham. Pengguna sedang melihat perusahaan {name}.
+Data dari Sectors menunjukkan pola: "{title}".
+Pertanyaan yang diajukan ke pengguna: "{question}"
+Kemungkinan penjelasan umum (BUKAN fakta tentang {name}): {hints}
+Jawaban pengguna: "{answer}"
+
+Tanggapi dalam 2-4 kalimat Bahasa Indonesia santai:
+- hargai bagian jawaban yang masuk akal, luruskan yang keliru dengan lembut;
+- sebutkan satu kemungkinan lain yang belum terpikir;
+- akhiri dengan SATU pertanyaan lanjutan atau saran apa yang bisa dicek sendiri (mis. "baca bagian beban di laporan tahunan").
+ATURAN: DILARANG menulis angka apa pun. DILARANG mengklaim fakta spesifik tentang {name} yang tidak ada di atas.
+DILARANG menyarankan beli/jual/tahan saham."""
+
+
+async def reflect(name: str, title: str, question: str, hints: list[str], answer: str) -> dict[str, Any]:
+    answer = (answer or "").strip()[:600]
+    fallback = ("Pertanyaan bagus untuk dipikirkan. Beberapa kemungkinan umum: " + "; ".join(hints)
+                + ". Coba cek bagian beban dan catatan laporan tahunan perusahaan untuk melihat mana yang paling cocok.")
+    if not answer:
+        return {"text": fallback, "llm": False}
+    try:
+        out = await GATEWAY.chat("struk_reflect", [{"role": "user", "content": REFLECT_PROMPT.format(
+            name=name, title=title, question=question, hints="; ".join(hints), answer=answer)}])
+        text = out["text"].strip()
+        if DIGIT_RE.search(text) or BANNED_RE.search(text):
+            log.warning("reflect ditolak penjaga: %s", text[:200])
+            return {"text": fallback, "llm": False, "guarded": True}
+        return {"text": text, "llm": True}
+    except (LLMUnavailable, LLMFatal) as exc:
+        log.warning("reflect fallback: %s", exc)
+        return {"text": fallback, "llm": False}

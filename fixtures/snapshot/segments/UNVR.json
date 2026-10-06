@@ -1,0 +1,55 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/UNVR/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-06T05:20:31+0700",
+ "fetched_at_epoch": 1791238831.009547,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "UNVR.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 22426415000000,
+    "source": "Home and personal care",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 12712228000000,
+    "source": "Foods and refreshment",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 18418962000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 16719681000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 4434965000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 12284716000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 8786018000000,
+    "source": "Operating Expense",
+    "target": "Marketing and selling"
+   },
+   {
+    "value": 3498698000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

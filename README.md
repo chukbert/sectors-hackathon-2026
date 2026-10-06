@@ -1,158 +1,145 @@
-# IDXMACA — IDX Multi Agent Consulting Assistant
+# Struk Jadi Saham
 
-> Track **AI Agents & Assistants** · Sectors Hackathon 2026
-> Satu pertanyaan Bahasa Indonesia → rencana agen + estimasi kredit → data terverifikasi → memo 3 lensa + 8 panel visual, semua angka bisa diklik ke sumbernya.
+> Foto struk belanjamu → kenali perusahaan terbuka di balik tiap merek: dari mana uangnya datang, siapa pemiliknya, dan pertanyaan kritis yang layak kamu ajukan.
+> Sectors Hackathon 2026 · **Track: Market Intelligence** · semua angka dari **Sectors API v2**, AI tidak pernah menulis angka.
 
-Dokumen produk: [`docs/PRD.md`](docs/PRD.md) · [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) · [`docs/INTENT-OUTPUT.md`](docs/INTENT-OUTPUT.md) · [`docs/STORE.md`](docs/STORE.md) · [`docs/ICP.md`](docs/ICP.md)
+**Insight turunan, bukan data mentah:** 9 detektor anomali berbasis aritmatika Screener + ukuran kohort seluruh bursa, peringkat dari 962 emiten, rasio "per Rp100 pendapatan", perbandingan se-industri, dan rantai pengendali yang ditelusuri dari data pemegang saham.
 
 ---
 
-## 1. Apa ini
+## 1. Masalahnya
 
-IDXMACA menerima pertanyaan seperti:
+Jutaan orang Indonesia membeli Indomie, Pepsodent, pulsa Telkomsel, dan GoFood setiap minggu, tapi tidak tahu bahwa merek-merek itu dimiliki perusahaan yang sahamnya bisa mereka pelajari — bahkan beli. Aplikasi saham dibuat untuk orang yang *sudah* paham pasar. Pemula yang kritis dan penasaran tidak punya pintu masuk.
 
-> "Bandingkan BBCA, BMRI, BBRI kuartal terakhir + siapa yang akumulasi + risiko kreditnya?"
+**Struk Jadi Saham** memakai benda yang semua orang punya — struk belanja — sebagai pintu masuk itu.
 
-lalu menjalankan pipeline milik sendiri:
-
-```
-query → Router → Entity Resolver → Planner (DAG + estimasi kredit via Store.lookup) → [user Approve]
-      → Executor paralel (wajib lewat Store Service) → Compute deterministik → Evidence Ledger
-      → Verifier (angka vs ledger + filter bahasa rekomendasi) → Writer (panel + memo L3) → UI/Export
-```
-
-Prinsip yang ditegakkan kode, bukan imbauan:
-
-1. **Store-first.** Tidak ada agen yang menembak Sectors langsung. Semua lewat Store Service read-through (`docs/STORE.md`): hit = 0 kredit, miss = tembak + simpan. Kunci kanonis SHA256, TTL per jenis data, negative caching, single-flight.
-2. **LLM tidak pernah menghitung.** Semua angka dari compute Python murni; LLM hanya menarasikan dan memilih visual dari whitelist.
-3. **Verifier dua lapis.** Lapis kode (penentu) memastikan setiap angka ada di ledger dengan toleransi pembulatan yang terukur, memblokir frasa rekomendasi (beli/jual/hold/target price/…), dan menyuntik disclaimer. Lapis judge LLM (low effort) membaca ulang nada.
-4. **Memori sesi wajib.** Satu-satunya pintu ke model adalah gateway yang selalu merakit konteks: ringkasan + N turn verbatim + state entitas + pointer ledger. "Tambahkan DBS", "yang tadi", "jelaskan risiko kreditnya saja" tetap nyambung.
-5. **Kill-switch per panel.** Satu fetch gagal → panel terkait empty-state jujur; panel lain tetap tayang. Tidak ada data karangan.
-
-## 2. Struktur repo
+## 2. Cara kerjanya
 
 ```
-apps/web      Next.js 14 + TypeScript + React + ECharts — UI chat ala Gemini (paritas token warna/font/radius)
-apps/core     FastAPI — router, planner, compiler NL→where, executor, compute, rule engine, verifier, writer, memori, export
-apps/store    FastAPI + SQLite — Sectors Call Store (read-through cache wajib), fixture/offline/live mode
-packages/prompts   System prompt per peran (router, planner, compiler, writer_panel, writer_l3, judge, memory)
-packages/evals     20 pertanyaan baku + harness skor (target ≥90%)
-fixtures/sectors   Data demo deterministik (generator: tools/gen_fixtures.py) — angka ilustrasi, bukan data real
-tools/             gen_fixtures.py · serve.sh · web.sh · smoke_test.py
-docs/              PRD, ARCHITECTURE, INTENT-OUTPUT, STORE, ICP
+foto / teks struk ──► AI membaca NAMA MEREK saja (Gemini, tanpa angka)
+                 ──► merek → emiten (katalog kurasi 57 emiten · 196 merek; tebakan AI ditandai "dugaan")
+                 ──► emiten wajib ada di data Sectors, kalau tidak: "bukan emiten"
+                 ──► Kartu Kenalan per perusahaan, 100% dari Sectors
 ```
 
-## 3. Quickstart (lokal, 0 kredit)
+Setelah scan, kartu kenalan merek **barang** teratas langsung terbuka (bukan alat bayar atau toko), supaya pengguna pertama langsung melihat bahwa ada data nyata di balik belanjaannya.
+
+| Bagian kartu | Isi | Sumber Sectors |
+|---|---|---|
+| 01 Seberapa besar | Pendapatan, laba, nilai pasar + peringkat dari 962 emiten, utang vs modal, dividen, tren 4 tahun, **"dari setiap Rp100 pendapatan, sisa laba Rp X"** | Screener `include_query_values` (matriks seluruh bursa) |
+| 02 Peta uang | Diagram Sankey: segmen pendapatan → biaya → laba (rugi ditandai tangerine) | `/v2/company/get-segments/{symbol}/` |
+| 03 Siapa pemiliknya | Pemegang saham, porsi publik, rantai pengendali (ICBP ← 80,5% INDF ← 50,1% First Pacific → Grup Salim) | `major_shareholders`, `affiliates` dari Screener |
+| 04 Teman sejenis | Perbandingan dengan emiten se-industri | Matriks Screener |
+| 05 Pertanyaan kritis | Pola anomali + berapa emiten lain di bursa dengan pola sama + pertanyaan Sokratik | **Ekspresi aritmatika `where` Screener** |
+
+### Pertanyaan kritis = rumus yang dijalankan Sectors ke seluruh bursa
+
+Setiap pola adalah ekspresi `where` Screener Sectors, ditampilkan apa adanya ke pengguna sebagai bukti:
+
+| Pola | `where` |
+|---|---|
+| Penjualan naik, tapi laba turun | `revenue[2025] > revenue[2024] and earnings[2025] < earnings[2024]` |
+| Laba turun dua tahun berturut-turut | `earnings[2025] < earnings[2024] and earnings[2024] < earnings[2023]` |
+| Utang lebih besar dari modal sendiri | `total_debt[2025] > total_equity[2025]` |
+| Dividen lebih besar dari laba | `payout_ratio > 1` |
+| Rugi di tahun 2025 | `earnings[2025] < 0` |
+| Untung di atas kertas, kas operasi minus | `operating_cash_flow[2025] < 0 and earnings[2025] > 0` |
+| Margin laba bersih anjlok > 30% | `net_profit_margin[2024] > 0 and net_profit_margin[2025] < net_profit_margin[2024] * 0.7` |
+| Laba naik tiga tahun berturut-turut | `earnings[2023] > 0 and earnings[2024] > earnings[2023] and earnings[2025] > earnings[2024]` |
+| Penjualan melonjak > 20% | `revenue[2024] > 0 and revenue[2025] > revenue[2024] * 1.2` |
+
+`pagination.total_count` dari Sectors menjadi konteks kohort ("pola ini dimiliki **181** dari 962 perusahaan"). Pengguna menulis tebakannya; AI pendamping menanggapi **tanpa angka dan tanpa saran beli/jual** (dijaga kode, bukan imbauan).
+
+## 3. Kenapa Sectors adalah inti, bukan hiasan
+
+**Uji copot:** jalankan Core dengan `STRUK_SECTORS_OFF=1` — semua endpoint menolak dengan
+`"Tanpa data Sectors, aplikasi ini tidak bisa menampilkan apa pun — kami tidak mengarang angka."`
+Tidak ada fallback angka dari AI. Ini diuji otomatis (`test_sectors_off_kills_the_app`).
+
+Peran AI sengaja sempit:
+
+| Peran | Yang boleh | Penjaga |
+|---|---|---|
+| `struk_parse` | baca nama merek dari foto/teks | skema JSON ketat; injeksi di struk diabaikan |
+| `struk_explain` | terjemahkan label segmen Sectors + 1 kalimat ringkasan | output ditolak bila ada digit atau frasa rekomendasi |
+| `struk_reflect` | tanggapi jawaban pengguna | output ditolak bila ada digit atau frasa rekomendasi → fallback deterministik |
+
+Model: `google/gemini-3.8-flash` via OpenRouter, `reasoning_effort=low`.
+
+## 4. Pemakaian Sectors API yang hemat (dan tidak biasa)
+
+Seluruh bursa (962 emiten × ±50 field) diambil hanya dengan **10 panggilan Screener**, memanfaatkan fakta bahwa
+`include_query_values=true` mengembalikan *setiap* field yang disebut di `where` — termasuk cabang `OR` dan field per-tahun:
+
+```
+where = symbol like '%' or revenue[2022] > -1e18 or revenue[2023] > -1e18 or … or affiliates in ['Salim'] or …
+limit = 200, order_by = symbol, include_query_values = true      → 5 halaman × 2 grup field = 10 kredit
+```
+
+Kebenaran rumus lokal dikunci tes: untuk **setiap** pola, evaluasi Python atas matriks harus sama persis dengan `total_count` yang dihitung Sectors (`test_local_rule_matches_sectors_screener_count`, 9 pola).
+
+### Anggaran kredit (saldo awal tim 490)
+
+| Tahap | Panggilan | Kredit |
+|---|---|---|
+| Validasi asumsi (`tools/validate_api.py`): aritmatika `where`, field list, suffix `.JK`, daftar segmen | 4 | 4 |
+| Harvest matriks seluruh bursa | 10 | 10 |
+| Harvest segmen pendapatan (43 emiten konsumen) | 43 | 43 |
+| Harvest kohort 9 pola | 9 | 9 |
+| **Runtime aplikasi (setiap scan, kartu, pertanyaan)** | **0** | **0** |
+| **Total** | 66 | **66** → sisa **424** |
+
+Semua respons mentah disimpan di `fixtures/snapshot/` (±2,5 MB, data Sectors asli) dan di-*seed* ke Store saat start. Aplikasi berjalan di mode `offline` — tidak ada panggilan live, tidak ada kredit terbakar saat demo atau saat juri mencoba. Chip di header menampilkan kredit terpakai vs dihemat secara jujur.
+
+Pelajaran API yang kami dokumentasikan di kode: Cloudflare menolak UA `Python-urllib` (pakai UA kustom); filter `symbol in [...]` butuh suffix `.JK`; `listing_date` harus dibandingkan sebagai tanggal (bukan `like`); panggilan beruntun kena 429 (gratis, tapi perlu jeda).
+
+## 5. Arsitektur
+
+```
+apps/web    Next.js 14 + ECharts   — halaman Struk Jadi Saham (/), proxy /api/core/*
+apps/core   FastAPI                — app/struk/: universe (matriks), rules (9 pola), brands (katalog),
+                                     service (kartu, pemilik, kohort, keranjang), narrate (3 peran AI)
+apps/store  FastAPI + SQLite       — Sectors Call Store: read-through cache, ledger kredit, mode offline,
+                                     seed snapshot, passthrough /sectors/v2/* dengan biaya kanonis
+fixtures/snapshot   respons Sectors asli (matrix/, segments/, cohorts/)
+tools/harvest.py    pengambil snapshot (--dry dulu, --budget, --sleep)
+```
+
+Setiap angka di UI membawa provenans yang bisa dibuka ("dari mana angka ini?"): endpoint Sectors, field, query, waktu ambil, dan kredit untuk tampilan itu.
+
+## 6. Menjalankan
 
 ```bash
-make setup          # venv Python + deps Node
-make fixtures       # (opsional) regenerate data demo
-make serve          # Store :8787 + Core :8788 + Web :3000 (build & start)
+make setup                      # venv Python + deps Node (butuh uv)
+cp .env.example .env            # isi OPENROUTER_API_KEY untuk baca foto struk
+make dev                        # Store :8787 + Core :8788 + Web :3000
 # buka http://127.0.0.1:3000
 ```
 
-Mode default = **fixture**: data demo dari `fixtures/sectors/*.json`, **0 kredit Sectors, 0 panggilan LLM**
-(narasi template deterministik). Cocok untuk dev UI dan rehearsal video.
+- `IDXMACA_STORE_MODE=offline` (default) → hanya snapshot, 0 kredit Sectors. `SECTORS_API_KEY` tidak dibutuhkan untuk menjalankan aplikasi.
+- Tanpa `OPENROUTER_API_KEY`: input teks tetap jalan (pencocokan katalog deterministik), label peta uang tampil dalam bahasa Inggris asli Sectors; input foto butuh key.
+- Uji copot Sectors: `STRUK_SECTORS_OFF=1 make dev`.
 
-### Mode live (data nyata + LLM nyata)
-
-```bash
-cp .env.example .env
-# isi SECTORS_API_KEY dan OPENROUTER_API_KEY, set:
-#   IDXMACA_STORE_MODE=live
-#   IDXMACA_LLM_MODE=live
-make serve
-```
-
-- `IDXMACA_STORE_MODE=auto` → pakai Sectors live bila key ada, fallback fixture bila gagal (bisa dimatikan).
-- `IDXMACA_LLM_MODE=auto` → LLM live bila `OPENROUTER_API_KEY` ada, selain itu template.
-
-### Docker
+Memperbarui snapshot (memakai kredit, selalu dry-run dulu):
 
 ```bash
-cp .env.example .env   # isi key bila mau live
-make docker            # web :3000, core :8788, store :8787
+.venv/bin/python tools/harvest.py --dry                    # estimasi kredit, 0 panggilan
+IDXMACA_STORE_MODE=live .venv/bin/python tools/harvest.py --budget 70 --sleep 3
 ```
 
-## 4. Model & peran agen
-
-Satu model untuk semua peran — `meta/muse-spark-1.3` via OpenRouter (`POST /v1/chat/completions`) — dibedakan
-`reasoning_effort`, `temperature`, dan prompt:
-
-| Peran | Effort | Tugas |
-|---|---|---|
-| Router | low | query → playbook + intent + deteksi chat + ekstraksi ticker IDX/SGX/KLSE (pengetahuan LLM seluruh simbol; fallback heuristik) |
-| Planner | high | DAG node, fetch-sharing, estimasi kredit via `store.lookup` |
-| Compiler NL→`where` | medium | screener terstruktur (1 kredit) alih-alih NL `q` (3 kredit) |
-| Writer panel | medium | narasi per panel + pilihan visual (whitelist chart) |
-| Writer L3 | **xhigh** | memo 3 lensa + follow-up |
-| Judge bahasa | low | lapis 2 kepatuhan |
-| Memory | low | pemadatan konteks sesi |
-
-Semua panggilan tercatat di tabel `llm_calls` (peran, model, effort, token, biaya) dan tampil di UI.
-
-## 5. Sectors Call Store (ringkas)
-
-| Kemampuan | Implementasi |
-|---|---|
-| Kunci kanonis | `SHA256(method \| path_norm \| params_norm)`, alias disatukan (`bbca`=`BBCA`), sections di-sort |
-| Validasi sebelum lookup | clamp broker/foreign-flow ≤14 hari, daily/indeks ≤90 hari; request invalid = 400 gratis, tidak jadi cache sampah |
-| TTL | helper 7 hari · report/screener 24 jam · quarterly imutabel · EOD harian · event append-only |
-| Negative caching | 404 disimpan 6 jam; 4xx/5xx/429 tidak disimpan |
-| Single-flight | 3 agen minta key yang sama saat miss → 1 tembakan |
-| Provenans | tiap respons membawa `source`, `fetched_at`, `credits_spent`, `cache_key` → diteruskan ke evidence ledger |
-| Stats | `GET /v1/store/stats`: hit-rate, kredit dipakai/dihemat, top keys (bahan demo) |
-
-## 6. UI (purpose-built, bukan chat generik)
-
-- **Rencana agen** di muka: intent count, node fetch, estimasi `X Store-hit + Y live ≈ Z kredit`, 5 gelombang, tombol Approve.
-- **Render progresif** lewat SSE: L0 strip → panel P1–P8 terisi saat nodenya selesai → memo L3.
-- **8 panel domain**: Snapshot/Valuasi · Kinerja/Segmen · Pasar/Momentum · Flow/Kepemilikan · Event/Governance · Peer/Sektor · Tambang/Regional · Risiko.
-- **Tabel comps heatmap, timeline, checklist, gauge, peta titik, donut** — ECharts untuk chart, HTML/JSX untuk tabel (siap XLSX).
-- **Evidence drawer**: klik angka/`ev-0xx` → endpoint + parameter + waktu tarik + status store/live + nilai mentah.
-- **Export**: XLSX (per panel + sheet Evidence), DOCX (memo + tabel), PDF (halaman print).
-- **Sesi**: daftar sesi, lanjut lintas reload, konteks entitas terlihat di composer.
-- **Kepatuhan terlihat**: badge "semua angka terlacak ke ledger", "tanpa bahasa rekomendasi", disclaimer di setiap output.
-
-## 7. Eval
+Tes:
 
 ```bash
-make test     # unit test Store (23) + Core (28)
-make eval     # 20 pertanyaan baku end-to-end → skor
+make test        # Store + Core, termasuk 17 tes Struk Jadi Saham terhadap snapshot asli
 ```
 
-`make eval` menjalankan 20 pertanyaan (ID/EN, typo ticker, emiten suspensi, tambang, SGX, chat bebas, follow-up multi-turn)
-dan memeriksa: intent tepat, run selesai, panel tidak kosong, verifier angka & bahasa lolos, bukti ada, kredit dalam budget.
-Terakhir: **20/20 (100%)** di mode fixture.
+## 7. Batasan yang kami akui
 
-## 8. Skrip demo 3 menit
+- Katalog merek dikurasi manual (57 emiten, 196 merek). Merek di luar katalog bisa ditebak AI tapi ditandai **dugaan**; merek milik perusahaan tertutup (Aqua, Mie Sedaap, Sosro) jujur ditandai **bukan emiten**.
+- Peta uang tersedia untuk 43 emiten yang segmennya kami ambil (Sectors punya 219); emiten lain menampilkan kotak kosong yang jujur, bukan angka karangan.
+- Snapshot bertanggal 6 Oktober 2026, tahun buku 2025.
+- Alat informasi dan analisis, **bukan rekomendasi investasi**.
 
-1. **0:00 Hook** — buka UI, ketik pertanyaan bank 3 emiten. Tunjukkan **rencana + estimasi kredit** sebelum satu kredit pun keluar.
-2. **0:30 A-Playbook** — Approve. Tunjukkan L0 + panel valuasi/kinerja mengisi progresif; klik satu angka → evidence drawer (endpoint, params, fetched_at, Store-hit 0 kredit).
-3. **1:15 B-Playbook** — ketik "comps 6 peer bank…" → tabel + export XLSX; tunjukkan sheet Evidence berisi sumber per angka.
-4. **1:50 C-Playbook** — "scan red-flag 10 debitur" → gauge + checklist aturan terpicu (ekuitas negatif, suspensi, insider jual) dengan bukti.
-5. **2:30 Trust & memory** — follow-up "tambahkan DBS" → jawaban memakai konteks sesi; tunjukkan badge verifier + disclaimer.
-6. **2:45 Tutup** — Store stats: "cabut Sectors = produk mati; cabut Store = kredit habis."
+## 8. Riwayat
 
-## 9. Keputusan desain yang bisa diuji
-
-- Fixture mode = nol kredit → semua pengembangan UI/eval tidak membakar kuota.
-- Estimasi kredit selalu tampil di tombol persetujuan (satu klik). Bila estimasi melebihi budget run, tombol yang sama memberi tahu dan tetap menjalankan atas persetujuan eksplisit; API tetap menolak (`409 over_budget`) tanpa `force=true`.
-- Akuntansi kredit mengikuti tabel resmi docs (1/2/3, per section/kuartal/halaman/tipe) — lihat `docs/CREDITS.md`; biaya final dihitung dari respons aktual, bukan hanya estimasi.
-- Endpoint internal yang belum dipetakan ke path resmi Sectors **gagal-tertutup** saat live (0 kredit, bukan 404 berbiaya). Padanan path ada di `apps/store/app/live_routes.py`.
-- `IDXMACA_CREDIT_START` mengisi chip "sisa kredit" (default 1000; isi dari portal hackathon — Sectors tidak menyediakan endpoint saldo).
-- Angka di memo tidak bisa "nyelip": verifier membandingkan token angka di teks dengan nilai ledger (toleransi = 1% atau setengah digit terakhir yang ditampilkan).
-- Bahasa rekomendasi diblokir di dua lapis (regex + judge), disclaimer otomatis.
-
-## 10. Peta jalan (di luar scope lomba)
-
-- Scheduler cache-warm untuk query ≥20 intent (Q1–Q5) agar memo komite pagi tiba sebelum jam 08:00.
-- Tambang lebih dalam (cadangan per provinsi, kontrak owner–kontraktor), KLSE flow, multi-user workspace tim.
-- Backtest sinyal red-flag, alert real-time, mobile.
-
-## 11. Catatan data
-
-Semua angka di mode fixture adalah **data ilustrasi** yang dihasilkan `tools/gen_fixtures.py` (deterministik).
-Bukan data pasar nyata. Untuk data nyata, jalankan mode live dengan `SECTORS_API_KEY`.
-
-Produk ini alat informasi/analisis, **bukan rekomendasi investasi**; tidak ada eksekusi order atau koneksi broker.
+Repo ini berawal dari **IDXMACA** (asisten multi-agen untuk analis), masih tersedia di `/idxmaca` — dokumentasinya di [`docs/IDXMACA.md`](docs/IDXMACA.md). Kami beralih ke Struk Jadi Saham karena IDXMACA menghabiskan kredit per pertanyaan; arsitektur Store-nya dipakai ulang di sini sehingga runtime menjadi 0 kredit.

@@ -1,0 +1,75 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/EXCL/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 0,
+ "fetched_at": "2026-10-06T05:17:34+0700",
+ "fetched_at_epoch": 1791238654.38989,
+ "source": "store-hit",
+ "data": {
+  "symbol": "EXCL.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 33601529000000,
+    "source": "GSM mobile and telecommunication network services",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 19557000000,
+    "source": "Operating rental",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 770511000000,
+    "source": "Managed and information technology services",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 12226503000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 22165094000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 5588575000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 16576519000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 12074335000000,
+    "source": "Operating Expense",
+    "target": "Depreciation"
+   },
+   {
+    "value": 2094192000000,
+    "source": "Operating Expense",
+    "target": "Sales and marketing"
+   },
+   {
+    "value": 1736074000000,
+    "source": "Operating Expense",
+    "target": "Salaries and employee benefit"
+   },
+   {
+    "value": 454990000000,
+    "source": "Operating Expense",
+    "target": "General and admin"
+   },
+   {
+    "value": 216928000000,
+    "source": "Operating Expense",
+    "target": "Amortization"
+   }
+  ]
+ }
+}

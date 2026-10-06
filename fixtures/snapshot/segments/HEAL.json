@@ -1,0 +1,100 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/HEAL/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 0,
+ "fetched_at": "2026-10-06T05:17:34+0700",
+ "fetched_at_epoch": 1791238654.6444323,
+ "source": "store-hit",
+ "data": {
+  "symbol": "HEAL.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 1454693000000,
+    "source": "Inpatient services",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 2022404000000,
+    "source": "Medicines and medical supplies",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1017218000000,
+    "source": "Medical services",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1026649000000,
+    "source": "Medical and diagnostic support services",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 114448000000,
+    "source": "Medical operating services",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 49666000000,
+    "source": "Administration and others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 816295000000,
+    "source": "Policlinic services",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 6154000000,
+    "source": "Emergency installation services",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 137316000000,
+    "source": "Service fee",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 62320000000,
+    "source": "Joint operation assets",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 29567000000,
+    "source": "Management fee",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 4281079000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 2436100000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 1036733000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 1399367000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 20331000000,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 1379036000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

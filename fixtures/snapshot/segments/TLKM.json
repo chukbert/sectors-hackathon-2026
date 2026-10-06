@@ -1,0 +1,100 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/TLKM/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-06T05:20:24+0700",
+ "fetched_at_epoch": 1791238824.7631416,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "TLKM.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 6260000000000,
+    "source": "Cellular telephone revenue",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 479000000000,
+    "source": "Fixed line telephone revenue",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 9187000000000,
+    "source": "Interconnection revenues",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 94338000000000,
+    "source": "Data, internet and information technology services revenues",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 3179000000000,
+    "source": "Network revenues",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 26262000000000,
+    "source": "IndiHome revenues",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 3029000000000,
+    "source": "Lessor transactions",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 7233000000000,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 41202000000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 108765000000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 42386000000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 66379000000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 32643000000000,
+    "source": "Operating Expense",
+    "target": "Depreciation and amortization"
+   },
+   {
+    "value": 16807000000000,
+    "source": "Operating Expense",
+    "target": "Personnel"
+   },
+   {
+    "value": 6880000000000,
+    "source": "Operating Expense",
+    "target": "Interconnection"
+   },
+   {
+    "value": 6225000000000,
+    "source": "Operating Expense",
+    "target": "General and administration"
+   },
+   {
+    "value": 3824000000000,
+    "source": "Operating Expense",
+    "target": "Marketing"
+   }
+  ]
+ }
+}

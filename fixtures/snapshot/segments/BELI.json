@@ -1,0 +1,60 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/BELI/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 0,
+ "fetched_at": "2026-10-06T05:17:33+0700",
+ "fetched_at_epoch": 1791238653.5431201,
+ "source": "store-hit",
+ "data": {
+  "symbol": "BELI.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 5652123000000,
+    "source": "Online retail",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 5671362000000,
+    "source": "Institution",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 5392091000000,
+    "source": "Physical stores",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 13416973000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 3298603000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 2427190000000,
+    "source": "Operating Income",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 3298603000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 2010443000000,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 3715350000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

@@ -1,0 +1,65 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/INDF/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 0,
+ "fetched_at": "2026-10-06T05:17:34+0700",
+ "fetched_at_epoch": 1791238654.8952737,
+ "source": "store-hit",
+ "data": {
+  "symbol": "INDF.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 72954150000000,
+    "source": "Consumer Branded Product Business Group",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 23997007000000,
+    "source": "Bogasari Business Group",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 11833753000000,
+    "source": "Agribusiness Business Group",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 7001615000000,
+    "source": "Distribution Business Group",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 75649996000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 40136529000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 22829748000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 17306781000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 12258278000000,
+    "source": "Operating Expense",
+    "target": "Selling and distribution"
+   },
+   {
+    "value": 5048503000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

@@ -1,0 +1,75 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/MIKA/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-06T05:20:02+0700",
+ "fetched_at_epoch": 1791238802.9340754,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "MIKA.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 2182774929966,
+    "source": "Drugs and medical supplies",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 748269707247,
+    "source": "Inpatient rooms",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1029837853588,
+    "source": "Medical support service",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 602309854653,
+    "source": "Professional fees",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 202428928390,
+    "source": "Administration",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 108748092747,
+    "source": "Registrations",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 2257944606238,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 2616424760353,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 1487321275681,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 1129103484672,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 70441542994,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 1058661941678,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

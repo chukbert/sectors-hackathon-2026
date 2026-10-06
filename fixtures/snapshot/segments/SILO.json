@@ -1,0 +1,75 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/SILO/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-06T05:20:21+0700",
+ "fetched_at_epoch": 1791238821.67656,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "SILO.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 4229845000000,
+    "source": "Drugs and Medical Supplies",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 5201780000000,
+    "source": "Medical Support Services and Professional Fees",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 948062000000,
+    "source": "Hospital's Facility",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 798764000000,
+    "source": "Room Service",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 313654000000,
+    "source": "Operating Theatre",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 715458000000,
+    "source": "Administration Income and Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 7345531000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 4862032000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 1956086000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 2905946000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 284749000000,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 2621197000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

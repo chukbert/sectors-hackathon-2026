@@ -1,0 +1,65 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/ERAA/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 0,
+ "fetched_at": "2026-10-06T05:17:34+0700",
+ "fetched_at_epoch": 1791238654.3095102,
+ "source": "store-hit",
+ "data": {
+  "symbol": "ERAA.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 52431058949000,
+    "source": "Cellular phones and tablet",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 2638259625000,
+    "source": "Computer and other electronic devices",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1672257304000,
+    "source": "Operator product",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 8538108789000,
+    "source": "Accessories and other",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 58003956179000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 7275728488000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 1706045523000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 5569682965000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 2995871192000,
+    "source": "Operating Expense",
+    "target": "Selling and distribution"
+   },
+   {
+    "value": 2573811773000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

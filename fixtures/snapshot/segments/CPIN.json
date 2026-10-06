@@ -1,0 +1,70 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/CPIN/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 0,
+ "fetched_at": "2026-10-06T05:17:34+0700",
+ "fetched_at_epoch": 1791238654.1348956,
+ "source": "store-hit",
+ "data": {
+  "symbol": "CPIN.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 35319774000000,
+    "source": "Broiler",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 16445051000000,
+    "source": "Feeds",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 11944927000000,
+    "source": "Processed chicken",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 2502496000000,
+    "source": "Day old chick",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1265744000000,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 57057835000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 10420157000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 5789668000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 4630489000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 2491847000000,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 2138642000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

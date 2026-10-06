@@ -98,6 +98,20 @@ class StoreDB:
             )
             self._conn.commit()
 
+    def seed(self, cache_key: str, endpoint: str, params: dict[str, Any], response: Any, http_status: int,
+             credits_spent: int, fetched_at: float, ttl_s: int, origin: str = "live") -> bool:
+        """Isi cache dari snapshot repo tanpa mencatat credit_events (kredit sudah dibayar saat panen)."""
+        with self._lock:
+            cur = self._conn.execute(
+                """INSERT OR IGNORE INTO sectors_calls
+                   (cache_key, method, endpoint, params, response, http_status, credits_spent, hit_count, fetched_at, expires_at, origin)
+                   VALUES (?,?,?,?,?,?,?,0,?,?,?)""",
+                (cache_key, "GET", endpoint, json.dumps(params), json.dumps(response, default=str), http_status,
+                 credits_spent, fetched_at, fetched_at + ttl_s, origin),
+            )
+            self._conn.commit()
+        return cur.rowcount > 0
+
     def record_saving(self, cache_key: str, credits: int) -> None:
         with self._lock:
             self._conn.execute(

@@ -252,6 +252,112 @@ async def export_pdf(run_id: str):
                     headers={"Content-Disposition": f'inline; filename="idxmaca-{run_id}.html"'})
 
 
+# ------------------------------------------------------------------ Struk Jadi Saham
+
+class StrukScanRequest(BaseModel):
+    text: str | None = None
+    image: str | None = None  # data URL (data:image/jpeg;base64,...)
+
+
+class StrukReflectRequest(BaseModel):
+    symbol: str
+    rule_id: str
+    answer: str
+
+
+def _sectors_off_response(exc: Exception) -> dict[str, Any]:
+    return {"sectors_off": True, "detail": str(exc),
+            "message": "Tanpa data Sectors, aplikasi ini tidak bisa menampilkan apa pun — kami tidak mengarang angka."}
+
+
+@app.get("/v1/struk/status")
+async def struk_status():
+    from .struk import service
+
+    out: dict[str, Any] = {"sectors_off": service.sectors_off(), "llm_available": GATEWAY.available, "model": SETTINGS.model,
+                           "disclaimer": DISCLAIMER}
+    try:
+        out["store"] = await STORE.stats()
+    except Exception as exc:  # noqa: BLE001
+        out["store_error"] = str(exc)
+    return out
+
+
+@app.post("/v1/struk/scan")
+async def struk_scan(req: StrukScanRequest):
+    from .struk import narrate, service
+
+    if service.sectors_off():
+        return _sectors_off_response(service.SectorsOff("STRUK_SECTORS_OFF=1"))
+    if req.image and len(req.image) > 8_000_000:
+        raise HTTPException(status_code=413, detail="Foto terlalu besar (maks ±6 MB).")
+    try:
+        parsed = await narrate.read_receipt(req.text, req.image)
+    except Exception as exc:  # noqa: BLE001
+        raise HTTPException(status_code=502, detail=f"Gagal membaca struk: {exc}") from exc
+    try:
+        result = await service.basket(parsed["items"])
+    except service.SectorsOff as exc:
+        return _sectors_off_response(exc)
+    return {"store_name": parsed.get("store"), "llm_read": parsed.get("llm"), "items": parsed["items"], **result,
+            "disclaimer": DISCLAIMER}
+
+
+@app.get("/v1/struk/company/{symbol}")
+async def struk_company(symbol: str):
+    from .struk import narrate, service
+
+    try:
+        card = await service.company_card(symbol)
+    except service.SectorsOff as exc:
+        return _sectors_off_response(exc)
+    except KeyError as exc:
+        raise HTTPException(status_code=404, detail=f"{symbol.upper()} tidak ada di data Sectors") from exc
+    if card.get("money"):
+        card["money"]["explain"] = await narrate.explain_money(card["symbol"], card["name"] or card["symbol"], card["money"])
+    card["disclaimer"] = DISCLAIMER
+    return card
+
+
+@app.get("/v1/struk/search")
+async def struk_search(q: str = Query(min_length=1)):
+    from .struk import brands, service, universe
+
+    try:
+        u = await service.load_universe()
+    except service.SectorsOff as exc:
+        return _sectors_off_response(exc)
+    ql = q.strip().lower()
+    hit = brands.lookup(q)
+    out = []
+    if hit and hit.symbol in u["records"]:
+        out.append({"symbol": hit.symbol, "name": u["records"][hit.symbol].get("company_name"), "brand": hit.brand})
+    for sym, rec in u["records"].items():
+        if len(out) >= 8:
+            break
+        if sym.lower() == ql or ql in (rec.get("company_name") or "").lower():
+            if not any(o["symbol"] == sym for o in out):
+                out.append({"symbol": sym, "name": rec.get("company_name"), "brand": None})
+    return {"results": out, "universe_total": u["count"], "bare": universe.bare(q)}
+
+
+@app.post("/v1/struk/reflect")
+async def struk_reflect(req: StrukReflectRequest):
+    from .struk import narrate, rules, service, universe
+
+    rule = rules.RULES_BY_ID.get(req.rule_id)
+    if not rule:
+        raise HTTPException(status_code=404, detail="aturan tidak dikenal")
+    try:
+        u = await service.load_universe()
+    except service.SectorsOff as exc:
+        return _sectors_off_response(exc)
+    rec = u["records"].get(universe.bare(req.symbol))
+    if not rec or not rule.check(rec):
+        raise HTTPException(status_code=400, detail="pola ini tidak berlaku untuk emiten tersebut")
+    return await narrate.reflect(rec.get("company_name") or req.symbol, rule.title, rule.question, list(rule.hints), req.answer)
+
+
 @app.on_event("shutdown")
 async def _shutdown():
     await GATEWAY.aclose()

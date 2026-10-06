@@ -1,0 +1,65 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/ACES/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 0,
+ "fetched_at": "2026-10-06T05:17:32+0700",
+ "fetched_at_epoch": 1791238652.840234,
+ "source": "store-hit",
+ "data": {
+  "symbol": "ACES.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 4397069140552,
+    "source": "Home Improvement Products",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 3714895225805,
+    "source": "Lifestyle Products",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 314627674397,
+    "source": "Toys Products",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 155918207911,
+    "source": "Consignment Sales",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 4399711460963,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 4182798787702,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 1023655155299,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 3159143632403,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 2326874185050,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 832269447353,
+    "source": "Operating Expense",
+    "target": "General and Administrative"
+   }
+  ]
+ }
+}

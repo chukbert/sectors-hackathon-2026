@@ -1,0 +1,55 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/AMRT/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 0,
+ "fetched_at": "2026-10-06T05:17:32+0700",
+ "fetched_at_epoch": 1791238652.946603,
+ "source": "store-hit",
+ "data": {
+  "symbol": "AMRT.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 83281540000000,
+    "source": "Food ",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 34945491000000,
+    "source": "Non-food",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 92861550000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 25365481000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 2981896000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 22383585000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 20206085000000,
+    "source": "Operating Expense",
+    "target": "Selling and distribution expenses"
+   },
+   {
+    "value": 2177500000000,
+    "source": "Operating Expense",
+    "target": "General and administration expenses"
+   }
+  ]
+ }
+}

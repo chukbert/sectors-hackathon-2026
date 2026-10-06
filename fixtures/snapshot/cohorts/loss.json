@@ -1,0 +1,108 @@
+{
+ "endpoint": "/sectors/v2/companies/",
+ "params": {
+  "where": "earnings[2025] < 0",
+  "order_by": "-market_cap",
+  "limit": 10,
+  "include_query_values": "true"
+ },
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-06T05:18:24+0700",
+ "fetched_at_epoch": 1791238704.294727,
+ "source": "sectors-live",
+ "data": {
+  "results": [
+   {
+    "symbol": "SRAJ.JK",
+    "company_name": "Sejahteraraya Anugrahjaya Tbk",
+    "query_values": {
+     "earnings[2025]": -199000000000.0,
+     "market_cap": 159106479870000
+    }
+   },
+   {
+    "symbol": "MPRO.JK",
+    "company_name": "PT Maha Properti Indonesia Tbk",
+    "query_values": {
+     "earnings[2025]": -61960545000.0,
+     "market_cap": 119310000000000
+    }
+   },
+   {
+    "symbol": "EMAS.JK",
+    "company_name": "PT Merdeka Gold Resources Tbk",
+    "query_values": {
+     "earnings[2025]": -460123946623.0,
+     "market_cap": 114904655268000
+    }
+   },
+   {
+    "symbol": "MDKA.JK",
+    "company_name": "PT Merdeka Copper Gold Tbk",
+    "query_values": {
+     "earnings[2025]": -1038691184680.0,
+     "market_cap": 71461112611320
+    }
+   },
+   {
+    "symbol": "EXCL.JK",
+    "company_name": "PT XLSMART Telecom Sejahtera Tbk",
+    "query_values": {
+     "earnings[2025]": -4426618000000.0,
+     "market_cap": 42223680886320
+    }
+   },
+   {
+    "symbol": "VKTR.JK",
+    "company_name": "PT VKTR Teknologi Mobilitas Tbk",
+    "query_values": {
+     "earnings[2025]": -11368000000.0,
+     "market_cap": 36093750000000
+    }
+   },
+   {
+    "symbol": "BELI.JK",
+    "company_name": "PT Global Digital Niaga Tbk",
+    "query_values": {
+     "earnings[2025]": -2278884000000.0,
+     "market_cap": 34853622365006
+    }
+   },
+   {
+    "symbol": "GOTO.JK",
+    "company_name": "PT GoTo Gojek Tokopedia Tbk",
+    "query_values": {
+     "earnings[2025]": -1185654000000.0,
+     "market_cap": 33076624749380
+    }
+   },
+   {
+    "symbol": "MGLV.JK",
+    "company_name": "PT Panca Anugrah Wisesa Tbk",
+    "query_values": {
+     "earnings[2025]": -9019490202.0,
+     "market_cap": 26287391071800
+    }
+   },
+   {
+    "symbol": "BINA.JK",
+    "company_name": "PT Bank Ina Perdana Tbk.",
+    "query_values": {
+     "earnings[2025]": -369018000000.0,
+     "market_cap": 24475679076940
+    }
+   }
+  ],
+  "pagination": {
+   "total_count": 238,
+   "showing": 10,
+   "limit": 10,
+   "offset": 0,
+   "has_next": true,
+   "has_previous": false,
+   "next_offset": 10,
+   "previous_offset": null
+  }
+ }
+}

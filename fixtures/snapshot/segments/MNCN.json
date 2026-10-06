@@ -1,0 +1,60 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/MNCN/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-06T05:20:06+0700",
+ "fetched_at_epoch": 1791238806.0180953,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "MNCN.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 5736547000000,
+    "source": "Advertisement",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1383384000000,
+    "source": "Content and IP",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 714811000000,
+    "source": "Subscription",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 119070000000,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 4295266000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 3658546000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 1605850000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 2052696000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 2052696000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

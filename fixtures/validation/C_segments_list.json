@@ -1,0 +1,1337 @@
+{
+  "request": {
+    "path": "/v2/companies/list_companies_with_segments/",
+    "params": {}
+  },
+  "status": 200,
+  "response": {
+    "AADI.JK": {
+      "financial_year": [
+        2024
+      ]
+    },
+    "AALI.JK": {
+      "financial_year": [
+        2024
+      ]
+    },
+    "ABDA.JK": {
+      "financial_year": [
+        2024
+      ]
+    },
+    "ABMM.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "ACES.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "ADCP.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "ADHI.JK": {
+      "financial_year": [
+        2024
+      ]
+    },
+    "ADMF.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "ADMR.JK": {
+      "financial_year": [
+        2022,
+        2023,
+        2024
+      ]
+    },
+    "ADRO.JK": {
+      "financial_year": [
+        2022,
+        2023,
+        2024
+      ]
+    },
+    "AGRO.JK": {
+      "financial_year": [
+        2024,
+        2025
+      ]
+    },
+    "AGRS.JK": {
+      "financial_year": [
+        2024,
+        2025
+      ]
+    },
+    "AKRA.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "AMAR.JK": {
+      "financial_year": [
+        2024,
+        2025
+      ]
+    },
+    "AMMN.JK": {
+      "financial_year": [
+        2022,
+        2023,
+        2024
+      ]
+    },
+    "AMRT.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "ANTM.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "ARGO.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "ARNA.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "ARTO.JK": {
+      "financial_year": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    "ASGR.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "ASII.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "AUTO.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "AVIA.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "BABP.JK": {
+      "financial_year": [
+        2024,
+        2025
+      ]
+    },
+    "BACA.JK": {
+      "financial_year": [
+        2024,
+        2025
+      ]
+    },
+    "BANK.JK": {
+      "financial_year": [
+        2024,
+        2025
+      ]
+    },
+    "BBCA.JK": {
+      "financial_year": [
+        2022,
+        2023,
+        2024,
+        2025
+      ]
+    },
+    "BBHI.JK": {
+      "financial_year": [
+        2022,
+        2023,
+        2024,
+        2025
+      ]
+    },
+    "BBKP.JK": {
+      "financial_year": [
+        2024,
+        2025
+      ]
+    },
+    "BBMD.JK": {
+      "financial_year": [
+        2024,
+        2025
+      ]
+    },
+    "BBNI.JK": {
+      "financial_year": [
+        2022,
+        2023,
+        2024,
+        2025
+      ]
+    },
+    "BBRI.JK": {
+      "financial_year": [
+        2022,
+        2023,
+        2024,
+        2025
+      ]
+    },
+    "BBSI.JK": {
+      "financial_year": [
+        2024,
+        2025
+      ]
+    },
+    "BBSS.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "BBTN.JK": {
+      "financial_year": [
+        2024,
+        2025
+      ]
+    },
+    "BBYB.JK": {
+      "financial_year": [
+        2024,
+        2025
+      ]
+    },
+    "BCIC.JK": {
+      "financial_year": [
+        2024
+      ]
+    },
+    "BDMN.JK": {
+      "financial_year": [
+        2024,
+        2025
+      ]
+    },
+    "BEKS.JK": {
+      "financial_year": [
+        2024,
+        2025
+      ]
+    },
+    "BELI.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "BFIN.JK": {
+      "financial_year": [
+        2023
+      ]
+    },
+    "BGTG.JK": {
+      "financial_year": [
+        2024,
+        2025
+      ]
+    },
+    "BHIT.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "BINA.JK": {
+      "financial_year": [
+        2024,
+        2025
+      ]
+    },
+    "BIRD.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "BJBR.JK": {
+      "financial_year": [
+        2024,
+        2025
+      ]
+    },
+    "BJTM.JK": {
+      "financial_year": [
+        2024,
+        2025
+      ]
+    },
+    "BKSW.JK": {
+      "financial_year": [
+        2024,
+        2025
+      ]
+    },
+    "BMAS.JK": {
+      "financial_year": [
+        2024,
+        2025
+      ]
+    },
+    "BMRI.JK": {
+      "financial_year": [
+        2022,
+        2023,
+        2024,
+        2025
+      ]
+    },
+    "BMTR.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "BNBA.JK": {
+      "financial_year": [
+        2024,
+        2025
+      ]
+    },
+    "BNBR.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "BNGA.JK": {
+      "financial_year": [
+        2022,
+        2023,
+        2024,
+        2025
+      ]
+    },
+    "BNII.JK": {
+      "financial_year": [
+        2024,
+        2025
+      ]
+    },
+    "BNLI.JK": {
+      "financial_year": [
+        2022,
+        2023,
+        2024,
+        2025
+      ]
+    },
+    "BOGA.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "BPII.JK": {
+      "financial_year": [
+        2023
+      ]
+    },
+    "BREN.JK": {
+      "financial_year": [
+        2022,
+        2023,
+        2024
+      ]
+    },
+    "BRIS.JK": {
+      "financial_year": [
+        2022,
+        2023,
+        2024,
+        2025
+      ]
+    },
+    "BRPT.JK": {
+      "financial_year": [
+        2022,
+        2023,
+        2024
+      ]
+    },
+    "BSDE.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "BSIM.JK": {
+      "financial_year": [
+        2024,
+        2025
+      ]
+    },
+    "BSWD.JK": {
+      "financial_year": [
+        2024,
+        2025
+      ]
+    },
+    "BTPN.JK": {
+      "financial_year": [
+        2024,
+        2025
+      ]
+    },
+    "BTPS.JK": {
+      "financial_year": [
+        2024,
+        2025
+      ]
+    },
+    "BUKA.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "BUMI.JK": {
+      "financial_year": [
+        2022,
+        2023,
+        2024
+      ]
+    },
+    "BVIC.JK": {
+      "financial_year": [
+        2024,
+        2025
+      ]
+    },
+    "BWPT.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "BYAN.JK": {
+      "financial_year": [
+        2022,
+        2023,
+        2024
+      ]
+    },
+    "CBDK.JK": {
+      "financial_year": [
+        2024
+      ]
+    },
+    "CLEO.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "CMNP.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "CMRY.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "CNMA.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "CPIN.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "CTRA.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "CUAN.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "DCII.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "DMND.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "DNAR.JK": {
+      "financial_year": [
+        2024,
+        2025
+      ]
+    },
+    "DNET.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "DRMA.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "DSNG.JK": {
+      "financial_year": [
+        2022,
+        2023,
+        2024
+      ]
+    },
+    "DSSA.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "EDGE.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "EMTK.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "EPMT.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "ERAA.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "EXCL.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "FAPA.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "FILM.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "FREN.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "FUJI.JK": {
+      "financial_year": [
+        2024
+      ]
+    },
+    "GEMS.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "GGRM.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "GJTL.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "GOTO.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "HAIS.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "HATM.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "HEAL.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "HEXA.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "HMSP.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "IBST.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "ICBP.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "IMAS.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "IMPC.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "INCO.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "INDF.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "INKP.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "INPC.JK": {
+      "financial_year": [
+        2024,
+        2025
+      ]
+    },
+    "INPP.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "ISAT.JK": {
+      "financial_year": [
+        2022,
+        2023,
+        2024
+      ]
+    },
+    "ITMG.JK": {
+      "financial_year": [
+        2025
+      ]
+    },
+    "JKON.JK": {
+      "financial_year": [
+        2024
+      ]
+    },
+    "JKSW.JK": {
+      "financial_year": [
+        2024
+      ]
+    },
+    "JPFA.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "JRPT.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "JSMR.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "JSPT.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "KAEF.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "KLBF.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "KPIG.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "LIFE.JK": {
+      "financial_year": [
+        2023
+      ]
+    },
+    "LINK.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "MAPA.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "MAPB.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "MAPI.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "MARK.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "MASA.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "MASB.JK": {
+      "financial_year": [
+        2024,
+        2025
+      ]
+    },
+    "MAYA.JK": {
+      "financial_year": [
+        2024,
+        2025
+      ]
+    },
+    "MBMA.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "MCOR.JK": {
+      "financial_year": [
+        2024,
+        2025
+      ]
+    },
+    "MDKA.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "MEDC.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "MEGA.JK": {
+      "financial_year": [
+        2022,
+        2023,
+        2024,
+        2025
+      ]
+    },
+    "META.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "MFIN.JK": {
+      "financial_year": [
+        2023
+      ]
+    },
+    "MIDI.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "MIKA.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "MKPI.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "MLPT.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "MNCN.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "MORA.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "MPMX.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "MPRO.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "MSIN.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "MSTI.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "MTDL.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "MTEL.JK": {
+      "financial_year": [
+        2022,
+        2023,
+        2024
+      ]
+    },
+    "MYOR.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "NCKL.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "NISP.JK": {
+      "financial_year": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    "NOBU.JK": {
+      "financial_year": [
+        2024,
+        2025
+      ]
+    },
+    "OBAT.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "OMED.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "PALM.JK": {
+      "financial_year": [
+        2023
+      ]
+    },
+    "PANI.JK": {
+      "financial_year": [
+        2022,
+        2023,
+        2024
+      ]
+    },
+    "PGAS.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "PGEO.JK": {
+      "financial_year": [
+        2022,
+        2023,
+        2024
+      ]
+    },
+    "PGJO.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "PLIN.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "PNBN.JK": {
+      "financial_year": [
+        2022,
+        2023,
+        2024,
+        2025
+      ]
+    },
+    "PNBS.JK": {
+      "financial_year": [
+        2024,
+        2025
+      ]
+    },
+    "PNLF.JK": {
+      "financial_year": [
+        2023
+      ]
+    },
+    "POWR.JK": {
+      "financial_year": [
+        2022,
+        2023,
+        2024
+      ]
+    },
+    "PPRE.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "PPRO.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "PRAY.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "PRDA.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "PTPP.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "PWON.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "RAAM.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "RISE.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "SAME.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "SCMA.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "SDRA.JK": {
+      "financial_year": [
+        2024
+      ]
+    },
+    "SGRO.JK": {
+      "financial_year": [
+        2024
+      ]
+    },
+    "SICO.JK": {
+      "financial_year": [
+        2024
+      ]
+    },
+    "SIDO.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "SILO.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "SIMP.JK": {
+      "financial_year": [
+        2024
+      ]
+    },
+    "SMAR.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "SMDM.JK": {
+      "financial_year": [
+        2024
+      ]
+    },
+    "SMDR.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "SMMA.JK": {
+      "financial_year": [
+        2023
+      ]
+    },
+    "SMMT.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "SMRA.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "SMSM.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "SOHO.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "SRAJ.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "SRTG.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "SSIA.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "SSMS.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "SUPA.JK": {
+      "financial_year": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    "SUPR.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "TAPG.JK": {
+      "financial_year": [
+        2024
+      ]
+    },
+    "TBIG.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "TCPI.JK": {
+      "financial_year": [
+        2022,
+        2023,
+        2024
+      ]
+    },
+    "TFCO.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "TLKM.JK": {
+      "financial_year": [
+        2022,
+        2023,
+        2024
+      ]
+    },
+    "TMAS.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "TOWR.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "TPIA.JK": {
+      "financial_year": [
+        2022,
+        2023,
+        2024
+      ]
+    },
+    "TRIO.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "TSPC.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "TUGU.JK": {
+      "financial_year": [
+        2023
+      ]
+    },
+    "UCID.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "ULTJ.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "UNTR.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "UNVR.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "VICI.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "VKTR.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "WIKA.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "WSKT.JK": {
+      "financial_year": [
+        2023,
+        2024
+      ]
+    },
+    "YULE.JK": {
+      "financial_year": [
+        2023
+      ]
+    }
+  }
+}

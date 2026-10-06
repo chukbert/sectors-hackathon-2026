@@ -1,0 +1,65 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/SCMA/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-06T05:20:15+0700",
+ "fetched_at_epoch": 1791238815.4403346,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "SCMA.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 5000432370000,
+    "source": "Television and other multimedia platform",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1338185212000,
+    "source": "Digital",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 272978653000,
+    "source": "Content creation and production support",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 446228208000,
+    "source": "Marketing services and enabler",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 4530523902000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 2527300541000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 710547615000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 1816752926000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 936495908000,
+    "source": "Operating Expense",
+    "target": "Salaries and employees' benefits cost"
+   },
+   {
+    "value": 880257018000,
+    "source": "Operating Expense",
+    "target": "General and administration"
+   }
+  ]
+ }
+}

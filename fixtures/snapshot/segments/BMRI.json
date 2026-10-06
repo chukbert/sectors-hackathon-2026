@@ -1,0 +1,115 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/BMRI/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 0,
+ "fetched_at": "2026-10-06T05:17:33+0700",
+ "fetched_at_epoch": 1791238653.717343,
+ "source": "store-hit",
+ "data": {
+  "symbol": "BMRI.JK",
+  "financial_year": 2025,
+  "revenue_breakdown": [
+   {
+    "value": 109869267000000,
+    "source": "Loans",
+    "target": "Interest Income"
+   },
+   {
+    "value": 14146067000000,
+    "source": "Securities",
+    "target": "Interest Income"
+   },
+   {
+    "value": 6624748000000,
+    "source": "Consumer financing income",
+    "target": "Interest Income"
+   },
+   {
+    "value": 3915675000000,
+    "source": "Placement with Bank Indonesia and other banks",
+    "target": "Interest Income"
+   },
+   {
+    "value": 3971333000000,
+    "source": "Marketable securities",
+    "target": "Interest Income"
+   },
+   {
+    "value": 99530000000,
+    "source": "Margin",
+    "target": "Interest Income"
+   },
+   {
+    "value": 24763029000000,
+    "source": "Sharia Income",
+    "target": "Interest Income"
+   },
+   {
+    "value": 1022817000000,
+    "source": "Others",
+    "target": "Interest Income"
+   },
+   {
+    "value": 106210035000000,
+    "source": "Interest Income",
+    "target": "Net Interest Income"
+   },
+   {
+    "value": 58202431000000,
+    "source": "Interest Income",
+    "target": "Interest Expense"
+   },
+   {
+    "value": 106210035000000,
+    "source": "Net Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 550415000000,
+    "source": "Net Premium Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 27553414000000,
+    "source": "Non Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 55398572000000,
+    "source": "Total Revenue",
+    "target": "Operating Income"
+   },
+   {
+    "value": 78915292000000,
+    "source": "Total Revenue",
+    "target": "Operating and Credit-Related Expenses"
+   },
+   {
+    "value": 67584405000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 11330887000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Provision for Impairment"
+   },
+   {
+    "value": 26635454000000,
+    "source": "Operating Expense",
+    "target": "Salaries and employees' benefits"
+   },
+   {
+    "value": 30422281000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   },
+   {
+    "value": 10526670000000,
+    "source": "Operating Expense",
+    "target": "Others (expense)"
+   }
+  ]
+ }
+}

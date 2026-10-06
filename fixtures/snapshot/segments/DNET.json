@@ -1,0 +1,60 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/DNET/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 0,
+ "fetched_at": "2026-10-06T05:17:34+0700",
+ "fetched_at_epoch": 1791238654.2209296,
+ "source": "store-hit",
+ "data": {
+  "symbol": "DNET.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 777329000000,
+    "source": "Corporate",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 564150000000,
+    "source": "Retail",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 86252000000,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 0,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 1427731000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 254197000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 1173534000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 988411000000,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 185123000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

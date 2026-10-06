@@ -1,0 +1,110 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/BBNI/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 0,
+ "fetched_at": "2026-10-06T05:17:33+0700",
+ "fetched_at_epoch": 1791238653.379414,
+ "source": "store-hit",
+ "data": {
+  "symbol": "BBNI.JK",
+  "financial_year": 2025,
+  "revenue_breakdown": [
+   {
+    "value": 57957360000000,
+    "source": "Loans",
+    "target": "Interest Income"
+   },
+   {
+    "value": 7204618000000,
+    "source": "Government Bonds",
+    "target": "Interest Income"
+   },
+   {
+    "value": 752171000000,
+    "source": "Marketable securities",
+    "target": "Interest Income"
+   },
+   {
+    "value": 2413743000000,
+    "source": "Placement with Bank Indonesia",
+    "target": "Interest Income"
+   },
+   {
+    "value": 1066262000000,
+    "source": "Others",
+    "target": "Interest Income"
+   },
+   {
+    "value": 40333195000000,
+    "source": "Interest Income",
+    "target": "Net Interest Income"
+   },
+   {
+    "value": 29060959000000,
+    "source": "Interest Income",
+    "target": "Interest Expense"
+   },
+   {
+    "value": 40333195000000,
+    "source": "Net Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 743193000000,
+    "source": "Net Premium Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 22862819000000,
+    "source": "Non Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 23358481000000,
+    "source": "Total Revenue",
+    "target": "Operating Income"
+   },
+   {
+    "value": 40580726000000,
+    "source": "Total Revenue",
+    "target": "Operating and Credit-Related Expenses"
+   },
+   {
+    "value": 30856356000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 9724370000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Provision for Impairment"
+   },
+   {
+    "value": 14529204000000,
+    "source": "Operating Expense",
+    "target": "Salaries and employees' benefits"
+   },
+   {
+    "value": 9394734000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   },
+   {
+    "value": 1703849000000,
+    "source": "Operating Expense",
+    "target": "Deposit guarantee premium"
+   },
+   {
+    "value": 1187693000000,
+    "source": "Operating Expense",
+    "target": "Promotion expense"
+   },
+   {
+    "value": 4040876000000,
+    "source": "Operating Expense",
+    "target": "Others (expense)"
+   }
+  ]
+ }
+}

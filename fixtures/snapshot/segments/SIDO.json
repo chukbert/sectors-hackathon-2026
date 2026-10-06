@@ -1,0 +1,60 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/SIDO/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-06T05:20:18+0700",
+ "fetched_at_epoch": 1791238818.5233576,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "SIDO.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 2488082000000,
+    "source": "Herbal Medicine and Supplement",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1303545000000,
+    "source": "Food and Beverages",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 127457000000,
+    "source": "Pharmacy",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1618095000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 2300989000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 1474100000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 826889000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 626215000000,
+    "source": "Operating Expense",
+    "target": "Selling and marketing"
+   },
+   {
+    "value": 200674000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

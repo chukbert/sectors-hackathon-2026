@@ -1,0 +1,75 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/ICBP/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 0,
+ "fetched_at": "2026-10-06T05:17:34+0700",
+ "fetched_at_epoch": 1791238654.8092382,
+ "source": "store-hit",
+ "data": {
+  "symbol": "ICBP.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 52484688000000,
+    "source": "Instant Noodles",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 9445280000000,
+    "source": "Dairy",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 4364264000000,
+    "source": "Snack Goods",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 3270990000000,
+    "source": "Food Seasonings",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1357688000000,
+    "source": "Nutrition and Special Foods",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1674278000000,
+    "source": "Beverages",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 45704099000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 26893089000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 16191160000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 10701929000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 7800327000000,
+    "source": "Operating Expense",
+    "target": "Selling and distribution"
+   },
+   {
+    "value": 2901602000000,
+    "source": "Operating Expense",
+    "target": "General and administration"
+   }
+  ]
+ }
+}

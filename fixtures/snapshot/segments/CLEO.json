@@ -1,0 +1,60 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/CLEO/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 0,
+ "fetched_at": "2026-10-06T05:17:33+0700",
+ "fetched_at_epoch": 1791238653.964058,
+ "source": "store-hit",
+ "data": {
+  "symbol": "CLEO.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 1493414134414,
+    "source": "Bottle",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1171119433727,
+    "source": "Non-bottle",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 32280179645,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1125326218848,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 1571487528938,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 659851215690,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 911636313248,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 780552357723,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 131083955525,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

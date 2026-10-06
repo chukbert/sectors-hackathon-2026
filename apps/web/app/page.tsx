@@ -1,440 +1,457 @@
 "use client";
 
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Composer, EvidenceDrawer, Sidebar, Toast } from "@/components/shell";
-import { L0Strip, MemoCard, PlanCard, SparkIcon, Typing } from "@/components/messages";
-import { PieceCard } from "@/components/pieces";
-import * as api from "@/lib/api";
-import type { ChatResponse, EvidenceItem, L0, Memo, Panel, Plan, RunResult, SessionInfo, StreamEvent } from "@/lib/types";
+import { useEffect, useRef, useState } from "react";
+import "./struk.css";
+import type { BasketCompany, Card, ScanResult, SectorsOff, Status } from "@/lib/struk";
+import { company, isOff, num, scan, search, status } from "@/lib/struk";
+import { SrcNote } from "@/components/struk/bits";
+import { CompanyCard } from "@/components/struk/company-card";
 
-type Msg =
-  | { id: string; role: "user"; text: string }
-  | { id: string; role: "assistant"; kind: "typing" }
-  | { id: string; role: "assistant"; kind: "chat"; text: string; disclaimer?: string | null }
-  | {
-      id: string;
-      role: "assistant";
-      kind: "run";
-      runId: string;
-      plan: Plan;
-      phase: "planned" | "running" | "done" | "error";
-      l0?: L0;
-      panels?: Panel[];
-      memo?: Memo;
-      followups?: string[];
-      result?: RunResult;
-      statusLine?: string;
-      error?: string;
-    };
+const EXAMPLES: { label: string; text: string }[] = [
+  { label: "Belanja Indomaret", text: "INDOMARET\nIDM GRG SPCL 85G x3\nPEPSODENT 190G\nTEH PUCUK HRM 350ML\nULTRA MILK COKLAT 250\nSARI ROTI TAWAR\nTOLAK ANGIN CAIR\nBayar: BRImo" },
+  { label: "Anak kos sebulan", text: "Pulsa Telkomsel, Gojek, GoFood, Indomie, Le Minerale, Kopiko, Rinso, Lifebuoy" },
+  { label: "Rumah tangga", text: "Bimoli 2L, Segitiga Biru 1kg, Royco, Bango kecap, So Good nugget, Semen Tiga Roda, Avian cat tembok" },
+];
 
-const uid = () => Math.random().toString(36).slice(2, 10);
+const RELATION: Record<string, { text: string; cls: string; title: string }> = {
+  direct: { text: "terverifikasi", cls: "ok", title: "Merek ada di katalog kurasi kami dan emitennya ada di data Sectors." },
+  indirect: { text: "tidak langsung", cls: "warn", title: "Emiten ini hanya memegang sebagian saham pemilik merek." },
+  dugaan: { text: "dugaan AI", cls: "warn", title: "Ditebak AI dari nama merek; kodenya ada di Sectors tapi hubungannya belum kami verifikasi." },
+};
 
-const isRunMsg = (m: Msg): m is Extract<Msg, { kind: "run" }> =>
-  m.role === "assistant" && "kind" in m && m.kind === "run";
+async function fileToDataUrl(file: File): Promise<string> {
+  // Perkecil foto di browser agar hemat bandwidth & token (sisi terpanjang 1600px, JPEG).
+  const raw = await new Promise<string>((ok, bad) => {
+    const r = new FileReader();
+    r.onload = () => ok(String(r.result));
+    r.onerror = () => bad(r.error);
+    r.readAsDataURL(file);
+  });
+  const img = await new Promise<HTMLImageElement>((ok, bad) => {
+    const i = new Image();
+    i.onload = () => ok(i);
+    i.onerror = bad;
+    i.src = raw;
+  });
+  const scale = Math.min(1, 1600 / Math.max(img.width, img.height));
+  const c = document.createElement("canvas");
+  c.width = Math.round(img.width * scale);
+  c.height = Math.round(img.height * scale);
+  c.getContext("2d")!.drawImage(img, 0, 0, c.width, c.height);
+  return c.toDataURL("image/jpeg", 0.85);
+}
 
-export default function Page() {
-  const [messages, setMessages] = useState<Msg[]>([]);
-  const [input, setInput] = useState("");
+export default function StrukPage() {
+  const [st, setSt] = useState<Status | null>(null);
+  const [mode, setMode] = useState<"foto" | "teks">("foto");
+  const [text, setText] = useState("");
+  const [image, setImage] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
-  const [sessionId, setSessionId] = useState<string | undefined>();
-  const [sessions, setSessions] = useState<SessionInfo[]>([]);
-  const [config, setConfig] = useState<Record<string, unknown> | null>(null);
-  const [storeStats, setStoreStats] = useState<Record<string, unknown> | null>(null);
-  const [evidence, setEvidence] = useState<Record<string, EvidenceItem>>({});
-  const [drawer, setDrawer] = useState<EvidenceItem | null>(null);
-  const [toast, setToast] = useState<string | null>(null);
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const [err, setErr] = useState<string | null>(null);
+  const [off, setOff] = useState<SectorsOff | null>(null);
+  const [result, setResult] = useState<ScanResult | null>(null);
+  const [card, setCard] = useState<Card | null>(null);
+  const [cardBusy, setCardBusy] = useState<string | null>(null);
+  const [q, setQ] = useState("");
+  const [hits, setHits] = useState<{ symbol: string; name: string; brand: string | null }[] | null>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
 
-  const showToast = useCallback((msg: string) => {
-    setToast(msg);
-    window.setTimeout(() => setToast(null), 3200);
+  const refreshStatus = () =>
+    status()
+      .then(setSt)
+      .catch(() => setSt(null));
+  useEffect(() => {
+    refreshStatus();
   }, []);
 
-  const refreshMeta = useCallback(async () => {
-    try {
-      const [cfg, stats, sess] = await Promise.all([api.fetchConfig(), api.fetchStoreStats(), api.fetchSessions()]);
-      setConfig(cfg);
-      setStoreStats(stats);
-      setSessions(sess.sessions);
-    } catch {
-      /* core mungkin belum hidup — UI tetap jalan */
+  function handle<T>(x: T | SectorsOff): T | null {
+    if (isOff(x)) {
+      setOff(x);
+      return null;
     }
-  }, []);
+    setOff(null);
+    return x;
+  }
 
-  useEffect(() => {
-    void refreshMeta();
-    const t = window.setInterval(() => void refreshMeta(), 20000);
-    return () => window.clearInterval(t);
-  }, [refreshMeta]);
+  async function onScan() {
+    setBusy(true);
+    setErr(null);
+    try {
+      const body = mode === "foto" ? { image: image ?? undefined } : { text };
+      const r = handle(await scan(body));
+      setResult(r);
+      setCard(null);
+      if (r) setTimeout(() => document.getElementById("hasil")?.scrollIntoView({ behavior: "smooth" }), 50);
+      // Pengguna baru langsung melihat kartu kenalan perusahaan teratas — bukti bahwa ada data di balik tiap merek.
+      const first = r && firstProduct(r);
+      if (first) void pick(first, false);
+    } catch (e) {
+      setErr((e as Error).message);
+    } finally {
+      setBusy(false);
+      refreshStatus();
+    }
+  }
 
-  useEffect(() => {
-    scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
-  }, [messages]);
+  async function pick(symbol: string, scroll = true) {
+    setCardBusy(symbol);
+    setErr(null);
+    try {
+      const c = handle(await company(symbol));
+      setCard(c);
+      if (c && scroll) setTimeout(() => document.getElementById("kartu")?.scrollIntoView({ behavior: "smooth" }), 50);
+    } catch (e) {
+      setErr((e as Error).message);
+    } finally {
+      setCardBusy(null);
+      refreshStatus();
+    }
+  }
 
-  const contextLine = useMemo(() => {
-    const run = [...messages].reverse().find((m) => m.role === "assistant" && m.kind === "run") as
-      | Extract<Msg, { kind: "run" }>
-      | undefined;
-    const syms = run?.plan.scope.symbols ?? [];
-    const regional = run?.plan.scope.regional ?? [];
-    if (!syms.length && !regional.length) return "belum ada — mulai dengan satu pertanyaan";
-    return [...syms.slice(0, 6), ...regional.map((r) => r.symbol)].join(", ") + ` · ${syms.length} emiten`;
-  }, [messages]);
+  async function onSearch(e: React.FormEvent) {
+    e.preventDefault();
+    if (!q.trim()) return;
+    try {
+      const r = handle(await search(q.trim()));
+      setHits(r ? r.results : null);
+    } catch (e2) {
+      setErr((e2 as Error).message);
+    }
+  }
 
-  const updateRun = useCallback((id: string, patch: Partial<Extract<Msg, { kind: "run" }>>) => {
-    setMessages((prev) =>
-      prev.map((m) => (m.id === id && m.role === "assistant" && m.kind === "run" ? { ...m, ...patch } : m)),
-    );
-  }, []);
-
-  const send = useCallback(
-    async (text: string) => {
-      const q = text.trim();
-      if (!q || busy) return;
-      setBusy(true);
-      setInput("");
-      const userMsg: Msg = { id: uid(), role: "user", text: q };
-      const typingId = uid();
-      setMessages((prev) => [...prev, userMsg, { id: typingId, role: "assistant", kind: "typing" }]);
-      try {
-        const res: ChatResponse = await api.sendChat(q, sessionId);
-        if (res.kind === "chat") {
-          setSessionId(res.session_id);
-          setMessages((prev) =>
-            prev.map((m) =>
-              m.id === typingId ? { id: m.id, role: "assistant", kind: "chat", text: res.reply, disclaimer: res.disclaimer } : m,
-            ),
-          );
-          void refreshMeta();
-        } else {
-          setSessionId(res.session_id);
-          setMessages((prev) =>
-            prev.map((m) =>
-              m.id === typingId
-                ? { id: m.id, role: "assistant", kind: "run", runId: res.run_id, plan: res.plan, phase: "planned" }
-                : m,
-            ),
-          );
-          void refreshMeta();
-        }
-      } catch (err) {
-        const detail = err instanceof Error ? err.message : String(err);
-        setMessages((prev) =>
-          prev.map((m) =>
-            m.id === typingId ? { id: m.id, role: "assistant", kind: "chat", text: `Gagal memproses: ${detail}` } : m,
-          ),
-        );
-        showToast("Core tidak menjawab — cek apakah `tools/serve.sh` jalan.");
-      } finally {
-        setBusy(false);
-      }
-    },
-    [busy, sessionId, refreshMeta, showToast],
-  );
-
-  const approve = useCallback(
-    async (msgId: string, runId: string, force = false) => {
-      updateRun(msgId, { phase: "running", statusLine: "Menyiapkan gelombang fetch…" });
-      try {
-        await api.streamApprove(
-          runId,
-          (event: StreamEvent) => {
-            if (event.type === "plan") {
-              const plan = (event as unknown as { plan: Plan }).plan;
-              updateRun(msgId, { plan, phase: "running" });
-            } else if (event.type === "wave") {
-              updateRun(msgId, { statusLine: `Gelombang ${String(event.wave)}: ${String(event.count)} pengambilan data` });
-            } else if (event.type === "node") {
-              setMessages((prev) =>
-                prev.map((m) => {
-                  if (m.id !== msgId || !isRunMsg(m)) return m;
-                  const nodes = m.plan.nodes.map((n) =>
-                    n.id === (event as unknown as { id: string }).id
-                      ? {
-                          ...n,
-                          status: String(event.status),
-                          source: (event.source as string) ?? null,
-                          credits_spent: Number(event.credits_spent ?? 0),
-                          fetched_at: (event.fetched_at as string) ?? null,
-                        }
-                      : n,
-                  );
-                  return { ...m, plan: { ...m.plan, nodes } };
-                }),
-              );
-            } else if (event.type === "l0") {
-              updateRun(msgId, { l0: event.l0 as L0 });
-            } else if (event.type === "panel") {
-              const panel = event.panel as Panel;
-              setMessages((prev) =>
-                prev.map((m) => {
-                  if (m.id !== msgId || !isRunMsg(m)) return m;
-                  const existing = m.panels ?? [];
-                  const idx = existing.findIndex((p) => p.id === panel.id);
-                  const next = [...existing];
-                  if (idx >= 0) next[idx] = panel;
-                  else next.push(panel);
-                  return { ...m, panels: next };
-                }),
-              );
-            } else if (event.type === "panel_update") {
-              const panel = event.panel as Panel;
-              setMessages((prev) =>
-                prev.map((m) => {
-                  if (m.id !== msgId || !isRunMsg(m)) return m;
-                  const next = (m.panels ?? []).map((p) => (p.id === panel.id ? panel : p));
-                  return { ...m, panels: next };
-                }),
-              );
-            } else if (event.type === "memo") {
-              updateRun(msgId, { memo: event.memo as Memo, followups: (event.followups as string[]) ?? [] });
-            } else if (event.type === "done") {
-              const result = (event as unknown as { result: RunResult }).result;
-              setEvidence(result.evidence ?? {});
-              updateRun(msgId, { phase: "done", result, l0: result.l0, panels: result.panels, memo: result.memo, followups: result.followups });
-              void refreshMeta();
-            } else if (event.type === "error") {
-              updateRun(msgId, { phase: "error", error: String(event.error ?? "error tidak diketahui") });
-            }
-          },
-          { force },
-        );
-      } catch (err) {
-        const detail = err instanceof Error ? err.message : String(err);
-        updateRun(msgId, { phase: "error", error: detail });
-        showToast(detail.slice(0, 140));
-      }
-    },
-    [refreshMeta, showToast, updateRun],
-  );
-
-  const onEvidence = useCallback(
-    (id: string) => {
-      const item = evidence[id];
-      if (item) setDrawer(item);
-      else showToast(`Bukti ${id} belum termuat (run belum selesai?).`);
-    },
-    [evidence, showToast],
-  );
-
-  const onExport = useCallback(
-    async (runId: string, fmt: "xlsx" | "docx" | "pdf") => {
-      try {
-        await api.exportRun(runId, fmt);
-        showToast(`Export ${fmt.toUpperCase()} siap.`);
-      } catch (err) {
-        showToast(err instanceof Error ? err.message : `export ${fmt} gagal`);
-      }
-    },
-    [showToast],
-  );
-
-  const pickSession = useCallback(
-    async (id: string) => {
-      try {
-        const data = await api.fetchSessionTurns(id);
-        setSessionId(id);
-        const rebuilt: Msg[] = data.turns.map((t) => ({
-          id: `turn-${t.id}`,
-          role: t.role === "user" ? "user" : "assistant",
-          kind: "chat",
-          text: t.text,
-        })) as Msg[];
-        setMessages(rebuilt);
-        showToast("Sesi dimuat — memori sesi dipakai untuk lanjutan.");
-      } catch {
-        showToast("Gagal memuat sesi.");
-      }
-    },
-    [showToast],
-  );
-
-  const newChat = useCallback(() => {
-    setMessages([]);
-    setSessionId(undefined);
-    setEvidence({});
-    showToast("Sesi baru — memori dikosongkan.");
-  }, [showToast]);
-
-  const suggestions = [
-    {
-      title: "Bandingkan 3 bank",
-      sub: "Valuasi, flow broker & asing, red-flag",
-      q: "Bandingkan BBCA, BMRI, BBRI kuartal terakhir + siapa yang akumulasi + risiko kreditnya?",
-    },
-    { title: "Screener bank dividen", sub: "Filter natural → tabel comps", q: "Screening bank dengan dividen di atas 4% lalu bandingkan valuasinya" },
-    { title: "Scan red-flag 10 debitur", sub: "Skor bahaya + bukti per aturan", q: "Scan red-flag 10 debitur: mana yang memburuk kuartal ini?" },
-  ];
+  const canScan = mode === "foto" ? !!image : text.trim().length > 1;
+  const sectorsDown = st?.sectors_off || !!off;
 
   return (
-    <div style={{ display: "flex", height: "100vh", width: "100%" }}>
-      <Sidebar sessions={sessions} activeSession={sessionId} onNewChat={newChat} onPickSession={pickSession} config={config} storeStats={storeStats} />
-      <div className="main">
-        <div className="glow" />
-        <div className="topbar">
-          <button className="iconbtn" title="Menu" onClick={() => document.body.classList.toggle("navcol")}>
-            ☰
-          </button>
-          <button className="modelpill" onClick={() => showToast("Model terkunci: meta/muse-spark-1.3 via OpenRouter")}>
-            <SparkIcon size={22} />
-            <span>
-              IDXMACA <span style={{ color: "var(--muted)", fontSize: 12 }}>▾</span>
-              <br />
-              <small>
-                {String(config?.model ?? "meta/muse-spark-1.3")} · {String(config?.llm_mode ?? "template")} ·{" "}
-                {String(storeStats?.mode ?? "fixture")}
-              </small>
-            </span>
-          </button>
-          <div className="topright">
-            <span className="chip">
-              Store {typeof storeStats?.hit_rate === "number" ? `${Math.round((storeStats.hit_rate as number) * 100)}% hit` : "—"}
-              {typeof storeStats?.credits_spent === "number" && (storeStats.credits_spent as number) > 0
-                ? ` · ${storeStats.credits_spent} kredit live`
-                : " · 0 kredit"}
-            </span>
-            {typeof storeStats?.credit_remaining === "number" ? (
-              <span className="chip" title="Sisa kredit menurut catatan IDXMACA (baseline disinkronkan manual ke portal hackathon; portal tetap sumber resmi)">
-                Sisa {storeStats.credit_remaining as number} kredit
+    <div className="sj" ref={rootRef}>
+      <div className="sj-hero-band">
+        <div className="sj-wrap">
+          <div className="sj-top">
+            <div className="sj-wordmark">
+              Struk<span className="arrow">→</span>Saham
+            </div>
+            <div className="sj-chips">
+              <span className={`sj-chip${sectorsDown ? " off" : ""}`}>
+                <span className="dot" />
+                {sectorsDown ? (
+                  "data Sectors mati"
+                ) : (
+                  <span>
+                    data Sectors · <b>{num(962)}</b> emiten
+                  </span>
+                )}
               </span>
-            ) : null}
-            <div className="avatar">A</div>
+              {st?.store && (
+                <span className="sj-chip" title="Kredit API Sectors yang dipakai aplikasi ini. Data disimpan agar tidak dibayar dua kali.">
+                  kredit <b>{st.store.credits_spent}</b> · hemat <b>{st.store.credits_saved}</b>
+                </span>
+              )}
+            </div>
           </div>
-        </div>
 
-        <div className="scroll" ref={scrollRef}>
-          <div className="thread">
-            {!messages.length ? (
-              <div className="welcome">
-                <h1 className="greet">Halo, Analis</h1>
-                <p className="greet-sub">Mau analisis emiten apa hari ini?</p>
-                <div className="sugg">
-                  {suggestions.map((s) => (
-                    <button key={s.title} onClick={() => void send(s.q)} disabled={busy}>
-                      <b>{s.title}</b>
-                      <span>{s.sub}</span>
+          <div className="sj-hero">
+            <div>
+              <h1>
+                Kamu sudah jadi pelanggan mereka. <span className="hl">Sekarang kenali perusahaannya.</span>
+              </h1>
+              <p className="sub">
+                Foto struk belanjamu. Kami cari perusahaan terbuka di balik tiap merek, lalu tunjukkan dari mana uangnya datang, siapa pemiliknya, dan
+                pertanyaan kritis yang layak kamu ajukan.
+              </p>
+              <ol className="sj-steps">
+                <li>
+                  <span>
+                    <b>AI hanya membaca nama merek</b> di strukmu — tidak pernah menulis angka.
+                  </span>
+                </li>
+                <li>
+                  <span>
+                    <b>Merek dicocokkan</b> ke {num(962)} perusahaan yang tercatat di Bursa Efek Indonesia.
+                  </span>
+                </li>
+                <li>
+                  <span>
+                    <b>Semua angka dari API Sectors</b> — tiap angka bisa kamu telusuri sumbernya.
+                  </span>
+                </li>
+              </ol>
+            </div>
+
+            <div className="sj-receipt">
+              <div className="sj-receipt-head">
+                <b>STRUK BELANJA</b>
+                foto atau ketik — data pribadi diabaikan
+              </div>
+              <div className="sj-tabs" role="tablist">
+                <button className="sj-tab" role="tab" aria-selected={mode === "foto"} onClick={() => setMode("foto")}>
+                  Foto struk
+                </button>
+                <button className="sj-tab" role="tab" aria-selected={mode === "teks"} onClick={() => setMode("teks")}>
+                  Ketik belanjaan
+                </button>
+              </div>
+              {mode === "foto" ? (
+                <>
+                  <div
+                    className="sj-drop"
+                    onClick={() => fileRef.current?.click()}
+                    onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && fileRef.current?.click()}
+                    role="button"
+                    tabIndex={0}
+                  >
+                    {image ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={image} alt="Pratinjau struk" />
+                    ) : (
+                      <div>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                          <path d="M3 8a2 2 0 0 1 2-2h2l1.5-2h7L17 6h2a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                          <circle cx="12" cy="13" r="3.5" />
+                        </svg>
+                        <strong>Ambil foto atau pilih gambar</strong>
+                        <span style={{ fontSize: 13 }}>Struk Indomaret, Alfamart, supermarket, apa saja</span>
+                      </div>
+                    )}
+                  </div>
+                  <input
+                    ref={fileRef}
+                    type="file"
+                    accept="image/*"
+                    capture="environment"
+                    hidden
+                    onChange={async (e) => {
+                      const f = e.target.files?.[0];
+                      if (f) setImage(await fileToDataUrl(f));
+                    }}
+                  />
+                </>
+              ) : (
+                <>
+                  <textarea
+                    className="sj-textarea"
+                    value={text}
+                    onChange={(e) => setText(e.target.value)}
+                    placeholder={"Indomie goreng\nPepsodent 190g\npulsa Telkomsel\nGoFood"}
+                    aria-label="Daftar belanjaan"
+                  />
+                  <div className="sj-examples">
+                    <span>Contoh:</span>
+                    {EXAMPLES.map((ex) => (
+                      <button key={ex.label} className="sj-ex" onClick={() => setText(ex.text)}>
+                        {ex.label}
+                      </button>
+                    ))}
+                  </div>
+                </>
+              )}
+              <button className={`sj-go${busy ? " busy" : ""}`} onClick={onScan} disabled={!canScan || busy}>
+                {busy ? (
+                  <>
+                    <span>Membaca struk…</span>
+                    <span className="sj-spin" />
+                  </>
+                ) : (
+                  <>
+                    <span>Siapa di balik belanjaanku?</span>
+                    <span className="arr">→</span>
+                  </>
+                )}
+              </button>
+              {err && <div className="sj-err">Ada masalah: {err}</div>}
+
+              <form className="sj-search" onSubmit={onSearch}>
+                <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="atau cari merek / kode: Kopiko, BBCA" aria-label="Cari merek atau kode saham" />
+                <button type="submit">Cari</button>
+              </form>
+              {hits && (
+                <div className="sj-results">
+                  {hits.length === 0 && <div className="none">Tidak ketemu di data Sectors.</div>}
+                  {hits.map((h) => (
+                    <button key={h.symbol} onClick={() => pick(h.symbol)}>
+                      <b style={{ fontFamily: "var(--mono)" }}>{h.symbol}</b> {h.name}
+                      {h.brand ? <span style={{ color: "var(--muted)" }}> · {h.brand}</span> : null}
                     </button>
                   ))}
                 </div>
-              </div>
-            ) : null}
-
-            {messages.map((m) => {
-              if (m.role === "user") {
-                return (
-                  <div className="msg user" key={m.id}>
-                    <div className="bubble">{m.text}</div>
-                  </div>
-                );
-              }
-              if (m.kind === "typing") {
-                return (
-                  <div className="msg agent" key={m.id}>
-                    <SparkIcon />
-                    <div className="bubble">
-                      <Typing />
-                    </div>
-                  </div>
-                );
-              }
-              if (m.kind === "chat") {
-                return (
-                  <div className="msg agent" key={m.id}>
-                    <SparkIcon />
-                    <div className="bubble">
-                      <p style={{ margin: "2px 0 8px", whiteSpace: "pre-wrap" }}>{m.text}</p>
-                      {m.disclaimer ? <div className="disclaimer">{m.disclaimer}</div> : null}
-                      <div className="mactions">
-                        <button title="Salin" onClick={() => navigator.clipboard.writeText(m.text)}>
-                          ⧉
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                );
-              }
-              return (
-                <div className="msg agent" key={m.id}>
-                  <SparkIcon />
-                  <div className="bubble">
-                    <PlanCard
-                      plan={m.plan}
-                      phase={m.phase}
-                      onApprove={(force) => void approve(m.id, m.runId, force)}
-                      onOpenPlan={() =>
-                        setDrawer({
-                          id: "plan",
-                          label: "Rencana agen (DAG node → endpoint)",
-                          endpoint: "internal://planner",
-                          params: {},
-                          fetched_at: new Date().toISOString(),
-                          source: m.plan.router_source ?? "planner",
-                          value: m.plan,
-                        })
-                      }
-                    />
-                    {m.l0 ? <L0Strip l0={m.l0} /> : null}
-                    {m.statusLine && m.phase === "running" ? <div className="src">{m.statusLine}</div> : null}
-                    {m.panels?.map((panel) => (
-                      <div key={panel.id}>
-                        <h4 style={{ margin: "18px 0 2px", fontSize: 15 }}>
-                          {panel.id} · {panel.title}{" "}
-                          <span className={`chip ${panel.status === "ready" ? "" : "warn"}`}>{panel.items.length} intent</span>
-                        </h4>
-                        {panel.why ? <p className="sub">{panel.why}</p> : null}
-                        {panel.items.map((piece) => (
-                          <PieceCard key={piece.io} piece={piece} onEvidence={onEvidence} />
-                        ))}
-                      </div>
-                    ))}
-                    {m.error ? <div className="empty">Run gagal: {m.error}</div> : null}
-                    {m.phase === "done" && m.memo && m.result ? (
-                      <MemoCard
-                        memo={m.memo}
-                        followups={m.followups ?? []}
-                        runId={m.runId}
-                        result={m.result}
-                        onExport={(fmt) => void onExport(m.runId, fmt)}
-                        onFollowup={(f) => void send(f)}
-                      />
-                    ) : null}
-                    <div className="mactions">
-                      <button title="Jawaban bagus" onClick={() => showToast("Feedback dicatat — terima kasih.")}>
-                        👍
-                      </button>
-                      <button title="Perlu perbaikan" onClick={() => showToast("Feedback dicatat — akan dievaluasi.")}>
-                        👎
-                      </button>
-                      <button title="Salin ringkasan" onClick={() => navigator.clipboard.writeText(m.l0 ? `${m.l0.title}\n${m.l0.bullets.join("\n")}` : m.plan.query)}>
-                        ⧉
-                      </button>
-                      <button title="Ulangi run (approve lagi, tetap cache)" onClick={() => void approve(m.id, m.runId, false)}>
-                        ↺
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+              )}
+            </div>
           </div>
         </div>
-
-        <Composer
-          value={input}
-          onChange={setInput}
-          onSend={() => void send(input)}
-          disabled={busy}
-          contextLine={contextLine}
-          hint={
-            <>
-              Angka ilustrasi demo (mode {String(storeStats?.mode ?? "fixture")}) · semua angka memo bisa diklik ke bukti · Store hit-rate{" "}
-              {typeof storeStats?.hit_rate === "number" ? `${Math.round((storeStats.hit_rate as number) * 100)}%` : "—"}
-            </>
-          }
-        />
       </div>
-      <EvidenceDrawer item={drawer} onClose={() => setDrawer(null)} />
-      <Toast message={toast} />
+
+      <div className="sj-wrap">
+        {off && (
+          <div className="sj-off">
+            <h3>Data Sectors tidak tersedia</h3>
+            <p style={{ margin: 0 }}>{off.message}</p>
+          </div>
+        )}
+
+        {result && <Basket r={result} onPick={pick} active={cardBusy ?? card?.symbol ?? null} loading={!!cardBusy} />}
+
+        {cardBusy && !card && (
+          <div className="sj-loading">
+            <span className="sj-spin" /> Menyusun kartu kenalan {cardBusy}…
+          </div>
+        )}
+        {card && <CompanyCard card={card} onPick={pick} />}
+      </div>
+
+      <footer className="sj-foot">
+        <div className="sj-wrap">
+          <div>
+            <b>{st?.disclaimer ?? "Alat informasi dan analisis, bukan rekomendasi investasi."}</b>
+          </div>
+          <div>Data keuangan, pemegang saham, dan segmen pendapatan: Sectors (sectors.app). Pemetaan merek → emiten: katalog kurasi + bacaan AI (ditandai).</div>
+        </div>
+      </footer>
     </div>
+  );
+}
+
+// Kartu pertama yang dibuka otomatis: merek BARANG di baris struk paling atas — bukan alat bayar (bank/e-wallet)
+// dan bukan toko tempat belanja, karena itu yang paling dikenali pemula sebagai "yang aku beli".
+const PAYMENT_RE = /(bayar|tunai|debit|kredit|qris|brimo|gopay|ovo|dana|shopeepay|flazz|e-?money|livin)/i;
+function firstProduct(r: ScanResult): string | null {
+  const store = (r.store_name ?? "").toLowerCase();
+  const isProduct = (c: BasketCompany, raw: string) =>
+    c.verified &&
+    c.relation === "direct" &&
+    !/bank|financ|insur/i.test(c.sub_sector ?? "") &&
+    !PAYMENT_RE.test(raw) &&
+    !(store && raw.toLowerCase().includes(store));
+  for (const it of r.items) {
+    const c = r.companies.find((x) => x.items.includes(it.raw));
+    if (c && isProduct(c, it.raw)) return c.symbol;
+  }
+  const any = r.companies.find((c) => c.items.some((raw) => isProduct(c, raw)));
+  return (any ?? r.companies.find((c) => c.verified) ?? r.companies[0])?.symbol ?? null;
+}
+
+// Baris struk dalam urutan aslinya (bukan urutan nilai pasar), masing-masing dengan emitennya bila ada.
+function receiptLines(r: ScanResult): { raw: string; c: BasketCompany | null }[] {
+  const seen = new Set<string>();
+  const lines = r.items.map((it) => {
+    const raw = it.raw || it.brand;
+    const c = r.companies.find((x) => x.items.includes(raw)) ?? null;
+    if (c) seen.add(`${c.symbol}|${raw}`);
+    return { raw, c };
+  });
+  // Jaring pengaman: item emiten yang tak tercantum di daftar baca (mis. fallback tanpa AI).
+  for (const c of r.companies) for (const raw of c.items) if (!seen.has(`${c.symbol}|${raw}`) && !lines.some((l) => l.raw === raw)) lines.push({ raw, c });
+  return lines;
+}
+
+// Judul hasil: sebut temuan yang paling menarik, bukan sekadar mengulang dua hitungan.
+function Headline({ r }: { r: ScanResult }) {
+  const n = r.companies.length;
+  const top = r.groups[0];
+  if (n === 1) {
+    return (
+      <>
+        Uangmu mengalir ke <span className="n">1 perusahaan terbuka</span>: {r.companies[0].name}.
+      </>
+    );
+  }
+  if (top && top.symbols.length > 1) {
+    return (
+      <>
+        Uangmu mengalir ke <span className="n">{n} perusahaan terbuka</span> — {top.symbols.length === n ? "semuanya" : `${top.symbols.length} di antaranya`} di
+        bawah <span className="n">{top.label}</span>.
+      </>
+    );
+  }
+  return (
+    <>
+      Uangmu mengalir ke <span className="n">{n} perusahaan terbuka</span>, masing-masing dengan pemilik yang berbeda.
+    </>
+  );
+}
+
+function Basket({ r, onPick, active, loading }: { r: ScanResult; onPick: (s: string) => void; active: string | null; loading: boolean }) {
+  const bySym = Object.fromEntries(r.companies.map((c) => [c.symbol, c]));
+  const nGroups = r.groups.length;
+  const kind = (k: string) => (k === "affiliates" ? "kelompok usaha" : k === "controller" ? "pemegang pengendali" : "kepemilikan tersebar");
+  return (
+    <section className="sj-section" id="hasil">
+      <div className="sj-eyebrow">hasil {r.store_name ? `struk ${r.store_name}` : "belanjaanmu"}</div>
+      {r.companies.length ? (
+        <h2 className="sj-big">
+          <Headline r={r} />
+        </h2>
+      ) : (
+        <h2 className="sj-big">Belum ada merek yang cocok dengan perusahaan terbuka di bursa.</h2>
+      )}
+      {active && (
+        <button className="sj-jump" onClick={() => document.getElementById("kartu")?.scrollIntoView({ behavior: "smooth" })} disabled={loading}>
+          {loading ? <span className="sj-spin" /> : <span className="arr">↓</span>}
+          <span>
+            {loading ? "Menyusun" : "Lihat"} kartu kenalan <b>{active}</b>
+            {bySym[active] ? ` — ${bySym[active].name}` : ""}
+          </span>
+          <small>atau ketuk kode saham lain</small>
+        </button>
+      )}
+
+      <div className="sj-result">
+        <div>
+          <div className="sj-col-h">Baris struk → kode saham</div>
+          <div className="sj-lines">
+            {receiptLines(r).map(({ raw, c }, i) =>
+              c ? (
+                <div className="sj-line" key={i}>
+                  <span className="raw">{raw}</span>
+                  <span className="lead" />
+                  <span className="to">
+                    <span className={`sj-tag ${RELATION[c.relation]?.cls ?? ""}`} title={c.note ?? RELATION[c.relation]?.title}>
+                      {RELATION[c.relation]?.text ?? c.relation}
+                    </span>
+                    <button className={`sj-sym${active === c.symbol ? " on" : ""}`} onClick={() => onPick(c.symbol)}>
+                      {c.symbol}
+                    </button>
+                  </span>
+                </div>
+              ) : (
+                <div className="sj-line miss" key={i}>
+                  <span className="raw">{raw}</span>
+                  <span className="lead" />
+                  <span className="to">
+                    <span className="sj-tag" title="Merek ini bukan milik perusahaan terbuka yang kami kenali, atau belum ada di katalog.">
+                      bukan emiten
+                    </span>
+                  </span>
+                </div>
+              ),
+            )}
+          </div>
+          <SrcNote src={r.src} label="emiten dicek ke data Sectors" />
+        </div>
+
+        {nGroups > 0 && (
+          <div>
+            <div className="sj-col-h">Peta pemilik — pilih perusahaan untuk kartu kenalannya</div>
+            <div className="sj-groups">
+              {r.groups.map((g) => (
+                <div className="sj-group" key={g.label}>
+                  <div className="sj-group-head">
+                    <h4>{g.label}</h4>
+                    <span className="kind">{kind(g.kind)}</span>
+                  </div>
+                  <div className="syms">
+                    {g.symbols.map((s) => (
+                      <button key={s} className="sj-company-btn" aria-pressed={active === s} onClick={() => onPick(s)}>
+                        <b>{s}</b>
+                        <small>{bySym[s]?.name ?? ""}</small>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </section>
   );
 }

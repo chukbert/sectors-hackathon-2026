@@ -1,0 +1,108 @@
+{
+ "endpoint": "/sectors/v2/companies/",
+ "params": {
+  "where": "payout_ratio > 1",
+  "order_by": "-market_cap",
+  "limit": 10,
+  "include_query_values": "true"
+ },
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-06T05:18:24+0700",
+ "fetched_at_epoch": 1791238704.197212,
+ "source": "sectors-live",
+ "data": {
+  "results": [
+   {
+    "symbol": "TLKM.JK",
+    "company_name": "PT Telkom Indonesia (Persero) Tbk",
+    "query_values": {
+     "payout_ratio": 1.265697869291,
+     "market_cap": 226852476014000
+    }
+   },
+   {
+    "symbol": "MEGA.JK",
+    "company_name": "Bank Mega Tbk",
+    "query_values": {
+     "payout_ratio": 1.22121275619982,
+     "market_cap": 45215469969590
+    }
+   },
+   {
+    "symbol": "MLPT.JK",
+    "company_name": "PT Multipolar Technology Tbk",
+    "query_values": {
+     "payout_ratio": 16.9095692403093,
+     "market_cap": 44062500000000
+    }
+   },
+   {
+    "symbol": "CMRY.JK",
+    "company_name": "PT Cisarua Mountain Dairy Tbk",
+    "query_values": {
+     "payout_ratio": 1.12426169115928,
+     "market_cap": 35150645690000
+    }
+   },
+   {
+    "symbol": "RAJA.JK",
+    "company_name": "Rukun Raharja Tbk",
+    "query_values": {
+     "payout_ratio": 2.06862338936549,
+     "market_cap": 14266403437500
+    }
+   },
+   {
+    "symbol": "PSAB.JK",
+    "company_name": "J Resources Asia Pasifik Tbk",
+    "query_values": {
+     "payout_ratio": 1.14497440813795,
+     "market_cap": 13891500000000
+    }
+   },
+   {
+    "symbol": "CITA.JK",
+    "company_name": "Cita Mineral Investindo Tbk",
+    "query_values": {
+     "payout_ratio": 1.0130383697069,
+     "market_cap": 13386021025000
+    }
+   },
+   {
+    "symbol": "BSSR.JK",
+    "company_name": "Baramulti Suksessarana Tbk",
+    "query_values": {
+     "payout_ratio": 1.93700500876113,
+     "market_cap": 13213325000000
+    }
+   },
+   {
+    "symbol": "SIDO.JK",
+    "company_name": "PT Industri Jamu Dan Farmasi Sido Muncul Tbk",
+    "query_values": {
+     "payout_ratio": 1.14826749922272,
+     "market_cap": 10560000000000
+    }
+   },
+   {
+    "symbol": "DUTI.JK",
+    "company_name": "Duta Pertiwi Tbk",
+    "query_values": {
+     "payout_ratio": 1.05972812244375,
+     "market_cap": 8436000000000
+    }
+   }
+  ],
+  "pagination": {
+   "total_count": 32,
+   "showing": 10,
+   "limit": 10,
+   "offset": 0,
+   "has_next": true,
+   "has_previous": false,
+   "next_offset": 10,
+   "previous_offset": null
+  }
+ }
+}

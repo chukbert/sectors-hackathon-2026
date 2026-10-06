@@ -1,0 +1,60 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/MIDI/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-06T05:19:59+0700",
+ "fetched_at_epoch": 1791238799.7710445,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "MIDI.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 11668917000000,
+    "source": "Food",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 2964843000000,
+    "source": "Fresh food",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 5254331000000,
+    "source": "Non-food",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 14655769000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 5232322000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 515218000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 4717104000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 4229276000000,
+    "source": "Operating Expense",
+    "target": "Selling and distribution"
+   },
+   {
+    "value": 487828000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

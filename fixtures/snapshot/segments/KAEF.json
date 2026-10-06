@@ -1,0 +1,75 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/KAEF/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-06T05:19:47+0700",
+ "fetched_at_epoch": 1791238787.1790965,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "KAEF.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 2603057477000,
+    "source": "Generic medicines",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 3795191959000,
+    "source": "Ethical, license and narcotic medicines",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1740697066000,
+    "source": "Over the counter medicines (OTC) and cosmetics",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 243651355000,
+    "source": "Raw materials (oil & fats, iodine and quinine)",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 77674735000,
+    "source": "Health equipment and others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1478685772000,
+    "source": "Clinic services, clinic, and Health equipment, laboratory and others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 6992484965000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 2946473399000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 844526764000,
+    "source": "Operating Income",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 2946473399000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 2265729426000,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 1525270737000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

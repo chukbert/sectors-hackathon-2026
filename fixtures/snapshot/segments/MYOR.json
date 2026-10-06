@@ -1,0 +1,60 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/MYOR/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-06T05:20:09+0700",
+ "fetched_at_epoch": 1791238809.1817243,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "MYOR.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 21864728479460,
+    "source": "Packaged food processing",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 18626903565647,
+    "source": "Packaged beverages processing",
+    "target": "Total Revenue"
+   },
+   {
+    "value": -4418682759177,
+    "source": "Eliminations",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 27770649971673,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 8302299314257,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 3915364772118,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 4386934542139,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 3529023051904,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 857911490235,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

@@ -1,0 +1,128 @@
+{
+ "endpoint": "/sectors/v2/companies/",
+ "params": {
+  "where": "earnings[2025] < earnings[2024] and earnings[2024] < earnings[2023]",
+  "order_by": "-market_cap",
+  "limit": 10,
+  "include_query_values": "true"
+ },
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-06T05:18:23+0700",
+ "fetched_at_epoch": 1791238703.6776216,
+ "source": "sectors-live",
+ "data": {
+  "results": [
+   {
+    "symbol": "BYAN.JK",
+    "company_name": "Bayan Resources Tbk",
+    "query_values": {
+     "earnings[2025]": 12852187283440.0,
+     "earnings[2024]": 14907140834433.0,
+     "earnings[2023]": 19122484264754.0,
+     "market_cap": 408333353750000
+    }
+   },
+   {
+    "symbol": "TLKM.JK",
+    "company_name": "PT Telkom Indonesia (Persero) Tbk",
+    "query_values": {
+     "earnings[2025]": 17814000000000.0,
+     "earnings[2024]": 23649000000000.0,
+     "earnings[2023]": 24560000000000.0,
+     "market_cap": 226852476014000
+    }
+   },
+   {
+    "symbol": "DSSA.JK",
+    "company_name": "Dian Swastatika Sentosa Tbk",
+    "query_values": {
+     "earnings[2025]": 3858409145254.0,
+     "earnings[2024]": 4993883000501.0,
+     "earnings[2023]": 6579780529849.0,
+     "market_cap": 220570601600000
+    }
+   },
+   {
+    "symbol": "EMAS.JK",
+    "company_name": "PT Merdeka Gold Resources Tbk",
+    "query_values": {
+     "earnings[2025]": -460123946623.0,
+     "earnings[2024]": -205626053389.0,
+     "earnings[2023]": -105894228788.0,
+     "market_cap": 114904655268000
+    }
+   },
+   {
+    "symbol": "UNTR.JK",
+    "company_name": "United Tractors Tbk",
+    "query_values": {
+     "earnings[2025]": 14810434000000.0,
+     "earnings[2024]": 19531205000000.0,
+     "earnings[2023]": 20611775000000.0,
+     "market_cap": 95491459481600
+    }
+   },
+   {
+    "symbol": "ADRO.JK",
+    "company_name": "Alamtri Resources Indonesia Tbk",
+    "query_values": {
+     "earnings[2025]": 7492812723240.0,
+     "earnings[2024]": 22296870041000.0,
+     "earnings[2023]": 25342145843000.0,
+     "market_cap": 74593279978000
+    }
+   },
+   {
+    "symbol": "HMSP.JK",
+    "company_name": "HM Sampoerna Tbk",
+    "query_values": {
+     "earnings[2025]": 6609456000000.0,
+     "earnings[2024]": 6645774000000.0,
+     "earnings[2023]": 8096811000000.0,
+     "market_cap": 72117207678000
+    }
+   },
+   {
+    "symbol": "MDKA.JK",
+    "company_name": "PT Merdeka Copper Gold Tbk",
+    "query_values": {
+     "earnings[2025]": -1038691184680.0,
+     "earnings[2024]": -900948346642.0,
+     "earnings[2023]": -318933165009.0,
+     "market_cap": 71461112611320
+    }
+   },
+   {
+    "symbol": "GEMS.JK",
+    "company_name": "Golden Energy Mines Tbk",
+    "query_values": {
+     "earnings[2025]": 4321931513762.0,
+     "earnings[2024]": 7655286999598.0,
+     "earnings[2023]": 8003279071496.0,
+     "market_cap": 50000000500000
+    }
+   },
+   {
+    "symbol": "PTBA.JK",
+    "company_name": "Bukit Asam Tbk",
+    "query_values": {
+     "earnings[2025]": 2929957000000.0,
+     "earnings[2024]": 5103720000000.0,
+     "earnings[2023]": 6105856000000.0,
+     "market_cap": 37672555747500
+    }
+   }
+  ],
+  "pagination": {
+   "total_count": 173,
+   "showing": 10,
+   "limit": 10,
+   "offset": 0,
+   "has_next": true,
+   "has_previous": false,
+   "next_offset": 10,
+   "previous_offset": null
+  }
+ }
+}

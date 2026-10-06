@@ -1,0 +1,307 @@
+{
+  "request": {
+    "path": "/v2/companies/",
+    "params": {
+      "where": "symbol in ['ICBP.JK', 'ICBP', 'INDF.JK', 'INDF', 'UNVR.JK', 'UNVR', 'AMRT.JK', 'AMRT', 'MYOR.JK', 'MYOR', 'TLKM.JK', 'TLKM', 'BBRI.JK', 'BBRI'] and (free_float > 0 or major_shareholders_share_percentage > 0 or affiliates in ['INDF.JK', 'INDF'])",
+      "order_by": "-market_cap",
+      "limit": 50,
+      "include_query_values": "true"
+    }
+  },
+  "status": 200,
+  "response": {
+    "results": [
+      {
+        "symbol": "BBRI.JK",
+        "company_name": "PT Bank Rakyat Indonesia (Persero) Tbk",
+        "query_values": {
+          "symbol": "BBRI.JK",
+          "free_float": 0.4676,
+          "major_shareholders_share_percentage": [
+            {
+              "name": "PT Danantara Asset Management",
+              "share_value": 248991185373840,
+              "share_amount": 79804867107,
+              "share_percentage": "0.52656"
+            },
+            {
+              "name": "Public",
+              "share_value": 221072782316880,
+              "share_amount": 70856660999,
+              "share_percentage": "0.4676"
+            },
+            {
+              "name": "Treasury Stock",
+              "share_value": 2769974376000,
+              "share_amount": 887812300,
+              "share_percentage": "0.00577"
+            },
+            {
+              "name": "Viviana Dyah Ayu Retno Kumalasari",
+              "share_value": 11916840000,
+              "share_amount": 3819500,
+              "share_percentage": "0.00003"
+            },
+            {
+              "name": "Kartika Wirjoatmodjo",
+              "share_value": 5235360000,
+              "share_amount": 1678000,
+              "share_percentage": "0.00001"
+            }
+          ],
+          "affiliates": null,
+          "market_cap": 468135444151440
+        }
+      },
+      {
+        "symbol": "TLKM.JK",
+        "company_name": "PT Telkom Indonesia (Persero) Tbk",
+        "query_values": {
+          "symbol": "TLKM.JK",
+          "free_float": 0.41635,
+          "major_shareholders_share_percentage": [
+            {
+              "name": "PT Danantara Asset Management",
+              "share_value": 116987695754960,
+              "share_amount": 51086330024,
+              "share_percentage": "0.5157"
+            },
+            {
+              "name": "Public",
+              "share_value": 94448171918840,
+              "share_amount": 41243743196,
+              "share_percentage": "0.41635"
+            },
+            {
+              "name": "The Bank Of New York Mellon Dr",
+              "share_value": 14305753614200,
+              "share_amount": 6247053980,
+              "share_percentage": "0.06306"
+            },
+            {
+              "name": "Treasury Stock",
+              "share_value": 1102121582000,
+              "share_amount": 481275800,
+              "share_percentage": "0.00486"
+            },
+            {
+              "name": "Rizal Mallarangeng",
+              "share_value": 7420974000,
+              "share_amount": 3240600,
+              "share_percentage": "0.00003"
+            }
+          ],
+          "affiliates": null,
+          "market_cap": 226852476014000
+        }
+      },
+      {
+        "symbol": "ICBP.JK",
+        "company_name": "Indofood CBP Sukses Makmur Tbk",
+        "query_values": {
+          "symbol": "ICBP.JK",
+          "free_float": 0.1947,
+          "major_shareholders_share_percentage": [
+            {
+              "name": "PT Indofood Sukses Makmur Tbk",
+              "symbol": "INDF.JK",
+              "share_value": 64098202350000,
+              "share_amount": 9391678000,
+              "share_percentage": "0.8053"
+            },
+            {
+              "name": "Public",
+              "share_value": 15494307410400,
+              "share_amount": 2270228192,
+              "share_percentage": "0.1947"
+            }
+          ],
+          "affiliates": [
+            "Salim"
+          ],
+          "market_cap": 79592522100000
+        }
+      },
+      {
+        "symbol": "INDF.JK",
+        "company_name": "Indofood Sukses Makmur Tbk",
+        "query_values": {
+          "symbol": "INDF.JK",
+          "free_float": 0.4991,
+          "major_shareholders_share_percentage": [
+            {
+              "name": "First Pacific Investment Management Ltd",
+              "share_value": 30113308632500,
+              "share_amount": 4396103450,
+              "share_percentage": "0.5007"
+            },
+            {
+              "name": "Public",
+              "share_value": 30023159755500,
+              "share_amount": 4382943030,
+              "share_percentage": "0.4991"
+            },
+            {
+              "name": "Anthoni Salim",
+              "share_value": 9108924500,
+              "share_amount": 1329770,
+              "share_percentage": "0.0002"
+            }
+          ],
+          "affiliates": [
+            "Salim"
+          ],
+          "market_cap": 60145921525000
+        }
+      },
+      {
+        "symbol": "UNVR.JK",
+        "company_name": "Unilever Indonesia Tbk",
+        "query_values": {
+          "symbol": "UNVR.JK",
+          "free_float": 0.1457,
+          "major_shareholders_share_percentage": [
+            {
+              "name": "Unilever Indonesia Holding B.V.",
+              "share_value": 51068410312500,
+              "share_amount": 32424387500,
+              "share_percentage": "0.8499"
+            },
+            {
+              "name": "Public",
+              "share_value": 8752032135000,
+              "share_amount": 5556845800,
+              "share_percentage": "0.1457"
+            },
+            {
+              "name": "Treasury Stock",
+              "share_value": 265807552500,
+              "share_amount": 168766700,
+              "share_percentage": "0.0044"
+            }
+          ],
+          "affiliates": null,
+          "market_cap": 60086250000000
+        }
+      },
+      {
+        "symbol": "AMRT.JK",
+        "company_name": "PT Sumber Alfaria Trijaya Tbk.",
+        "query_values": {
+          "symbol": "AMRT.JK",
+          "free_float": 0.4469,
+          "major_shareholders_share_percentage": [
+            {
+              "name": "Public",
+              "share_value": 23382023541660,
+              "share_amount": 18557161541,
+              "share_percentage": "0.4469"
+            },
+            {
+              "name": "PT Sigmantara Alfindo",
+              "share_value": 20351246906340,
+              "share_amount": 16151783259,
+              "share_percentage": "0.389"
+            },
+            {
+              "name": "PT Amanda Cipta Persada",
+              "share_value": 7343966070000,
+              "share_amount": 5828544500,
+              "share_percentage": "0.1404"
+            },
+            {
+              "name": "Treasury Stock",
+              "share_value": 545162940000,
+              "share_amount": 432669000,
+              "share_percentage": "0.0104"
+            },
+            {
+              "name": "Feny Djoko Susanto",
+              "share_value": 335618514000,
+              "share_amount": 266363900,
+              "share_percentage": "0.0064"
+            },
+            {
+              "name": "Harryanto Susanto",
+              "share_value": 240105852000,
+              "share_amount": 190560200,
+              "share_percentage": "0.0046"
+            },
+            {
+              "name": "Budiyanto Djoko Susanto",
+              "share_value": 122521518000,
+              "share_amount": 97239300,
+              "share_percentage": "0.0023"
+            }
+          ],
+          "affiliates": null,
+          "market_cap": 52320872142000
+        }
+      },
+      {
+        "symbol": "MYOR.JK",
+        "company_name": "Mayora Indah Tbk",
+        "query_values": {
+          "symbol": "MYOR.JK",
+          "free_float": 0.1419,
+          "major_shareholders_share_percentage": [
+            {
+              "name": "Unita Branindo",
+              "share_value": 10234739441000,
+              "share_amount": 7363121900,
+              "share_percentage": "0.3293"
+            },
+            {
+              "name": "Mayora Dhana Utama",
+              "share_value": 8123645839750,
+              "share_amount": 5844349525,
+              "share_percentage": "0.2614"
+            },
+            {
+              "name": "Jogi Hendra Atmadja",
+              "share_value": 7844851003000,
+              "share_amount": 5643777700,
+              "share_percentage": "0.2524"
+            },
+            {
+              "name": "Public",
+              "share_value": 4407433684000,
+              "share_amount": 3170815600,
+              "share_percentage": "0.1419"
+            },
+            {
+              "name": "Treasury Stock",
+              "share_value": 461501545000,
+              "share_amount": 332015500,
+              "share_percentage": "0.0148"
+            },
+            {
+              "name": "Andre Sukendra Atmadja",
+              "share_value": 5990900000,
+              "share_amount": 4310000,
+              "share_percentage": "0.0002"
+            },
+            {
+              "name": "Hendrik Polisar",
+              "share_value": 430205000,
+              "share_amount": 309500,
+              "share_percentage": "0.00001"
+            }
+          ],
+          "affiliates": null,
+          "market_cap": 31078592617750
+        }
+      }
+    ],
+    "pagination": {
+      "total_count": 7,
+      "showing": 7,
+      "limit": 50,
+      "offset": 0,
+      "has_next": false,
+      "has_previous": false,
+      "next_offset": null,
+      "previous_offset": null
+    }
+  }
+}

@@ -1,0 +1,128 @@
+{
+ "endpoint": "/sectors/v2/companies/",
+ "params": {
+  "where": "earnings[2023] > 0 and earnings[2024] > earnings[2023] and earnings[2025] > earnings[2024]",
+  "order_by": "-market_cap",
+  "limit": 10,
+  "include_query_values": "true"
+ },
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-06T05:18:24+0700",
+ "fetched_at_epoch": 1791238704.9037604,
+ "source": "sectors-live",
+ "data": {
+  "results": [
+   {
+    "symbol": "BBCA.JK",
+    "company_name": "PT Bank Central Asia Tbk.",
+    "query_values": {
+     "earnings[2023]": 48639122000000.0,
+     "earnings[2024]": 54836305000000.0,
+     "earnings[2025]": 57537287000000.0,
+     "market_cap": 753611199412500
+    }
+   },
+   {
+    "symbol": "DCII.JK",
+    "company_name": "PT DCI Indonesia Tbk",
+    "query_values": {
+     "earnings[2023]": 514232000000.0,
+     "earnings[2024]": 796479000000.0,
+     "earnings[2025]": 1001333000000.0,
+     "market_cap": 463876952140000
+    }
+   },
+   {
+    "symbol": "BREN.JK",
+    "company_name": "PT Barito Renewables Energy Tbk.",
+    "query_values": {
+     "earnings[2023]": 1658411063000.0,
+     "earnings[2024]": 1865050981000.0,
+     "earnings[2025]": 2212526539080.0,
+     "market_cap": 394669349000000
+    }
+   },
+   {
+    "symbol": "BMRI.JK",
+    "company_name": "PT Bank Mandiri (Persero) Tbk",
+    "query_values": {
+     "earnings[2023]": 55060057000000.0,
+     "earnings[2024]": 55782742000000.0,
+     "earnings[2025]": 56293950000000.0,
+     "market_cap": 378839999983600
+    }
+   },
+   {
+    "symbol": "DNET.JK",
+    "company_name": "PT Indoritel Makmur Internasional Tbk",
+    "query_values": {
+     "earnings[2023]": 721040000000.0,
+     "earnings[2024]": 1072071000000.0,
+     "earnings[2025]": 1255580000000.0,
+     "market_cap": 140421600000000
+    }
+   },
+   {
+    "symbol": "BRPT.JK",
+    "company_name": "Barito Pacific Tbk",
+    "query_values": {
+     "earnings[2023]": 403204924000.0,
+     "earnings[2024]": 912611988000.0,
+     "earnings[2025]": 8197635263220.0,
+     "market_cap": 139214618795340
+    }
+   },
+   {
+    "symbol": "CASA.JK",
+    "company_name": "PT Capital Financial Indonesia Tbk",
+    "query_values": {
+     "earnings[2023]": 82590000000.0,
+     "earnings[2024]": 110672000000.0,
+     "earnings[2025]": 130389000000.0,
+     "market_cap": 98057285645400
+    }
+   },
+   {
+    "symbol": "BRMS.JK",
+    "company_name": "Bumi Resources Minerals Tbk",
+    "query_values": {
+     "earnings[2023]": 214902589257.0,
+     "earnings[2024]": 394350587998.0,
+     "earnings[2025]": 836986632369.0,
+     "market_cap": 85070424202800
+    }
+   },
+   {
+    "symbol": "PANI.JK",
+    "company_name": "PT Pantai Indah Kapuk Dua Tbk.",
+    "query_values": {
+     "earnings[2023]": 270038645000.0,
+     "earnings[2024]": 623910079000.0,
+     "earnings[2025]": 1147320898000.0,
+     "market_cap": 84763080242680
+    }
+   },
+   {
+    "symbol": "ICBP.JK",
+    "company_name": "Indofood CBP Sukses Makmur Tbk",
+    "query_values": {
+     "earnings[2023]": 6990572000000.0,
+     "earnings[2024]": 7079369000000.0,
+     "earnings[2025]": 9224927000000.0,
+     "market_cap": 79592522100000
+    }
+   }
+  ],
+  "pagination": {
+   "total_count": 181,
+   "showing": 10,
+   "limit": 10,
+   "offset": 0,
+   "has_next": true,
+   "has_previous": false,
+   "next_offset": 10,
+   "previous_offset": null
+  }
+ }
+}

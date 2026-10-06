@@ -1,0 +1,55 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/AUTO/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 0,
+ "fetched_at": "2026-10-06T05:17:33+0700",
+ "fetched_at_epoch": 1791238653.117516,
+ "source": "store-hit",
+ "data": {
+  "symbol": "AUTO.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 8937637000000,
+    "source": "Trading",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 10136066000000,
+    "source": "Automotive Component Manufacturing",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 16008040000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 3065663000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 1047887000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 2017776000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 992270000000,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 1025506000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

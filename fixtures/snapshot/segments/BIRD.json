@@ -1,0 +1,55 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/BIRD/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 0,
+ "fetched_at": "2026-10-06T05:17:33+0700",
+ "fetched_at_epoch": 1791238653.6250541,
+ "source": "store-hit",
+ "data": {
+  "symbol": "BIRD.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 3577987000000,
+    "source": "Taxi",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1461960000000,
+    "source": "Non-taxi",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 3410448000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 1629499000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 634104000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 995395000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 33825000000,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 961570000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

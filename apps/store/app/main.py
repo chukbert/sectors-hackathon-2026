@@ -263,6 +263,36 @@ async def health():
     return {"ok": True, "service": "idxmaca-store", "mode": _mode(), "sectors_key_configured": sectors.configured}
 
 
+def seed_snapshot(directory: str) -> int:
+    """Seed cache dari fixtures/snapshot/*.json (respons Sectors asli hasil tools/harvest.py)."""
+    from pathlib import Path
+
+    n = 0
+    for f in sorted(Path(directory).glob("**/*.json")) if Path(directory).is_dir() else []:
+        try:
+            snap = json.loads(f.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            log.warning("snapshot rusak dilewati: %s", f)
+            continue
+        if not isinstance(snap, dict) or "endpoint" not in snap or "data" not in snap:
+            continue
+        clamped, _, error = clamp_params(snap["endpoint"], snap.get("params") or {})
+        if error:
+            continue
+        key = canonical_key(snap["endpoint"], clamped)
+        n += db.seed(key, snap["endpoint"], clamped, snap["data"], int(snap.get("http_status", 200)),
+                     int(snap.get("credits_spent", 0)), float(snap.get("fetched_at_epoch") or time.time()),
+                     ttl_seconds(snap["endpoint"], SETTINGS.default_ttl_s))
+    return n
+
+
+@app.on_event("startup")
+async def _startup():
+    seeded = seed_snapshot(SETTINGS.snapshot_dir)
+    if seeded:
+        log.info("snapshot: %d entri di-seed ke cache dari %s", seeded, SETTINGS.snapshot_dir)
+
+
 @app.on_event("shutdown")
 async def _shutdown():
     await sectors.aclose()

@@ -1,0 +1,65 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/ULTJ/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-06T05:20:27+0700",
+ "fetched_at_epoch": 1791238827.9218023,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "ULTJ.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 9808654000000,
+    "source": "Beverages",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 77132000000,
+    "source": "Foods",
+    "target": "Total Revenue"
+   },
+   {
+    "value": -977785000000,
+    "source": "Value Added Tax",
+    "target": "Total Revenue"
+   },
+   {
+    "value": -33799000000,
+    "source": "Performance Bonus",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 5852425000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 3021777000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 1399007000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 1622770000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 1347339000000,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 275431000000,
+    "source": "Operating Expense",
+    "target": "General and Administrative"
+   }
+  ]
+ }
+}

@@ -1,0 +1,70 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/ISAT/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-06T05:19:37+0700",
+ "fetched_at_epoch": 1791238777.626679,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "ISAT.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 47036000000000,
+    "source": "Cellular",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 7986519000000,
+    "source": "MIDI",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 864351000000,
+    "source": "Fixed",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 22740295000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 33146575000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 10816600000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 22329975000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 15558448000000,
+    "source": "Operating Expense",
+    "target": "Depreciation and amortization"
+   },
+   {
+    "value": 3889735000000,
+    "source": "Operating Expense",
+    "target": "Personnel"
+   },
+   {
+    "value": 1992959000000,
+    "source": "Operating Expense",
+    "target": "Marketing"
+   },
+   {
+    "value": 888833000000,
+    "source": "Operating Expense",
+    "target": "General and administration"
+   }
+  ]
+ }
+}

@@ -31,6 +31,10 @@ ROLES: dict[str, RoleConfig] = {
     "writer_l3": RoleConfig("xhigh", 0.2, 6000),
     "judge": RoleConfig("low", 0.0, 1600),
     "memory": RoleConfig("low", 0.0, 1600),
+    # Struk Jadi Saham (model default google/gemini-3.8-flash, effort low)
+    "struk_parse": RoleConfig("low", 0.0, 2400),
+    "struk_explain": RoleConfig("low", 0.2, 2000),
+    "struk_reflect": RoleConfig("low", 0.3, 1600),
 }
 
 
@@ -57,7 +61,7 @@ class Settings:
         if mode == "auto":
             mode = "live" if key else "template"
         return Settings(
-            model=os.getenv("IDXMACA_MODEL", "meta/muse-spark-1.3"),
+            model=os.getenv("IDXMACA_MODEL", "google/gemini-3.8-flash"),
             llm_mode=mode,
             openrouter_api_key=key,
             openrouter_base_url=os.getenv("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1").rstrip("/"),

@@ -1,0 +1,70 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/KLBF/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-06T05:19:50+0700",
+ "fetched_at_epoch": 1791238790.3292565,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "KLBF.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 9225635978958,
+    "source": "Prescription pharmaceutical ",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 4313360851423,
+    "source": "Consumer health",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 8188188699563,
+    "source": "Nutritionals",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 10900590578082,
+    "source": "Distribution and logistic",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 19670735916128,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 12957040191898,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 4169591257011,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 8787448934887,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 6807092752437,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 1508756225242,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   },
+   {
+    "value": 471599957208,
+    "source": "Operating Expense",
+    "target": "Research and development "
+   }
+  ]
+ }
+}

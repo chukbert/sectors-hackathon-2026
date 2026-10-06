@@ -1,0 +1,118 @@
+{
+ "endpoint": "/sectors/v2/companies/",
+ "params": {
+  "where": "net_profit_margin[2024] > 0 and net_profit_margin[2025] < net_profit_margin[2024] * 0.7",
+  "order_by": "-market_cap",
+  "limit": 10,
+  "include_query_values": "true"
+ },
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-06T05:18:24+0700",
+ "fetched_at_epoch": 1791238704.7013547,
+ "source": "sectors-live",
+ "data": {
+  "results": [
+   {
+    "symbol": "AMMN.JK",
+    "company_name": "PT Amman Mineral Internasional Tbk.",
+    "query_values": {
+     "net_profit_margin[2024]": 0.239107909131524,
+     "net_profit_margin[2025]": 0.134836809329545,
+     "market_cap": 305301696331760
+    }
+   },
+   {
+    "symbol": "SMMA.JK",
+    "company_name": "PT Sinar Mas Multiartha Tbk",
+    "query_values": {
+     "net_profit_margin[2024]": 0.136251723488645,
+     "net_profit_margin[2025]": 0.0559562760454983,
+     "market_cap": 127990060811700
+    }
+   },
+   {
+    "symbol": "CUAN.JK",
+    "company_name": "PT Petrindo Jaya Kreasi Tbk",
+    "query_values": {
+     "net_profit_margin[2024]": 0.200549316908708,
+     "net_profit_margin[2025]": 0.110698426643896,
+     "market_cap": 95556065000000
+    }
+   },
+   {
+    "symbol": "AADI.JK",
+    "company_name": "PT Adaro Andalan Indonesia Tbk",
+    "query_values": {
+     "net_profit_margin[2024]": 0.227611492782704,
+     "net_profit_margin[2025]": 0.154814518081822,
+     "market_cap": 93053356532000
+    }
+   },
+   {
+    "symbol": "ADRO.JK",
+    "company_name": "Alamtri Resources Indonesia Tbk",
+    "query_values": {
+     "net_profit_margin[2024]": 0.663886228291005,
+     "net_profit_margin[2025]": 0.238957731082749,
+     "market_cap": 74593279978000
+    }
+   },
+   {
+    "symbol": "GEMS.JK",
+    "company_name": "Golden Energy Mines Tbk",
+    "query_values": {
+     "net_profit_margin[2024]": 0.175125690879716,
+     "net_profit_margin[2025]": 0.106971327331497,
+     "market_cap": 50000000500000
+    }
+   },
+   {
+    "symbol": "EXCL.JK",
+    "company_name": "PT XLSMART Telecom Sejahtera Tbk",
+    "query_values": {
+     "net_profit_margin[2024]": 0.0528913792517399,
+     "net_profit_margin[2025]": -0.104288323317461,
+     "market_cap": 42223680886320
+    }
+   },
+   {
+    "symbol": "PTBA.JK",
+    "company_name": "Bukit Asam Tbk",
+    "query_values": {
+     "net_profit_margin[2024]": 0.119343477586608,
+     "net_profit_margin[2025]": 0.0686949254384184,
+     "market_cap": 37672555747500
+    }
+   },
+   {
+    "symbol": "VKTR.JK",
+    "company_name": "PT VKTR Teknologi Mobilitas Tbk",
+    "query_values": {
+     "net_profit_margin[2024]": 0.00753942079871829,
+     "net_profit_margin[2025]": -0.010436663462589,
+     "market_cap": 36093750000000
+    }
+   },
+   {
+    "symbol": "MEDC.JK",
+    "company_name": "PT Medco Energi Internasional Tbk",
+    "query_values": {
+     "net_profit_margin[2024]": 0.153117586777095,
+     "net_profit_margin[2025]": 0.042093504776094,
+     "market_cap": 35316404909060
+    }
+   }
+  ],
+  "pagination": {
+   "total_count": 183,
+   "showing": 10,
+   "limit": 10,
+   "offset": 0,
+   "has_next": true,
+   "has_previous": false,
+   "next_offset": 10,
+   "previous_offset": null
+  }
+ }
+}

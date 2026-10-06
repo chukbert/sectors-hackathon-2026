@@ -1,0 +1,118 @@
+{
+ "endpoint": "/sectors/v2/companies/",
+ "params": {
+  "where": "total_debt[2025] > total_equity[2025]",
+  "order_by": "-market_cap",
+  "limit": 10,
+  "include_query_values": "true"
+ },
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-06T05:18:23+0700",
+ "fetched_at_epoch": 1791238703.9248047,
+ "source": "sectors-live",
+ "data": {
+  "results": [
+   {
+    "symbol": "BREN.JK",
+    "company_name": "PT Barito Renewables Energy Tbk.",
+    "query_values": {
+     "total_debt[2025]": 34551082753200.0,
+     "total_equity[2025]": 14786980402740.0,
+     "market_cap": 394669349000000
+    }
+   },
+   {
+    "symbol": "AMMN.JK",
+    "company_name": "PT Amman Mineral Internasional Tbk.",
+    "query_values": {
+     "total_debt[2025]": 108371423698200.0,
+     "total_equity[2025]": 90897588743520.0,
+     "market_cap": 305301696331760
+    }
+   },
+   {
+    "symbol": "SRAJ.JK",
+    "company_name": "Sejahteraraya Anugrahjaya Tbk",
+    "query_values": {
+     "total_debt[2025]": 3957939000000.0,
+     "total_equity[2025]": 1335725000000.0,
+     "market_cap": 159106479870000
+    }
+   },
+   {
+    "symbol": "TPIA.JK",
+    "company_name": "PT Chandra Asri Pacific Tbk",
+    "query_values": {
+     "total_debt[2025]": 84863458928040.0,
+     "total_equity[2025]": 77940271620900.0,
+     "market_cap": 149232415283700
+    }
+   },
+   {
+    "symbol": "BRPT.JK",
+    "company_name": "Barito Pacific Tbk",
+    "query_values": {
+     "total_debt[2025]": 135705728162940.0,
+     "total_equity[2025]": 101182478142720.0,
+     "market_cap": 139214618795340
+    }
+   },
+   {
+    "symbol": "CUAN.JK",
+    "company_name": "PT Petrindo Jaya Kreasi Tbk",
+    "query_values": {
+     "total_debt[2025]": 24246929688540.0,
+     "total_equity[2025]": 10483885908600.0,
+     "market_cap": 95556065000000
+    }
+   },
+   {
+    "symbol": "PTRO.JK",
+    "company_name": "Petrosea Tbk",
+    "query_values": {
+     "total_debt[2025]": 14218526538840.0,
+     "total_equity[2025]": 5145758518680.0,
+     "market_cap": 51943157500000
+    }
+   },
+   {
+    "symbol": "EXCL.JK",
+    "company_name": "PT XLSMART Telecom Sejahtera Tbk",
+    "query_values": {
+     "total_debt[2025]": 62827017000000.0,
+     "total_equity[2025]": 30008708000000.0,
+     "market_cap": 42223680886320
+    }
+   },
+   {
+    "symbol": "MEDC.JK",
+    "company_name": "PT Medco Energi Internasional Tbk",
+    "query_values": {
+     "total_debt[2025]": 65253651977222.0,
+     "total_equity[2025]": 39499911815709.0,
+     "market_cap": 35316404909060
+    }
+   },
+   {
+    "symbol": "ARCI.JK",
+    "company_name": "PT Archi Indonesia Tbk",
+    "query_values": {
+     "total_debt[2025]": 8278510490676.0,
+     "total_equity[2025]": 6074125134780.0,
+     "market_cap": 32426975000000
+    }
+   }
+  ],
+  "pagination": {
+   "total_count": 152,
+   "showing": 10,
+   "limit": 10,
+   "offset": 0,
+   "has_next": true,
+   "has_previous": false,
+   "next_offset": 10,
+   "previous_offset": null
+  }
+ }
+}

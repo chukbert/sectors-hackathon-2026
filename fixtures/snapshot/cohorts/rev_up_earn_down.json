@@ -1,0 +1,138 @@
+{
+ "endpoint": "/sectors/v2/companies/",
+ "params": {
+  "where": "revenue[2025] > revenue[2024] and earnings[2025] < earnings[2024]",
+  "order_by": "-market_cap",
+  "limit": 10,
+  "include_query_values": "true"
+ },
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-06T05:18:23+0700",
+ "fetched_at_epoch": 1791238703.3665714,
+ "source": "sectors-live",
+ "data": {
+  "results": [
+   {
+    "symbol": "BYAN.JK",
+    "company_name": "Bayan Resources Tbk",
+    "query_values": {
+     "revenue[2025]": 57365496738143.0,
+     "revenue[2024]": 55680495011778.0,
+     "earnings[2025]": 12852187283440.0,
+     "earnings[2024]": 14907140834433.0,
+     "market_cap": 408333353750000
+    }
+   },
+   {
+    "symbol": "CUAN.JK",
+    "company_name": "PT Petrindo Jaya Kreasi Tbk",
+    "query_values": {
+     "revenue[2025]": 20345142032280.0,
+     "revenue[2024]": 12953438511000.0,
+     "earnings[2025]": 2252175212820.0,
+     "earnings[2024]": 2597803245000.0,
+     "market_cap": 95556065000000
+    }
+   },
+   {
+    "symbol": "MLPT.JK",
+    "company_name": "PT Multipolar Technology Tbk",
+    "query_values": {
+     "revenue[2025]": 3838885000000.0,
+     "revenue[2024]": 3729786000000.0,
+     "earnings[2025]": 336492000000.0,
+     "earnings[2024]": 368880000000.0,
+     "market_cap": 44062500000000
+    }
+   },
+   {
+    "symbol": "EXCL.JK",
+    "company_name": "PT XLSMART Telecom Sejahtera Tbk",
+    "query_values": {
+     "revenue[2025]": 42445960000000.0,
+     "revenue[2024]": 34391597000000.0,
+     "earnings[2025]": -4426618000000.0,
+     "earnings[2024]": 1819019000000.0,
+     "market_cap": 42223680886320
+    }
+   },
+   {
+    "symbol": "PGEO.JK",
+    "company_name": "PT Pertamina Geothermal Energy Tbk",
+    "query_values": {
+     "revenue[2025]": 7242301389960.0,
+     "revenue[2024]": 6577837840000.0,
+     "earnings[2025]": 2304560332620.0,
+     "earnings[2024]": 2593101558000.0,
+     "market_cap": 40904003193300
+    }
+   },
+   {
+    "symbol": "VKTR.JK",
+    "company_name": "PT VKTR Teknologi Mobilitas Tbk",
+    "query_values": {
+     "revenue[2025]": 1089237000000.0,
+     "revenue[2024]": 1003658000000.0,
+     "earnings[2025]": -11368000000.0,
+     "earnings[2024]": 7567000000.0,
+     "market_cap": 36093750000000
+    }
+   },
+   {
+    "symbol": "MEDC.JK",
+    "company_name": "PT Medco Energi Internasional Tbk",
+    "query_values": {
+     "revenue[2025]": 40084423693730.0,
+     "revenue[2024]": 38763721797135.0,
+     "earnings[2025]": 1687293880199.0,
+     "earnings[2024]": 5935407536076.0,
+     "market_cap": 35316404909060
+    }
+   },
+   {
+    "symbol": "PGAS.JK",
+    "company_name": "PT Perusahaan Gas Negara Tbk",
+    "query_values": {
+     "revenue[2025]": 66542796017991.0,
+     "revenue[2024]": 61212720204359.0,
+     "earnings[2025]": 3604444343872.0,
+     "earnings[2024]": 5484134544518.0,
+     "market_cap": 34180526556360
+    }
+   },
+   {
+    "symbol": "MYOR.JK",
+    "company_name": "Mayora Indah Tbk",
+    "query_values": {
+     "revenue[2025]": 38681562261207.0,
+     "revenue[2024]": 36072949285930.0,
+     "earnings[2025]": 2865185363464.0,
+     "earnings[2024]": 3000372094158.0,
+     "market_cap": 31078592617750
+    }
+   },
+   {
+    "symbol": "BTPN.JK",
+    "company_name": "PT Bank SMBC Indonesia Tbk",
+    "query_values": {
+     "revenue[2025]": 18000752000000.0,
+     "revenue[2024]": 17429360000000.0,
+     "earnings[2025]": 505557000000.0,
+     "earnings[2024]": 2812986000000.0,
+     "market_cap": 25708337003600
+    }
+   }
+  ],
+  "pagination": {
+   "total_count": 155,
+   "showing": 10,
+   "limit": 10,
+   "offset": 0,
+   "has_next": true,
+   "has_previous": false,
+   "next_offset": 10,
+   "previous_offset": null
+  }
+ }
+}

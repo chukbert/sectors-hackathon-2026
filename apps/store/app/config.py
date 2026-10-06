@@ -29,6 +29,7 @@ class Settings:
     default_ttl_s: int
     negative_ttl_s: int
     credit_start: int
+    snapshot_dir: str
 
     @staticmethod
     def from_env() -> "Settings":
@@ -50,6 +51,8 @@ class Settings:
             default_ttl_s=int(os.getenv("IDXMACA_DEFAULT_TTL", str(24 * 3600))),
             negative_ttl_s=int(os.getenv("IDXMACA_NEGATIVE_TTL", str(6 * 3600))),
             credit_start=int(os.getenv("IDXMACA_CREDIT_START", "1000")),
+            # Snapshot respons Sectors asli yang di-commit ke repo; di-seed ke cache saat start (0 kredit).
+            snapshot_dir=os.getenv("IDXMACA_SNAPSHOT_DIR", str(REPO_ROOT / "fixtures" / "snapshot")),
         )
 
 

@@ -1,0 +1,118 @@
+{
+ "endpoint": "/sectors/v2/companies/",
+ "params": {
+  "where": "operating_cash_flow[2025] < 0 and earnings[2025] > 0",
+  "order_by": "-market_cap",
+  "limit": 10,
+  "include_query_values": "true"
+ },
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-06T05:18:24+0700",
+ "fetched_at_epoch": 1791238704.498425,
+ "source": "sectors-live",
+ "data": {
+  "results": [
+   {
+    "symbol": "AMMN.JK",
+    "company_name": "PT Amman Mineral Internasional Tbk.",
+    "query_values": {
+     "operating_cash_flow[2025]": -7949182514520.0,
+     "earnings[2025]": 4167027074340.0,
+     "market_cap": 305301696331760
+    }
+   },
+   {
+    "symbol": "SMMA.JK",
+    "company_name": "PT Sinar Mas Multiartha Tbk",
+    "query_values": {
+     "operating_cash_flow[2025]": -1836221000000.0,
+     "earnings[2025]": 2045644000000.0,
+     "market_cap": 127990060811700
+    }
+   },
+   {
+    "symbol": "CASA.JK",
+    "company_name": "PT Capital Financial Indonesia Tbk",
+    "query_values": {
+     "operating_cash_flow[2025]": -814011000000.0,
+     "earnings[2025]": 130389000000.0,
+     "market_cap": 98057285645400
+    }
+   },
+   {
+    "symbol": "CUAN.JK",
+    "company_name": "PT Petrindo Jaya Kreasi Tbk",
+    "query_values": {
+     "operating_cash_flow[2025]": -461775667860.0,
+     "earnings[2025]": 2252175212820.0,
+     "market_cap": 95556065000000
+    }
+   },
+   {
+    "symbol": "PNBN.JK",
+    "company_name": "Bank Pan Indonesia Tbk",
+    "query_values": {
+     "operating_cash_flow[2025]": -1881739000000.0,
+     "earnings[2025]": 2750044000000.0,
+     "market_cap": 19666057948350
+    }
+   },
+   {
+    "symbol": "BNBR.JK",
+    "company_name": "Bakrie & Brothers Tbk",
+    "query_values": {
+     "operating_cash_flow[2025]": -100914000000.0,
+     "earnings[2025]": 493852000000.0,
+     "market_cap": 19223577025851
+    }
+   },
+   {
+    "symbol": "BSIM.JK",
+    "company_name": "Bank Sinarmas Tbk",
+    "query_values": {
+     "operating_cash_flow[2025]": -562560000000.0,
+     "earnings[2025]": 285748000000.0,
+     "market_cap": 18834794577530
+    }
+   },
+   {
+    "symbol": "PACK.JK",
+    "company_name": "PT Abadi Nusantara Hijau Investama Tbk",
+    "query_values": {
+     "operating_cash_flow[2025]": -22471937167.0,
+     "earnings[2025]": 31260396106.0,
+     "market_cap": 16037121426970
+    }
+   },
+   {
+    "symbol": "RLCO.JK",
+    "company_name": "PT Abadi Lestari Indonesia Tbk",
+    "query_values": {
+     "operating_cash_flow[2025]": -30721561515.0,
+     "earnings[2025]": 40920550292.0,
+     "market_cap": 12906250000000
+    }
+   },
+   {
+    "symbol": "SGER.JK",
+    "company_name": "PT Sumber Global Energy Tbk",
+    "query_values": {
+     "operating_cash_flow[2025]": -197440012100.0,
+     "earnings[2025]": 213269015248.0,
+     "market_cap": 11768116625690
+    }
+   }
+  ],
+  "pagination": {
+   "total_count": 104,
+   "showing": 10,
+   "limit": 10,
+   "offset": 0,
+   "has_next": true,
+   "has_previous": false,
+   "next_offset": 10,
+   "previous_offset": null
+  }
+ }
+}

@@ -1,0 +1,410 @@
+{
+  "request": {
+    "path": "/v2/companies/",
+    "params": {
+      "where": "market_cap_rank <= 200 and revenue[2025] > revenue[2024] and earnings[2025] < earnings[2024]",
+      "order_by": "-market_cap",
+      "limit": 200,
+      "include_query_values": "true"
+    }
+  },
+  "status": 200,
+  "response": {
+    "results": [
+      {
+        "symbol": "BYAN.JK",
+        "company_name": "Bayan Resources Tbk",
+        "query_values": {
+          "market_cap_rank": 4,
+          "revenue[2025]": 57365496738143.0,
+          "revenue[2024]": 55680495011778.0,
+          "earnings[2025]": 12852187283440.0,
+          "earnings[2024]": 14907140834433.0,
+          "market_cap": 408333353750000
+        }
+      },
+      {
+        "symbol": "CUAN.JK",
+        "company_name": "PT Petrindo Jaya Kreasi Tbk",
+        "query_values": {
+          "market_cap_rank": 21,
+          "revenue[2025]": 20345142032280.0,
+          "revenue[2024]": 12953438511000.0,
+          "earnings[2025]": 2252175212820.0,
+          "earnings[2024]": 2597803245000.0,
+          "market_cap": 95556065000000
+        }
+      },
+      {
+        "symbol": "MLPT.JK",
+        "company_name": "PT Multipolar Technology Tbk",
+        "query_values": {
+          "market_cap_rank": 52,
+          "revenue[2025]": 3838885000000.0,
+          "revenue[2024]": 3729786000000.0,
+          "earnings[2025]": 336492000000.0,
+          "earnings[2024]": 368880000000.0,
+          "market_cap": 44062500000000
+        }
+      },
+      {
+        "symbol": "EXCL.JK",
+        "company_name": "PT XLSMART Telecom Sejahtera Tbk",
+        "query_values": {
+          "market_cap_rank": 53,
+          "revenue[2025]": 42445960000000.0,
+          "revenue[2024]": 34391597000000.0,
+          "earnings[2025]": -4426618000000.0,
+          "earnings[2024]": 1819019000000.0,
+          "market_cap": 42223680886320
+        }
+      },
+      {
+        "symbol": "PGEO.JK",
+        "company_name": "PT Pertamina Geothermal Energy Tbk",
+        "query_values": {
+          "market_cap_rank": 55,
+          "revenue[2025]": 7242301389960.0,
+          "revenue[2024]": 6577837840000.0,
+          "earnings[2025]": 2304560332620.0,
+          "earnings[2024]": 2593101558000.0,
+          "market_cap": 40904003193300
+        }
+      },
+      {
+        "symbol": "VKTR.JK",
+        "company_name": "PT VKTR Teknologi Mobilitas Tbk",
+        "query_values": {
+          "market_cap_rank": 59,
+          "revenue[2025]": 1089237000000.0,
+          "revenue[2024]": 1003658000000.0,
+          "earnings[2025]": -11368000000.0,
+          "earnings[2024]": 7567000000.0,
+          "market_cap": 36093750000000
+        }
+      },
+      {
+        "symbol": "MEDC.JK",
+        "company_name": "PT Medco Energi Internasional Tbk",
+        "query_values": {
+          "market_cap_rank": 60,
+          "revenue[2025]": 40084423693730.0,
+          "revenue[2024]": 38763721797135.0,
+          "earnings[2025]": 1687293880199.0,
+          "earnings[2024]": 5935407536076.0,
+          "market_cap": 35316404909060
+        }
+      },
+      {
+        "symbol": "PGAS.JK",
+        "company_name": "PT Perusahaan Gas Negara Tbk",
+        "query_values": {
+          "market_cap_rank": 65,
+          "revenue[2025]": 66542796017991.0,
+          "revenue[2024]": 61212720204359.0,
+          "earnings[2025]": 3604444343872.0,
+          "earnings[2024]": 5484134544518.0,
+          "market_cap": 34180526556360
+        }
+      },
+      {
+        "symbol": "MYOR.JK",
+        "company_name": "Mayora Indah Tbk",
+        "query_values": {
+          "market_cap_rank": 71,
+          "revenue[2025]": 38681562261207.0,
+          "revenue[2024]": 36072949285930.0,
+          "earnings[2025]": 2865185363464.0,
+          "earnings[2024]": 3000372094158.0,
+          "market_cap": 31078592617750
+        }
+      },
+      {
+        "symbol": "BTPN.JK",
+        "company_name": "PT Bank SMBC Indonesia Tbk",
+        "query_values": {
+          "market_cap_rank": 79,
+          "revenue[2025]": 18000752000000.0,
+          "revenue[2024]": 17429360000000.0,
+          "earnings[2025]": 505557000000.0,
+          "earnings[2024]": 2812986000000.0,
+          "market_cap": 25708337003600
+        }
+      },
+      {
+        "symbol": "TKIM.JK",
+        "company_name": "Pabrik Kertas Tjiwi Kimia Tbk",
+        "query_values": {
+          "market_cap_rank": 90,
+          "revenue[2025]": 16480844046420.0,
+          "revenue[2024]": 15916987765000.0,
+          "earnings[2025]": 4615965877380.0,
+          "earnings[2024]": 4800826352000.0,
+          "market_cap": 22415209704000
+        }
+      },
+      {
+        "symbol": "SINI.JK",
+        "company_name": "PT Singaraja Putra Tbk",
+        "query_values": {
+          "market_cap_rank": 95,
+          "revenue[2025]": 534021405626.0,
+          "revenue[2024]": 435143362568.0,
+          "earnings[2025]": -43087994671.0,
+          "earnings[2024]": -30960092762.0,
+          "market_cap": 19991562500000
+        }
+      },
+      {
+        "symbol": "JSMR.JK",
+        "company_name": "PT Jasa Marga Tbk",
+        "query_values": {
+          "market_cap_rank": 101,
+          "revenue[2025]": 29890247000000.0,
+          "revenue[2024]": 28703212000000.0,
+          "earnings[2025]": 3659535000000.0,
+          "earnings[2024]": 4535565000000.0,
+          "market_cap": 18870465120000
+        }
+      },
+      {
+        "symbol": "FASW.JK",
+        "company_name": "Fajar Surya Wisesa Tbk",
+        "query_values": {
+          "market_cap_rank": 107,
+          "revenue[2025]": 8102378000000.0,
+          "revenue[2024]": 7698331000000.0,
+          "earnings[2025]": -1135954000000.0,
+          "earnings[2024]": -1105194000000.0,
+          "market_cap": 16992122356325
+        }
+      },
+      {
+        "symbol": "POWR.JK",
+        "company_name": "PT Cikarang Listrindo Tbk",
+        "query_values": {
+          "market_cap_rank": 115,
+          "revenue[2025]": 9263560116030.0,
+          "revenue[2024]": 8838196888975.0,
+          "earnings[2025]": 1205967533326.0,
+          "earnings[2024]": 1217342459845.0,
+          "market_cap": 15684977100000
+        }
+      },
+      {
+        "symbol": "CITA.JK",
+        "company_name": "Cita Mineral Investindo Tbk",
+        "query_values": {
+          "market_cap_rank": 127,
+          "revenue[2025]": 2687165349897.0,
+          "revenue[2024]": 2386968975506.0,
+          "earnings[2025]": 2399116148219.0,
+          "earnings[2024]": 2489608869281.0,
+          "market_cap": 13386021025000
+        }
+      },
+      {
+        "symbol": "BSWD.JK",
+        "company_name": "Bank of India Indonesia Tbk",
+        "query_values": {
+          "market_cap_rank": 129,
+          "revenue[2025]": 330810293626.0,
+          "revenue[2024]": 310983761217.0,
+          "earnings[2025]": 48282258651.0,
+          "earnings[2024]": 78754937362.0,
+          "market_cap": 13147121437200
+        }
+      },
+      {
+        "symbol": "TSPC.JK",
+        "company_name": "Tempo Scan Pacific Tbk",
+        "query_values": {
+          "market_cap_rank": 135,
+          "revenue[2025]": 14005028133728.0,
+          "revenue[2024]": 13654570829747.0,
+          "earnings[2025]": 1406763933286.0,
+          "earnings[2024]": 1447724541136.0,
+          "market_cap": 11951140395000
+        }
+      },
+      {
+        "symbol": "STTP.JK",
+        "company_name": "PT Siantar Top Tbk",
+        "query_values": {
+          "market_cap_rank": 137,
+          "revenue[2025]": 5235956036238.0,
+          "revenue[2024]": 4959939533239.0,
+          "earnings[2025]": 1180240828444.0,
+          "earnings[2024]": 1314328079733.0,
+          "market_cap": 11659000000000
+        }
+      },
+      {
+        "symbol": "HRUM.JK",
+        "company_name": "Harum Energy Tbk",
+        "query_values": {
+          "market_cap_rank": 143,
+          "revenue[2025]": 22403868855454.0,
+          "revenue[2024]": 20930842998696.0,
+          "earnings[2025]": 626393446572.0,
+          "earnings[2024]": 873569179152.0,
+          "market_cap": 11287613500000
+        }
+      },
+      {
+        "symbol": "POLU.JK",
+        "company_name": "PT Golden Flower Tbk",
+        "query_values": {
+          "market_cap_rank": 153,
+          "revenue[2025]": 156480922291.0,
+          "revenue[2024]": 135521321941.0,
+          "earnings[2025]": -13108430126.0,
+          "earnings[2024]": -1316347210.0,
+          "market_cap": 10537500000000
+        }
+      },
+      {
+        "symbol": "CLEO.JK",
+        "company_name": "PT Sariguna Primatirta Tbk",
+        "query_values": {
+          "market_cap_rank": 156,
+          "revenue[2025]": 2825631197247.0,
+          "revenue[2024]": 2696813747786.0,
+          "earnings[2025]": 381820570794.0,
+          "earnings[2024]": 465157220395.0,
+          "market_cap": 10320000000000
+        }
+      },
+      {
+        "symbol": "ESSA.JK",
+        "company_name": "ESSA Industries Indonesia Tbk",
+        "query_values": {
+          "market_cap_rank": 160,
+          "revenue[2025]": 4937505558611.0,
+          "revenue[2024]": 4869749480409.0,
+          "earnings[2025]": 674329262163.0,
+          "earnings[2024]": 729997156203.0,
+          "market_cap": 10077780784500
+        }
+      },
+      {
+        "symbol": "AGII.JK",
+        "company_name": "PT Samator Indo Gas Tbk",
+        "query_values": {
+          "market_cap_rank": 163,
+          "revenue[2025]": 3008803000000.0,
+          "revenue[2024]": 2907675000000.0,
+          "earnings[2025]": 58379000000.0,
+          "earnings[2024]": 104947000000.0,
+          "market_cap": 9997311600000
+        }
+      },
+      {
+        "symbol": "CMNP.JK",
+        "company_name": "Citra Marga Nusaphala Persada Tbk",
+        "query_values": {
+          "market_cap_rank": 169,
+          "revenue[2025]": 5803208273000.0,
+          "revenue[2024]": 4108093965000.0,
+          "earnings[2025]": 1037491241000.0,
+          "earnings[2024]": 1050668300000.0,
+          "market_cap": 9542305007175
+        }
+      },
+      {
+        "symbol": "HEAL.JK",
+        "company_name": "PT Medikaloka Hermina Tbk",
+        "query_values": {
+          "market_cap_rank": 170,
+          "revenue[2025]": 7133538000000.0,
+          "revenue[2024]": 6717179000000.0,
+          "earnings[2025]": 429547000000.0,
+          "earnings[2024]": 535942000000.0,
+          "market_cap": 9526889000000
+        }
+      },
+      {
+        "symbol": "PLIN.JK",
+        "company_name": "Plaza Indonesia Realty Tbk",
+        "query_values": {
+          "market_cap_rank": 173,
+          "revenue[2025]": 1401311465000.0,
+          "revenue[2024]": 1386217604000.0,
+          "earnings[2025]": 639343126000.0,
+          "earnings[2024]": 997540171000.0,
+          "market_cap": 8910500000000
+        }
+      },
+      {
+        "symbol": "BJBR.JK",
+        "company_name": "Bank Pembangunan Daerah Jawa Barat dan Banten Tbk",
+        "query_values": {
+          "market_cap_rank": 185,
+          "revenue[2025]": 9821329000000.0,
+          "revenue[2024]": 8850000000000.0,
+          "earnings[2025]": 1152816000000.0,
+          "earnings[2024]": 1369463000000.0,
+          "market_cap": 7916334229240
+        }
+      },
+      {
+        "symbol": "INPP.JK",
+        "company_name": "Indonesian Paradise Property Tbk",
+        "query_values": {
+          "market_cap_rank": 187,
+          "revenue[2025]": 1740629000000.0,
+          "revenue[2024]": 1309661867481.0,
+          "earnings[2025]": -98595000000.0,
+          "earnings[2024]": 334903246413.0,
+          "market_cap": 7715560495080
+        }
+      },
+      {
+        "symbol": "SGRO.JK",
+        "company_name": "PT Prime Agri Resources Tbk",
+        "query_values": {
+          "market_cap_rank": 190,
+          "revenue[2025]": 6446671000000.0,
+          "revenue[2024]": 5694228000000.0,
+          "earnings[2025]": 547143000000.0,
+          "earnings[2024]": 748560000000.0,
+          "market_cap": 7656398620000
+        }
+      },
+      {
+        "symbol": "CNMA.JK",
+        "company_name": "PT Nusantara Sejahtera Raya Tbk",
+        "query_values": {
+          "market_cap_rank": 193,
+          "revenue[2025]": 5860402000000.0,
+          "revenue[2024]": 5711782000000.0,
+          "earnings[2025]": 704755000000.0,
+          "earnings[2024]": 728950000000.0,
+          "market_cap": 7501050000000
+        }
+      },
+      {
+        "symbol": "TMAS.JK",
+        "company_name": "PT Temas Tbk",
+        "query_values": {
+          "market_cap_rank": 194,
+          "revenue[2025]": 4348392000000.0,
+          "revenue[2024]": 4344406000000.0,
+          "earnings[2025]": 499235000000.0,
+          "earnings[2024]": 673363000000.0,
+          "market_cap": 7302592000000
+        }
+      }
+    ],
+    "pagination": {
+      "total_count": 32,
+      "showing": 32,
+      "limit": 200,
+      "offset": 0,
+      "has_next": false,
+      "has_previous": false,
+      "next_offset": null,
+      "previous_offset": null
+    }
+  }
+}

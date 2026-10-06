@@ -1,0 +1,25 @@
+{
+  "request": {
+    "path": "/v2/companies/",
+    "params": {
+      "where": "symbol in ['ICBP', 'INDF', 'UNVR', 'AMRT', 'MYOR', 'TLKM', 'BBRI'] and major_shareholders_share_percentage > 0 and free_float > 0",
+      "order_by": "-market_cap",
+      "limit": 50,
+      "include_query_values": "true"
+    }
+  },
+  "status": 200,
+  "response": {
+    "results": [],
+    "pagination": {
+      "total_count": 0,
+      "showing": 0,
+      "limit": 50,
+      "offset": 0,
+      "has_next": false,
+      "has_previous": false,
+      "next_offset": null,
+      "previous_offset": null
+    }
+  }
+}

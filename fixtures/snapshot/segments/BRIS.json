@@ -1,0 +1,95 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/BRIS/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 0,
+ "fetched_at": "2026-10-06T05:17:33+0700",
+ "fetched_at_epoch": 1791238653.7980373,
+ "source": "store-hit",
+ "data": {
+  "symbol": "BRIS.JK",
+  "financial_year": 2025,
+  "revenue_breakdown": [
+   {
+    "value": 14510697000000,
+    "source": "Income from sales and purchases",
+    "target": "Interest Income"
+   },
+   {
+    "value": 10126213000000,
+    "source": "Income from profit sharing",
+    "target": "Interest Income"
+   },
+   {
+    "value": 128536000000,
+    "source": "Income from ijarah - net",
+    "target": "Interest Income"
+   },
+   {
+    "value": 3500045000000,
+    "source": "Others",
+    "target": "Interest Income"
+   },
+   {
+    "value": 19129086000000,
+    "source": "Interest Income",
+    "target": "Net Interest Income"
+   },
+   {
+    "value": 9136405000000,
+    "source": "Interest Income",
+    "target": "Interest Expense"
+   },
+   {
+    "value": 19129086000000,
+    "source": "Net Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 6936596000000,
+    "source": "Non Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 10008017000000,
+    "source": "Total Revenue",
+    "target": "Operating Income"
+   },
+   {
+    "value": 16057665000000,
+    "source": "Total Revenue",
+    "target": "Operating and Credit-Related Expenses"
+   },
+   {
+    "value": 13700714000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 2356951000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Provision for Impairment"
+   },
+   {
+    "value": 5496617000000,
+    "source": "Operating Expense",
+    "target": "Salaries and employees' benefits"
+   },
+   {
+    "value": 8109463000000,
+    "source": "Operating Expense",
+    "target": "General and administrative expenses"
+   },
+   {
+    "value": 651000000,
+    "source": "Operating Expense",
+    "target": "Wadiah bonus"
+   },
+   {
+    "value": 93983000000,
+    "source": "Operating Expense",
+    "target": "Others (expense)"
+   }
+  ]
+ }
+}

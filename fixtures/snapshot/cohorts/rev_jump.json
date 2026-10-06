@@ -1,0 +1,118 @@
+{
+ "endpoint": "/sectors/v2/companies/",
+ "params": {
+  "where": "revenue[2024] > 0 and revenue[2025] > revenue[2024] * 1.2",
+  "order_by": "-market_cap",
+  "limit": 10,
+  "include_query_values": "true"
+ },
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-06T05:18:25+0700",
+ "fetched_at_epoch": 1791238705.213551,
+ "source": "sectors-live",
+ "data": {
+  "results": [
+   {
+    "symbol": "DCII.JK",
+    "company_name": "PT DCI Indonesia Tbk",
+    "query_values": {
+     "revenue[2024]": 1812446000000.0,
+     "revenue[2025]": 2540028000000.0,
+     "market_cap": 463876952140000
+    }
+   },
+   {
+    "symbol": "TPIA.JK",
+    "company_name": "PT Chandra Asri Pacific Tbk",
+    "query_values": {
+     "revenue[2024]": 28846126148000.0,
+     "revenue[2025]": 117490066355220.0,
+     "market_cap": 149232415283700
+    }
+   },
+   {
+    "symbol": "BRPT.JK",
+    "company_name": "Barito Pacific Tbk",
+    "query_values": {
+     "revenue[2024]": 38566678215000.0,
+     "revenue[2025]": 127710269336520.0,
+     "market_cap": 139214618795340
+    }
+   },
+   {
+    "symbol": "SMMA.JK",
+    "company_name": "PT Sinar Mas Multiartha Tbk",
+    "query_values": {
+     "revenue[2024]": 6585480000000.0,
+     "revenue[2025]": 36557901000000.0,
+     "market_cap": 127990060811700
+    }
+   },
+   {
+    "symbol": "CUAN.JK",
+    "company_name": "PT Petrindo Jaya Kreasi Tbk",
+    "query_values": {
+     "revenue[2024]": 12953438511000.0,
+     "revenue[2025]": 20345142032280.0,
+     "market_cap": 95556065000000
+    }
+   },
+   {
+    "symbol": "BRMS.JK",
+    "company_name": "Bumi Resources Minerals Tbk",
+    "query_values": {
+     "revenue[2024]": 2623004578146.0,
+     "revenue[2025]": 4173309138074.0,
+     "market_cap": 85070424202800
+    }
+   },
+   {
+    "symbol": "PANI.JK",
+    "company_name": "PT Pantai Indah Kapuk Dua Tbk.",
+    "query_values": {
+     "revenue[2024]": 2832586999000.0,
+     "revenue[2025]": 4316006452000.0,
+     "market_cap": 84763080242680
+    }
+   },
+   {
+    "symbol": "ANTM.JK",
+    "company_name": "Aneka Tambang Tbk.",
+    "query_values": {
+     "revenue[2024]": 69192440000000.0,
+     "revenue[2025]": 84642439000000.0,
+     "market_cap": 76898447120000
+    }
+   },
+   {
+    "symbol": "CDIA.JK",
+    "company_name": "PT Chandra Daya Investasi Tbk",
+    "query_values": {
+     "revenue[2024]": 1655611831257.0,
+     "revenue[2025]": 2477541604914.0,
+     "market_cap": 73025184199500
+    }
+   },
+   {
+    "symbol": "PTRO.JK",
+    "company_name": "Petrosea Tbk",
+    "query_values": {
+     "revenue[2024]": 11161433327000.0,
+     "revenue[2025]": 14836185595140.0,
+     "market_cap": 51943157500000
+    }
+   }
+  ],
+  "pagination": {
+   "total_count": 186,
+   "showing": 10,
+   "limit": 10,
+   "offset": 0,
+   "has_next": true,
+   "has_previous": false,
+   "next_offset": 10,
+   "previous_offset": null
+  }
+ }
+}

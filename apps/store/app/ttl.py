@@ -9,6 +9,8 @@ DAY = 24 * HOUR
 
 def data_kind(endpoint: str) -> str:
     path = normalize_path(endpoint)
+    if path.startswith("/SECTORS/"):
+        return "annual"
     if any(s in path for s in ("/helpers", "/subsectors", "/industries", "/subindustries", "/tags", "/broker/registry")):
         return "helper"
     if "/subsector/report" in path:
@@ -42,5 +44,7 @@ def ttl_seconds(endpoint: str, default_ttl: int) -> int:
         "screener": DAY,
         "mining": 7 * DAY,
         "regional": DAY,
+        # Fundamental tahunan, segmen, kepemilikan: berubah per laporan tahunan, bukan harian.
+        "annual": 30 * DAY,
         "default": default_ttl,
     }[kind]
