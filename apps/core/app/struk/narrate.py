@@ -44,6 +44,8 @@ RECEIPT_SCHEMA = {
 }
 
 RECEIPT_PROMPT = """Kamu membaca struk belanja Indonesia (atau daftar barang/layanan yang diketik pengguna).
+Gambar juga bisa berupa FOTO PRODUK (kemasan, rak, logo, papan toko, aplikasi di layar), bukan struk:
+maka setiap merek yang terlihat jelas menjadi satu item (raw = teks yang terbaca di kemasan, singkat), dan store = "".
 Untuk setiap baris barang/layanan, kembalikan:
 - raw: teks baris apa adanya (singkat)
 - brand: nama MEREK yang paling mungkin (mis. "IDM GRG SPCL" → "Indomie", "PEPSODENT 190G" → "Pepsodent"); "" bila barang tanpa merek

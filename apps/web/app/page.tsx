@@ -156,13 +156,13 @@ export default function StrukPage() {
                 Kamu sudah jadi pelanggan mereka. <span className="hl">Sekarang kenali perusahaannya.</span>
               </h1>
               <p className="sub">
-                Foto struk belanjamu. Kami cari perusahaan terbuka di balik tiap merek, lalu tunjukkan dari mana uangnya datang, siapa pemiliknya, dan
+                Foto struk belanjamu — atau satu produk saja. Kami cari perusahaan terbuka di balik tiap merek, lalu tunjukkan dari mana uangnya datang, siapa pemiliknya, dan
                 pertanyaan kritis yang layak kamu ajukan.
               </p>
               <ol className="sj-steps">
                 <li>
                   <span>
-                    <b>AI hanya membaca nama merek</b> di strukmu — tidak pernah menulis angka.
+                    <b>AI hanya membaca nama merek</b> di struk atau kemasan — tidak pernah menulis angka.
                   </span>
                 </li>
                 <li>
@@ -185,7 +185,7 @@ export default function StrukPage() {
               </div>
               <div className="sj-tabs" role="tablist">
                 <button className="sj-tab" role="tab" aria-selected={mode === "foto"} onClick={() => setMode("foto")}>
-                  Foto struk
+                  Foto struk / produk
                 </button>
                 <button className="sj-tab" role="tab" aria-selected={mode === "teks"} onClick={() => setMode("teks")}>
                   Ketik belanjaan
@@ -202,7 +202,7 @@ export default function StrukPage() {
                   >
                     {image ? (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={image} alt="Pratinjau struk" />
+                      <img src={image} alt="Pratinjau foto" />
                     ) : (
                       <div>
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
@@ -210,7 +210,7 @@ export default function StrukPage() {
                           <circle cx="12" cy="13" r="3.5" />
                         </svg>
                         <strong>Ambil foto atau pilih gambar</strong>
-                        <span style={{ fontSize: 13 }}>Struk Indomaret, Alfamart, supermarket, apa saja</span>
+                        <span style={{ fontSize: 13 }}>Struk belanja, atau kemasan produk (Sari Roti, Indomie, …)</span>
                       </div>
                     )}
                   </div>
@@ -248,7 +248,7 @@ export default function StrukPage() {
               <button className={`sj-go${busy ? " busy" : ""}`} onClick={onScan} disabled={!canScan || busy}>
                 {busy ? (
                   <>
-                    <span>Membaca struk…</span>
+                    <span>Membaca merek…</span>
                     <span className="sj-spin" />
                   </>
                 ) : (
@@ -396,7 +396,7 @@ function Basket({ r, onPick, active, loading }: { r: ScanResult; onPick: (s: str
 
       <div className="sj-result">
         <div>
-          <div className="sj-col-h">Baris struk → kode saham</div>
+          <div className="sj-col-h">{r.store_name ? "Baris struk" : "Yang terbaca"} → kode saham</div>
           <div className="sj-lines">
             {receiptLines(r).map(({ raw, c }, i) =>
               c ? (

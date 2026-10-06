@@ -1,9 +1,66 @@
-# Struk Jadi Saham
+<div align="center">
 
-> Foto struk belanjamu → kenali perusahaan terbuka di balik tiap merek: dari mana uangnya datang, siapa pemiliknya, dan pertanyaan kritis yang layak kamu ajukan.
-> Sectors Hackathon 2026 · **Track: Market Intelligence** · semua angka dari **Sectors API v2**, AI tidak pernah menulis angka.
+# Struk → Saham
 
-**Insight turunan, bukan data mentah:** 9 detektor anomali berbasis aritmatika Screener + ukuran kohort seluruh bursa, peringkat dari 962 emiten, rasio "per Rp100 pendapatan", perbandingan se-industri, dan rantai pengendali yang ditelusuri dari data pemegang saham.
+**Kamu sudah jadi pelanggan mereka. Sekarang kenali perusahaannya.**
+
+Foto struk belanja — atau satu kemasan produk — dan lihat perusahaan terbuka di balik tiap merek:<br>
+dari mana uangnya datang, siapa pemiliknya, dan pertanyaan kritis yang layak kamu ajukan.
+
+![Sectors API v2](https://img.shields.io/badge/data-Sectors%20API%20v2-2b4bff?style=flat-square)
+![Track](https://img.shields.io/badge/track-Market%20Intelligence-c8f046?style=flat-square&labelColor=0b0d12)
+![Runtime credits](https://img.shields.io/badge/kredit%20runtime-0-ff7a1a?style=flat-square)
+![AI numbers](https://img.shields.io/badge/angka%20dari%20AI-0-0b0d12?style=flat-square)
+![Tests](https://img.shields.io/badge/tes-98%20lulus-2b4bff?style=flat-square)
+
+<img src="docs/img/hero.png" alt="Halaman utama Struk Jadi Saham" width="100%">
+
+</div>
+
+---
+
+## Input → Output
+
+### 📦 Foto satu produk → kartu kenalan sahamnya
+
+![Foto kemasan Sari Roti menjadi kartu kenalan ROTI](docs/img/demo-produk.png)
+
+Kemasan **Sari Roti** → AI membaca mereknya → katalog mencocokkan ke **ROTI** → dicek ke data Sectors → kartu kenalan PT Nippon Indosari Corpindo Tbk.
+Dari setiap Rp100 pendapatannya, hanya sekitar **Rp6,9** yang jadi laba bersih — dan dividennya **259%** dari laba. Itu yang layak ditanyakan.
+
+### 🧾 Foto satu struk → peta pemilik belanjaanmu
+
+![Struk Indomaret menjadi peta pemilik tujuh emiten](docs/img/demo-struk.png)
+
+Tujuh baris struk Indomaret → tujuh emiten, **dikelompokkan per pemilik**: Indomie, Sari Roti, dan Indomaret sendiri ternyata sama-sama bermuara ke **Grup Salim**.
+Baris pembayaran (BRImo QRIS) diabaikan; kartu merek **barang** pertama langsung terbuka.
+
+<sub>Gambar input di atas adalah struk dan kemasan contoh yang kami render untuk demo. Output-nya adalah screenshot asli aplikasi setelah gambar itu diunggah lewat jalur foto — tanpa disunting.</sub>
+
+---
+
+## Isi kartu kenalan
+
+Setiap kartu dibangun 100% dari data Sectors. Contoh di bawah: **ICBP** (Indomie).
+
+<table>
+<tr>
+<td width="50%"><b>01 · Seberapa besar?</b><br><sub>"Dari setiap Rp100 pendapatan…", peringkat dari 962 emiten, tren 4 tahun</sub><br><img src="docs/img/card-b1.png"></td>
+<td width="50%"><b>02 · Peta uang</b><br><sub>Segmen pendapatan → biaya → laba (Sankey dari endpoint segments)</sub><br><img src="docs/img/card-b2.png"></td>
+</tr>
+<tr>
+<td><b>03 · Siapa pemiliknya?</b><br><sub>Porsi publik + rantai pengendali: ICBP ← INDF ← First Pacific → Grup Salim</sub><br><img src="docs/img/card-b3.png"></td>
+<td><b>05 · Pertanyaan kritis</b><br><sub>Pola dihitung Sectors ke seluruh bursa — "dimiliki 181 dari 962 perusahaan"</sub><br><img src="docs/img/card-b5.png"></td>
+</tr>
+</table>
+
+<details>
+<summary><b>📱 Tampilan ponsel</b></summary>
+<br>
+<p align="center">
+<img src="docs/img/mobile-result.png" width="300">&nbsp;&nbsp;<img src="docs/img/mobile-card.png" width="300">
+</p>
+</details>
 
 ---
 
@@ -11,18 +68,24 @@
 
 Jutaan orang Indonesia membeli Indomie, Pepsodent, pulsa Telkomsel, dan GoFood setiap minggu, tapi tidak tahu bahwa merek-merek itu dimiliki perusahaan yang sahamnya bisa mereka pelajari — bahkan beli. Aplikasi saham dibuat untuk orang yang *sudah* paham pasar. Pemula yang kritis dan penasaran tidak punya pintu masuk.
 
-**Struk Jadi Saham** memakai benda yang semua orang punya — struk belanja — sebagai pintu masuk itu.
+**Struk Jadi Saham** memakai benda yang semua orang punya — struk belanja, atau bungkus produk di meja — sebagai pintu masuk itu.
+
+**Insight turunan, bukan data mentah** (track Market Intelligence): 9 detektor anomali berbasis aritmatika Screener + ukuran kohort seluruh bursa, peringkat dari 962 emiten, rasio "per Rp100 pendapatan", perbandingan se-industri, dan rantai pengendali yang ditelusuri dari data pemegang saham.
 
 ## 2. Cara kerjanya
 
+```mermaid
+flowchart LR
+    A["📷 Foto struk<br>📦 Foto produk<br>⌨️ Teks"] --> B["AI membaca<br><b>nama merek saja</b><br><i>tanpa angka</i>"]
+    B --> C["Katalog kurasi<br>57 emiten · 196 merek<br><i>tebakan AI = 'dugaan'</i>"]
+    C --> D{"Ada di data<br>Sectors?"}
+    D -- tidak --> E["'bukan emiten'<br>(Aqua, Mie Sedaap…)"]
+    D -- ya --> F["Kartu Kenalan<br><b>100% data Sectors</b>"]
+    F --> G["01 Ukuran · 02 Peta uang<br>03 Pemilik · 04 Sejenis<br>05 Pertanyaan kritis"]
+    style B fill:#0b0d12,color:#c8f046,stroke:#0b0d12
+    style F fill:#2b4bff,color:#fff,stroke:#2b4bff
+    style E fill:#ff7a1a,color:#0b0d12,stroke:#ff7a1a
 ```
-foto / teks struk ──► AI membaca NAMA MEREK saja (Gemini, tanpa angka)
-                 ──► merek → emiten (katalog kurasi 57 emiten · 196 merek; tebakan AI ditandai "dugaan")
-                 ──► emiten wajib ada di data Sectors, kalau tidak: "bukan emiten"
-                 ──► Kartu Kenalan per perusahaan, 100% dari Sectors
-```
-
-Setelah scan, kartu kenalan merek **barang** teratas langsung terbuka (bukan alat bayar atau toko), supaya pengguna pertama langsung melihat bahwa ada data nyata di balik belanjaannya.
 
 | Bagian kartu | Isi | Sumber Sectors |
 |---|---|---|
@@ -54,7 +117,8 @@ Setiap pola adalah ekspresi `where` Screener Sectors, ditampilkan apa adanya ke 
 
 **Uji copot:** jalankan Core dengan `STRUK_SECTORS_OFF=1` — semua endpoint menolak dengan
 `"Tanpa data Sectors, aplikasi ini tidak bisa menampilkan apa pun — kami tidak mengarang angka."`
-Tidak ada fallback angka dari AI. Ini diuji otomatis (`test_sectors_off_kills_the_app`).
+Tidak ada fallback angka dari AI.
+ Ini diuji otomatis (`test_sectors_off_kills_the_app`).
 
 Peran AI sengaja sempit:
 
