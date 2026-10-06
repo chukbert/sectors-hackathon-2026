@@ -1,0 +1,75 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/BRPT/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:54:51+0700",
+ "fetched_at_epoch": 1791320091.8950884,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "BRPT.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 27215674807000,
+    "source": "Petrochemical",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 5955324787000,
+    "source": "Electricity",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 2532819791000,
+    "source": "Energy lease income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1971525611000,
+    "source": "Steam",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 640350381000,
+    "source": "Finance lease income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 250982838000,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 30184378144000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 8382300071000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 5492022812000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 2890277259000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 735612053000,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 2154665206000,
+    "source": "Operating Expense",
+    "target": "General and administration"
+   }
+  ]
+ }
+}

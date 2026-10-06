@@ -1,0 +1,55 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/TMAS/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:56:46+0700",
+ "fetched_at_epoch": 1791320206.1852384,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "TMAS.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 4240444000000,
+    "source": "Shipping service",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 103962000000,
+    "source": "Stevedoring service",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 3444217000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 900189000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 673093000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 227096000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 131619000000,
+    "source": "Operating Expense",
+    "target": "Salaries and employee benefits"
+   },
+   {
+    "value": 95477000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

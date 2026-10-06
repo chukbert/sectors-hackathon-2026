@@ -1,0 +1,110 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/BNLI/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:54:44+0700",
+ "fetched_at_epoch": 1791320084.217051,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "BNLI.JK",
+  "financial_year": 2025,
+  "revenue_breakdown": [
+   {
+    "value": 11464021000000,
+    "source": "Loans",
+    "target": "Interest Income"
+   },
+   {
+    "value": 4401576000000,
+    "source": "Investment Securities",
+    "target": "Interest Income"
+   },
+   {
+    "value": 636099000000,
+    "source": "Placement with Bank Indonesia",
+    "target": "Interest Income"
+   },
+   {
+    "value": 111985000000,
+    "source": "Securities purchased under resale agreements",
+    "target": "Interest Income"
+   },
+   {
+    "value": 286665000000,
+    "source": "Financial assets held for trading",
+    "target": "Interest Income"
+   },
+   {
+    "value": 66990000000,
+    "source": "Acceptance receivables and trade finance",
+    "target": "Interest Income"
+   },
+   {
+    "value": 64896000000,
+    "source": "Current accounts with Bank Indonesia",
+    "target": "Interest Income"
+   },
+   {
+    "value": 2732000000,
+    "source": "Others",
+    "target": "Interest Income"
+   },
+   {
+    "value": 10022262000000,
+    "source": "Interest Income",
+    "target": "Net Interest Income"
+   },
+   {
+    "value": 7012702000000,
+    "source": "Interest Income",
+    "target": "Interest Expense"
+   },
+   {
+    "value": 10022262000000,
+    "source": "Net Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 2534512000000,
+    "source": "Non Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 4631007000000,
+    "source": "Total Revenue",
+    "target": "Operating Income"
+   },
+   {
+    "value": 7925767000000,
+    "source": "Total Revenue",
+    "target": "Operating and Credit-Related Expenses"
+   },
+   {
+    "value": 6152863000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 1772904000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Provision for Impairment"
+   },
+   {
+    "value": 3446920000000,
+    "source": "Operating Expense",
+    "target": "Salaries and employees' benefits"
+   },
+   {
+    "value": 1701368000000,
+    "source": "Operating Expense",
+    "target": "General and administrative expenses"
+   },
+   {
+    "value": 1004575000000,
+    "source": "Operating Expense",
+    "target": "Others (expense)"
+   }
+  ]
+ }
+}

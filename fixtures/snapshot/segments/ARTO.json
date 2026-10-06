@@ -1,0 +1,100 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/ARTO/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:54:41+0700",
+ "fetched_at_epoch": 1791320081.8674457,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "ARTO.JK",
+  "financial_year": 2025,
+  "revenue_breakdown": [
+   {
+    "value": 3023733000000,
+    "source": "Loans",
+    "target": "Interest Income"
+   },
+   {
+    "value": 270178000000,
+    "source": "Securities",
+    "target": "Interest Income"
+   },
+   {
+    "value": 103989000000,
+    "source": "Current account and placement with Bank Indonesia",
+    "target": "Interest Income"
+   },
+   {
+    "value": 5851000000,
+    "source": "Placement with other banks",
+    "target": "Interest Income"
+   },
+   {
+    "value": 3595000000,
+    "source": "Securities purchased under resale\nagreements",
+    "target": "Interest Income"
+   },
+   {
+    "value": 6187000000,
+    "source": "Sharia income",
+    "target": "Interest Income"
+   },
+   {
+    "value": 2465988000000,
+    "source": "Interest Income",
+    "target": "Net Interest Income"
+   },
+   {
+    "value": 947545000000,
+    "source": "Interest Income",
+    "target": "Interest Expense"
+   },
+   {
+    "value": 2465988000000,
+    "source": "Net Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 455392000000,
+    "source": "Non Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 351355000000,
+    "source": "Total Revenue",
+    "target": "Operating Income"
+   },
+   {
+    "value": 2570025000000,
+    "source": "Total Revenue",
+    "target": "Operating and Credit-Related Expenses"
+   },
+   {
+    "value": 1699853000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 870172000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Provision for Impairment"
+   },
+   {
+    "value": 549022000000,
+    "source": "Operating Expense",
+    "target": "Personnel"
+   },
+   {
+    "value": 1139315000000,
+    "source": "Operating Expense",
+    "target": "General and administrative expenses"
+   },
+   {
+    "value": 11516000000,
+    "source": "Operating Expense",
+    "target": "Others (expense)"
+   }
+  ]
+ }
+}

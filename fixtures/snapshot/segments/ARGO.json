@@ -1,0 +1,65 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/ARGO/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:57:42+0700",
+ "fetched_at_epoch": 1791320262.2009368,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "ARGO.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 63718674886,
+    "source": "Rent",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 27599401910,
+    "source": "Cooperation",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 11224492294,
+    "source": "Energy",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 454280483,
+    "source": "Textile",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 70732212270,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 32264637303,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 19666014435,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 12598622868,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 3129244464,
+    "source": "Operating Expense",
+    "target": "Selling and distribution"
+   },
+   {
+    "value": 9469378404,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

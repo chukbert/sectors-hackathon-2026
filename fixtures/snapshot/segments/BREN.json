@@ -1,0 +1,90 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/BREN/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:54:49+0700",
+ "fetched_at_epoch": 1791320089.4482827,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "BREN.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 4497559462000,
+    "source": "Sales of electricity",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1971525611000,
+    "source": "Sales of steam",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 597809000,
+    "source": "Management fee",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 16157000,
+    "source": "Carbon credits",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 2532819791000,
+    "source": "Operating lease income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 640350381000,
+    "source": "Finance lease income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 0,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 9642869211000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 6776488155000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 2866381056000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 633515970000,
+    "source": "Operating Expense",
+    "target": "Employee compensation and benefits"
+   },
+   {
+    "value": 1337088692000,
+    "source": "Operating Expense",
+    "target": "Depreciation and amortisation"
+   },
+   {
+    "value": 276090816000,
+    "source": "Operating Expense",
+    "target": "Consultant and technician"
+   },
+   {
+    "value": 267786118000,
+    "source": "Operating Expense",
+    "target": "Production allowance to PGE"
+   },
+   {
+    "value": 351899460000,
+    "source": "Operating Expense",
+    "target": "Others (expense)"
+   }
+  ]
+ }
+}

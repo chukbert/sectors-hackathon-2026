@@ -1,0 +1,70 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/SMMT/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:01:08+0700",
+ "fetched_at_epoch": 1791320468.391911,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "SMMT.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 816953682813,
+    "source": "Coal Mining",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 772726286604,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 44227396209,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 5530729382,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 38696666827,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 18730032910,
+    "source": "Operating Expense",
+    "target": "Marketing"
+   },
+   {
+    "value": 12059479398,
+    "source": "Operating Expense",
+    "target": "Salaries and allowance"
+   },
+   {
+    "value": 4581391695,
+    "source": "Operating Expense",
+    "target": "Professional fee"
+   },
+   {
+    "value": 680630300,
+    "source": "Operating Expense",
+    "target": "Rent"
+   },
+   {
+    "value": 588547029,
+    "source": "Operating Expense",
+    "target": "General and accomodation"
+   },
+   {
+    "value": 2056585495,
+    "source": "Operating Expense",
+    "target": "Others (expense)"
+   }
+  ]
+ }
+}

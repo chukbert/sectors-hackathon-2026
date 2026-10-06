@@ -1,0 +1,75 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/EDGE/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:56:41+0700",
+ "fetched_at_epoch": 1791320201.2700336,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "EDGE.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 403683000000,
+    "source": "Data center",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 384895000000,
+    "source": "Cloud services",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 225292000000,
+    "source": "Connectivity",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 13861000000,
+    "source": "Managed services",
+    "target": "Total Revenue"
+   },
+   {
+    "value": -16857000000,
+    "source": "Rebate",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 5952000000,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 593917000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 422909000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 318056000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 104853000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 4037000000,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 100816000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

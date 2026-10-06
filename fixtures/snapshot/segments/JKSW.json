@@ -1,0 +1,50 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/JKSW/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:58:42+0700",
+ "fetched_at_epoch": 1791320322.000464,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "JKSW.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 0,
+    "source": "Concrete Steel Non Standard",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 0,
+    "source": "Concrete Steel Standard",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 0,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 0,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 13889031205,
+    "source": "Operating Income",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 0,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 13889031205,
+    "source": "Operating Expense",
+    "target": "General and administrative expenses"
+   }
+  ]
+ }
+}

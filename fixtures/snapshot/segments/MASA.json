@@ -1,0 +1,50 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/MASA/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:58:42+0700",
+ "fetched_at_epoch": 1791320322.8221061,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "MASA.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 6809214190814,
+    "source": "Manufacturing and distributing of tyres for motor vehicles",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 4166526476674,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 2642687714140,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 706298747197,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 1936388966943,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 834429024379,
+    "source": "Operating Expense",
+    "target": "Selling and distribution"
+   },
+   {
+    "value": 1101959942564,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

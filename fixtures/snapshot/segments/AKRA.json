@@ -1,0 +1,70 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/AKRA/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:55:42+0700",
+ "fetched_at_epoch": 1791320142.331176,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "AKRA.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 35532248951000,
+    "source": "Trading and distribution: Petroleum, basic chemical and others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 651720510000,
+    "source": "Manufacturing",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1077748046000,
+    "source": "Logistic services: port operation and transportation, storage services, others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1195408537000,
+    "source": "Industrial estate land and others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 272367254000,
+    "source": "Rental income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 35220457367000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 3509035931000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 2534444074000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 974591857000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 873443923000,
+    "source": "Operating Expense",
+    "target": "General and Administrative"
+   },
+   {
+    "value": 101147934000,
+    "source": "Operating Expense",
+    "target": "Selling"
+   }
+  ]
+ }
+}

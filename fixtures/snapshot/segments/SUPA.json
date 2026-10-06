@@ -1,0 +1,95 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/SUPA/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:00:44+0700",
+ "fetched_at_epoch": 1791320444.6626368,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "SUPA.JK",
+  "financial_year": 2025,
+  "revenue_breakdown": [
+   {
+    "value": 1785480000000,
+    "source": "Loans",
+    "target": "Interest Income"
+   },
+   {
+    "value": 359663000000,
+    "source": "Securities",
+    "target": "Interest Income"
+   },
+   {
+    "value": 3498000000,
+    "source": "Securities purchased under resale",
+    "target": "Interest Income"
+   },
+   {
+    "value": 359000000,
+    "source": "Current accounts with Bank Indonesia",
+    "target": "Interest Income"
+   },
+   {
+    "value": 14280000000,
+    "source": "Placements with Bank Indonesia and other banks",
+    "target": "Interest Income"
+   },
+   {
+    "value": 1576274000000,
+    "source": "Interest Income",
+    "target": "Net Interest Income"
+   },
+   {
+    "value": 587006000000,
+    "source": "Interest Income",
+    "target": "Interest Expense"
+   },
+   {
+    "value": 1576274000000,
+    "source": "Net Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 40264000000,
+    "source": "Non Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 143273000000,
+    "source": "Total Revenue",
+    "target": "Operating Income"
+   },
+   {
+    "value": 1473265000000,
+    "source": "Total Revenue",
+    "target": "Operating and Credit-Related Expenses"
+   },
+   {
+    "value": 1153540000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 319725000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Provision for Impairment"
+   },
+   {
+    "value": 440380000000,
+    "source": "Operating Expense",
+    "target": "Personnel expenses"
+   },
+   {
+    "value": 711574000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   },
+   {
+    "value": 1586000000,
+    "source": "Operating Expense",
+    "target": "Others (expense)"
+   }
+  ]
+ }
+}

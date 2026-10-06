@@ -1,0 +1,100 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/BBKP/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:56:45+0700",
+ "fetched_at_epoch": 1791320205.36448,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "BBKP.JK",
+  "financial_year": 2025,
+  "revenue_breakdown": [
+   {
+    "value": 3587717000000,
+    "source": "Loans",
+    "target": "Interest Income"
+   },
+   {
+    "value": 1169290000000,
+    "source": "Marketable Securities",
+    "target": "Interest Income"
+   },
+   {
+    "value": 119116000000,
+    "source": "Placement with Bank Indonesia and other banks",
+    "target": "Interest Income"
+   },
+   {
+    "value": 16107000000,
+    "source": "Current account with Bank Indonesia and other banks",
+    "target": "Interest Income"
+   },
+   {
+    "value": 545088000000,
+    "source": "Sharia income",
+    "target": "Interest Income"
+   },
+   {
+    "value": 402000000,
+    "source": "Others",
+    "target": "Interest Income"
+   },
+   {
+    "value": 1191946000000,
+    "source": "Interest Income",
+    "target": "Net Interest Income"
+   },
+   {
+    "value": 4245774000000,
+    "source": "Interest Income",
+    "target": "Interest Expense"
+   },
+   {
+    "value": 1191946000000,
+    "source": "Net Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 356792000000,
+    "source": "Non Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1035854000000,
+    "source": "Operating Income",
+    "target": "Operating and Credit-Related Expenses"
+   },
+   {
+    "value": 1548738000000,
+    "source": "Total Revenue",
+    "target": "Operating and Credit-Related Expenses"
+   },
+   {
+    "value": 2134761000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 449831000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Provision for Impairment"
+   },
+   {
+    "value": 790297000000,
+    "source": "Operating Expense",
+    "target": "Salaries and employees' benefits"
+   },
+   {
+    "value": 1232578000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   },
+   {
+    "value": 111886000000,
+    "source": "Operating Expense",
+    "target": "Premium of government guarantee"
+   }
+  ]
+ }
+}

@@ -1,0 +1,55 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/META/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:57:39+0700",
+ "fetched_at_epoch": 1791320259.3308194,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "META.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 183523698334,
+    "source": "Electricity sales",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 101152602133,
+    "source": "Treated water sales",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 8989091115,
+    "source": "Advertisement and land rent income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 133625927249,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 160039464333,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 41376256428,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 118663207905,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 118663207905,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

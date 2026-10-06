@@ -1,0 +1,70 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/CUAN/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:00:10+0700",
+ "fetched_at_epoch": 1791320410.4236257,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "CUAN.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 4497220165000,
+    "source": "Sale of coal",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 4045842056000,
+    "source": "Construction and engineering",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 3928946161000,
+    "source": "Mining",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 446046299000,
+    "source": "Services",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 35383830000,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 11049077549000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 1904360962000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 467777464000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 1436583498000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 573799698000,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 862783800000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

@@ -1,0 +1,65 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/SGRO/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:56:44+0700",
+ "fetched_at_epoch": 1791320204.9558556,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "SGRO.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 5358581000000,
+    "source": "Palm products",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 171395000000,
+    "source": "Germinated seeds",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 164252000000,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 4093606000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 1600622000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 1008391000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 592231000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 146690000000,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 265291000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   },
+   {
+    "value": 180250000000,
+    "source": "Operating Expense",
+    "target": "Others (expense)"
+   }
+  ]
+ }
+}

@@ -1,0 +1,65 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/INPP/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:56:44+0700",
+ "fetched_at_epoch": 1791320204.5443864,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "INPP.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 475686616945,
+    "source": "Commercial",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 580400201531,
+    "source": "Hospitality",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 232066883577,
+    "source": "Property sales",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 21508165428,
+    "source": "Property management and others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 449931460753,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 859730406728,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 278773256208,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 580957150520,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 84042820112,
+    "source": "Operating Expense",
+    "target": "Selling and marketing"
+   },
+   {
+    "value": 496914330408,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

@@ -1,0 +1,105 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/BTPS/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:56:47+0700",
+ "fetched_at_epoch": 1791320207.4136205,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "BTPS.JK",
+  "financial_year": 2025,
+  "revenue_breakdown": [
+   {
+    "value": 4559651000000,
+    "source": "Sales and purchases",
+    "target": "Interest Income"
+   },
+   {
+    "value": 34564000000,
+    "source": "Profit sharing",
+    "target": "Interest Income"
+   },
+   {
+    "value": 563394000000,
+    "source": "Marketable securities",
+    "target": "Interest Income"
+   },
+   {
+    "value": 10305000000,
+    "source": "Placement in Deposits",
+    "target": "Interest Income"
+   },
+   {
+    "value": 6480000000,
+    "source": "Placement in Interbank Mudharabah Investment (SIMA)",
+    "target": "Interest Income"
+   },
+   {
+    "value": 40471000000,
+    "source": "Placement in Fasilitas Simpanan Bank Indonesia dalam Rupiah (FASBI)",
+    "target": "Interest Income"
+   },
+   {
+    "value": 4379000000,
+    "source": "Others",
+    "target": "Interest Income"
+   },
+   {
+    "value": 4730260000000,
+    "source": "Interest Income",
+    "target": "Net Interest Income"
+   },
+   {
+    "value": 488984000000,
+    "source": "Interest Income",
+    "target": "Interest Expense"
+   },
+   {
+    "value": 4730260000000,
+    "source": "Net Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 41595000000,
+    "source": "Non Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1616659000000,
+    "source": "Total Revenue",
+    "target": "Operating Income"
+   },
+   {
+    "value": 3155196000000,
+    "source": "Total Revenue",
+    "target": "Operating and Credit-Related Expenses"
+   },
+   {
+    "value": 2328901000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 826295000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Provision for Impairment"
+   },
+   {
+    "value": 1562583000000,
+    "source": "Operating Expense",
+    "target": "Salaries and employees' benefits"
+   },
+   {
+    "value": 728316000000,
+    "source": "Operating Expense",
+    "target": "General and administrative expenses"
+   },
+   {
+    "value": 38002000000,
+    "source": "Operating Expense",
+    "target": "Others (expense)"
+   }
+  ]
+ }
+}

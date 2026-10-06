@@ -1,0 +1,95 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/BDMN/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:54:42+0700",
+ "fetched_at_epoch": 1791320082.9962466,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "BDMN.JK",
+  "financial_year": 2025,
+  "revenue_breakdown": [
+   {
+    "value": 13381490000000,
+    "source": "Loans",
+    "target": "Interest Income"
+   },
+   {
+    "value": 10083074000000,
+    "source": "Consumer financing receivables",
+    "target": "Interest Income"
+   },
+   {
+    "value": 1202409000000,
+    "source": "Government bonds",
+    "target": "Interest Income"
+   },
+   {
+    "value": 996922000000,
+    "source": "Marketable securities and other bills receivable",
+    "target": "Interest Income"
+   },
+   {
+    "value": 276878000000,
+    "source": "Placement with other bank and BI",
+    "target": "Interest Income"
+   },
+   {
+    "value": 17923754000000,
+    "source": "Interest Income",
+    "target": "Net Interest Income"
+   },
+   {
+    "value": 8017019000000,
+    "source": "Interest Income",
+    "target": "Interest Expense"
+   },
+   {
+    "value": 17923754000000,
+    "source": "Net Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 4721253000000,
+    "source": "Non Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 5124208000000,
+    "source": "Total Revenue",
+    "target": "Operating Income"
+   },
+   {
+    "value": 17520799000000,
+    "source": "Total Revenue",
+    "target": "Operating and Credit-Related Expenses"
+   },
+   {
+    "value": 13173207000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 4347592000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Provision for Impairment"
+   },
+   {
+    "value": 7293041000000,
+    "source": "Operating Expense",
+    "target": "Salaries and employees' benefits"
+   },
+   {
+    "value": 5243684000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   },
+   {
+    "value": 636482000000,
+    "source": "Operating Expense",
+    "target": "Others (expense)"
+   }
+  ]
+ }
+}

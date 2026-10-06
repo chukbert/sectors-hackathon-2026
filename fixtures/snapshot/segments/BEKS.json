@@ -1,0 +1,90 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/BEKS/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:02:33+0700",
+ "fetched_at_epoch": 1791320553.0071902,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "BEKS.JK",
+  "financial_year": 2025,
+  "revenue_breakdown": [
+   {
+    "value": 449070000000,
+    "source": "Loans",
+    "target": "Interest Income"
+   },
+   {
+    "value": 66924000000,
+    "source": "Securities",
+    "target": "Interest Income"
+   },
+   {
+    "value": 15293000000,
+    "source": "Placement with Bank Indonesia",
+    "target": "Interest Income"
+   },
+   {
+    "value": 35673000000,
+    "source": "Marketable Securities",
+    "target": "Interest Income"
+   },
+   {
+    "value": 3535000000,
+    "source": "Current account with Bank Indonesia and other banks",
+    "target": "Interest Income"
+   },
+   {
+    "value": 198691000000,
+    "source": "Interest Income",
+    "target": "Net Interest Income"
+   },
+   {
+    "value": 371804000000,
+    "source": "Interest Income",
+    "target": "Interest Expense"
+   },
+   {
+    "value": 198691000000,
+    "source": "Net Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 86233000000,
+    "source": "Non Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 59506000000,
+    "source": "Total Revenue",
+    "target": "Operating Income"
+   },
+   {
+    "value": 225418000000,
+    "source": "Total Revenue",
+    "target": "Operating and Credit-Related Expenses"
+   },
+   {
+    "value": 288438000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Operating Expense"
+   },
+   {
+    "value": -63020000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Provision for Impairment"
+   },
+   {
+    "value": 129669000000,
+    "source": "Operating Expense",
+    "target": "Salaries and employees' benefits"
+   },
+   {
+    "value": 158769000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

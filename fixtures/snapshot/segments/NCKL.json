@@ -1,0 +1,55 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/NCKL/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:00:36+0700",
+ "fetched_at_epoch": 1791320436.8434324,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "NCKL.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 23164020000000,
+    "source": "Nickel processing",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 3801242000000,
+    "source": "Nickel mining",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 18517976000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 8447286000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 6857410000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 1589876000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 76182000000,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 1513694000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

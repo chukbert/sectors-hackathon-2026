@@ -1,0 +1,90 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/BNBA/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:57:47+0700",
+ "fetched_at_epoch": 1791320267.115625,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "BNBA.JK",
+  "financial_year": 2025,
+  "revenue_breakdown": [
+   {
+    "value": 402765481737,
+    "source": "Loans",
+    "target": "Interest Income"
+   },
+   {
+    "value": 102952595837,
+    "source": "Marketable Securities",
+    "target": "Interest Income"
+   },
+   {
+    "value": 29051279977,
+    "source": "Placement with Bank Indonesia",
+    "target": "Interest Income"
+   },
+   {
+    "value": 95494796,
+    "source": "Current account with other banks",
+    "target": "Interest Income"
+   },
+   {
+    "value": 320822275630,
+    "source": "Interest Income",
+    "target": "Net Interest Income"
+   },
+   {
+    "value": 214042576717,
+    "source": "Interest Income",
+    "target": "Interest Expense"
+   },
+   {
+    "value": 320822275630,
+    "source": "Net Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 14113470011,
+    "source": "Non Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 10832327100,
+    "source": "Total Revenue",
+    "target": "Operating Income"
+   },
+   {
+    "value": 324103418541,
+    "source": "Total Revenue",
+    "target": "Operating and Credit-Related Expenses"
+   },
+   {
+    "value": 286363138713,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 37740279828,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Provision for Impairment"
+   },
+   {
+    "value": 159247936286,
+    "source": "Operating Expense",
+    "target": "Personnel"
+   },
+   {
+    "value": 116332429114,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   },
+   {
+    "value": 10782773313,
+    "source": "Operating Expense",
+    "target": "Premium of government guarantee"
+   }
+  ]
+ }
+}

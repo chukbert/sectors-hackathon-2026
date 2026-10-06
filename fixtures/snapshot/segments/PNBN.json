@@ -1,0 +1,110 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/PNBN/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:54:46+0700",
+ "fetched_at_epoch": 1791320086.9897962,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "PNBN.JK",
+  "financial_year": 2025,
+  "revenue_breakdown": [
+   {
+    "value": 10258601000000,
+    "source": "Loans",
+    "target": "Interest Income"
+   },
+   {
+    "value": 3251161000000,
+    "source": "Securities",
+    "target": "Interest Income"
+   },
+   {
+    "value": 238850000000,
+    "source": "Securities purchased with agreements to resell",
+    "target": "Interest Income"
+   },
+   {
+    "value": 176038000000,
+    "source": "Placement with Bank Indonesia and other banks",
+    "target": "Interest Income"
+   },
+   {
+    "value": 67886000000,
+    "source": "Deposits",
+    "target": "Interest Income"
+   },
+   {
+    "value": 1273256000000,
+    "source": "Finance Receivables",
+    "target": "Interest Income"
+   },
+   {
+    "value": 334343000000,
+    "source": "Loan commissions and fees",
+    "target": "Interest Income"
+   },
+   {
+    "value": 8943255000000,
+    "source": "Interest Income",
+    "target": "Net Interest Income"
+   },
+   {
+    "value": 6656880000000,
+    "source": "Interest Income",
+    "target": "Interest Expense"
+   },
+   {
+    "value": 8943255000000,
+    "source": "Net Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1930777000000,
+    "source": "Non Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 3546193000000,
+    "source": "Total Revenue",
+    "target": "Operating Income"
+   },
+   {
+    "value": 7327839000000,
+    "source": "Total Revenue",
+    "target": "Operating and Credit-Related Expenses"
+   },
+   {
+    "value": 5889572000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 1438267000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Provision for Impairment"
+   },
+   {
+    "value": 302490000000,
+    "source": "Operating Expense",
+    "target": "Pension and employee benefits"
+   },
+   {
+    "value": 2178869000000,
+    "source": "Operating Expense",
+    "target": "General and administrative expenses"
+   },
+   {
+    "value": 2502945000000,
+    "source": "Operating Expense",
+    "target": "Personnel"
+   },
+   {
+    "value": 905268000000,
+    "source": "Operating Expense",
+    "target": "Others (expense)"
+   }
+  ]
+ }
+}

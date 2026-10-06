@@ -1,0 +1,85 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/OMED/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:01:39+0700",
+ "fetched_at_epoch": 1791320499.9165204,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "OMED.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 920870667824,
+    "source": "Medical disposable and consumables",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 287111994327,
+    "source": "Woundcare",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 256402395451,
+    "source": "Diagnostic and equipment",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 206764186041,
+    "source": "Antiseptic and dialysis",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 90797609939,
+    "source": "Biotechnology and laboratory",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 82268438798,
+    "source": "Walking aids and rehabilitation care",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 40927356809,
+    "source": "Hospital furniture",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 679391935,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1261846379635,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 623975661489,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 348473362833,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 275502298656,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 149926070450,
+    "source": "Operating Expense",
+    "target": "Selling and marketing"
+   },
+   {
+    "value": 125576228206,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

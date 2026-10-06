@@ -1,0 +1,55 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/BMTR/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:02:38+0700",
+ "fetched_at_epoch": 1791320558.1816626,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "BMTR.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 8067789000000,
+    "source": "Advertising and content",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1677699000000,
+    "source": "Pay TV and broadband",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 313829000000,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 6019583000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 4039734000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 1739749000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 2299985000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 2299985000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

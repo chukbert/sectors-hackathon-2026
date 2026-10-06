@@ -3,11 +3,12 @@ seberapa sering aplikasi MENGARANG emiten untuk merek yang pemiliknya tidak terc
 
     .venv/bin/python tools/eval_struk.py                      # Core lokal (http://127.0.0.1:8788)
     .venv/bin/python tools/eval_struk.py --base https://sectors.muflichlabs.online/api/core
+    .venv/bin/python tools/eval_struk.py --set b               # set B (held-out, ditulis sebelum katalog diperluas)
 
 Dua jalur dibandingkan:
   katalog saja  — pencocokan deterministik brands.lookup (tanpa AI), baseline
   aplikasi      — jalur /v1/struk/scan sungguhan (AI membaca merek → katalog + verifikasi ke data Sectors)
-0 kredit Sectors (Store offline). Biaya AI: 6 panggilan.
+0 kredit Sectors (Store offline). Biaya AI: 1 panggilan per struk (set A 6, set B 4).
 """
 from __future__ import annotations
 
@@ -30,44 +31,59 @@ def scan(base: str, text: str) -> dict:
         return json.load(r)
 
 
-def score(rows: list[tuple[str, str | None, str | None]]) -> dict:
+def ok(exp: str | list[str] | None, got: str | None) -> bool:
+    """expected bisa daftar bila lebih dari satu emiten sah (mis. operator toko dan induk yang mengonsolidasi)."""
+    return got in exp if isinstance(exp, list) else got == exp
+
+
+def score(rows: list[tuple[str, str | list[str] | None, str | None]]) -> dict:
     issuers = [r for r in rows if r[1]]
     others = [r for r in rows if not r[1]]
     return {
         "lines": len(rows),
-        "correct": sum(1 for _, exp, got in rows if exp == got),
+        "correct": sum(1 for _, exp, got in rows if ok(exp, got)),
         "issuer_lines": len(issuers),
-        "issuer_found": sum(1 for _, exp, got in issuers if exp == got),
+        "issuer_found": sum(1 for _, exp, got in issuers if ok(exp, got)),
         "non_issuer_lines": len(others),
         "invented": sum(1 for _, _, got in others if got),  # merek non-emiten yang dipaksa jadi emiten
-        "wrong_issuer": sum(1 for _, exp, got in issuers if got and got != exp),
+        "wrong_issuer": sum(1 for _, exp, got in issuers if got and not ok(exp, got)),
     }
 
 
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--base", default="http://127.0.0.1:8788")
-    ap.add_argument("--out", default=str(ROOT / "fixtures" / "eval" / "struk_eval_result.json"))
+    ap.add_argument("--set", choices=["a", "b"], default="a")
+    ap.add_argument("--out")
     args = ap.parse_args()
-    spec = json.loads((ROOT / "fixtures" / "eval" / "struk_eval.json").read_text(encoding="utf-8"))
+    suffix = "" if args.set == "a" else "_b"
+    out_path = args.out or str(ROOT / "fixtures" / "eval" / f"struk_eval{suffix}_result.json")
+    spec = json.loads((ROOT / "fixtures" / "eval" / f"struk_eval{suffix}.json").read_text(encoding="utf-8"))
 
     base_rows, app_rows, detail = [], [], []
     for rc in spec["receipts"]:
         lines = rc["lines"]
         res = scan(args.base, "\n".join(raw for raw, _ in lines))
         by_raw = {raw: c["symbol"] for c in res.get("companies", []) for raw in c.get("items", [])}
-        verified = {c["symbol"]: c.get("verified") for c in res.get("companies", [])}
+
+        def found(raw: str) -> str | None:
+            # Pembaca bisa memangkas harga/ukuran di ujung baris; cocokkan juga sebagai awalan.
+            if raw in by_raw:
+                return by_raw[raw]
+            hits = [sym for r, sym in by_raw.items() if r and raw.upper().startswith(r.upper())]
+            return hits[0] if hits else None
+        verified = {ln["raw"]: ln.get("verified") for c in res.get("companies", []) for ln in c.get("lines", [])}
         for raw, exp in lines:
             hit = brands.lookup(raw)
             cat = hit.symbol if hit else None
-            got = by_raw.get(raw)
+            got = found(raw)
             base_rows.append((raw, exp, cat))
             app_rows.append((raw, exp, got))
             detail.append({"receipt": rc["id"], "raw": raw, "expected": exp, "catalog_only": cat, "app": got,
-                           "app_verified_by_catalog": verified.get(got) if got else None, "ok": got == exp})
+                           "app_verified_by_catalog": next((v for r, v in verified.items() if raw.upper().startswith(r.upper())), None) if got else None, "ok": ok(exp, got)})
 
     out = {"catalog_only": score(base_rows), "app": score(app_rows), "lines": detail}
-    Path(args.out).write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
+    Path(out_path).write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
 
     def pct(a: int, b: int) -> str:
         return f"{a}/{b} ({100 * a / b:.0f}%)" if b else "-"

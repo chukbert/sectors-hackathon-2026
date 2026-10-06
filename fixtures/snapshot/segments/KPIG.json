@@ -1,0 +1,65 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/KPIG/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:01:53+0700",
+ "fetched_at_epoch": 1791320513.2370555,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "KPIG.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 960227506634,
+    "source": "Hotel, resort and golf",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 617780723407,
+    "source": "Property management and other services",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 139138304557,
+    "source": "Office space rental",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 52997863295,
+    "source": "Apartment and other properties",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1226993020845,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 543151377048,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 129385392824,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 413765984224,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 58683909268,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 355082074956,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

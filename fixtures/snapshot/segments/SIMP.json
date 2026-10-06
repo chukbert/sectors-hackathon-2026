@@ -1,0 +1,70 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/SIMP/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:56:42+0700",
+ "fetched_at_epoch": 1791320202.0882537,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "SIMP.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 506780000000,
+    "source": "Crude palm oil",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1235791000000,
+    "source": "Palm kernel and related products",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 12339389000000,
+    "source": "Edible oils and fats",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1885844000000,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 11129976000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 4837828000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 2661344000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 2176484000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 456795000000,
+    "source": "Operating Expense",
+    "target": "Selling and distribution"
+   },
+   {
+    "value": 702852000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   },
+   {
+    "value": 1016837000000,
+    "source": "Operating Expense",
+    "target": "Others (expense)"
+   }
+  ]
+ }
+}

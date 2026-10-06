@@ -1,0 +1,95 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/BNII/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:00:57+0700",
+ "fetched_at_epoch": 1791320457.8357046,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "BNII.JK",
+  "financial_year": 2025,
+  "revenue_breakdown": [
+   {
+    "value": 6183740000000,
+    "source": "Loans",
+    "target": "Interest Income"
+   },
+   {
+    "value": 2003690000000,
+    "source": "Marketable securities",
+    "target": "Interest Income"
+   },
+   {
+    "value": 143908000000,
+    "source": "Placement with Bank Indonesia",
+    "target": "Interest Income"
+   },
+   {
+    "value": 2194184000000,
+    "source": "Consumer financing receivables",
+    "target": "Interest Income"
+   },
+   {
+    "value": 2666919000000,
+    "source": "Sharia Income",
+    "target": "Interest Income"
+   },
+   {
+    "value": 13413000000,
+    "source": "Others",
+    "target": "Interest Income"
+   },
+   {
+    "value": 7221902000000,
+    "source": "Interest Income",
+    "target": "Net Interest Income"
+   },
+   {
+    "value": 5983952000000,
+    "source": "Interest Income",
+    "target": "Interest Expense"
+   },
+   {
+    "value": 7221902000000,
+    "source": "Net Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 2234902000000,
+    "source": "Non Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 2031081000000,
+    "source": "Total Revenue",
+    "target": "Operating Income"
+   },
+   {
+    "value": 7425723000000,
+    "source": "Total Revenue",
+    "target": "Operating and Credit-Related Expenses"
+   },
+   {
+    "value": 6449457000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 976266000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Provision for Impairment"
+   },
+   {
+    "value": 3183992000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   },
+   {
+    "value": 3265465000000,
+    "source": "Operating Expense",
+    "target": "Personnel"
+   }
+  ]
+ }
+}

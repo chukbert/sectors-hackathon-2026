@@ -1,0 +1,60 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/DSNG/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:00:42+0700",
+ "fetched_at_epoch": 1791320442.079831,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "DSNG.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 8784344000000,
+    "source": "Crude palm oil",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1152074000000,
+    "source": "Wood product",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 182802000000,
+    "source": "Renewable energy",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 7115019000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 3004201000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 2023152000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 981049000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 465001000000,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 516048000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

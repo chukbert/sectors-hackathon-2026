@@ -1,0 +1,80 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/DSSA/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:54:50+0700",
+ "fetched_at_epoch": 1791320090.6781774,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "DSSA.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 44806629157175,
+    "source": "Coal mining and trading",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1454066470676,
+    "source": "Trading",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 2327821633055,
+    "source": "Cable TV, internet and technology",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 157350017798,
+    "source": "Steam and electricity processing fee",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1133930574,
+    "source": "Renewable energy",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 11529247432,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 28911155197054,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 19847375259656,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 10513914246670,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 9333461012986,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 5613668396447,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 3711880953721,
+    "source": "Operating Expense",
+    "target": "General and administration"
+   },
+   {
+    "value": 7911662818,
+    "source": "Operating Expense",
+    "target": "Exploration costs"
+   }
+  ]
+ }
+}

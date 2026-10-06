@@ -1,0 +1,60 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/GEMS/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:55:35+0700",
+ "fetched_at_epoch": 1791320135.3217716,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "GEMS.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 43147821893407,
+    "source": "Coal mining",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 565279029381,
+    "source": "Coal trading",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 25866428231012,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 17846672691776,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 10348399111195,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 7498273580581,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 4761541915217,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 2728820002546,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   },
+   {
+    "value": 7911662818,
+    "source": "Operating Expense",
+    "target": "Exploration costs"
+   }
+  ]
+ }
+}

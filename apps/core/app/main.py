@@ -259,6 +259,17 @@ class StrukScanRequest(BaseModel):
     image: str | None = None  # data URL (data:image/jpeg;base64,...)
 
 
+class StrukItem(BaseModel):
+    raw: str = Field(default="", max_length=200)
+    brand: str = Field(default="", max_length=120)
+    symbol: str | None = Field(default=None, max_length=12)
+    price: float | None = None
+
+
+class StrukBasketRequest(BaseModel):
+    items: list[StrukItem] = Field(max_length=120)
+
+
 class StrukReflectRequest(BaseModel):
     symbol: str
     rule_id: str
@@ -306,6 +317,22 @@ async def struk_scan(req: StrukScanRequest, request: Request):
         return _sectors_off_response(exc)
     return {"store_name": parsed.get("store"), "llm_read": parsed.get("llm"), "items": parsed["items"], **result,
             "disclaimer": DISCLAIMER}
+
+
+@app.post("/v1/struk/basket")
+async def struk_basket(req: StrukBasketRequest):
+    """Hitung ulang hasil struk setelah pengguna mengoreksi baris/harga. Tanpa LLM, tanpa kredit (matriks di cache)."""
+    from .struk import narrate, service
+
+    if service.sectors_off():
+        return _sectors_off_response(service.SectorsOff("STRUK_SECTORS_OFF=1"))
+    items = [{"raw": it.raw, "brand": it.brand or it.raw, "symbol": it.symbol or "",
+              "price": narrate.clean_price(it.raw, it.price)} for it in req.items if (it.raw or it.brand).strip()]
+    try:
+        result = await service.basket(items)
+    except service.SectorsOff as exc:
+        return _sectors_off_response(exc)
+    return {"items": items, **result, "disclaimer": DISCLAIMER}
 
 
 @app.get("/v1/struk/company/{symbol}")

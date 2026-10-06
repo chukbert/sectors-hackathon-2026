@@ -1,0 +1,80 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/WSKT/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:01:37+0700",
+ "fetched_at_epoch": 1791320497.2599766,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "WSKT.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 7891487552383,
+    "source": "Construction services",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1342276060611,
+    "source": "Precast sales",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1106666598223,
+    "source": "Toll road revenue",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 176832932790,
+    "source": "Property revenue",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 110308462163,
+    "source": "Hotel revenue",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 12673575963,
+    "source": "Buildings and equipment rental",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 64909719799,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 9289637569659,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 1415517332273,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 236607672361,
+    "source": "Operating Income",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 1415517332273,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 155613541125,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 1496511463509,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

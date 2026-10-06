@@ -4,6 +4,7 @@ simpan respons asli ke fixtures/snapshot/ supaya demo & juri bisa jalan dengan 0
   python tools/harvest.py --dry              # rencana + estimasi kredit (0 kredit)
   python tools/harvest.py --budget 80        # jalankan; berhenti sebelum melewati anggaran
   python tools/harvest.py --only matrix      # matrix | segments | cohorts
+  python tools/harvest.py --only segments --all-segments --dry   # seluruh emiten bersegmen yang belum di snapshot
 
 Store harus berjalan dalam mode live (IDXMACA_STORE_MODE=live) untuk panen sungguhan.
 """
@@ -59,14 +60,26 @@ def seed_segment_list_from_validation() -> list[str]:
     return sorted(universe.bare(s) for s in data)
 
 
-def plan(only: str | None) -> list[tuple[str, str, str, dict]]:
+def _market_caps() -> dict[str, float]:
+    pages = [json.loads(f.read_text(encoding="utf-8"))["data"] for f in sorted((OUT / "matrix").glob("*.json"))]
+    recs = universe.merge_pages(pages) if pages else {}
+    return {s: float(r.get("market_cap") or 0) for s, r in recs.items()}
+
+
+def plan(only: str | None, all_segments: bool = False) -> list[tuple[str, str, str, dict]]:
     """(kategori, nama, endpoint, params) — matriks dihitung per halaman secara dinamis saat jalan."""
     out: list[tuple[str, str, str, dict]] = []
     if only in (None, "segments"):
         have = set(seed_segment_list_from_validation())
-        for sym in brands.catalog_symbols():
-            if sym in have:
-                out.append(("segments", sym, seg_endpoint(sym), {}))
+        syms = [s for s in brands.catalog_symbols() if s in have]
+        if all_segments:
+            # Katalog dulu, lalu sisanya urut kapitalisasi pasar — anggaran terpotong pun yang besar sudah dapat.
+            caps = _market_caps()
+            done = {f.stem for f in (OUT / "segments").glob("*.json")}
+            rest = sorted((s for s in have if s not in syms), key=lambda s: -caps.get(s, 0))
+            syms = [s for s in syms + rest if s not in done]
+        for sym in syms:
+            out.append(("segments", sym, seg_endpoint(sym), {}))
     if only in (None, "cohorts"):
         for r in rules.RULES:
             out.append(("cohorts", r.id, universe.SCREENER, rules.cohort_params(r)))
@@ -78,6 +91,7 @@ def main() -> int:
     ap.add_argument("--dry", action="store_true")
     ap.add_argument("--budget", type=int, default=80)
     ap.add_argument("--only", choices=["matrix", "segments", "cohorts"])
+    ap.add_argument("--all-segments", action="store_true", help="semua emiten bersegmen, bukan hanya katalog merek")
     ap.add_argument("--sleep", type=float, default=0.0, help="jeda antar panggilan miss (hindari 429)")
     args = ap.parse_args()
 
@@ -128,7 +142,7 @@ def main() -> int:
                 if not resp or not (resp["data"].get("pagination") or {}).get("has_next"):
                     break
 
-    rest = plan(args.only)
+    rest = plan(args.only, args.all_segments)
     if rest:
         print(f"Segmen ({sum(1 for c in rest if c[0] == 'segments')}) + kohort aturan kritis ({sum(1 for c in rest if c[0] == 'cohorts')}):")
     for category, name, endpoint, params in rest:

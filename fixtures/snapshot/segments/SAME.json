@@ -1,0 +1,70 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/SAME/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:01:47+0700",
+ "fetched_at_epoch": 1791320507.9153311,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "SAME.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 1059450460602,
+    "source": "Medical support",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 398019144161,
+    "source": "Rooms",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 99406335542,
+    "source": "Outpatient",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 87503474199,
+    "source": "Admistration",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 62002030684,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1192181857204,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 514199587984,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 92509278317,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 421690309667,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 23002845708,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 398687463959,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

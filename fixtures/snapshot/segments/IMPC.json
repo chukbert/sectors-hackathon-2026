@@ -1,0 +1,85 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/IMPC/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:00:26+0700",
+ "fetched_at_epoch": 1791320426.2832654,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "IMPC.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 241205667337,
+    "source": "Facade",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 953802246928,
+    "source": "Material",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 2564298853929,
+    "source": "Roofing",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 181808791849,
+    "source": "Pipe and others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 226125491,
+    "source": "Sales to related parties",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 29078166402,
+    "source": "Real estate",
+    "target": "Total Revenue"
+   },
+   {
+    "value": -90293243002,
+    "source": "Sales discounts",
+    "target": "Total Revenue"
+   },
+   {
+    "value": -2193227835,
+    "source": "Sales returns",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 2351759415986,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 1526173965113,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 794749831494,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 731424133619,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 441524068459,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 289900065160,
+    "source": "Operating Expense",
+    "target": "General and Administrative"
+   }
+  ]
+ }
+}

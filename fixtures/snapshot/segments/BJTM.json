@@ -1,0 +1,105 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/BJTM/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:56:45+0700",
+ "fetched_at_epoch": 1791320205.7623515,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "BJTM.JK",
+  "financial_year": 2025,
+  "revenue_breakdown": [
+   {
+    "value": 6742255000000,
+    "source": "Loans",
+    "target": "Interest Income"
+   },
+   {
+    "value": 64990000000,
+    "source": "Securities",
+    "target": "Interest Income"
+   },
+   {
+    "value": 1279519000000,
+    "source": "Placement with Bank Indonesia and other banks",
+    "target": "Interest Income"
+   },
+   {
+    "value": 560641000000,
+    "source": "Marketable securities",
+    "target": "Interest Income"
+   },
+   {
+    "value": 1404211000000,
+    "source": "Murabahah margin income, mudharabah and musyarakah profit sharing income",
+    "target": "Interest Income"
+   },
+   {
+    "value": 130513000000,
+    "source": "Provision",
+    "target": "Interest Income"
+   },
+   {
+    "value": 109179000000,
+    "source": "Others",
+    "target": "Interest Income"
+   },
+   {
+    "value": 7216638000000,
+    "source": "Interest Income",
+    "target": "Net Interest Income"
+   },
+   {
+    "value": 3074670000000,
+    "source": "Interest Income",
+    "target": "Interest Expense"
+   },
+   {
+    "value": 7216638000000,
+    "source": "Net Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1075152000000,
+    "source": "Non Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 2039997000000,
+    "source": "Total Revenue",
+    "target": "Operating Income"
+   },
+   {
+    "value": 6251793000000,
+    "source": "Total Revenue",
+    "target": "Operating and Credit-Related Expenses"
+   },
+   {
+    "value": 4302614000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 1949179000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Provision for Impairment"
+   },
+   {
+    "value": 2187393000000,
+    "source": "Operating Expense",
+    "target": "Personnel"
+   },
+   {
+    "value": 1658079000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   },
+   {
+    "value": 457142000000,
+    "source": "Operating Expense",
+    "target": "Others (expense)"
+   }
+  ]
+ }
+}

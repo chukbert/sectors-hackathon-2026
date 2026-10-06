@@ -1,0 +1,90 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/IMAS/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:57:44+0700",
+ "fetched_at_epoch": 1791320264.246491,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "IMAS.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 12939566000000,
+    "source": "Automobiles, trucks, and heavy duty equipments",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 4855153000000,
+    "source": "Spare parts & accessories",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 709542000000,
+    "source": "Services",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 2092373000000,
+    "source": "Financial services",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 3023623000000,
+    "source": "Car rental & logistics",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 3694074000000,
+    "source": "Fuels / energy",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 175634000000,
+    "source": "Manufacturing",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 984527000000,
+    "source": "Contractor service",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 843726000000,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 23323990000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 5994228000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 2039721000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 3954507000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 2038097000000,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 1916410000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

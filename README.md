@@ -11,7 +11,7 @@ dari mana uangnya datang, siapa pemiliknya, dan pertanyaan kritis yang layak kam
 ![Track](https://img.shields.io/badge/track-Market%20Intelligence-c8f046?style=flat-square&labelColor=0b0d12)
 ![Runtime credits](https://img.shields.io/badge/kredit%20runtime-0-ff7a1a?style=flat-square)
 ![AI numbers](https://img.shields.io/badge/angka%20dari%20AI-0-0b0d12?style=flat-square)
-![Tests](https://img.shields.io/badge/tes-102%20lulus-2b4bff?style=flat-square)
+![Tests](https://img.shields.io/badge/tes-115%20lulus-2b4bff?style=flat-square)
 [![CI](https://github.com/chukbert/sectors-hackathon-2026/actions/workflows/ci.yml/badge.svg)](https://github.com/chukbert/sectors-hackathon-2026/actions/workflows/ci.yml)
 
 ### 🌐 Coba langsung: **[sectors.muflichlabs.online](https://sectors.muflichlabs.online)** — tanpa daftar, tanpa install
@@ -27,9 +27,10 @@ dari mana uangnya datang, siapa pemiliknya, dan pertanyaan kritis yang layak kam
 - **Masalah.** Jutaan orang membeli Indomie, Pepsodent, dan pulsa Telkomsel tiap minggu tanpa tahu bahwa pemilik merek itu perusahaan terbuka yang bisa mereka pelajari. Aplikasi saham dibuat untuk orang yang *sudah* paham pasar.
 - **Yang kami bangun.** Foto struk belanja (atau satu kemasan) → setiap merek dipetakan ke emitennya → **kartu kenalan** yang 100% dibangun dari data Sectors: ukuran perusahaan dalam bahasa awam, peta uang (segmen pendapatan), rantai pemilik sampai grup konglomerasi, dan **pertanyaan kritis** yang dihitung Sectors ke seluruh bursa.
 - **Sectors adalah inti.** Jalankan dengan `STRUK_SECTORS_OFF=1` dan semua endpoint menolak: *tidak ada angka tanpa Sectors* (diuji otomatis). Setiap angka di layar bisa dibuka asal-usulnya: endpoint, field, query, waktu ambil.
-- **Pemakaian Sectors yang tidak biasa.** Seluruh bursa (962 emiten × ±50 field) diambil hanya dengan **10 panggilan Screener**, memanfaatkan `include_query_values`. Total 66 kredit untuk seluruh proyek; **0 kredit per pengguna**. 9 pola anomali adalah ekspresi `where` Sectors, dan rumus lokal kami dikunci tes agar sama persis dengan `total_count` Sectors.
-- **AI dipagari kode, bukan imbauan.** AI hanya membaca nama merek. Keluarannya ditolak bila memuat angka atau saran beli/jual. Hasil evaluasi pada 59 baris struk: **98% terpetakan benar, 0 dari 18 merek non-emiten dikarang menjadi emiten** (tabel di [§3](#ukur-sendiri-seberapa-jujur-pembacaan-struknya)).
-- **Bisa diverifikasi.** Demo live di atas · `docker compose up --build` · 102 tes + CI · semua respons Sectors mentah ada di `fixtures/snapshot/`.
+- **Pemakaian Sectors yang tidak biasa.** Seluruh bursa (962 emiten × ±50 field) diambil hanya dengan **10 panggilan Screener**, memanfaatkan `include_query_values`. Total 242 kredit untuk seluruh proyek (termasuk peta uang untuk semua 219 emiten yang punya data segmen); **0 kredit per pengguna**. 9 pola anomali adalah ekspresi `where` Sectors, dan rumus lokal kami dikunci tes agar sama persis dengan `total_count` Sectors.
+- **Uang belanjamu mengalir ke siapa.** Harga tiap baris dibaca dari strukmu (bisa kamu koreksi), dijumlah per emiten dan per grup pemilik: *"Dari belanjamu Rp57.100, Rp28.000 (49%) masuk ke Grup Salim lewat ROTI dan ICBP"* — lengkap dengan Sankey dompet → emiten → grup, dan "dari setiap Rp100 pendapatan, laba Rp X" dari Sectors. Hitung ulang tanpa AI, tanpa kredit.
+- **AI dipagari kode, bukan imbauan.** AI hanya membaca merek dan harga baris dari strukmu — tidak pernah angka perusahaan. Keluarannya ditolak bila memuat angka atau saran beli/jual. Pada **set uji held-out** (52 baris, ditulis sebelum katalog diperluas): **83% terpetakan benar dan 0 dari 18 merek non-emiten dikarang**; setelah katalog diperluas 98%, dengan satu tebakan AI yang keliru tetap ditandai "dugaan" (tabel di [§3](#ukur-sendiri-seberapa-jujur-pembacaan-struknya)).
+- **Bisa diverifikasi.** Demo live di atas · `docker compose up --build` · 115 tes + CI · semua respons Sectors mentah ada di `fixtures/snapshot/`.
 
 ---
 
@@ -50,6 +51,18 @@ Struk swalayan asli, 28 baris barang, difoto miring dan buram → Promina (ICBP)
 Milo, Kinder Joy, Downy, Hi-Lo, Pronas jujur ditandai **bukan emiten** — pemiliknya tidak tercatat di BEI, jadi kami tidak mengarang. Kartu merek **barang** pertama langsung terbuka.
 
 <sub>Input adalah foto asli dari ponsel (nomor kartu pembayaran di struk kami samarkan). Output adalah screenshot asli aplikasi setelah foto itu diunggah lewat jalur foto — tanpa disunting.</sub>
+
+### 💸 Uang belanjamu mengalir ke siapa?
+
+![Aliran uang belanja: dompet → emiten → grup pemilik](docs/img/demo-aliran.png)
+
+Harga tiap baris dibaca dari **strukmu sendiri**, lalu dijumlah per emiten dan per grup pemilik. Pada contoh ini, hampir separuh belanja Indomaret mengalir ke **Grup Salim** lewat ROTI dan ICBP. Totalnya cocok persis dengan baris bayar di struk (Rp57.100), padahal baris bayar sendiri tidak ikut dihitung. Di sebelah tiap emiten ada angka Sectors *dari setiap Rp100 pendapatan, berapa yang jadi laba bersih*. Harga bisa dikoreksi dan dihitung ulang tanpa AI dan tanpa kredit (`POST /v1/struk/basket`).
+
+Nominal rupiah di bagian ini **bukan** data perusahaan. Harga di rak sudah termasuk bagian toko, distributor, dan pajak, jadi diagram ini menunjukkan *ke merek siapa* uangmu pergi, bukan berapa yang diterima perusahaannya. Halaman juga mengatakannya.
+
+Coba langsung: [contoh Indomaret](https://sectors.muflichlabs.online/?contoh=indomaret&lihat=aliran) · [anak kos sebulan](https://sectors.muflichlabs.online/?contoh=anak-kos&lihat=aliran) · [rumah tangga](https://sectors.muflichlabs.online/?contoh=rumah-tangga&lihat=aliran)
+
+<sub>Screenshot asli: Chrome headless membuka tautan contoh Indomaret di atas, tanpa disunting.</sub>
 
 ---
 
@@ -90,8 +103,8 @@ Jutaan orang Indonesia membeli Indomie, Pepsodent, pulsa Telkomsel, dan GoFood s
 
 ```mermaid
 flowchart LR
-    A["📷 Foto struk<br>📦 Foto produk<br>⌨️ Teks"] --> B["AI membaca<br><b>nama merek saja</b><br><i>tanpa angka</i>"]
-    B --> C["Katalog kurasi<br>57 emiten · 196 merek<br><i>tebakan AI = 'dugaan'</i>"]
+    A["📷 Foto struk<br>📦 Foto produk<br>⌨️ Teks"] --> B["AI membaca<br><b>merek + harga baris</b><br><i>tanpa angka perusahaan</i>"]
+    B --> C["Katalog kurasi<br>86 emiten · 269 merek<br><i>tebakan AI = 'dugaan'</i>"]
     C --> D{"Ada di data<br>Sectors?"}
     D -- tidak --> E["'bukan emiten'<br>(Aqua, Mie Sedaap…)"]
     D -- ya --> F["Kartu Kenalan<br><b>100% data Sectors</b>"]
@@ -146,14 +159,21 @@ Model: `google/gemini-3.8-flash` via OpenRouter, `reasoning_effort=low`.
 
 ### Ukur sendiri: seberapa jujur pembacaan struknya?
 
-`fixtures/eval/struk_eval.json` berisi 59 baris dari 6 struk (minimarket, swalayan, apotek, gaya hidup/digital) ditulis seperti singkatan kasir (`TEH PUCUK HRM 350ML`, `SO GOOD SOSIS 375G`) beserta kunci jawabannya. Sebanyak 18 baris sengaja berisi merek yang pemiliknya **tidak** tercatat di BEI (Aqua, Sedaap, Downy, Gulaku, Teh Botol Sosro, Pertamax, McDonald's, dan lainnya), yaitu jebakan untuk melihat apakah aplikasi mengarang emiten.
+Dua set uji, ditulis seperti singkatan kasir (`TEH PUCUK HRM 350ML`, `SO GOOD SOSIS 375G`) beserta kunci jawabannya. Sepertiga baris sengaja berisi merek yang pemiliknya **tidak** tercatat di BEI (Aqua, Sedaap, Downy, Panadol, Oreo, Netflix, …): jebakan untuk melihat apakah aplikasi mengarang emiten.
 
-| Jalur | Baris benar | Emiten ditemukan | Merek non-emiten dikarang jadi emiten | Emiten salah |
+**Set B — held-out** (`fixtures/eval/struk_eval_b.json`, 52 baris dari 4 struk: apotek, Alfamart, rumah tangga, gaya hidup). Ditulis *sebelum* katalog diperluas; kegagalannya tidak dipakai untuk menambal katalog.
+
+| Set B | Baris benar | Emiten ditemukan | Merek non-emiten dikarang jadi emiten | Emiten salah |
 |---|---|---|---|---|
-| Katalog saja (tanpa AI) | 54/59 (92%) | 36/41 (88%) | 0/18 (0%) | 0 |
-| **Aplikasi (AI + katalog + verifikasi data Sectors)** | **58/59 (98%)** | **40/41 (98%)** | **0/18 (0%)** | **0** |
+| Katalog lama saja (tanpa AI) | 37/52 (71%) | 19/34 (56%) | 0/18 (0%) | 0 |
+| **Aplikasi, katalog lama — angka held-out yang jujur** | **43/52 (83%)** | **25/34 (74%)** | **0/18 (0%)** | **0** |
+| Aplikasi, katalog diperluas | 51/52 (98%) | 34/34 (100%) | 1/18 (6%) | 0 |
 
-Satu-satunya yang meleset: `BODREX` (Tempo Scan, TSPC). Merek ini di luar katalog dan AI tidak cukup yakin, jadi aplikasi memilih **tidak menebak**. Kami sengaja tidak menambalnya ke katalog agar angka di atas tidak dicurangi. Hasil per baris ada di `fixtures/eval/struk_eval_result.json`. Ulangi sendiri dengan `python tools/eval_struk.py` (0 kredit Sectors, 6 panggilan AI).
+Dibaca dengan jujur: baris pertama dan kedua adalah kemampuan aplikasi pada merek yang **belum pernah dilihat**. Baris ketiga tidak lagi held-out, karena katalog dan set B ditulis dari pengetahuan yang sama. Pada baris ketiga, AI menebak `NEOZEP` (Medifarma, bukan emiten) sebagai DVLA. Tebakan itu tetap tampil sebagai **dugaan AI**, bukan terverifikasi, karena status verifikasi melekat per baris. Satu label diubah setelah run pertama dan diungkap di file: Sports Station kini menerima MAPA (operator) atau MAPI (induk). Hasil run pertama disimpan utuh di `struk_eval_b_result_before_catalog.json`.
+
+**Set A** (`fixtures/eval/struk_eval.json`, 59 baris dari 6 struk) adalah set pengembangan. Aplikasi kini 59/59 dan 0/18 merek dikarang. Satu-satunya kegagalan sebelumnya, `BODREX` (TSPC), tertutup karena Tempo Scan masuk katalog, jadi set ini tidak lagi mengukur merek tak dikenal.
+
+Ulangi sendiri: `python tools/eval_struk.py --set b` (0 kredit Sectors, 1 panggilan AI per struk). Hasil per baris ada di `fixtures/eval/struk_eval*_result.json`.
 
 ## 4. Pemakaian Sectors API yang hemat (dan tidak biasa)
 
@@ -173,12 +193,13 @@ Kebenaran rumus lokal dikunci tes: untuk **setiap** pola, evaluasi Python atas m
 |---|---|---|
 | Validasi asumsi (`tools/validate_api.py`): aritmatika `where`, field list, suffix `.JK`, daftar segmen | 4 | 4 |
 | Harvest matriks seluruh bursa | 10 | 10 |
-| Harvest segmen pendapatan (43 emiten konsumen) | 43 | 43 |
+| Harvest segmen pendapatan, tahap 1 (43 emiten konsumen) | 43 | 43 |
+| Harvest segmen pendapatan, tahap 2 (176 emiten sisanya — semua 219 yang punya segmen di Sectors) | 176 | 176 |
 | Harvest kohort 9 pola | 9 | 9 |
 | **Runtime aplikasi (setiap scan, kartu, pertanyaan)** | **0** | **0** |
-| **Total** | 66 | **66** → sisa **424** |
+| **Total** | 242 | **242** → sisa **248** |
 
-Semua respons mentah disimpan di `fixtures/snapshot/` (±2,5 MB, data Sectors asli) dan di-*seed* ke Store saat start. Aplikasi berjalan di mode `offline` — tidak ada panggilan live, tidak ada kredit terbakar saat demo atau saat juri mencoba. Chip di header menampilkan kredit terpakai vs dihemat secara jujur.
+Semua respons mentah disimpan di `fixtures/snapshot/` (±3,2 MB, data Sectors asli) dan di-*seed* ke Store saat start. Aplikasi berjalan di mode `offline` — tidak ada panggilan live, tidak ada kredit terbakar saat demo atau saat juri mencoba. Chip di header menampilkan kredit terpakai vs dihemat secara jujur.
 
 Pelajaran API yang kami dokumentasikan di kode: Cloudflare menolak UA `Python-urllib` (pakai UA kustom); filter `symbol in [...]` butuh suffix `.JK`; `listing_date` harus dibandingkan sebagai tanggal (bukan `like`); panggilan beruntun kena 429 (gratis, tapi perlu jeda).
 
@@ -228,15 +249,16 @@ IDXMACA_STORE_MODE=live .venv/bin/python tools/harvest.py --budget 70 --sleep 3
 Tes:
 
 ```bash
-make test        # 102 tes Store + Core, termasuk tes Struk Jadi Saham terhadap snapshot Sectors asli
+make test        # 115 tes Store + Core, termasuk tes Struk Jadi Saham terhadap snapshot Sectors asli
 ```
 
 CI (GitHub Actions) menjalankan tes yang sama, ditambah typecheck dan build web serta build image Docker, di setiap push.
 
 ## 7. Batasan yang kami akui
 
-- Katalog merek dikurasi manual (57 emiten, 196 merek). Merek di luar katalog bisa ditebak AI tapi ditandai **dugaan**; merek milik perusahaan tertutup (Aqua, Mie Sedaap, Sosro) jujur ditandai **bukan emiten**.
-- Peta uang tersedia untuk 43 emiten yang segmennya kami ambil (Sectors punya 219); emiten lain menampilkan kotak kosong yang jujur, bukan angka karangan.
+- Katalog merek dikurasi manual (86 emiten, 269 merek). Merek di luar katalog bisa ditebak AI tapi ditandai **dugaan**; merek milik perusahaan tertutup (Aqua, Mie Sedaap, Sosro) jujur ditandai **bukan emiten**.
+- Harga di "aliran uang" berasal dari struk pengguna dan bisa salah baca; karena itu harga selalu bisa dikoreksi. Nominal itu adalah belanja konsumen, bukan pendapatan perusahaan.
+- Peta uang tersedia untuk ke-219 emiten yang punya data segmen di Sectors (seluruhnya sudah kami ambil); emiten lain menampilkan kotak kosong yang jujur, bukan angka karangan.
 - Snapshot bertanggal 6 Oktober 2026, tahun buku 2025.
 - Alat informasi dan analisis, **bukan rekomendasi investasi**.
 

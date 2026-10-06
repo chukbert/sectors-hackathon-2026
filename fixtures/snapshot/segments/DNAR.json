@@ -1,0 +1,85 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/DNAR/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:02:19+0700",
+ "fetched_at_epoch": 1791320539.8608956,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "DNAR.JK",
+  "financial_year": 2025,
+  "revenue_breakdown": [
+   {
+    "value": 1050782513216,
+    "source": "Loans",
+    "target": "Interest Income"
+   },
+   {
+    "value": 114102725813,
+    "source": "Marketable Securities",
+    "target": "Interest Income"
+   },
+   {
+    "value": 38720593024,
+    "source": "Placement with Bank Indonesia and other banks",
+    "target": "Interest Income"
+   },
+   {
+    "value": 3141112918,
+    "source": "Current accounts with Bank Indonesia and other banks",
+    "target": "Interest Income"
+   },
+   {
+    "value": 688876425271,
+    "source": "Interest Income",
+    "target": "Net Interest Income"
+   },
+   {
+    "value": 517870519700,
+    "source": "Interest Income",
+    "target": "Interest Expense"
+   },
+   {
+    "value": 688876425271,
+    "source": "Net Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 31946267484,
+    "source": "Non Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 214232910010,
+    "source": "Total Revenue",
+    "target": "Operating Income"
+   },
+   {
+    "value": 506589782745,
+    "source": "Total Revenue",
+    "target": "Operating and Credit-Related Expenses"
+   },
+   {
+    "value": 294301792081,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 212287990664,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Provision for Impairment"
+   },
+   {
+    "value": 155400571728,
+    "source": "Operating Expense",
+    "target": "Personnel"
+   },
+   {
+    "value": 138901220353,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

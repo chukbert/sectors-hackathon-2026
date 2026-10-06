@@ -1,0 +1,65 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/BOGA/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:01:29+0700",
+ "fetched_at_epoch": 1791320489.3036525,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "BOGA.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 581516604646,
+    "source": "Sales of vehicles",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 61024578839,
+    "source": "Services of maintenance and spare-parts",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 27139700000,
+    "source": "Operation leases",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 9223155695,
+    "source": "Incentive",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 633279018169,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 45625021011,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 4229837675,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 41395183336,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 2390808356,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 39004374980,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

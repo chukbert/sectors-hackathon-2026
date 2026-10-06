@@ -1,0 +1,50 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/FUJI/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:58:40+0700",
+ "fetched_at_epoch": 1791320320.773537,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "FUJI.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 13073679773,
+    "source": "Financing Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1457099751,
+    "source": "Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 0,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 14530779524,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 10114193895,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 4416585629,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 4416585629,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

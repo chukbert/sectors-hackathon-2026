@@ -1,0 +1,70 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/CNMA/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:54:44+0700",
+ "fetched_at_epoch": 1791320084.9957345,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "CNMA.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 3543717000000,
+    "source": "Cinema",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1933060000000,
+    "source": "Food and beverages",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 93897000000,
+    "source": "Advertisement",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 107293000000,
+    "source": "Digital platform",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 33815000000,
+    "source": "Event and other revenue",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 2302064000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 3409718000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 1040150000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 2369568000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 1612118000000,
+    "source": "Operating Expense",
+    "target": "Operating"
+   },
+   {
+    "value": 757450000000,
+    "source": "Operating Expense",
+    "target": "Depreciation"
+   }
+  ]
+ }
+}

@@ -1,0 +1,100 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/SRTG/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:55:45+0700",
+ "fetched_at_epoch": 1791320145.257183,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "SRTG.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 2364308000000,
+    "source": "Blue Chip",
+    "target": "Total Revenue"
+   },
+   {
+    "value": -590134000000,
+    "source": "Digital Technology",
+    "target": "Total Revenue"
+   },
+   {
+    "value": -265765000000,
+    "source": "Growth Focused",
+    "target": "Total Revenue"
+   },
+   {
+    "value": -30222000000,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 0,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 1478187000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 1245763000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 232424000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 127575000000,
+    "source": "Operating Expense",
+    "target": "Employees' salaries and other compensation"
+   },
+   {
+    "value": 58867000000,
+    "source": "Operating Expense",
+    "target": "Professional Fees"
+   },
+   {
+    "value": 18625000000,
+    "source": "Operating Expense",
+    "target": "Employee stock option"
+   },
+   {
+    "value": 14416000000,
+    "source": "Operating Expense",
+    "target": "Rental"
+   },
+   {
+    "value": 8736000000,
+    "source": "Operating Expense",
+    "target": "Office"
+   },
+   {
+    "value": 1237000000,
+    "source": "Operating Expense",
+    "target": "Donation"
+   },
+   {
+    "value": 1219000000,
+    "source": "Operating Expense",
+    "target": "Depreciation of fixed assets"
+   },
+   {
+    "value": 328000000,
+    "source": "Operating Expense",
+    "target": "Travelling"
+   },
+   {
+    "value": 1421000000,
+    "source": "Operating Expense",
+    "target": "Others (expense)"
+   }
+  ]
+ }
+}

@@ -1,0 +1,55 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/MFIN/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:58:42+0700",
+ "fetched_at_epoch": 1791320322.4126358,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "MFIN.JK",
+  "financial_year": 2023,
+  "revenue_breakdown": [
+   {
+    "value": 1429067000000,
+    "source": "Conventional",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 783792000000,
+    "source": "Sharia",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 0,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 2212859000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 1331544000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 881315000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 314462000000,
+    "source": "Operating Expense",
+    "target": "General and administrative expenses"
+   },
+   {
+    "value": 566853000000,
+    "source": "Operating Expense",
+    "target": "Employee expenses"
+   }
+  ]
+ }
+}

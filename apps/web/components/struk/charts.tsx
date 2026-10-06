@@ -1,8 +1,8 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import type { Card } from "@/lib/struk";
-import { rupiah } from "@/lib/struk";
+import type { Card, Spend } from "@/lib/struk";
+import { rp, rupiah } from "@/lib/struk";
 
 const ReactECharts = dynamic(() => import("echarts-for-react"), { ssr: false });
 
@@ -77,4 +77,73 @@ export function TrendChart({ trend }: { trend: Card["trend"] }) {
     ],
   };
   return <ReactECharts option={option} className="sj-chart" style={{ height: 280 }} notMerge />;
+}
+
+// Dompet → emiten → grup pemilik. Nilai = harga di struk pengguna; tidak ada angka perusahaan di diagram ini.
+export function SpendSankey({ spend, names }: { spend: Spend; names: Record<string, string> }) {
+  const narrow = typeof window !== "undefined" && window.innerWidth < 640;
+  const WALLET = "Belanjamu";
+  const OTHER = "Bukan emiten";
+  const two = (name: string, v: number) => `{n|${name}}\n{v|${rp(v)}}`;
+  type Node = { name: string; itemStyle: { color: string }; label?: Record<string, unknown> };
+  // Kode saham di kolom tengah diberi latar putih agar tetap terbaca di atas aliran.
+  const mid = { formatter: (p: { name: string }) => p.name, backgroundColor: "#ffffff", padding: [2, 4], borderRadius: 3, fontFamily: "IBM Plex Mono, monospace", fontWeight: 600 };
+  const data: Node[] = [{ name: WALLET, itemStyle: { color: "#0b0d12" }, label: { formatter: () => two(WALLET, spend.total) } }];
+  const links: { source: string; target: string; value: number }[] = [];
+  for (const c of spend.companies) {
+    data.push({ name: c.symbol, itemStyle: { color: c.verified ? "#2b4bff" : "#ff7a1a" }, label: mid });
+    links.push({ source: WALLET, target: c.symbol, value: c.amount });
+  }
+  for (const g of spend.groups) {
+    // Nama grup bisa sama dengan kode/nama lain; beri akhiran agar node tetap unik.
+    const gname = data.some((d) => d.name === g.label) ? `${g.label} ` : g.label;
+    data.push({ name: gname, itemStyle: { color: "#8aa61f" }, label: { formatter: () => two(g.kind === "dispersed" ? "Tanpa pengendali tunggal" : g.label, g.amount) } });
+    for (const sym of g.symbols) {
+      const c = spend.companies.find((x) => x.symbol === sym);
+      if (c) links.push({ source: sym, target: gname, value: c.amount });
+    }
+  }
+  if (spend.other > 0) {
+    data.push({ name: OTHER, itemStyle: { color: "#cfd3dc" }, label: { formatter: () => two(OTHER, spend.other) } });
+    links.push({ source: WALLET, target: OTHER, value: spend.other });
+  }
+  const full = (n: string) => (names[n] ? `${n} · ${names[n]}` : n.trim());
+  const option = {
+    textStyle: { fontFamily: FONT },
+    tooltip: {
+      trigger: "item",
+      confine: true,
+      formatter: (p: { dataType: string; data: { source?: string; target?: string; value?: number }; name: string; value: number }) =>
+        p.dataType === "edge"
+          ? `${full(p.data.source ?? "")} → ${full(p.data.target ?? "")}<br/><b>${rp(p.data.value)}</b>`
+          : `${full(p.name)}<br/><b>${rp(p.value)}</b>`,
+    },
+    series: [
+      {
+        type: "sankey",
+        left: 4,
+        right: narrow ? 104 : 180,
+        top: 10,
+        bottom: 24,
+        nodeWidth: 12,
+        nodeGap: 22,
+        nodeAlign: "left",
+        draggable: false,
+        emphasis: { focus: "adjacency" },
+        data,
+        links,
+        lineStyle: { color: "gradient", opacity: 0.25, curveness: 0.5 },
+        label: {
+          color: "#0b0d12",
+          fontSize: narrow ? 10.5 : 12,
+          rich: {
+            n: { fontSize: narrow ? 10.5 : 12, fontWeight: 600, color: "#0b0d12", width: narrow ? 96 : 172, overflow: "truncate", lineHeight: 16 },
+            v: { fontFamily: "IBM Plex Mono, monospace", fontSize: narrow ? 10 : 11, color: "#6b7180", lineHeight: 14 },
+          },
+        },
+      },
+    ],
+  };
+  const rows = Math.max(spend.companies.length + (spend.other > 0 ? 1 : 0), spend.groups.length);
+  return <ReactECharts option={option} className="sj-chart" style={{ height: Math.max(240, rows * 64) }} notMerge />;
 }

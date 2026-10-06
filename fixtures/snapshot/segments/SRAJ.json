@@ -1,0 +1,70 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/SRAJ/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:54:51+0700",
+ "fetched_at_epoch": 1791320091.0835493,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "SRAJ.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 1164022000000,
+    "source": "Drugs and consumables",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 930728000000,
+    "source": "Professional fees",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 640677000000,
+    "source": "Medical support services",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 320854000000,
+    "source": "Inpatient and operating rooms",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 92064000000,
+    "source": "Administration",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 2231902000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 916443000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 182517000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 733926000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 44779000000,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 689147000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

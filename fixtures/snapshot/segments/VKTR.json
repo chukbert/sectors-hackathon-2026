@@ -1,0 +1,60 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/VKTR/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:55:41+0700",
+ "fetched_at_epoch": 1791320141.1732152,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "VKTR.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 862217000000,
+    "source": "Trading of spare parts and scrap components",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 144244000000,
+    "source": "Sales of battery based electric motor vehicles",
+    "target": "Total Revenue"
+   },
+   {
+    "value": -2803000000,
+    "source": "Sales returns and discounts",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 825513000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 178145000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 9403000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 168742000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 11153000000,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 157589000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

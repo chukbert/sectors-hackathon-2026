@@ -1,0 +1,90 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/FILM/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:56:49+0700",
+ "fetched_at_epoch": 1791320209.0516338,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "FILM.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 105815615329,
+    "source": "Film: Digital",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 291205648299,
+    "source": "Film: Cinema",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 4947647204,
+    "source": "Film: TV Station",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 6604155309,
+    "source": "Film: Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 19500154067,
+    "source": "TV broadcasting: Advertising",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 6785276671,
+    "source": "TV broadcasting: Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 18682231054,
+    "source": "Buildings rental",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1485000000,
+    "source": "Studio and sound mixing rental",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 924003744,
+    "source": "Shooting equipment rental",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 181145099820,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 274804631857,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 67999622020,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 206805009837,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 66868356443,
+    "source": "Operating Expense",
+    "target": "Selling expenses"
+   },
+   {
+    "value": 139936653394,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

@@ -1,0 +1,95 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/AGRS/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:57:46+0700",
+ "fetched_at_epoch": 1791320266.6796057,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "AGRS.JK",
+  "financial_year": 2025,
+  "revenue_breakdown": [
+   {
+    "value": 932240000000,
+    "source": "Loans",
+    "target": "Interest Income"
+   },
+   {
+    "value": 189915000000,
+    "source": "Securities",
+    "target": "Interest Income"
+   },
+   {
+    "value": 51030000000,
+    "source": "Placement with Bank Indonesia",
+    "target": "Interest Income"
+   },
+   {
+    "value": 3477000000,
+    "source": "Current account with Bank Indonesia and other banks",
+    "target": "Interest Income"
+   },
+   {
+    "value": 197630000000,
+    "source": "Others",
+    "target": "Interest Income"
+   },
+   {
+    "value": 569613000000,
+    "source": "Interest Income",
+    "target": "Net Interest Income"
+   },
+   {
+    "value": 804679000000,
+    "source": "Interest Income",
+    "target": "Interest Expense"
+   },
+   {
+    "value": 569613000000,
+    "source": "Net Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 99175000000,
+    "source": "Non Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 238158000000,
+    "source": "Total Revenue",
+    "target": "Operating Income"
+   },
+   {
+    "value": 430630000000,
+    "source": "Total Revenue",
+    "target": "Operating and Credit-Related Expenses"
+   },
+   {
+    "value": 406845000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 23785000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Provision for Impairment"
+   },
+   {
+    "value": 220860000000,
+    "source": "Operating Expense",
+    "target": "Salaries and allowance"
+   },
+   {
+    "value": 176965000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   },
+   {
+    "value": 9020000000,
+    "source": "Operating Expense",
+    "target": "Others (expense)"
+   }
+  ]
+ }
+}

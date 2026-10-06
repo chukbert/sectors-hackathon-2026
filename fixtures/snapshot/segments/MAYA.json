@@ -1,0 +1,100 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/MAYA/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:01:45+0700",
+ "fetched_at_epoch": 1791320505.2521486,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "MAYA.JK",
+  "financial_year": 2025,
+  "revenue_breakdown": [
+   {
+    "value": 11995094000000,
+    "source": "Loans",
+    "target": "Interest Income"
+   },
+   {
+    "value": 244021000000,
+    "source": "Government Bonds",
+    "target": "Interest Income"
+   },
+   {
+    "value": 402499000000,
+    "source": "Placement with Bank Indonesia and other banks",
+    "target": "Interest Income"
+   },
+   {
+    "value": 213764000000,
+    "source": "Securities",
+    "target": "Interest Income"
+   },
+   {
+    "value": 20416000000,
+    "source": "Securities purchased with agreement to resell",
+    "target": "Interest Income"
+   },
+   {
+    "value": 9000000,
+    "source": "Current accounts with other banks",
+    "target": "Interest Income"
+   },
+   {
+    "value": 3166156000000,
+    "source": "Interest Income",
+    "target": "Net Interest Income"
+   },
+   {
+    "value": 9709647000000,
+    "source": "Interest Income",
+    "target": "Interest Expense"
+   },
+   {
+    "value": 3166156000000,
+    "source": "Net Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 108018000000,
+    "source": "Non Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 35730000000,
+    "source": "Total Revenue",
+    "target": "Operating Income"
+   },
+   {
+    "value": 3238444000000,
+    "source": "Total Revenue",
+    "target": "Operating and Credit-Related Expenses"
+   },
+   {
+    "value": 2802852000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 435592000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Provision for Impairment"
+   },
+   {
+    "value": 832379000000,
+    "source": "Operating Expense",
+    "target": "Salaries and employees' benefits"
+   },
+   {
+    "value": 1959450000000,
+    "source": "Operating Expense",
+    "target": "General and administrative expenses"
+   },
+   {
+    "value": 11023000000,
+    "source": "Operating Expense",
+    "target": "Others (expense)"
+   }
+  ]
+ }
+}

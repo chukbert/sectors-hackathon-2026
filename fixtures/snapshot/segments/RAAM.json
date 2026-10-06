@@ -1,0 +1,70 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/RAAM/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:58:38+0700",
+ "fetched_at_epoch": 1791320318.3241677,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "RAAM.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 97929819552,
+    "source": "Film",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 51175773964,
+    "source": "Ticket",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 42381440789,
+    "source": "Digital",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 23356058826,
+    "source": "Sinetron",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 14497193656,
+    "source": "Food and Beverages",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 148964659245,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 80375627542,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 19985270438,
+    "source": "Operating Income",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 80375627542,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 45051196022,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   },
+   {
+    "value": 55309701958,
+    "source": "Operating Expense",
+    "target": "Salary and other allowance"
+   }
+  ]
+ }
+}

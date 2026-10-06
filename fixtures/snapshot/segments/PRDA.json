@@ -1,0 +1,65 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/PRDA/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:57:47+0700",
+ "fetched_at_epoch": 1791320267.5248475,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "PRDA.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 1565481000000,
+    "source": "Routine",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 492390000000,
+    "source": "Esoteric",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 194321000000,
+    "source": "Non-laboratory",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 2000000,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 900167000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 1352027000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 298132000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 1053895000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 54609000000,
+    "source": "Operating Expense",
+    "target": "Marketing"
+   },
+   {
+    "value": 999286000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

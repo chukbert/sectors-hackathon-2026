@@ -1,0 +1,110 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/BSIM/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:55:47+0700",
+ "fetched_at_epoch": 1791320147.3050396,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "BSIM.JK",
+  "financial_year": 2025,
+  "revenue_breakdown": [
+   {
+    "value": 1028747000000,
+    "source": "Loans",
+    "target": "Interest Income"
+   },
+   {
+    "value": 988754000000,
+    "source": "Securities",
+    "target": "Interest Income"
+   },
+   {
+    "value": 366704000000,
+    "source": "Placement with Bank Indonesia and other banks",
+    "target": "Interest Income"
+   },
+   {
+    "value": 21783000000,
+    "source": "Demand deposits with Bank Indonesia and other banks",
+    "target": "Interest Income"
+   },
+   {
+    "value": 75911000000,
+    "source": "Securities purchased under agreements to resell",
+    "target": "Interest Income"
+   },
+   {
+    "value": 567339000000,
+    "source": "Sharia income",
+    "target": "Interest Income"
+   },
+   {
+    "value": 1852955000000,
+    "source": "Interest Income",
+    "target": "Net Interest Income"
+   },
+   {
+    "value": 1196283000000,
+    "source": "Interest Income",
+    "target": "Interest Expense"
+   },
+   {
+    "value": 1852955000000,
+    "source": "Net Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1533511000000,
+    "source": "Non Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 415729000000,
+    "source": "Total Revenue",
+    "target": "Operating Income"
+   },
+   {
+    "value": 2970737000000,
+    "source": "Total Revenue",
+    "target": "Operating and Credit-Related Expenses"
+   },
+   {
+    "value": 3186923000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Operating Expense"
+   },
+   {
+    "value": -216186000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Provision for Impairment"
+   },
+   {
+    "value": 1446770000000,
+    "source": "Operating Expense",
+    "target": "Personnel"
+   },
+   {
+    "value": 1358152000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   },
+   {
+    "value": 300575000000,
+    "source": "Operating Expense",
+    "target": "Depreciation"
+   },
+   {
+    "value": 63017000000,
+    "source": "Operating Expense",
+    "target": "Commission"
+   },
+   {
+    "value": 18409000000,
+    "source": "Operating Expense",
+    "target": "Others (expense)"
+   }
+  ]
+ }
+}

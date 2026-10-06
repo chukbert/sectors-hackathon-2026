@@ -1,0 +1,65 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/HEXA/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:57:46+0700",
+ "fetched_at_epoch": 1791320266.2948027,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "HEXA.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 5132974073384,
+    "source": "Sales of heavy equipment",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 237071612529,
+    "source": "Rental of heavy equipment",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1743838404153,
+    "source": "Sales of spare parts",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1331619547500,
+    "source": "Repair and maintenance services",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 6663376277871,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 1782127359695,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 771339332349,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 1010788027346,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 454233874907,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 556554152439,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

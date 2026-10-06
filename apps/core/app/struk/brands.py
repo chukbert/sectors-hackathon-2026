@@ -89,6 +89,37 @@ CATALOG: dict[str, tuple[str, list[str], str | None]] = {
     "SCMA": ("direct", ["SCTV", "Indosiar", "Vidio"], None),
     "MNCN": ("direct", ["RCTI", "MNCTV", "GTV"], None),
     "BELI": ("direct", ["Blibli", "tiket.com"], None),
+    # --- perluasan Okt 2026: apotek, perawatan diri, makanan ringan, hiburan, ritel, bank
+    "TSPC": ("direct", ["Bodrex", "Bodrexin", "Hemaviton", "Marina", "My Baby", "Vidoran", "Neo Rheumacyl",
+                        "Contrexyn", "Tempo Scan"], None),
+    "DVLA": ("direct", ["Natur-E", "Enervon-C", "Darya-Varia"], None),
+    "SOHO": ("direct", ["Imboost", "Curcuma Plus", "Diapet"], None),
+    "MBTO": ("direct", ["Sariayu", "Martina Berto"], None),
+    "MRAT": ("direct", ["Mustika Ratu"], None),
+    "KINO": ("direct", ["Ellips", "Sleek Baby", "Eskulin", "Resik-V", "Bellagio"], None),
+    "UCID": ("direct", ["MamyPoko", "Charm", "Lifree", "Uni-Charm"], None),
+    "SKLT": ("direct", ["Finna", "Krupuk Finna", "Sekar Laut"], None),
+    "STTP": ("direct", ["Go Potato", "Twistko", "French Fries 2000", "Mie Gemez", "Siantar Top"], None),
+    "CAMP": ("direct", ["Campina"], None),
+    "HOKI": ("direct", ["Topi Koki"], None),
+    "DLTA": ("direct", ["Anker Bir", "Anker Stout", "Delta Djakarta"], None),
+    "BLTZ": ("direct", ["CGV", "CGV Cinemas"], None),
+    "CNMA": ("direct", ["Cinema XXI", "XXI", "M.tix"], None),
+    "MAPB": ("direct", ["Krispy Kreme", "Pizza Marzano", "Cold Stone", "Genki Sushi"], None),
+    "RANC": ("direct", ["Ranch Market", "Farmers Market"], None),
+    "ECII": ("direct", ["Electronic City"], None),
+    "CSAP": ("direct", ["Mitra10"], None),
+    "LINK": ("direct", ["First Media"], None),
+    "BBTN": ("direct", ["BTN", "Bank BTN"], None),
+    "BNGA": ("direct", ["CIMB Niaga", "OCTO Mobile"], None),
+    "BDMN": ("direct", ["Danamon", "D-Bank"], None),
+    "NISP": ("direct", ["OCBC", "OCBC NISP", "Nyala"], None),
+    "ARTO": ("direct", ["Bank Jago"], None),
+    "BNLI": ("direct", ["PermataBank", "Permata"], None),
+    "BJBR": ("direct", ["bank bjb", "bjb"], None),
+    "MEGA": ("direct", ["Bank Mega"], None),
+    "BTPN": ("direct", ["Jenius", "SMBC Indonesia"], None),
+    "PNBN": ("direct", ["Panin Bank", "Bank Panin"], None),
 }
 
 
@@ -106,7 +137,8 @@ for _sym, (_rel, _brands, _note) in CATALOG.items():
 
 # Merek yang juga kata umum: hanya cocok persis, tidak lewat prefiks ("Surya beras" ≠ Surya).
 _EXACT_ONLY = {_key(b) for b in ["Clear", "Surya", "Better", "Lux", "Tri", "Leo", "Zee", "Citra", "Astra", "Champ",
-                                 "Woods", "Dove", "Close Up", "Sakura", "Astor", "Lawson", "Indofood", "Telkom"]}
+                                 "Woods", "Dove", "Close Up", "Sakura", "Astor", "Lawson", "Indofood", "Telkom",
+                                 "Natur-E", "Charm", "Marina", "My Baby", "Bellagio", "Permata", "Finna", "Campina"]}
 
 
 def lookup(name: str) -> BrandHit | None:

@@ -1,0 +1,90 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/NISP/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:54:46+0700",
+ "fetched_at_epoch": 1791320086.5802257,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "NISP.JK",
+  "financial_year": 2025,
+  "revenue_breakdown": [
+   {
+    "value": 12290880000000,
+    "source": "Loans",
+    "target": "Interest Income"
+   },
+   {
+    "value": 6280769000000,
+    "source": "Marketable securities and government bonds",
+    "target": "Interest Income"
+   },
+   {
+    "value": 336305000000,
+    "source": "Current accounts and placements with other banks and Bank Indonesia",
+    "target": "Interest Income"
+   },
+   {
+    "value": 27320000000,
+    "source": "Others",
+    "target": "Interest Income"
+   },
+   {
+    "value": 10949171000000,
+    "source": "Interest Income",
+    "target": "Net Interest Income"
+   },
+   {
+    "value": 7986103000000,
+    "source": "Interest Income",
+    "target": "Interest Expense"
+   },
+   {
+    "value": 10949171000000,
+    "source": "Net Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 2030768000000,
+    "source": "Non Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 6289275000000,
+    "source": "Total Revenue",
+    "target": "Operating Income"
+   },
+   {
+    "value": 6690664000000,
+    "source": "Total Revenue",
+    "target": "Operating and Credit-Related Expenses"
+   },
+   {
+    "value": 6160992000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 529672000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Provision for Impairment"
+   },
+   {
+    "value": 3493794000000,
+    "source": "Operating Expense",
+    "target": "Salaries and employees' benefits"
+   },
+   {
+    "value": 2270635000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   },
+   {
+    "value": 396563000000,
+    "source": "Operating Expense",
+    "target": "Others (expense)"
+   }
+  ]
+ }
+}

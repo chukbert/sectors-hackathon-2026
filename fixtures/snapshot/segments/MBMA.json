@@ -1,0 +1,55 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/MBMA/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:00:39+0700",
+ "fetched_at_epoch": 1791320439.5003858,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "MBMA.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 2929563569995,
+    "source": "Mining",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 26875189168824,
+    "source": "Manufacturing ",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 27961079940840,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 1843672797979,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 1289669496543,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 554003301436,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 51654979205,
+    "source": "Operating Expense",
+    "target": "Selling and marketing"
+   },
+   {
+    "value": 502348322231,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

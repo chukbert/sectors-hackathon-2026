@@ -1,0 +1,70 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/TRIO/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:01:16+0700",
+ "fetched_at_epoch": 1791320476.269915,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "TRIO.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 713855173981,
+    "source": "Sales of cellular phones",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 37680596472,
+    "source": "Coffee machines and equipment",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 45395049652,
+    "source": "Sales of reload vouchers",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 2814702726,
+    "source": "Consignment: accessories and others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 36377823450,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 771784290051,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 64339056230,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 24220176688,
+    "source": "Operating Income",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 64339056230,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 44036504324,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 44522728594,
+    "source": "Operating Expense",
+    "target": "General and Administrative"
+   }
+  ]
+ }
+}

@@ -121,3 +121,97 @@ async def test_text_scan_without_quota_stays_deterministic():
 
     out = await narrate.read_receipt("Indomie goreng, Pepsodent", use_llm=False)
     assert out["llm"] is False and [i["raw"] for i in out["items"]] == ["Indomie goreng", "Pepsodent"]
+
+
+@pytest.mark.parametrize("line,expected", [
+    ("Indomie goreng 3.500", ("Indomie goreng", 3500)),
+    ("Sari Roti Rp 15.500,00", ("Sari Roti", 15500)),
+    ("Pulsa Telkomsel 50rb", ("Pulsa Telkomsel", 50000)),
+    ("IDM GRG SPCL 85G x3 10.500", ("IDM GRG SPCL 85G x3", 10500)),
+    ("ULTRA MILK COKLAT 250", ("ULTRA MILK COKLAT 250", None)),  # ukuran, bukan harga
+    ("PEPSODENT 190G", ("PEPSODENT 190G", None)),
+    ("Teh 1500ml", ("Teh 1500ml", None)),
+])
+def test_price_is_read_from_the_end_of_a_receipt_line(line, expected):
+    from app.struk import narrate
+
+    assert narrate.parse_price(line) == expected
+
+
+def test_payment_and_total_lines_never_count_as_spending():
+    from app.struk import narrate
+
+    assert narrate.clean_price("Bayar: BRImo", 187500) is None
+    assert narrate.clean_price("TOTAL", 187500) is None
+    assert narrate.clean_price("Indomie", -5) is None
+    assert narrate.clean_price("Indomie", "3500") == 3500
+    out = narrate._split_text("Indomie 3.500, Kopiko 2.000\nBayar: BRImo 187.500")
+    assert [(i["raw"], i["price"]) for i in out["items"]] == [("Indomie", 3500), ("Kopiko", 2000), ("Bayar: BRImo", None)]
+
+
+@pytest.mark.asyncio
+async def test_spending_flows_to_issuers_and_groups(monkeypatch, records):
+    monkeypatch.delenv("STRUK_SECTORS_OFF", raising=False)
+
+    async def fake_universe():
+        return {"records": records, "count": len(records), "prov": {}}
+
+    monkeypatch.setattr(service, "load_universe", fake_universe)
+    monkeypatch.setattr(service, "_matrix_src", lambda u, f: {})
+    out = await service.basket([
+        {"raw": "IDM GRG SPCL x3", "brand": "Indomie", "price": 10500},
+        {"raw": "CHITATO", "brand": "Chitato", "price": 9000},
+        {"raw": "PEPSODENT 190G", "brand": "Pepsodent", "price": 12000},
+        {"raw": "Kantong plastik", "brand": "", "price": 200},
+        {"raw": "INDOMARET", "brand": "Indomaret", "price": None},
+    ])
+    sp = out["spend"]
+    assert sp["total"] == 31700 and sp["to_issuers"] == 31500 and sp["other"] == 200
+    assert sp["lines"] == 5 and sp["priced_lines"] == 4
+    icbp = next(c for c in sp["companies"] if c["symbol"] == "ICBP")
+    assert icbp["amount"] == 19500  # dua baris (Indomie + Chitato) ke satu emiten
+    # Margin datang dari matriks Sectors, bukan dari struk.
+    assert icbp["per_100"] == round(service._num(records["ICBP"][f"net_profit_margin[{universe.LATEST}]"]) * 100, 1)
+    assert sum(g["amount"] for g in sp["groups"]) == sp["to_issuers"]
+    assert abs(sum(g["share"] for g in sp["groups"]) + sp["other_share"] - 1) < 1e-3
+    assert "AMRT" not in {c["symbol"] for c in sp["companies"]}  # baris tanpa harga tidak ikut dihitung
+
+
+@pytest.mark.asyncio
+async def test_spending_without_prices_is_empty_not_invented(monkeypatch, records):
+    async def fake_universe():
+        return {"records": records, "count": len(records), "prov": {}}
+
+    monkeypatch.setattr(service, "load_universe", fake_universe)
+    monkeypatch.setattr(service, "_matrix_src", lambda u, f: {})
+    sp = (await service.basket([{"raw": "Indomie", "brand": "Indomie"}]))["spend"]
+    assert sp["total"] == 0 and sp["companies"] == [] and sp["to_issuers_share"] is None
+
+
+def test_new_catalog_brands_that_are_common_words_match_exactly_only():
+    assert brands.lookup("Natur-E").symbol == "DVLA"
+    assert brands.lookup("Nature Republic") is None  # bukan Natur-E (DVLA)
+    assert brands.lookup("Charm").symbol == "UCID" and brands.lookup("Charming") is None
+    assert brands.lookup("Marina").symbol == "TSPC" and brands.lookup("Marinara") is None
+
+
+def test_every_catalog_symbol_exists_in_sectors_snapshot(records):
+    missing = [s for s in brands.CATALOG if s not in records]
+    assert missing == []
+
+
+@pytest.mark.asyncio
+async def test_ai_guess_does_not_inherit_verified_from_sibling_line(monkeypatch, records):
+    async def fake_universe():
+        return {"records": records, "count": len(records), "prov": {}}
+
+    monkeypatch.setattr(service, "load_universe", fake_universe)
+    monkeypatch.setattr(service, "_matrix_src", lambda u, f: {})
+    out = await service.basket([
+        {"raw": "ENERVON-C 30S", "brand": "Enervon-C", "symbol": "DVLA"},
+        {"raw": "NEOZEP FORTE", "brand": "Neozep", "symbol": "DVLA"},  # tebakan AI, bukan katalog
+    ])
+    dvla = next(c for c in out["companies"] if c["symbol"] == "DVLA")
+    by_raw = {ln["raw"]: ln for ln in dvla["lines"]}
+    assert by_raw["ENERVON-C 30S"]["verified"] is True
+    assert by_raw["NEOZEP FORTE"]["verified"] is False and by_raw["NEOZEP FORTE"]["relation"] == "dugaan"

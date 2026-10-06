@@ -1,0 +1,85 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/BVIC/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:02:30+0700",
+ "fetched_at_epoch": 1791320550.42444,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "BVIC.JK",
+  "financial_year": 2025,
+  "revenue_breakdown": [
+   {
+    "value": 1769949830000,
+    "source": "Loans",
+    "target": "Interest Income"
+   },
+   {
+    "value": 485560603000,
+    "source": "Marketable Securities",
+    "target": "Interest Income"
+   },
+   {
+    "value": 46843542000,
+    "source": "Placement with Bank Indonesia and other banks",
+    "target": "Interest Income"
+   },
+   {
+    "value": 558717259000,
+    "source": "Interest Income",
+    "target": "Net Interest Income"
+   },
+   {
+    "value": 1743636716000,
+    "source": "Interest Income",
+    "target": "Interest Expense"
+   },
+   {
+    "value": 558717259000,
+    "source": "Net Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 533276856000,
+    "source": "Non Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 218540181000,
+    "source": "Total Revenue",
+    "target": "Operating Income"
+   },
+   {
+    "value": 873453934000,
+    "source": "Total Revenue",
+    "target": "Operating and Credit-Related Expenses"
+   },
+   {
+    "value": 532034862000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 341419072000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Provision for Impairment"
+   },
+   {
+    "value": 193892183000,
+    "source": "Operating Expense",
+    "target": "Personnel"
+   },
+   {
+    "value": 228136558000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   },
+   {
+    "value": 110006121000,
+    "source": "Operating Expense",
+    "target": "Others (expense)"
+   }
+  ]
+ }
+}

@@ -1,0 +1,70 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/SMSM/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:56:40+0700",
+ "fetched_at_epoch": 1791320200.8586686,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "SMSM.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 2725548000000,
+    "source": "Filter",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 490488000000,
+    "source": "Radiator",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 265069000000,
+    "source": "Body Maker",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1526380000000,
+    "source": "Trading",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 157500000000,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 3250975000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 1914010000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 1367458000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 546552000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 294668000000,
+    "source": "Operating Expense",
+    "target": "Selling expenses"
+   },
+   {
+    "value": 251884000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

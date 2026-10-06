@@ -1,0 +1,60 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/ADRO/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:00:23+0700",
+ "fetched_at_epoch": 1791320423.632802,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "ADRO.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 18611894580000,
+    "source": "Sales of Coal",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 13713576890000,
+    "source": "Mining services",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1259906703000,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 19464176330000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 14121201843000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 11853453794000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 2267748049000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 162183966000,
+    "source": "Operating Expense",
+    "target": "Selling and marketing"
+   },
+   {
+    "value": 2105564083000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

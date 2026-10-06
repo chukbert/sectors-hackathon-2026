@@ -1,0 +1,85 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/BSWD/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:01:03+0700",
+ "fetched_at_epoch": 1791320463.0788953,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "BSWD.JK",
+  "financial_year": 2025,
+  "revenue_breakdown": [
+   {
+    "value": 284277301427,
+    "source": "Loans",
+    "target": "Interest Income"
+   },
+   {
+    "value": 130957362283,
+    "source": "Marketable ecurities",
+    "target": "Interest Income"
+   },
+   {
+    "value": 10838800169,
+    "source": "Placement with Bank Indonesia and other banks",
+    "target": "Interest Income"
+   },
+   {
+    "value": 14934110087,
+    "source": "Fee and commissions",
+    "target": "Interest Income"
+   },
+   {
+    "value": 289379667854,
+    "source": "Interest Income",
+    "target": "Net Interest Income"
+   },
+   {
+    "value": 151627906112,
+    "source": "Interest Income",
+    "target": "Interest Expense"
+   },
+   {
+    "value": 289379667854,
+    "source": "Net Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 41430625772,
+    "source": "Non Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 62066024988,
+    "source": "Total Revenue",
+    "target": "Operating Income"
+   },
+   {
+    "value": 268744268638,
+    "source": "Total Revenue",
+    "target": "Operating and Credit-Related Expenses"
+   },
+   {
+    "value": 114726247846,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 154018020792,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Provision for Impairment"
+   },
+   {
+    "value": 57265454322,
+    "source": "Operating Expense",
+    "target": "Personnel and benefits"
+   },
+   {
+    "value": 57460793524,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

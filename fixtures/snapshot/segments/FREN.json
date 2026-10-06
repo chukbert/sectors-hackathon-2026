@@ -1,0 +1,70 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/FREN/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:58:43+0700",
+ "fetched_at_epoch": 1791320323.2016182,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "FREN.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 10334577000000,
+    "source": "Telecommunication services",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 259801000000,
+    "source": "Interconnection services",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 825347000000,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 4301448000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 7118277000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 309349000000,
+    "source": "Operating Income",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 7118277000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 1602265000000,
+    "source": "Operating Expense",
+    "target": "Selling and marketing"
+   },
+   {
+    "value": 224873000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   },
+   {
+    "value": 718362000000,
+    "source": "Operating Expense",
+    "target": "Personnel"
+   },
+   {
+    "value": 4882126000000,
+    "source": "Operating Expense",
+    "target": "Depreciation and amortization"
+   }
+  ]
+ }
+}

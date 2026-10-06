@@ -1,0 +1,100 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/PTPP/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:58:38+0700",
+ "fetched_at_epoch": 1791320318.7236784,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "PTPP.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 16179413792564,
+    "source": "Construction services",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 2055761795062,
+    "source": "Engineering, procurement, and construction (EPC)",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 795185484474,
+    "source": "Property and real estate",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 322778141439,
+    "source": "Financial income on the construction of concession financial assets",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 112855257482,
+    "source": "Equipment rent",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 98592811692,
+    "source": "Precast",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 87865695387,
+    "source": "Energy",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 83761645260,
+    "source": "Toll road",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 75928267203,
+    "source": "Mining service business",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 17179098253462,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 2633044637101,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 1809551406576,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 823493230525,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 183586566834,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   },
+   {
+    "value": 611683353389,
+    "source": "Operating Expense",
+    "target": "Employees"
+   },
+   {
+    "value": 22694254113,
+    "source": "Operating Expense",
+    "target": "Depreciation and amortization"
+   },
+   {
+    "value": 5529056189,
+    "source": "Operating Expense",
+    "target": "Marketing"
+   }
+  ]
+ }
+}

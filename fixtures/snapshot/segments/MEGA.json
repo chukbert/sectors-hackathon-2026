@@ -1,0 +1,90 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/MEGA/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:54:46+0700",
+ "fetched_at_epoch": 1791320086.1325326,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "MEGA.JK",
+  "financial_year": 2025,
+  "revenue_breakdown": [
+   {
+    "value": 6810068000000,
+    "source": "Loans",
+    "target": "Interest Income"
+   },
+   {
+    "value": 3241388000000,
+    "source": "Securities",
+    "target": "Interest Income"
+   },
+   {
+    "value": 145285000000,
+    "source": "Placement with Bank Indonesia",
+    "target": "Interest Income"
+   },
+   {
+    "value": 455000000,
+    "source": "Others",
+    "target": "Interest Income"
+   },
+   {
+    "value": 4928610000000,
+    "source": "Interest Income",
+    "target": "Net Interest Income"
+   },
+   {
+    "value": 5268586000000,
+    "source": "Interest Income",
+    "target": "Interest Expense"
+   },
+   {
+    "value": 4928610000000,
+    "source": "Net Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 2785842000000,
+    "source": "Non Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 4037100000000,
+    "source": "Total Revenue",
+    "target": "Operating Income"
+   },
+   {
+    "value": 3677352000000,
+    "source": "Total Revenue",
+    "target": "Operating and Credit-Related Expenses"
+   },
+   {
+    "value": 3188639000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 488713000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Provision for Impairment"
+   },
+   {
+    "value": 1318299000000,
+    "source": "Operating Expense",
+    "target": "Salaries and employees' benefits"
+   },
+   {
+    "value": 1851824000000,
+    "source": "Operating Expense",
+    "target": "General and administrative expenses"
+   },
+   {
+    "value": 18516000000,
+    "source": "Operating Expense",
+    "target": "Fees and commissions"
+   }
+  ]
+ }
+}

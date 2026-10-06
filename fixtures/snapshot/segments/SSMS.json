@@ -1,0 +1,55 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/SSMS/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:56:39+0700",
+ "fetched_at_epoch": 1791320199.6307979,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "SSMS.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 755543193000,
+    "source": "Plantations",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 9766107502000,
+    "source": "Edible oil and fats",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 7242040109000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 3279610586000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 1434369511000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 1845241075000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 898914514000,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 946326561000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

@@ -1,0 +1,70 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/MEDC/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:55:41+0700",
+ "fetched_at_epoch": 1791320141.5612988,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "MEDC.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 35190049243230,
+    "source": "Oil and gas sales contract",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1302380240757,
+    "source": "Construction contract",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 760126649018,
+    "source": "Sales of electricity power contracts",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 470780597904,
+    "source": "Operation and maintenance contracts",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 804292842566,
+    "source": "Lease and finance income ",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 236092223660,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 23681682730262,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 15082039066873,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 11577739274530,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 3504299792343,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 3504299792343,
+    "source": "Operating Expense",
+    "target": "Selling, General and Administrative"
+   }
+  ]
+ }
+}

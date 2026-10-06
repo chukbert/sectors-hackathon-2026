@@ -1,0 +1,60 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/BWPT/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:57:43+0700",
+ "fetched_at_epoch": 1791320263.8390841,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "BWPT.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 3889930000000,
+    "source": "Crude palm oil",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 363869000000,
+    "source": "Palm kernel",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 48877000000,
+    "source": "Fresh fruit bunches",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 3048251000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 1254425000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 926507000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 327918000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 106921000000,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 220997000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

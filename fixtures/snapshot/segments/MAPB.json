@@ -1,0 +1,60 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/MAPB/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:54:45+0700",
+ "fetched_at_epoch": 1791320085.749621,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "MAPB.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 1782908000000,
+    "source": "Beverages",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1249449000000,
+    "source": "Foods",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 195776000000,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 976466000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 2251667000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 94870000000,
+    "source": "Operating Income",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 2251667000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 2054532000000,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 292005000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

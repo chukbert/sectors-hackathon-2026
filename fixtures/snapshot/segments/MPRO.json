@@ -1,0 +1,60 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/MPRO/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:00:07+0700",
+ "fetched_at_epoch": 1791320407.7411134,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "MPRO.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 6069976000,
+    "source": "Apartment",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1404879000,
+    "source": "Service Charge",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 99551000,
+    "source": "Utility",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 5519128000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 2055278000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 21037362000,
+    "source": "Operating Income",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 2055278000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 445098000,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 22647542000,
+    "source": "Operating Expense",
+    "target": "General and Administrative"
+   }
+  ]
+ }
+}

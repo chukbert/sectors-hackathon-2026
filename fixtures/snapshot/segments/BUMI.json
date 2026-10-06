@@ -1,0 +1,60 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/BUMI/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:00:31+0700",
+ "fetched_at_epoch": 1791320431.5199313,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "BUMI.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 19345336667115,
+    "source": "Coal",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 58193313180,
+    "source": "Silver",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 2564811264966,
+    "source": "Gold",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 19233121955882,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 2735219289379,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 986675966826,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 1748543322553,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 467657756787,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 1280885565766,
+    "source": "Operating Expense",
+    "target": "General and Administrative"
+   }
+  ]
+ }
+}

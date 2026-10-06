@@ -1,0 +1,80 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/LIFE/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:55:45+0700",
+ "fetched_at_epoch": 1791320145.6645727,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "LIFE.JK",
+  "financial_year": 2023,
+  "revenue_breakdown": [
+   {
+    "value": 2569686000000,
+    "source": "Net premium income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 56795000000,
+    "source": "Income from operational management on sharia insurance (ujrah)",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 818646000000,
+    "source": "Net investment income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 2189000000,
+    "source": "Reversal (provision) for impairment losses",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 48571000000,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1956316000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 1539571000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 199111000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 1340460000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 729924000000,
+    "source": "Operating Expense",
+    "target": "Acquisition expenses"
+   },
+   {
+    "value": 88397000000,
+    "source": "Operating Expense",
+    "target": "Marketing expenses"
+   },
+   {
+    "value": 406464000000,
+    "source": "Operating Expense",
+    "target": "General and administrative expenses"
+   },
+   {
+    "value": 115675000000,
+    "source": "Operating Expense",
+    "target": "Others (expense)"
+   }
+  ]
+ }
+}

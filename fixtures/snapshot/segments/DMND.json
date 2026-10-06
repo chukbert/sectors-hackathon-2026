@@ -1,0 +1,55 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/DMND/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:01:34+0700",
+ "fetched_at_epoch": 1791320494.597309,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "DMND.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 8912508000000,
+    "source": "Branded product",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 899041000000,
+    "source": "Non- branded products",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 7734005000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 2077544000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 978294500000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 1099249500000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 1039746000000,
+    "source": "Operating Expense",
+    "target": "Selling and distribution"
+   },
+   {
+    "value": 59503500000,
+    "source": "Operating Expense",
+    "target": "Administrative"
+   }
+  ]
+ }
+}

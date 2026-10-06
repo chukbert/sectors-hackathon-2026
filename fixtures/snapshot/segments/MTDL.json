@@ -1,0 +1,50 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/MTDL/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:01:31+0700",
+ "fetched_at_epoch": 1791320491.9372027,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "MTDL.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 18961147000000,
+    "source": "Distribution",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 6187791000000,
+    "source": "Solution and consultation",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 22999339000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 2149599000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 1386900000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 762699000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 762699000000,
+    "source": "Operating Expense",
+    "target": "Selling, general and administrative"
+   }
+  ]
+ }
+}

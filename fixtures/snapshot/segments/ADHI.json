@@ -1,0 +1,65 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/ADHI/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:02:45+0700",
+ "fetched_at_epoch": 1791320565.9728596,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "ADHI.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 10974446092823,
+    "source": "Engineering and construction",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 488808268376,
+    "source": "Property and hospitality",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1523910604056,
+    "source": "Manufacture",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 364552238101,
+    "source": "Investment and concession",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 11723660348140,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 1628056855216,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 702100847973,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 925956007243,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 19491296202,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 906464711041,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

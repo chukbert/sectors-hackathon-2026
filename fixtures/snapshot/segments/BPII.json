@@ -1,0 +1,85 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/BPII/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:02:01+0700",
+ "fetched_at_epoch": 1791320521.2235353,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "BPII.JK",
+  "financial_year": 2023,
+  "revenue_breakdown": [
+   {
+    "value": 421107897756,
+    "source": "Investment management and other fees",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 438509486347,
+    "source": "Transportation service income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 33719605201,
+    "source": "Finance income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 6230691542,
+    "source": "Gain on trading of marketable securities",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 146618046401,
+    "source": "Underwriting income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 33809071200,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 108760059009,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 971234739438,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 295735870913,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 675498868525,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 202885488503,
+    "source": "Operating Expense",
+    "target": "Marketing"
+   },
+   {
+    "value": 128278903985,
+    "source": "Operating Expense",
+    "target": "Salaries and allowances"
+   },
+   {
+    "value": 288453057240,
+    "source": "Operating Expense",
+    "target": "Transportation service"
+   },
+   {
+    "value": 55881418797,
+    "source": "Operating Expense",
+    "target": "General and Administrative"
+   }
+  ]
+ }
+}

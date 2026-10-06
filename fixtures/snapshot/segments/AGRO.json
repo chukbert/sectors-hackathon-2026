@@ -1,0 +1,90 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/AGRO/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:57:43+0700",
+ "fetched_at_epoch": 1791320263.4264083,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "AGRO.JK",
+  "financial_year": 2025,
+  "revenue_breakdown": [
+   {
+    "value": 845301069000,
+    "source": "Loans",
+    "target": "Interest Income"
+   },
+   {
+    "value": 318912235000,
+    "source": "Securities",
+    "target": "Interest Income"
+   },
+   {
+    "value": 210371000,
+    "source": "Marketable securities",
+    "target": "Interest Income"
+   },
+   {
+    "value": 25838092000,
+    "source": "Placement with Bank Indonesia",
+    "target": "Interest Income"
+   },
+   {
+    "value": 696344456000,
+    "source": "Interest Income",
+    "target": "Net Interest Income"
+   },
+   {
+    "value": 493917311000,
+    "source": "Interest Income",
+    "target": "Interest Expense"
+   },
+   {
+    "value": 696344456000,
+    "source": "Net Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 166024064000,
+    "source": "Non Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 330045599000,
+    "source": "Operating Income",
+    "target": "Operating and Credit-Related Expenses"
+   },
+   {
+    "value": 862368520000,
+    "source": "Total Revenue",
+    "target": "Operating and Credit-Related Expenses"
+   },
+   {
+    "value": 638801287000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 553612832000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Provision for Impairment"
+   },
+   {
+    "value": 288127295000,
+    "source": "Operating Expense",
+    "target": "Salaries and employees' benefits"
+   },
+   {
+    "value": 347518611000,
+    "source": "Operating Expense",
+    "target": "General and administrative expenses"
+   },
+   {
+    "value": 3155381000,
+    "source": "Operating Expense",
+    "target": "Others (expense)"
+   }
+  ]
+ }
+}

@@ -1,0 +1,65 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/BFIN/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:01:00+0700",
+ "fetched_at_epoch": 1791320460.4925854,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "BFIN.JK",
+  "financial_year": 2023,
+  "revenue_breakdown": [
+   {
+    "value": 4207179000000,
+    "source": "Cars",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1219548000000,
+    "source": "Motorcycles",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 926386000000,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 952325000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 5400788000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 2810286000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 2590502000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 1457103000000,
+    "source": "Operating Expense",
+    "target": "Salaries and benefits"
+   },
+   {
+    "value": 870505000000,
+    "source": "Operating Expense",
+    "target": "General and administrative expenses"
+   },
+   {
+    "value": 262894000000,
+    "source": "Operating Expense",
+    "target": "Others (expense)"
+   }
+  ]
+ }
+}

@@ -1,0 +1,120 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/BBTN/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:54:42+0700",
+ "fetched_at_epoch": 1791320082.588764,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "BBTN.JK",
+  "financial_year": 2025,
+  "revenue_breakdown": [
+   {
+    "value": 29635874000000,
+    "source": "Loans",
+    "target": "Interest Income"
+   },
+   {
+    "value": 1793940000000,
+    "source": "Securities",
+    "target": "Interest Income"
+   },
+   {
+    "value": 126910000000,
+    "source": "Placement with Bank Indonesia",
+    "target": "Interest Income"
+   },
+   {
+    "value": 247803000000,
+    "source": "Current account with Bank Indonesia and other banks",
+    "target": "Interest Income"
+   },
+   {
+    "value": 49512000000,
+    "source": "Securities purchased under agreement to resell",
+    "target": "Interest Income"
+   },
+   {
+    "value": 2641498000000,
+    "source": "Income from murabahah",
+    "target": "Interest Income"
+   },
+   {
+    "value": 540048000000,
+    "source": "Musyarakah profit sharing income",
+    "target": "Interest Income"
+   },
+   {
+    "value": 476008000000,
+    "source": "Income from istishna",
+    "target": "Interest Income"
+   },
+   {
+    "value": 829275000000,
+    "source": "Others",
+    "target": "Interest Income"
+   },
+   {
+    "value": 18218549000000,
+    "source": "Interest Income",
+    "target": "Net Interest Income"
+   },
+   {
+    "value": 18122319000000,
+    "source": "Interest Income",
+    "target": "Interest Expense"
+   },
+   {
+    "value": 18218549000000,
+    "source": "Net Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 4061066000000,
+    "source": "Non Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 4316024000000,
+    "source": "Total Revenue",
+    "target": "Operating Income"
+   },
+   {
+    "value": 17963591000000,
+    "source": "Total Revenue",
+    "target": "Operating and Credit-Related Expenses"
+   },
+   {
+    "value": 11787869000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 6175722000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Provision for Impairment"
+   },
+   {
+    "value": 5004271000000,
+    "source": "Operating Expense",
+    "target": "Salaries and employees' benefits"
+   },
+   {
+    "value": 5263420000000,
+    "source": "Operating Expense",
+    "target": "General and administrative expenses"
+   },
+   {
+    "value": 846272000000,
+    "source": "Operating Expense",
+    "target": "Premium on government's guarantee program"
+   },
+   {
+    "value": 673906000000,
+    "source": "Operating Expense",
+    "target": "Others (expense)"
+   }
+  ]
+ }
+}

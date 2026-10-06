@@ -1,0 +1,75 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/ADMF/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:56:36+0700",
+ "fetched_at_epoch": 1791320196.5553215,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "ADMF.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 6190857000000,
+    "source": "Consumer Financing",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1561549000000,
+    "source": "Murabahah Margin",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 266455000000,
+    "source": "Finance Leases",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 2225716000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 5793145000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 1075308000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 4717837000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 2485620000000,
+    "source": "Operating Expense",
+    "target": "Salaries and benefits"
+   },
+   {
+    "value": 1541136000000,
+    "source": "Operating Expense",
+    "target": "General and administrative expenses"
+   },
+   {
+    "value": 624993000000,
+    "source": "Operating Expense",
+    "target": "Marketing"
+   },
+   {
+    "value": 61575000000,
+    "source": "Operating Expense",
+    "target": "Revenue sharing for mudharabah bonds"
+   },
+   {
+    "value": 4513000000,
+    "source": "Operating Expense",
+    "target": "Others (expense)"
+   }
+  ]
+ }
+}

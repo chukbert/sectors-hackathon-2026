@@ -1,0 +1,80 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/ANTM/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:00:21+0700",
+ "fetched_at_epoch": 1791320421.0016623,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "ANTM.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 57559299000000,
+    "source": "Gold",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 5377065000000,
+    "source": "Nickel ore",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 4131365000000,
+    "source": "Ferronickel",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1493274000000,
+    "source": "Alumina",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 308139000000,
+    "source": "Bauxite ore",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 96568000000,
+    "source": "Silver",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 226730000000,
+    "source": "Purification of precious metals and other services",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 62694143000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 6498297000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 2997953000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 3500344000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 2898333000000,
+    "source": "Operating Expense",
+    "target": "General and Administrative"
+   },
+   {
+    "value": 602011000000,
+    "source": "Operating Expense",
+    "target": "Selling"
+   }
+  ]
+ }
+}

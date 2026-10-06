@@ -1,0 +1,90 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/AMAR/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:57:39+0700",
+ "fetched_at_epoch": 1791320259.739771,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "AMAR.JK",
+  "financial_year": 2025,
+  "revenue_breakdown": [
+   {
+    "value": 1329878000000,
+    "source": "Loans",
+    "target": "Interest Income"
+   },
+   {
+    "value": 57346000000,
+    "source": "Securities",
+    "target": "Interest Income"
+   },
+   {
+    "value": 48794000000,
+    "source": "Placement with Bank Indonesia",
+    "target": "Interest Income"
+   },
+   {
+    "value": 3056000000,
+    "source": "Securities purchased under resale agreements",
+    "target": "Interest Income"
+   },
+   {
+    "value": 864000000,
+    "source": "Others",
+    "target": "Interest Income"
+   },
+   {
+    "value": 1332083000000,
+    "source": "Interest Income",
+    "target": "Net Interest Income"
+   },
+   {
+    "value": 107855000000,
+    "source": "Interest Income",
+    "target": "Interest Expense"
+   },
+   {
+    "value": 1332083000000,
+    "source": "Net Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 638584000000,
+    "source": "Non Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 316388000000,
+    "source": "Total Revenue",
+    "target": "Operating Income"
+   },
+   {
+    "value": 1654279000000,
+    "source": "Total Revenue",
+    "target": "Operating and Credit-Related Expenses"
+   },
+   {
+    "value": 594825000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 1059454000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Provision for Impairment"
+   },
+   {
+    "value": 292614000000,
+    "source": "Operating Expense",
+    "target": "Personnel"
+   },
+   {
+    "value": 302211000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

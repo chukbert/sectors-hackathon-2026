@@ -1,0 +1,70 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/SMDR/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:56:48+0700",
+ "fetched_at_epoch": 1791320208.6413767,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "SMDR.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 7653166975000,
+    "source": "Freight operations",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 428451326000,
+    "source": "Charter hire (time and voyage charter)",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 36660233000,
+    "source": "Sea freight forwarding services",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 142730938000,
+    "source": "Warehousing and logistics services",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 334643784000,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 6943276866000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 1652376390000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 1281169315000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 371207075000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 201154650000,
+    "source": "Operating Expense",
+    "target": "Marketing"
+   },
+   {
+    "value": 170052425000,
+    "source": "Operating Expense",
+    "target": "Administrative"
+   }
+  ]
+ }
+}

@@ -316,10 +316,15 @@ async def basket(items: list[dict[str, Any]]) -> dict[str, Any]:
     by_symbol: dict[str, dict[str, Any]] = {}
     for r in resolved:
         e = by_symbol.setdefault(r["symbol"], {"symbol": r["symbol"], "name": recs[r["symbol"]].get("company_name"),
-                                               "items": [], "verified": r["verified"], "relation": r["relation"],
+                                               "items": [], "lines": [], "verified": r["verified"], "relation": r["relation"],
                                                "note": r.get("note"), "sub_sector": recs[r["symbol"]].get("sub_sector"),
                                                "market_cap": _num(recs[r["symbol"]].get("market_cap"))})
-        e["items"].append(r.get("raw") or r.get("brand"))
+        raw = r.get("raw") or r.get("brand")
+        e["items"].append(raw)
+        # Status per baris: tebakan AI tidak boleh ikut "terverifikasi" hanya karena baris lain di emiten yang sama terverifikasi.
+        e["lines"].append({"raw": raw, "relation": r["relation"], "verified": r["verified"], "note": r.get("note")})
+        if r["verified"] and not e["verified"]:
+            e.update(verified=True, relation=r["relation"], note=r.get("note"))
 
     groups: dict[str, dict[str, Any]] = {}
     for sym, e in by_symbol.items():
@@ -332,6 +337,54 @@ async def basket(items: list[dict[str, Any]]) -> dict[str, Any]:
         "companies": sorted(by_symbol.values(), key=lambda e: -(e["market_cap"] or 0)),
         "groups": sorted(groups.values(), key=lambda g: -len(g["symbols"])),
         "unknown": unknown,
+        "spend": spend_flow(u, resolved, unknown, by_symbol, groups),
         "universe_total": u["count"],
         "src": _matrix_src(u, "company_name, sub_sector, market_cap, major_shareholders_share_percentage, affiliates"),
+    }
+
+
+def _price(it: dict[str, Any]) -> int:
+    p = it.get("price")
+    return p if isinstance(p, int) and not isinstance(p, bool) and p > 0 else 0
+
+
+def spend_flow(u: dict[str, Any], resolved: list[dict[str, Any]], unknown: list[dict[str, Any]],
+               by_symbol: dict[str, dict[str, Any]], groups: dict[str, dict[str, Any]]) -> dict[str, Any]:
+    """Uang belanjamu mengalir ke siapa: harga dari STRUK PENGGUNA (bukan fakta perusahaan) dijumlah per emiten
+    dan per grup pemilik. Satu-satunya angka perusahaan di sini — margin laba bersih — datang dari Sectors."""
+    recs = u["records"]
+    per_sym: dict[str, int] = {}
+    for r in resolved:
+        per_sym[r["symbol"]] = per_sym.get(r["symbol"], 0) + _price(r)
+    other = sum(_price(it) for it in unknown)
+    total = sum(per_sym.values()) + other
+    lines = len(resolved) + len(unknown)
+    priced = sum(1 for it in [*resolved, *unknown] if _price(it))
+    share = (lambda v: round(v / total, 4)) if total else (lambda v: None)
+
+    companies = []
+    for sym, amount in per_sym.items():
+        if not amount:
+            continue
+        margin = _num(recs[sym].get(f"net_profit_margin[{LATEST}]"))
+        companies.append({"symbol": sym, "name": by_symbol[sym]["name"], "group": by_symbol[sym]["group"],
+                          "verified": by_symbol[sym]["verified"], "amount": amount, "share": share(amount),
+                          "net_margin": margin, "per_100": round(margin * 100, 1) if margin is not None else None})
+    companies.sort(key=lambda c: -c["amount"])
+    grp = []
+    for g in groups.values():
+        syms = [c["symbol"] for c in companies if c["group"] == g["label"]]
+        if syms:
+            amount = sum(per_sym[s] for s in syms)
+            grp.append({"label": g["label"], "kind": g["kind"], "symbols": syms, "amount": amount, "share": share(amount)})
+    grp.sort(key=lambda g: -g["amount"])
+    to_issuers = sum(c["amount"] for c in companies)
+    return {
+        "total": total, "to_issuers": to_issuers, "to_issuers_share": share(to_issuers),
+        "other": other, "other_share": share(other),
+        "lines": lines, "priced_lines": priced,
+        "companies": companies, "groups": grp,
+        "year": LATEST,
+        "price_source": "struk pengguna",
+        "margin_src": _matrix_src(u, f"net_profit_margin[{LATEST}]"),
     }

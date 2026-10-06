@@ -1,0 +1,60 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/MSIN/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:01:18+0700",
+ "fetched_at_epoch": 1791320478.8579216,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "MSIN.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 1724150000000,
+    "source": "Content, IP & Talent",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1323279000000,
+    "source": "Digital",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 714811000000,
+    "source": "Subscription",
+    "target": "Total Revenue"
+   },
+   {
+    "value": -292041000000,
+    "source": "Elimination",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 2504944000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 965255000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 436321000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 528934000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 528934000000,
+    "source": "Operating Expense",
+    "target": "General and Administrative"
+   }
+  ]
+ }
+}

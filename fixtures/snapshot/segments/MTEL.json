@@ -1,0 +1,60 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/MTEL/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:55:40+0700",
+ "fetched_at_epoch": 1791320140.7894514,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "MTEL.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 8630136000000,
+    "source": "Telecommunication tower lease",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 639318000000,
+    "source": "Construction services",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 38332000000,
+    "source": "Service and electricity lease",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 4506730000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 4801056000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 4179254000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 621802000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 299415000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   },
+   {
+    "value": 322387000000,
+    "source": "Operating Expense",
+    "target": "Employee compensation"
+   }
+  ]
+ }
+}

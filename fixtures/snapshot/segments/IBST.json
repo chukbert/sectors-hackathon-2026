@@ -1,0 +1,55 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/IBST/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:01:13+0700",
+ "fetched_at_epoch": 1791320473.6416795,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "IBST.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 593412000000,
+    "source": "Telecommunication tower lease",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 269054000000,
+    "source": "Network equipment and bandwith lease",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 497664000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 364802000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 204053000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 160749000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 3849000000,
+    "source": "Operating Expense",
+    "target": "Selling and marketing"
+   },
+   {
+    "value": 156900000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

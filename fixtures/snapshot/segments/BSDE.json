@@ -1,0 +1,95 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/BSDE/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:01:11+0700",
+ "fetched_at_epoch": 1791320471.051263,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "BSDE.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 10589095732806,
+    "source": "Land and buildings sales",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 995487894333,
+    "source": "Land and strate title sales",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 967578459570,
+    "source": "Rental",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 614844437603,
+    "source": "Construction",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 397125147970,
+    "source": "Building management",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 74278372500,
+    "source": "Toll road operating services",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 51656326675,
+    "source": "Recreation area",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 43263188682,
+    "source": "Hotel",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 40210367000,
+    "source": "Water treatment",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 23032221698,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 4980186683675,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 8816385465162,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 4874328196371,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 3942057268791,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 1913377932427,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 2028679336364,
+    "source": "Operating Expense",
+    "target": "General and Administrative"
+   }
+  ]
+ }
+}

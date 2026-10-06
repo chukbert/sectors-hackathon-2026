@@ -1,0 +1,65 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/TFCO/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:57:40+0700",
+ "fetched_at_epoch": 1791320260.560551,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "TFCO.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 1609946459986,
+    "source": "Staple Fiber",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 801167287073,
+    "source": "Filament Yarn",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 579637254414,
+    "source": "Chip",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 39967894040,
+    "source": "RCL",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 2960490233033,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 70228662480,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 1021704052,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 69206958428,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 18394130534,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 50812827894,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

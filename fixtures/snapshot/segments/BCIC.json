@@ -1,0 +1,90 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/BCIC/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:02:11+0700",
+ "fetched_at_epoch": 1791320531.8749263,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "BCIC.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 2447100000000,
+    "source": "Loans",
+    "target": "Interest Income"
+   },
+   {
+    "value": 74948000000,
+    "source": "Securities",
+    "target": "Interest Income"
+   },
+   {
+    "value": 404063000000,
+    "source": "Marketable securities",
+    "target": "Interest Income"
+   },
+   {
+    "value": 98065000000,
+    "source": "Placement with Bank Indonesia",
+    "target": "Interest Income"
+   },
+   {
+    "value": 802130000000,
+    "source": "Interest Income",
+    "target": "Net Interest Income"
+   },
+   {
+    "value": 2222046000000,
+    "source": "Interest Income",
+    "target": "Interest Expense"
+   },
+   {
+    "value": 802130000000,
+    "source": "Net Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 414573000000,
+    "source": "Non Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 98393000000,
+    "source": "Total Revenue",
+    "target": "Operating Income"
+   },
+   {
+    "value": 1118310000000,
+    "source": "Total Revenue",
+    "target": "Operating and Credit-Related Expenses"
+   },
+   {
+    "value": 1068919000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 49391000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Provision for Impairment"
+   },
+   {
+    "value": 360035000000,
+    "source": "Operating Expense",
+    "target": "Salaries and employees' benefits"
+   },
+   {
+    "value": 701775000000,
+    "source": "Operating Expense",
+    "target": "General and administrative expenses"
+   },
+   {
+    "value": 7109000000,
+    "source": "Operating Expense",
+    "target": "Others (expense)"
+   }
+  ]
+ }
+}

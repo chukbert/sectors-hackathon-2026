@@ -1,0 +1,120 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/SICO/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:58:41+0700",
+ "fetched_at_epoch": 1791320321.579832,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "SICO.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 52417239351,
+    "source": "Trading of fuel",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 48316346545,
+    "source": "Rental of gasjack compressors",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 10341123457,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 72500608788,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 38574100565,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 14951977879,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 23622122686,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 11334500760,
+    "source": "Operating Expense",
+    "target": "Salaries and allowances "
+   },
+   {
+    "value": 2295517196,
+    "source": "Operating Expense",
+    "target": "Depreciation"
+   },
+   {
+    "value": 1691450871,
+    "source": "Operating Expense",
+    "target": "Amortization of right-of-use assets"
+   },
+   {
+    "value": 1647175462,
+    "source": "Operating Expense",
+    "target": "Travelling "
+   },
+   {
+    "value": 661499889,
+    "source": "Operating Expense",
+    "target": "Utilities"
+   },
+   {
+    "value": 644244722,
+    "source": "Operating Expense",
+    "target": "Professional fees "
+   },
+   {
+    "value": 502737294,
+    "source": "Operating Expense",
+    "target": "Equipment"
+   },
+   {
+    "value": 497116872,
+    "source": "Operating Expense",
+    "target": "Household "
+   },
+   {
+    "value": 450215556,
+    "source": "Operating Expense",
+    "target": "Employee benefits "
+   },
+   {
+    "value": 312363055,
+    "source": "Operating Expense",
+    "target": "Entertainment"
+   },
+   {
+    "value": 247254154,
+    "source": "Operating Expense",
+    "target": "Taxes"
+   },
+   {
+    "value": 164865669,
+    "source": "Operating Expense",
+    "target": "Insurance "
+   },
+   {
+    "value": 104808410,
+    "source": "Operating Expense",
+    "target": "Seminars and education"
+   },
+   {
+    "value": 3068372776,
+    "source": "Operating Expense",
+    "target": "Others (expense)"
+   }
+  ]
+ }
+}

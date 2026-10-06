@@ -1,0 +1,75 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/TUGU/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:01:42+0700",
+ "fetched_at_epoch": 1791320502.5871518,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "TUGU.JK",
+  "financial_year": 2023,
+  "revenue_breakdown": [
+   {
+    "value": 3079931673000,
+    "source": "Underwriting revenues",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 579830038000,
+    "source": "Investment revenues",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 402090598000,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 2381400567000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 1680451742000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 569966804000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 1110484938000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 590393006000,
+    "source": "Operating Expense",
+    "target": "Salaries and allowance"
+   },
+   {
+    "value": 105283524000,
+    "source": "Operating Expense",
+    "target": "Depreciation and amortization"
+   },
+   {
+    "value": 332602116000,
+    "source": "Operating Expense",
+    "target": "General"
+   },
+   {
+    "value": 78519016000,
+    "source": "Operating Expense",
+    "target": "Marketing"
+   },
+   {
+    "value": 3687276000,
+    "source": "Operating Expense",
+    "target": "Others (expense)"
+   }
+  ]
+ }
+}

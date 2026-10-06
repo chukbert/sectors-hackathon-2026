@@ -1,18 +1,18 @@
 {
  "catalog_only": {
   "lines": 59,
-  "correct": 54,
+  "correct": 55,
   "issuer_lines": 41,
-  "issuer_found": 36,
+  "issuer_found": 37,
   "non_issuer_lines": 18,
   "invented": 0,
   "wrong_issuer": 0
  },
  "app": {
   "lines": 59,
-  "correct": 58,
+  "correct": 59,
   "issuer_lines": 41,
-  "issuer_found": 40,
+  "issuer_found": 41,
   "non_issuer_lines": 18,
   "invented": 0,
   "wrong_issuer": 0
@@ -337,10 +337,10 @@
    "receipt": "apotek",
    "raw": "BODREX",
    "expected": "TSPC",
-   "catalog_only": null,
-   "app": null,
-   "app_verified_by_catalog": null,
-   "ok": false
+   "catalog_only": "TSPC",
+   "app": "TSPC",
+   "app_verified_by_catalog": true,
+   "ok": true
   },
   {
    "receipt": "apotek",

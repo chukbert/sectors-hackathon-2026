@@ -1,0 +1,60 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/PANI/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:00:18+0700",
+ "fetched_at_epoch": 1791320418.412433,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "PANI.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 2776471413000,
+    "source": "Lands and buildings sales",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1007839000,
+    "source": "Real estate rental",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 55107747000,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1247938341000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 1584648658000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 1258644043000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 326004615000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 91033559000,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 234971056000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

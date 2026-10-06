@@ -1,0 +1,60 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/SMAR/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:55:43+0700",
+ "fetched_at_epoch": 1791320143.6178527,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "SMAR.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 71932854000000,
+    "source": "Integrated food consumer product and trading activities",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 2121009000000,
+    "source": "Plantation",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 4781580000000,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 70821390000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 8014053000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 2025151000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 5988902000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 4511555000000,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 1477347000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

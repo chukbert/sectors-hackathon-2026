@@ -1,0 +1,85 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/BHIT/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:02:22+0700",
+ "fetched_at_epoch": 1791320542.528105,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "BHIT.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 6069625000000,
+    "source": "Advertising",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1879094000000,
+    "source": "Content and IP",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1677699000000,
+    "source": "Pay TV and broadband",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1815100000000,
+    "source": "Financing, securities and insurance",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1476927000000,
+    "source": "Bank financial institution",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1218863000000,
+    "source": "Mining",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1089006000000,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 8994148000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 6232166000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 2714320000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 3517846000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 1728081000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   },
+   {
+    "value": 1431041000000,
+    "source": "Operating Expense",
+    "target": "Salaries and employees' welfare"
+   },
+   {
+    "value": 358724000000,
+    "source": "Operating Expense",
+    "target": "Advertising and promotions"
+   }
+  ]
+ }
+}

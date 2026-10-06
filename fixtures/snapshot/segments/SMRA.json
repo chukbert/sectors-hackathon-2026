@@ -1,0 +1,65 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/SMRA/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:57:40+0700",
+ "fetched_at_epoch": 1791320260.9720845,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "SMRA.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 7503770757000,
+    "source": "Property Development",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 2152274441000,
+    "source": "Investment Property",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 518260255000,
+    "source": "Leisure and Hospitality",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 449049139000,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 5162448504000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 5460906088000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 3775543708000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 1685362380000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 509457076000,
+    "source": "Operating Expense",
+    "target": "Selling Expenses"
+   },
+   {
+    "value": 1175905304000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

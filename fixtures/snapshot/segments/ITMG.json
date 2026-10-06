@@ -1,0 +1,65 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/ITMG/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:55:42+0700",
+ "fetched_at_epoch": 1791320142.7987607,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "ITMG.JK",
+  "financial_year": 2025,
+  "revenue_breakdown": [
+   {
+    "value": 31319165070000,
+    "source": "Coal",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 77949540000,
+    "source": "Services",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 177266385000,
+    "source": "Gain on coal swap",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 23469961950000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 8104419045000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 4334071635000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 3770347410000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 2869513245000,
+    "source": "Operating Expense",
+    "target": "Selling expenses"
+   },
+   {
+    "value": 753730425000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   },
+   {
+    "value": 147103740000,
+    "source": "Operating Expense",
+    "target": "Others (expense)"
+   }
+  ]
+ }
+}

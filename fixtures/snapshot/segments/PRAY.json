@@ -1,0 +1,80 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/PRAY/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:01:21+0700",
+ "fetched_at_epoch": 1791320481.4867032,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "PRAY.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 718933000000,
+    "source": "Inpatient medical support",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 569191000000,
+    "source": "Inpatient services",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 585123000000,
+    "source": "Outpatient medical support",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 187098000000,
+    "source": "Revenue from laboratory",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 104961000000,
+    "source": "Polyclinic services",
+    "target": "Total Revenue"
+   },
+   {
+    "value": -85411000000,
+    "source": "Revenues discounts",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 23160000000,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1503762000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 599293000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 260619000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 338674000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 26728000000,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 311946000000,
+    "source": "Operating Expense",
+    "target": "General and Administrative"
+   }
+  ]
+ }
+}

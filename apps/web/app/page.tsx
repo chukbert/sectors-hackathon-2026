@@ -2,15 +2,25 @@
 
 import { useEffect, useRef, useState } from "react";
 import "./struk.css";
-import type { BasketCompany, Card, ScanResult, SectorsOff, Status } from "@/lib/struk";
-import { company, isOff, num, scan, search, status } from "@/lib/struk";
+import type { BasketCompany, Card, ScanItem, ScanResult, SectorsOff, Status } from "@/lib/struk";
+import { company, isOff, num, recount, scan, search, status } from "@/lib/struk";
 import { SrcNote } from "@/components/struk/bits";
 import { CompanyCard } from "@/components/struk/company-card";
+import { SpendFlow } from "@/components/struk/spend";
 
-const EXAMPLES: { label: string; text: string }[] = [
-  { label: "Belanja Indomaret", text: "INDOMARET\nIDM GRG SPCL 85G x3\nPEPSODENT 190G\nTEH PUCUK HRM 350ML\nULTRA MILK COKLAT 250\nSARI ROTI TAWAR\nTOLAK ANGIN CAIR\nBayar: BRImo" },
-  { label: "Anak kos sebulan", text: "Pulsa Telkomsel, Gojek, GoFood, Indomie, Le Minerale, Kopiko, Rinso, Lifebuoy" },
-  { label: "Rumah tangga", text: "Bimoli 2L, Segitiga Biru 1kg, Royco, Bango kecap, So Good nugget, Semen Tiga Roda, Avian cat tembok" },
+// `key` dipakai tautan contoh siap-jalan: /?contoh=indomaret (opsional &lihat=aliran).
+const EXAMPLES: { key: string; label: string; text: string }[] = [
+  {
+    key: "indomaret",
+    label: "Belanja Indomaret",
+    text: "INDOMARET\nIDM GRG SPCL 85G x3 10.500\nPEPSODENT 190G 13.900\nTEH PUCUK HRM 350ML 3.900\nULTRA MILK COKLAT 250 6.400\nSARI ROTI TAWAR 17.500\nTOLAK ANGIN CAIR 4.700\nKANTONG PLASTIK 200\nBayar: BRImo 57.100",
+  },
+  { key: "anak-kos", label: "Anak kos sebulan", text: "Kos 1.200.000\nPulsa Telkomsel 100rb\nGojek 180rb\nGoFood 350rb\nIndomie 60rb\nLe Minerale 45rb\nKopiko 20rb\nRinso 25rb\nLifebuoy 18rb" },
+  {
+    key: "rumah-tangga",
+    label: "Rumah tangga",
+    text: "Bimoli 2L 38.500\nSegitiga Biru 1kg 14.000\nRoyco 6.500\nBango kecap 24.000\nSo Good nugget 52.000\nSemen Tiga Roda 64.000\nAvian cat tembok 135.000",
+  },
 ];
 
 const RELATION: Record<string, { text: string; cls: string; title: string }> = {
@@ -52,6 +62,7 @@ export default function StrukPage() {
   const [result, setResult] = useState<ScanResult | null>(null);
   const [card, setCard] = useState<Card | null>(null);
   const [cardBusy, setCardBusy] = useState<string | null>(null);
+  const [recountBusy, setRecountBusy] = useState(false);
   const [q, setQ] = useState("");
   const [hits, setHits] = useState<{ symbol: string; name: string; brand: string | null }[] | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -63,6 +74,14 @@ export default function StrukPage() {
       .catch(() => setSt(null));
   useEffect(() => {
     refreshStatus();
+    const qs = new URLSearchParams(window.location.search);
+    const ex = EXAMPLES.find((e) => e.key === qs.get("contoh"));
+    if (ex) {
+      setMode("teks");
+      setText(ex.text);
+      void onScan({ text: ex.text }, qs.get("lihat") === "aliran" ? "aliran" : "hasil");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function handle<T>(x: T | SectorsOff): T | null {
@@ -74,15 +93,16 @@ export default function StrukPage() {
     return x;
   }
 
-  async function onScan() {
+  async function onScan(override?: { text: string }, target = "hasil") {
     setBusy(true);
     setErr(null);
     try {
-      const body = mode === "foto" ? { image: image ?? undefined } : { text };
+      const body = override ?? (mode === "foto" ? { image: image ?? undefined } : { text });
       const r = handle(await scan(body));
       setResult(r);
       setCard(null);
-      if (r) setTimeout(() => document.getElementById("hasil")?.scrollIntoView({ behavior: "smooth" }), 50);
+      // Tautan contoh langsung ke bagian tertentu: lompat instan (tanpa animasi) agar bisa dibagikan/dipotret.
+      if (r) setTimeout(() => document.getElementById(target)?.scrollIntoView({ behavior: target === "hasil" ? "smooth" : "auto" }), 50);
       // Pengguna baru langsung melihat kartu kenalan perusahaan teratas — bukti bahwa ada data di balik tiap merek.
       const first = r && firstProduct(r);
       if (first) void pick(first, false);
@@ -91,6 +111,21 @@ export default function StrukPage() {
     } finally {
       setBusy(false);
       refreshStatus();
+    }
+  }
+
+  // Koreksi harga dari pengguna: hitung ulang di server (tanpa LLM, tanpa kredit), pertahankan info toko.
+  async function onRecount(items: ScanItem[]) {
+    if (!result) return;
+    setRecountBusy(true);
+    setErr(null);
+    try {
+      const r = handle(await recount(items));
+      if (r) setResult({ ...result, ...r });
+    } catch (e) {
+      setErr((e as Error).message);
+    } finally {
+      setRecountBusy(false);
     }
   }
 
@@ -162,7 +197,7 @@ export default function StrukPage() {
               <ol className="sj-steps">
                 <li>
                   <span>
-                    <b>AI hanya membaca nama merek</b> di struk atau kemasan — tidak pernah menulis angka.
+                    <b>AI hanya membaca merek dan harga</b> di strukmu — tidak pernah menulis angka perusahaan.
                   </span>
                 </li>
                 <li>
@@ -245,7 +280,7 @@ export default function StrukPage() {
                   </div>
                 </>
               )}
-              <button className={`sj-go${busy ? " busy" : ""}`} onClick={onScan} disabled={!canScan || busy}>
+              <button className={`sj-go${busy ? " busy" : ""}`} onClick={() => onScan()} disabled={!canScan || busy}>
                 {busy ? (
                   <>
                     <span>Membaca merek…</span>
@@ -289,6 +324,7 @@ export default function StrukPage() {
         )}
 
         {result && <Basket r={result} onPick={pick} active={cardBusy ?? card?.symbol ?? null} loading={!!cardBusy} />}
+        {result && result.companies.length > 0 && <SpendFlow r={result} onRecount={onRecount} onPick={pick} busy={recountBusy} />}
 
         {cardBusy && !card && (
           <div className="sj-loading">
@@ -312,7 +348,7 @@ export default function StrukPage() {
 
 // Kartu pertama yang dibuka otomatis: merek BARANG di baris struk paling atas — bukan alat bayar (bank/e-wallet)
 // dan bukan toko tempat belanja, karena itu yang paling dikenali pemula sebagai "yang aku beli".
-const PAYMENT_RE = /(bayar|tunai|debit|kredit|qris|brimo|gopay|ovo|dana|shopeepay|flazz|e-?money|livin)/i;
+const PAYMENT_RE = /\b(bayar|tunai|debit|kredit|qris|brimo|gopay|ovo|dana|shopeepay|flazz|e-?money|livin)\b/i;
 function firstProduct(r: ScanResult): string | null {
   const store = (r.store_name ?? "").toLowerCase();
   const isProduct = (c: BasketCompany, raw: string) =>
@@ -330,16 +366,23 @@ function firstProduct(r: ScanResult): string | null {
 }
 
 // Baris struk dalam urutan aslinya (bukan urutan nilai pasar), masing-masing dengan emitennya bila ada.
-function receiptLines(r: ScanResult): { raw: string; c: BasketCompany | null }[] {
+type Line = { raw: string; c: BasketCompany | null; relation: string; note: string | null };
+function receiptLines(r: ScanResult): Line[] {
   const seen = new Set<string>();
-  const lines = r.items.map((it) => {
+  const info = (c: BasketCompany, raw: string) => {
+    const ln = c.lines?.find((l) => l.raw === raw);
+    return { relation: ln?.relation ?? c.relation, note: ln ? ln.note : c.note };
+  };
+  const lines: Line[] = r.items.map((it) => {
     const raw = it.raw || it.brand;
     const c = r.companies.find((x) => x.items.includes(raw)) ?? null;
-    if (c) seen.add(`${c.symbol}|${raw}`);
-    return { raw, c };
+    if (!c) return { raw, c, relation: "", note: null };
+    seen.add(`${c.symbol}|${raw}`);
+    return { raw, c, ...info(c, raw) };
   });
   // Jaring pengaman: item emiten yang tak tercantum di daftar baca (mis. fallback tanpa AI).
-  for (const c of r.companies) for (const raw of c.items) if (!seen.has(`${c.symbol}|${raw}`) && !lines.some((l) => l.raw === raw)) lines.push({ raw, c });
+  for (const c of r.companies)
+    for (const raw of c.items) if (!seen.has(`${c.symbol}|${raw}`) && !lines.some((l) => l.raw === raw)) lines.push({ raw, c, ...info(c, raw) });
   return lines;
 }
 
@@ -398,14 +441,14 @@ function Basket({ r, onPick, active, loading }: { r: ScanResult; onPick: (s: str
         <div>
           <div className="sj-col-h">{r.store_name ? "Baris struk" : "Yang terbaca"} → kode saham</div>
           <div className="sj-lines">
-            {receiptLines(r).map(({ raw, c }, i) =>
+            {receiptLines(r).map(({ raw, c, relation, note }, i) =>
               c ? (
                 <div className="sj-line" key={i}>
                   <span className="raw">{raw}</span>
                   <span className="lead" />
                   <span className="to">
-                    <span className={`sj-tag ${RELATION[c.relation]?.cls ?? ""}`} title={c.note ?? RELATION[c.relation]?.title}>
-                      {RELATION[c.relation]?.text ?? c.relation}
+                    <span className={`sj-tag ${RELATION[relation]?.cls ?? ""}`} title={note ?? RELATION[relation]?.title}>
+                      {RELATION[relation]?.text ?? relation}
                     </span>
                     <button className={`sj-sym${active === c.symbol ? " on" : ""}`} onClick={() => onPick(c.symbol)}>
                       {c.symbol}

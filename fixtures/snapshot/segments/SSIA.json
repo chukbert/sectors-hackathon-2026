@@ -1,0 +1,75 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/SSIA/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:56:43+0700",
+ "fetched_at_epoch": 1791320203.7270274,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "SSIA.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 3055810887287,
+    "source": "Constuction services",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1868410207217,
+    "source": "Industrial estate land",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 932944691288,
+    "source": "Hotel",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 329213534209,
+    "source": "Maintenance services and utilities",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 47054099649,
+    "source": "Rental",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 18477062321,
+    "source": "Real estate",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 4492951490456,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 1758958991515,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 934954883151,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 824004108364,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 134553907665,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 689450200699,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

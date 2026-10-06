@@ -1,0 +1,100 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/HAIS/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:58:39+0700",
+ "fetched_at_epoch": 1791320319.9534411,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "HAIS.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 967901455018,
+    "source": "Freight",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 27058214718,
+    "source": "Assistance of loading and unloading services",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 6808500000,
+    "source": "Tug assist",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 16343392917,
+    "source": "Charter",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 775576598320,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 242534964333,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 149358105628,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 93176858705,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 53382374551,
+    "source": "Operating Expense",
+    "target": "Employees’ compensation "
+   },
+   {
+    "value": 8900303404,
+    "source": "Operating Expense",
+    "target": "Depreciation"
+   },
+   {
+    "value": 8071520392,
+    "source": "Operating Expense",
+    "target": "Professional fee "
+   },
+   {
+    "value": 7367598528,
+    "source": "Operating Expense",
+    "target": "Entertainment "
+   },
+   {
+    "value": 5440781159,
+    "source": "Operating Expense",
+    "target": "Administrative cost "
+   },
+   {
+    "value": 4511595325,
+    "source": "Operating Expense",
+    "target": "Travel and transportation "
+   },
+   {
+    "value": 1507150041,
+    "source": "Operating Expense",
+    "target": "Employee benefits"
+   },
+   {
+    "value": 1388592675,
+    "source": "Operating Expense",
+    "target": "Utilities "
+   },
+   {
+    "value": 2606942630,
+    "source": "Operating Expense",
+    "target": "Miscellaneous"
+   }
+  ]
+ }
+}

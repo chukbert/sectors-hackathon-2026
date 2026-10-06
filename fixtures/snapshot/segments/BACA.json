@@ -1,0 +1,80 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/BACA/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:02:17+0700",
+ "fetched_at_epoch": 1791320537.1978955,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "BACA.JK",
+  "financial_year": 2025,
+  "revenue_breakdown": [
+   {
+    "value": 1038207000000,
+    "source": "Loans",
+    "target": "Interest Income"
+   },
+   {
+    "value": 400518000000,
+    "source": "Securities",
+    "target": "Interest Income"
+   },
+   {
+    "value": 52516000000,
+    "source": "Placement with Bank Indonesia",
+    "target": "Interest Income"
+   },
+   {
+    "value": 553598000000,
+    "source": "Interest Income",
+    "target": "Net Interest Income"
+   },
+   {
+    "value": 937643000000,
+    "source": "Interest Income",
+    "target": "Interest Expense"
+   },
+   {
+    "value": 553598000000,
+    "source": "Net Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 652770000000,
+    "source": "Non Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 180410000000,
+    "source": "Total Revenue",
+    "target": "Operating Income"
+   },
+   {
+    "value": 1025958000000,
+    "source": "Total Revenue",
+    "target": "Operating and Credit-Related Expenses"
+   },
+   {
+    "value": 1021784000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 4174000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Provision for Impairment"
+   },
+   {
+    "value": 226573000000,
+    "source": "Operating Expense",
+    "target": "Salaries and employees' benefits"
+   },
+   {
+    "value": 795211000000,
+    "source": "Operating Expense",
+    "target": "General and administrative expenses"
+   }
+  ]
+ }
+}

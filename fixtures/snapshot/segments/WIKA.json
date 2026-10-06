@@ -1,0 +1,75 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/WIKA/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:56:44+0700",
+ "fetched_at_epoch": 1791320204.1369672,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "WIKA.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 9415344183000,
+    "source": "Infrastructure and building",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 5295532485000,
+    "source": "Industry",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 3334976765000,
+    "source": "Energy and industrial plant",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 878146741000,
+    "source": "Hotel",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 163915391000,
+    "source": "Realty and property",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 154811166000,
+    "source": "Investment",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 17724124343000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 1518602388000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 274667132000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 1243935256000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 20059121000,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 1223876135000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

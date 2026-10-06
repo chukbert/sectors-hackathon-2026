@@ -1,0 +1,60 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/OBAT/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:58:41+0700",
+ "fetched_at_epoch": 1791320321.1813676,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "OBAT.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 63652322883,
+    "source": "Herbal",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 26567751316,
+    "source": "Cosmetics",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 30406737272,
+    "source": "Functional Beverages",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 62752328543,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 57874482928,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 37627125698,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 20247357230,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 8271295055,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 11976062175,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

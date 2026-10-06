@@ -1,0 +1,60 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/INKP/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:55:39+0700",
+ "fetched_at_epoch": 1791320139.21558,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "INKP.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 18819980583000,
+    "source": "Cultural paper",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 16473612572000,
+    "source": "Pulp",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 16339832612000,
+    "source": "Industrial paper, tissue and other",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 35175695526000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 16457730241000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 10548743730000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 5908986511000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 3514987664000,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 2393998847000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

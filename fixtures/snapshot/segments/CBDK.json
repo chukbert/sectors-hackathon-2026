@@ -1,0 +1,60 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/CBDK/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:55:46+0700",
+ "fetched_at_epoch": 1791320146.4866865,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "CBDK.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 2241793708000,
+    "source": "Sales of lands and buildings",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1007839000,
+    "source": "Rental",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 6176774000,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 976613585000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 1272364736000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 1128193941000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 144170795000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 39872081000,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 104298714000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

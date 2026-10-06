@@ -1,0 +1,95 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/PNLF/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:01:26+0700",
+ "fetched_at_epoch": 1791320486.7158515,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "PNLF.JK",
+  "financial_year": 2023,
+  "revenue_breakdown": [
+   {
+    "value": 9206476000000,
+    "source": "Interest revenue",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1995017000000,
+    "source": "Premiums revenue",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 539755000000,
+    "source": "Investment income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 311277000000,
+    "source": "Gain on sale of marketable securities",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 34013000000,
+    "source": "Unrealized gain on securities and mutual funds at fair value through profit and loss",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 124581000000,
+    "source": "Gain on foreign exchange transactions",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 150059000000,
+    "source": "Commissions and fees from transactions other than loans",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 2111734000000,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1275815000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 13197097000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 4257056000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 8940041000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 95282000000,
+    "source": "Operating Expense",
+    "target": "Marketing"
+   },
+   {
+    "value": 5603722000000,
+    "source": "Operating Expense",
+    "target": "General and administrative expenses"
+   },
+   {
+    "value": 417469000000,
+    "source": "Operating Expense",
+    "target": "Acquisition cost"
+   },
+   {
+    "value": 2823568000000,
+    "source": "Operating Expense",
+    "target": "Others (expense)"
+   }
+  ]
+ }
+}

@@ -1,0 +1,75 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/PLIN/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:56:42+0700",
+ "fetched_at_epoch": 1791320202.498831,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "PLIN.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 468411244000,
+    "source": "Shopping center rental",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 128011995000,
+    "source": "Office rental",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 7651439000,
+    "source": "Hotel rental",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 506904603000,
+    "source": "Hotel revenue",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 205103164000,
+    "source": "Service charge revenue",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 41652519000,
+    "source": "Promotion",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 28482640000,
+    "source": "Parking revenues",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 448846991000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 937370613000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 629708700000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 307661913000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 307661913000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

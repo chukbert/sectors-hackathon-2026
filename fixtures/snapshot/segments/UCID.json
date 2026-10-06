@@ -1,0 +1,55 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/UCID/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:54:48+0700",
+ "fetched_at_epoch": 1791320088.2192273,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "UCID.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 7216913000000,
+    "source": "Diapers",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 2458555000000,
+    "source": "Non Diapers",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 7700133000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 1975335000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 434944000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 1540391000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 1243073000000,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 297318000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

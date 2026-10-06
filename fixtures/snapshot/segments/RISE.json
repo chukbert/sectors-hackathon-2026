@@ -1,0 +1,60 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/RISE/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:56:40+0700",
+ "fetched_at_epoch": 1791320200.448926,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "RISE.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 132847775942,
+    "source": "Real estate",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 218572903452,
+    "source": "Hotels",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 14166988208,
+    "source": "Offices",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 179070549491,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 186517118111,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 46661534693,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 139855583418,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 25143517623,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 114712065795,
+    "source": "Operating Expense",
+    "target": "General and Administrative"
+   }
+  ]
+ }
+}

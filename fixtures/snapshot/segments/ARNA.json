@@ -1,0 +1,55 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/ARNA/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:57:41+0700",
+ "fetched_at_epoch": 1791320261.379462,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "ARNA.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 97194411312,
+    "source": "Manufacturing",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 2535115689314,
+    "source": "Distribution",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1727972510054,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 904337590572,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 537356273338,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 366981317234,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 273667560297,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 93313756937,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

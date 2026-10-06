@@ -1,0 +1,85 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/TPIA/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:54:51+0700",
+ "fetched_at_epoch": 1791320091.4955914,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "TPIA.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 16552491046000,
+    "source": "Polyolefin",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 4019102221000,
+    "source": "Styrene monomer",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 2557119919000,
+    "source": "Butadiene",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 2939426853000,
+    "source": "Olefin",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1462773995000,
+    "source": "Sales of electricity",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1061514900000,
+    "source": "MTBE and Butene-1",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 86019868000,
+    "source": "Benzene",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 167677346000,
+    "source": "Tanks and jetty lease",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 28065436065000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 780690083000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 916618924000,
+    "source": "Operating Income",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 780690083000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 732154455000,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 965154552000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

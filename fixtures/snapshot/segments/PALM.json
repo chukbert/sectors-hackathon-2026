@@ -1,0 +1,55 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/PALM/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:57:38+0700",
+ "fetched_at_epoch": 1791320258.5133853,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "PALM.JK",
+  "financial_year": 2023,
+  "revenue_breakdown": [
+   {
+    "value": -2823223728000,
+    "source": "Natural resources",
+    "target": "Total Revenue"
+   },
+   {
+    "value": -318727508000,
+    "source": "Logistic",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 3258126000,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": -3138693110000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 3138693110000,
+    "source": "Gross Profit",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 3138693110000,
+    "source": "Operating Income",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 48254360000,
+    "source": "Operating Income",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 48254360000,
+    "source": "Operating Expense",
+    "target": "General and administrative expenses"
+   }
+  ]
+ }
+}

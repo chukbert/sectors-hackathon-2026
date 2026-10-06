@@ -1,0 +1,90 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/BBYB/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:57:47+0700",
+ "fetched_at_epoch": 1791320267.9323707,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "BBYB.JK",
+  "financial_year": 2025,
+  "revenue_breakdown": [
+   {
+    "value": 2649640000000,
+    "source": "Loans",
+    "target": "Interest Income"
+   },
+   {
+    "value": 450134000000,
+    "source": "Marketable Securities",
+    "target": "Interest Income"
+   },
+   {
+    "value": 37990000000,
+    "source": "Placement with Bank Indonesia and other banks",
+    "target": "Interest Income"
+   },
+   {
+    "value": 7428000000,
+    "source": "Current account with Bank Indonesia and other banks",
+    "target": "Interest Income"
+   },
+   {
+    "value": 2352998000000,
+    "source": "Interest Income",
+    "target": "Net Interest Income"
+   },
+   {
+    "value": 792194000000,
+    "source": "Interest Income",
+    "target": "Interest Expense"
+   },
+   {
+    "value": 2352998000000,
+    "source": "Net Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 410137000000,
+    "source": "Non Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 562435000000,
+    "source": "Total Revenue",
+    "target": "Operating Income"
+   },
+   {
+    "value": 2200700000000,
+    "source": "Total Revenue",
+    "target": "Operating and Credit-Related Expenses"
+   },
+   {
+    "value": 865638000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 1335062000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Provision for Impairment"
+   },
+   {
+    "value": 354451000000,
+    "source": "Operating Expense",
+    "target": "Personnel"
+   },
+   {
+    "value": 453285000000,
+    "source": "Operating Expense",
+    "target": "General and administrative expenses"
+   },
+   {
+    "value": 57902000000,
+    "source": "Operating Expense",
+    "target": "Marketing"
+   }
+  ]
+ }
+}

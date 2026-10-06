@@ -1,0 +1,90 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/NOBU/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:57:41+0700",
+ "fetched_at_epoch": 1791320261.7904809,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "NOBU.JK",
+  "financial_year": 2025,
+  "revenue_breakdown": [
+   {
+    "value": 2010009000000,
+    "source": "Loans",
+    "target": "Interest Income"
+   },
+   {
+    "value": 374400000000,
+    "source": "Marketable Securities",
+    "target": "Interest Income"
+   },
+   {
+    "value": 32573000000,
+    "source": "Placement with Bank Indonesia and other banks",
+    "target": "Interest Income"
+   },
+   {
+    "value": 9331000000,
+    "source": "Current account with Bank Indonesia and other banks",
+    "target": "Interest Income"
+   },
+   {
+    "value": 57356000000,
+    "source": "Securities purchased under agreements to resell",
+    "target": "Interest Income"
+   },
+   {
+    "value": 1134237000000,
+    "source": "Interest Income",
+    "target": "Net Interest Income"
+   },
+   {
+    "value": 1349432000000,
+    "source": "Interest Income",
+    "target": "Interest Expense"
+   },
+   {
+    "value": 1134237000000,
+    "source": "Net Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 489784000000,
+    "source": "Non Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 615767000000,
+    "source": "Total Revenue",
+    "target": "Operating Income"
+   },
+   {
+    "value": 1008254000000,
+    "source": "Total Revenue",
+    "target": "Operating and Credit-Related Expenses"
+   },
+   {
+    "value": 879243000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 129011000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Provision for Impairment"
+   },
+   {
+    "value": 445109000000,
+    "source": "Operating Expense",
+    "target": "Personnel"
+   },
+   {
+    "value": 434134000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

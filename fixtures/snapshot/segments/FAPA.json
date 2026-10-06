@@ -1,0 +1,75 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/FAPA/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:55:43+0700",
+ "fetched_at_epoch": 1791320143.2102773,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "FAPA.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 4017306110754,
+    "source": "Crude palm oil",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 866588051031,
+    "source": "Fresh fruit bunches",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 320818789017,
+    "source": "Palm kernel",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 319981705402,
+    "source": "Edible oils",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 203125068775,
+    "source": "Palm kernel oil",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 15164219500,
+    "source": "Palm kernel expeller",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 4424413676854,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 1318570267625,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 876685038032,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 441885229593,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 274189504098,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 167695725495,
+    "source": "Operating Expense",
+    "target": "General and Administrative"
+   }
+  ]
+ }
+}

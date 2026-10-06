@@ -1,0 +1,65 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/MSTI/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:57:40+0700",
+ "fetched_at_epoch": 1791320260.1494453,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "MSTI.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 3153500591532,
+    "source": "Hardware",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1224678982292,
+    "source": "Software",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 698108474261,
+    "source": "Maintenance",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 285251656250,
+    "source": "Installation",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 4397188946394,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 964350757941,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 645701184483,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 318649573458,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 19311899189,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 299337674269,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

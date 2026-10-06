@@ -1,0 +1,60 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/DRMA/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:57:38+0700",
+ "fetched_at_epoch": 1791320258.1013503,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "DRMA.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 3254752125245,
+    "source": "Two Wheels",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1435203425988,
+    "source": "Four Wheels",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 817694126761,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 4504634796639,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 1003014881355,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 649207769130,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 353807112225,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 79357040619,
+    "source": "Operating Expense",
+    "target": "Selling and marketing"
+   },
+   {
+    "value": 274450071606,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

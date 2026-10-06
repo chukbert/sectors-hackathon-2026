@@ -1,0 +1,85 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/BBHI/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:55:47+0700",
+ "fetched_at_epoch": 1791320147.7149289,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "BBHI.JK",
+  "financial_year": 2025,
+  "revenue_breakdown": [
+   {
+    "value": 1442905624942,
+    "source": "Loans",
+    "target": "Interest Income"
+   },
+   {
+    "value": 349255850415,
+    "source": "Marketable securities",
+    "target": "Interest Income"
+   },
+   {
+    "value": 16647842935,
+    "source": "Securities purchased under resell agreement",
+    "target": "Interest Income"
+   },
+   {
+    "value": 55275506475,
+    "source": "Placement with Bank Indonesia and other banks",
+    "target": "Interest Income"
+   },
+   {
+    "value": 1440817818322,
+    "source": "Interest Income",
+    "target": "Net Interest Income"
+   },
+   {
+    "value": 423267006445,
+    "source": "Interest Income",
+    "target": "Interest Expense"
+   },
+   {
+    "value": 1440817818322,
+    "source": "Net Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 542620480929,
+    "source": "Non Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 737942108292,
+    "source": "Total Revenue",
+    "target": "Operating Income"
+   },
+   {
+    "value": 1245496190959,
+    "source": "Total Revenue",
+    "target": "Operating and Credit-Related Expenses"
+   },
+   {
+    "value": 808119030854,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 437377160105,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Provision for Impairment"
+   },
+   {
+    "value": 605142157030,
+    "source": "Operating Expense",
+    "target": "General and administrative expenses"
+   },
+   {
+    "value": 202976873824,
+    "source": "Operating Expense",
+    "target": "Personnel"
+   }
+  ]
+ }
+}

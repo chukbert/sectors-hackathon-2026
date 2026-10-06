@@ -1,0 +1,90 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/CTRA/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:56:40+0700",
+ "fetched_at_epoch": 1791320200.0295544,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "CTRA.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 8089399000000,
+    "source": "Landlots, residential and shophouses sales",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 573591000000,
+    "source": "Apartments sales",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 246141000000,
+    "source": "Office sales",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 709868000000,
+    "source": "Shopping centers and commercial areas",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 638516000000,
+    "source": "Hospital",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 548843000000,
+    "source": "Hotels",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 166170000000,
+    "source": "Office lease",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 62081000000,
+    "source": "Golf courses",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 152956000000,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 5925030000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 5262535000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 3305973000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 1956562000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 468597000000,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 1487965000000,
+    "source": "Operating Expense",
+    "target": "General and Administrative"
+   }
+  ]
+ }
+}

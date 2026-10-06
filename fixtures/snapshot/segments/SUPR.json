@@ -1,0 +1,50 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/SUPR/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:55:38+0700",
+ "fetched_at_epoch": 1791320138.3949726,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "SUPR.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 1817387000000,
+    "source": "Telecommunication tower lease",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 473416000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 1343971000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 1256386000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 87585000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 3070000000,
+    "source": "Operating Expense",
+    "target": "Selling and marketing"
+   },
+   {
+    "value": 84515000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

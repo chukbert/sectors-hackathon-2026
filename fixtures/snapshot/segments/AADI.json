@@ -1,0 +1,60 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/AADI/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:00:15+0700",
+ "fetched_at_epoch": 1791320415.750962,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "AADI.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 82539860241000,
+    "source": "Coal sales",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 2967750074000,
+    "source": "Logistic",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 440876059000,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 62263116067000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 23685370307000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 18587772179000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 5097598128000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 974089373000,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 4123508755000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

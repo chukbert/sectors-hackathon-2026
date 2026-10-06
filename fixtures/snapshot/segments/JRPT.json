@@ -1,0 +1,105 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/JRPT/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:00:55+0700",
+ "fetched_at_epoch": 1791320455.177077,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "JRPT.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 1366322967000,
+    "source": "Land lots sales",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 650100288000,
+    "source": "Building units sales",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 61296041000,
+    "source": "Condominium sales",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 361226658000,
+    "source": "Rental",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 198981445000,
+    "source": "Estate management",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 104396805000,
+    "source": "Oceanarium",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 91300891000,
+    "source": "Hotel",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 57440630000,
+    "source": "Service charge, parking and others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 22714616000,
+    "source": "Ice rink",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 14641855000,
+    "source": "Sports club",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 10802496000,
+    "source": "Driving range",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 8853543000,
+    "source": "Water park",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1311590254000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 1636487981000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 1225187032000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 411300949000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 99208788000,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 312092161000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

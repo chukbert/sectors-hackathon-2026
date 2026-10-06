@@ -1,0 +1,90 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/BMAS/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:56:42+0700",
+ "fetched_at_epoch": 1791320202.9067185,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "BMAS.JK",
+  "financial_year": 2025,
+  "revenue_breakdown": [
+   {
+    "value": 1088026473000,
+    "source": "Loans",
+    "target": "Interest Income"
+   },
+   {
+    "value": 328690583000,
+    "source": "Marketable securities",
+    "target": "Interest Income"
+   },
+   {
+    "value": 8796226000,
+    "source": "Placement with Bank Indonesia",
+    "target": "Interest Income"
+   },
+   {
+    "value": 20905181000,
+    "source": "Placement with other banks",
+    "target": "Interest Income"
+   },
+   {
+    "value": 41669293000,
+    "source": "Others",
+    "target": "Interest Income"
+   },
+   {
+    "value": 676521681000,
+    "source": "Interest Income",
+    "target": "Net Interest Income"
+   },
+   {
+    "value": 811566075000,
+    "source": "Interest Income",
+    "target": "Interest Expense"
+   },
+   {
+    "value": 676521681000,
+    "source": "Net Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 75667517000,
+    "source": "Non Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 44842959000,
+    "source": "Total Revenue",
+    "target": "Operating Income"
+   },
+   {
+    "value": 707346239000,
+    "source": "Total Revenue",
+    "target": "Operating and Credit-Related Expenses"
+   },
+   {
+    "value": 567921263000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 139424976000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Provision for Impairment"
+   },
+   {
+    "value": 302569953000,
+    "source": "Operating Expense",
+    "target": "Salaries and employees' benefits"
+   },
+   {
+    "value": 265351310000,
+    "source": "Operating Expense",
+    "target": "General and administrative expenses"
+   }
+  ]
+ }
+}

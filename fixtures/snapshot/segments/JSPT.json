@@ -1,0 +1,90 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/JSPT/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:57:44+0700",
+ "fetched_at_epoch": 1791320264.6590257,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "JSPT.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 1259222918000,
+    "source": "Hotel room sales",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 537007345000,
+    "source": "F&B sales",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 51820396000,
+    "source": "Hotel supporting facilities",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 319252440000,
+    "source": "Real estate sales",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 58677079000,
+    "source": "Services to tenants",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1436799000,
+    "source": "Management fees",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 175013502000,
+    "source": "Rental income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 792308268000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 1610122211000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 616531907000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 993590304000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 251670338000,
+    "source": "Operating Expense",
+    "target": "Depreciation and amortization"
+   },
+   {
+    "value": 203018834000,
+    "source": "Operating Expense",
+    "target": "Salaries, employees’ allowances, severance pay and employee benefits"
+   },
+   {
+    "value": 139446596000,
+    "source": "Operating Expense",
+    "target": "Marketing and sales commission"
+   },
+   {
+    "value": 399454536000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

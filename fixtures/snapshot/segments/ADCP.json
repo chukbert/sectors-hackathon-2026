@@ -1,0 +1,65 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/ADCP/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:58:36+0700",
+ "fetched_at_epoch": 1791320316.9813516,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "ADCP.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 170337742806,
+    "source": "Property",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 128910668256,
+    "source": "Hotel",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1068328800,
+    "source": "Rent",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 207909638775,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 92407101087,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 56098429325,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 36308671762,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 23393423865,
+    "source": "Operating Expense",
+    "target": "Employees"
+   },
+   {
+    "value": 247773306,
+    "source": "Operating Expense",
+    "target": "Marketing"
+   },
+   {
+    "value": 12667474591,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

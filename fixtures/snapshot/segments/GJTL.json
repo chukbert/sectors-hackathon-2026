@@ -1,0 +1,60 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/GJTL/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:01:58+0700",
+ "fetched_at_epoch": 1791320518.5597146,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "GJTL.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 17422514000000,
+    "source": "Tyre",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 8546000000,
+    "source": "Nylon Yarn",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 598090000000,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 14150111000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 3879039000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 2182502000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 1696537000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 986100000000,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 710437000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

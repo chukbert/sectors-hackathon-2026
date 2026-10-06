@@ -1,0 +1,80 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/SDRA/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:57:45+0700",
+ "fetched_at_epoch": 1791320265.885348,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "SDRA.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 3724999000000,
+    "source": "Loans",
+    "target": "Interest Income"
+   },
+   {
+    "value": 116754000000,
+    "source": "Current Account with Bank Indonesia and other banks",
+    "target": "Interest Income"
+   },
+   {
+    "value": 256816000000,
+    "source": "Marketable securities",
+    "target": "Interest Income"
+   },
+   {
+    "value": 1771366000000,
+    "source": "Interest Income",
+    "target": "Net Interest Income"
+   },
+   {
+    "value": 2327203000000,
+    "source": "Interest Income",
+    "target": "Interest Expense"
+   },
+   {
+    "value": 1771366000000,
+    "source": "Net Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 310675000000,
+    "source": "Non Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 679984000000,
+    "source": "Total Revenue",
+    "target": "Operating Income"
+   },
+   {
+    "value": 1402057000000,
+    "source": "Total Revenue",
+    "target": "Operating and Credit-Related Expenses"
+   },
+   {
+    "value": 1000320000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 401737000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Provision for Impairment"
+   },
+   {
+    "value": 350314000000,
+    "source": "Operating Expense",
+    "target": "Salaries and employees' benefits"
+   },
+   {
+    "value": 650006000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

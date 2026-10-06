@@ -1,0 +1,90 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/BBMD/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:56:43+0700",
+ "fetched_at_epoch": 1791320203.319456,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "BBMD.JK",
+  "financial_year": 2025,
+  "revenue_breakdown": [
+   {
+    "value": 951278142930,
+    "source": "Loans",
+    "target": "Interest Income"
+   },
+   {
+    "value": 271308662008,
+    "source": "Marketable Securities",
+    "target": "Interest Income"
+   },
+   {
+    "value": 16313965034,
+    "source": "Placement with Bank Indonesia and other banks",
+    "target": "Interest Income"
+   },
+   {
+    "value": 4555749231,
+    "source": "Current account with Bank Indonesia",
+    "target": "Interest Income"
+   },
+   {
+    "value": 464299716,
+    "source": "Current account with other banks",
+    "target": "Interest Income"
+   },
+   {
+    "value": 909332881997,
+    "source": "Interest Income",
+    "target": "Net Interest Income"
+   },
+   {
+    "value": 334587936922,
+    "source": "Interest Income",
+    "target": "Interest Expense"
+   },
+   {
+    "value": 909332881997,
+    "source": "Net Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 76851450169,
+    "source": "Non Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 406440017010,
+    "source": "Total Revenue",
+    "target": "Operating Income"
+   },
+   {
+    "value": 579744315156,
+    "source": "Total Revenue",
+    "target": "Operating and Credit-Related Expenses"
+   },
+   {
+    "value": 550305002043,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 29439313113,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Provision for Impairment"
+   },
+   {
+    "value": 324714256222,
+    "source": "Operating Expense",
+    "target": "Personnel"
+   },
+   {
+    "value": 225590745821,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

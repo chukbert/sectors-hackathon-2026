@@ -1,0 +1,90 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/SMMA/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:00:04+0700",
+ "fetched_at_epoch": 1791320404.881528,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "SMMA.JK",
+  "financial_year": 2023,
+  "revenue_breakdown": [
+   {
+    "value": 1910579000000,
+    "source": "The Company",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 19083572000000,
+    "source": "Insurance Underwriting",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1261622000000,
+    "source": "Multipurpose Financing, Finance Lease, Working Capital Financing",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 12425000000,
+    "source": "Securities Administration Fee",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 608009000000,
+    "source": "Stock Brokerage, Underwriting and investment Manager",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 4434153000000,
+    "source": "Banking",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1355716000000,
+    "source": "Property, Trading and Service",
+    "target": "Total Revenue"
+   },
+   {
+    "value": -2116868000000,
+    "source": "Elimination",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 19555918000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 6993290000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 2428324000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 4564966000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 2176654000000,
+    "source": "Operating Expense",
+    "target": "Salaries and employee benefits"
+   },
+   {
+    "value": 2238830000000,
+    "source": "Operating Expense",
+    "target": "General and Administrative"
+   },
+   {
+    "value": 149482000000,
+    "source": "Operating Expense",
+    "target": "Others"
+   }
+  ]
+ }
+}

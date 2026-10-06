@@ -1,0 +1,55 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/TOWR/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:55:44+0700",
+ "fetched_at_epoch": 1791320144.40712,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "TOWR.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 11476855000000,
+    "source": "Rental income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1258960000000,
+    "source": "Services and others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 3996322000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 8739493000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 7602416000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 1137077000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 312845000000,
+    "source": "Operating Expense",
+    "target": "Selling and marketing"
+   },
+   {
+    "value": 824232000000,
+    "source": "Operating Expense",
+    "target": "General and Administrative"
+   }
+  ]
+ }
+}

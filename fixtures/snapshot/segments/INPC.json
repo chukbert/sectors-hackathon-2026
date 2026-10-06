@@ -1,0 +1,90 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/INPC/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:57:45+0700",
+ "fetched_at_epoch": 1791320265.0662925,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "INPC.JK",
+  "financial_year": 2025,
+  "revenue_breakdown": [
+   {
+    "value": 943947000000,
+    "source": "Loans",
+    "target": "Interest Income"
+   },
+   {
+    "value": 376682000000,
+    "source": "Marketable Securities",
+    "target": "Interest Income"
+   },
+   {
+    "value": 175791000000,
+    "source": "Placement with Bank Indonesia and other banks",
+    "target": "Interest Income"
+   },
+   {
+    "value": 203346000000,
+    "source": "Government Bond",
+    "target": "Interest Income"
+   },
+   {
+    "value": 733371000000,
+    "source": "Interest Income",
+    "target": "Net Interest Income"
+   },
+   {
+    "value": 966395000000,
+    "source": "Interest Income",
+    "target": "Interest Expense"
+   },
+   {
+    "value": 733371000000,
+    "source": "Net Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 555532000000,
+    "source": "Non Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 582758000000,
+    "source": "Operating Income",
+    "target": "Operating and Credit-Related Expenses"
+   },
+   {
+    "value": 1288903000000,
+    "source": "Total Revenue",
+    "target": "Operating and Credit-Related Expenses"
+   },
+   {
+    "value": 1390014000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 481647000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Provision for Impairment"
+   },
+   {
+    "value": 291887000000,
+    "source": "Operating Expense",
+    "target": "Employee"
+   },
+   {
+    "value": 939473000000,
+    "source": "Operating Expense",
+    "target": "Operational"
+   },
+   {
+    "value": 158654000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

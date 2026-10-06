@@ -1,0 +1,70 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/PPRO/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:02:43+0700",
+ "fetched_at_epoch": 1791320563.3406482,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "PPRO.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 280134482967,
+    "source": "Sales of real estate",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 178373176787,
+    "source": "Property income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 434458344155,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 24049315599,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 60585299082,
+    "source": "Operating Income",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 24049315599,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 58738220710,
+    "source": "Operating Expense",
+    "target": "Salaries"
+   },
+   {
+    "value": 23390313121,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   },
+   {
+    "value": 685332924,
+    "source": "Operating Expense",
+    "target": "Amortization of intangible assets"
+   },
+   {
+    "value": 61702000,
+    "source": "Operating Expense",
+    "target": "Maintenance"
+   },
+   {
+    "value": 1759045926,
+    "source": "Operating Expense",
+    "target": "Marketing"
+   }
+  ]
+ }
+}

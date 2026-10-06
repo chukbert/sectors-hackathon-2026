@@ -18,6 +18,8 @@ export type BasketCompany = {
   symbol: string;
   name: string;
   items: string[];
+  // Status per baris struk — tebakan AI tidak ikut "terverifikasi" dari baris lain di emiten yang sama.
+  lines: { raw: string; relation: "direct" | "indirect" | "dugaan"; verified: boolean; note: string | null }[];
   verified: boolean;
   relation: "direct" | "indirect" | "dugaan";
   note: string | null;
@@ -26,13 +28,32 @@ export type BasketCompany = {
   group: string;
 };
 
+// Harga = data struk pengguna (bisa dikoreksi); margin laba = data Sectors.
+export type ScanItem = { raw: string; brand: string; symbol: string | null; price: number | null };
+
+export type Spend = {
+  total: number;
+  to_issuers: number;
+  to_issuers_share: number | null;
+  other: number;
+  other_share: number | null;
+  lines: number;
+  priced_lines: number;
+  companies: { symbol: string; name: string; group: string; verified: boolean; amount: number; share: number | null; net_margin: number | null; per_100: number | null }[];
+  groups: { label: string; kind: string; symbols: string[]; amount: number; share: number | null }[];
+  year: number;
+  price_source: string;
+  margin_src: Src;
+};
+
 export type ScanResult = {
   store_name: string | null;
   llm_read: boolean;
-  items: { raw: string; brand: string; symbol: string }[];
+  items: ScanItem[];
   companies: BasketCompany[];
   groups: { label: string; kind: string; symbols: string[] }[];
   unknown: { raw: string; brand: string }[];
+  spend: Spend;
   universe_total: number;
   src: Src;
   disclaimer: string;
@@ -128,6 +149,10 @@ export async function scan(body: { text?: string; image?: string }): Promise<Sca
   return j(await fetch(`${BASE}/scan`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) }));
 }
 
+export async function recount(items: ScanItem[]): Promise<Omit<ScanResult, "store_name" | "llm_read"> | SectorsOff> {
+  return j(await fetch(`${BASE}/basket`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ items }) }));
+}
+
 export async function company(symbol: string): Promise<Card | SectorsOff> {
   return j(await fetch(`${BASE}/company/${encodeURIComponent(symbol)}`, { cache: "no-store" }));
 }
@@ -193,4 +218,10 @@ export function share(v: number | null | undefined): string {
   const p = v * 100;
   if (p > 0 && p < 1) return `${new Intl.NumberFormat("id-ID", { maximumSignificantDigits: 2 }).format(p)}%`;
   return pct(v);
+}
+
+// Nominal belanja pengguna: tampil persis (Rp1.998.000), bukan dibulatkan seperti angka perusahaan.
+export function rp(v: number | null | undefined): string {
+  if (v === null || v === undefined || Number.isNaN(v)) return "—";
+  return `Rp${nf0.format(v)}`;
 }

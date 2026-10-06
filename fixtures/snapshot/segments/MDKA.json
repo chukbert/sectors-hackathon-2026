@@ -1,0 +1,65 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/MDKA/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:00:28+0700",
+ "fetched_at_epoch": 1791320428.8665152,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "MDKA.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 4218721212778,
+    "source": "Tujuh Bukit Project",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 2146062669862,
+    "source": "Wetar Project",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 29804752738819,
+    "source": "Nickel Project",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 6485468271,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 33326688462157,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 2849333627573,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 1922624705544,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 926708922029,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 57863484182,
+    "source": "Operating Expense",
+    "target": "Selling and marketing"
+   },
+   {
+    "value": 868845437847,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

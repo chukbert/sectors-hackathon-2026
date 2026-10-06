@@ -1,0 +1,75 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/EMTK/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:55:44+0700",
+ "fetched_at_epoch": 1791320144.8472226,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "EMTK.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 5516228000000,
+    "source": "Advertising",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 2360438000000,
+    "source": "Health and hospital services",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 432758000000,
+    "source": "Sale of goods",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 378135000000,
+    "source": "VSAT, repair, maintenance and technical support services",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1907350000000,
+    "source": "Cargo, ground handling, catering, and aircraft maintenance services",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1638556000000,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 8169202000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 4064263000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 877512000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 3186751000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 259488000000,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 2927263000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

@@ -1,0 +1,110 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/BANK/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:57:42+0700",
+ "fetched_at_epoch": 1791320262.6079803,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "BANK.JK",
+  "financial_year": 2025,
+  "revenue_breakdown": [
+   {
+    "value": 4090000000,
+    "source": "Murabahah margin income",
+    "target": "Interest Income"
+   },
+   {
+    "value": 542330000000,
+    "source": "Musyarakah profit sharing income",
+    "target": "Interest Income"
+   },
+   {
+    "value": 41550000000,
+    "source": "Qardh ujrah income",
+    "target": "Interest Income"
+   },
+   {
+    "value": 2154000000,
+    "source": "Current account with Bank Indonesia and other banks",
+    "target": "Interest Income"
+   },
+   {
+    "value": 12372000000,
+    "source": "Placement with Bank Indonesia and other banks",
+    "target": "Interest Income"
+   },
+   {
+    "value": 218092000000,
+    "source": "Securities",
+    "target": "Interest Income"
+   },
+   {
+    "value": 306525000000,
+    "source": "Interest Income",
+    "target": "Net Interest Income"
+   },
+   {
+    "value": 514063000000,
+    "source": "Interest Income",
+    "target": "Interest Expense"
+   },
+   {
+    "value": 306525000000,
+    "source": "Net Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 498757000000,
+    "source": "Non Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 148200000000,
+    "source": "Total Revenue",
+    "target": "Operating Income"
+   },
+   {
+    "value": 657082000000,
+    "source": "Total Revenue",
+    "target": "Operating and Credit-Related Expenses"
+   },
+   {
+    "value": 606325000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 50757000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Provision for Impairment"
+   },
+   {
+    "value": 126663000000,
+    "source": "Operating Expense",
+    "target": "Salaries and employees' benefits"
+   },
+   {
+    "value": 335082000000,
+    "source": "Operating Expense",
+    "target": "General and administrative expenses"
+   },
+   {
+    "value": 86318000000,
+    "source": "Operating Expense",
+    "target": "Promotion"
+   },
+   {
+    "value": 43181000000,
+    "source": "Operating Expense",
+    "target": "Depreciation and amortization"
+   },
+   {
+    "value": 15081000000,
+    "source": "Operating Expense",
+    "target": "Others (expense)"
+   }
+  ]
+ }
+}

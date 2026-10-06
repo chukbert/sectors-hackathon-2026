@@ -1,0 +1,75 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/SOHO/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:54:47+0700",
+ "fetched_at_epoch": 1791320087.4000459,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "SOHO.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 5439117000000,
+    "source": "Pharmaceutical product",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 2959285000000,
+    "source": "Consumer health product",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1658667000000,
+    "source": "Medical device",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 329000000,
+    "source": "Toll manufacturing services",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 540000000,
+    "source": "Marketing fee income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 8517100000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 1540838000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 572210000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 968628000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 789224000000,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 153912000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   },
+   {
+    "value": 25492000000,
+    "source": "Operating Expense",
+    "target": "Research and development"
+   }
+  ]
+ }
+}

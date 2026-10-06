@@ -1,0 +1,70 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/UNTR/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:00:13+0700",
+ "fetched_at_epoch": 1791320413.0828614,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "UNTR.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 37279497000000,
+    "source": "Construction Machinery",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 58029353000000,
+    "source": "Mining Contracting",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 26006866000000,
+    "source": "Coal Mining",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 9908218000000,
+    "source": "Gold and other mineral mining",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 3203064000000,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 100595438000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 33831560000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 27181530000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 6650030000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 1056442000000,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 5593588000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

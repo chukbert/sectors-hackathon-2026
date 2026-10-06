@@ -1,0 +1,55 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/POWR/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:00:49+0700",
+ "fetched_at_epoch": 1791320449.8855138,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "POWR.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 8838196888975,
+    "source": "Electricity generation, distribution, and sales",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 4395954745684,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 4442242143291,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 2286082334006,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 2156159809285,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 965729547316,
+    "source": "Operating Expense",
+    "target": "Depreciation expenses"
+   },
+   {
+    "value": 914797480762,
+    "source": "Operating Expense",
+    "target": "Employee expenses"
+   },
+   {
+    "value": 275632781207,
+    "source": "Operating Expense",
+    "target": "Repair and maintenance expense"
+   }
+  ]
+ }
+}

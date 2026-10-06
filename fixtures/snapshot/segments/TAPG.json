@@ -1,0 +1,55 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/TAPG/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:55:40+0700",
+ "fetched_at_epoch": 1791320140.4104753,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "TAPG.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 9640778000000,
+    "source": "Palm oil product and its derivatives",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 30685000000,
+    "source": "Rubber product and its derivatives",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 5948685000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 3722778000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 2828536000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 894242000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 281644000000,
+    "source": "Operating Expense",
+    "target": "Selling and marketing"
+   },
+   {
+    "value": 612598000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

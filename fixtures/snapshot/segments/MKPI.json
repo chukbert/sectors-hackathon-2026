@@ -1,0 +1,155 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/MKPI/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:55:46+0700",
+ "fetched_at_epoch": 1791320146.0744693,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "MKPI.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 1249792182555,
+    "source": "Shopping center rental",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 264294759746,
+    "source": "Office rental",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 242586319865,
+    "source": "Hotel rental",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 144144805246,
+    "source": "Apartment rental",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 15793231744,
+    "source": "Land rental",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 202442415874,
+    "source": "Land and building sales",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 179846858372,
+    "source": "Food and beverage sales",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 115639466617,
+    "source": "Electrical, water and gas sales",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 14038308488,
+    "source": "Water park tickets slaes",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 27269552020,
+    "source": "Land sales",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 26714125354,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1205545015649,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 1277017010232,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 1111543024384,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 165473985848,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 16582539172,
+    "source": "Operating Expense",
+    "target": "Marketing expenses"
+   },
+   {
+    "value": 11745237600,
+    "source": "Operating Expense",
+    "target": "Provision for employee benefits"
+   },
+   {
+    "value": 105080853856,
+    "source": "Operating Expense",
+    "target": "Salaries and allowances"
+   },
+   {
+    "value": 2870670583,
+    "source": "Operating Expense",
+    "target": "Professional fees"
+   },
+   {
+    "value": 3772681035,
+    "source": "Operating Expense",
+    "target": "Security"
+   },
+   {
+    "value": 10005995709,
+    "source": "Operating Expense",
+    "target": "Office expenses"
+   },
+   {
+    "value": 2480030814,
+    "source": "Operating Expense",
+    "target": "Maintenance and repairs"
+   },
+   {
+    "value": 2263398152,
+    "source": "Operating Expense",
+    "target": "Depreciation"
+   },
+   {
+    "value": 1848806134,
+    "source": "Operating Expense",
+    "target": "Electricity, water, gas and telephone"
+   },
+   {
+    "value": 1489273241,
+    "source": "Operating Expense",
+    "target": "Insurance"
+   },
+   {
+    "value": 117000000,
+    "source": "Operating Expense",
+    "target": "Depreciation of tax amnesty asset"
+   },
+   {
+    "value": 5157314249,
+    "source": "Operating Expense",
+    "target": "Donation"
+   },
+   {
+    "value": 2060185303,
+    "source": "Operating Expense",
+    "target": "Others (expense)"
+   }
+  ]
+ }
+}

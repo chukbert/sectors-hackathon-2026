@@ -1,0 +1,55 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/BYAN/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:54:49+0700",
+ "fetched_at_epoch": 1791320089.038641,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "BYAN.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 55338702950896,
+    "source": "Coal",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 341792060882,
+    "source": "Non-Coal",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 34146679720592,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 21533815291186,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 19594126402406,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 1939688888780,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 626770454814,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 1312918433966,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

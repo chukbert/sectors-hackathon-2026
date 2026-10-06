@@ -1,0 +1,55 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/ADMR/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:00:34+0700",
+ "fetched_at_epoch": 1791320434.1802409,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "ADMR.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 18634476621091,
+    "source": "Mining",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 13653375908,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 9312775642125,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 9335354354874,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 8713556232967,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 621798121907,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 162186534963,
+    "source": "Operating Expense",
+    "target": "Selling and marketing"
+   },
+   {
+    "value": 459611586944,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

@@ -1,0 +1,90 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/JKON/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:02:35+0700",
+ "fetched_at_epoch": 1791320555.5991378,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "JKON.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 998902629000,
+    "source": "Construction services",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 500051687000,
+    "source": "Gases",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1521383635000,
+    "source": "Asphalt",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 637651760000,
+    "source": "Manufacture - piles and concrete",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 26613760000,
+    "source": "Handling equipments",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 41867690000,
+    "source": "Charter of vessels",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 145012693000,
+    "source": "Repair and maintenance services",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 3837392000,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 3261118783000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 614202463000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 107407199000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 506795264000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 141969117000,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 358839706000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   },
+   {
+    "value": 5986441000,
+    "source": "Operating Expense",
+    "target": "Others (expense)"
+   }
+  ]
+ }
+}

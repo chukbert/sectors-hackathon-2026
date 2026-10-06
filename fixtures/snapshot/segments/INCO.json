@@ -1,0 +1,55 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/INCO/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:55:38+0700",
+ "fetched_at_epoch": 1791320138.806068,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "INCO.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 15355418916000,
+    "source": "Nickel mining and processing",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 13606779120000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 1748639796000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 1130569918000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 618069878000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 270015784000,
+    "source": "Operating Expense",
+    "target": "Professional fees"
+   },
+   {
+    "value": 204386050000,
+    "source": "Operating Expense",
+    "target": "Employee costs"
+   },
+   {
+    "value": 143668044000,
+    "source": "Operating Expense",
+    "target": "Others (expense)"
+   }
+  ]
+ }
+}

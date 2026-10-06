@@ -1,0 +1,45 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/PGEO/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:55:40+0700",
+ "fetched_at_epoch": 1791320140.027557,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "PGEO.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 6577837840000,
+    "source": "Sales of steam and electricity",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 2664046945000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 3913790895000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 3404732296000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 509058599000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 509058599000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

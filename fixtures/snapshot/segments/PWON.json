@@ -1,0 +1,90 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/PWON/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:01:05+0700",
+ "fetched_at_epoch": 1791320465.7193346,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "PWON.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 2019976053000,
+    "source": "Space rental",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 79183883000,
+    "source": "Service apartment",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1307809114000,
+    "source": "Hotel",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 890765132000,
+    "source": "Service charges",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 754908688000,
+    "source": "Sale of condominiums and offices",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 724872055000,
+    "source": "Sale of land and buildings",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 450182857000,
+    "source": "Electricity, water and gas billing",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 223352987000,
+    "source": "Parking fee",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 219758161000,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 2901630815000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 3769178115000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 2900945604000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 868232511000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 305919040000,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 562313471000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

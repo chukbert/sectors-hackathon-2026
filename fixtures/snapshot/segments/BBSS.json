@@ -1,0 +1,50 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/BBSS/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:58:40+0700",
+ "fetched_at_epoch": 1791320320.3626978,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "BBSS.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 493333331,
+    "source": "Warehouse rent",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 41666650,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 451666681,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 1090874248,
+    "source": "Operating Income",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 451666681,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 787665348,
+    "source": "Operating Expense",
+    "target": "Salaries and allowance"
+   },
+   {
+    "value": 754875581,
+    "source": "Operating Expense",
+    "target": "General and administrative "
+   }
+  ]
+ }
+}

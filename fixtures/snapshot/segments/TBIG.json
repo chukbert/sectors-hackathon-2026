@@ -1,0 +1,65 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/TBIG/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:55:41+0700",
+ "fetched_at_epoch": 1791320141.9468112,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "TBIG.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 6272556000000,
+    "source": "Tower",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 34331000000,
+    "source": "Repeater",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 3501000000,
+    "source": "Building (Investment properties)",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 557011000000,
+    "source": "Fiber Optic",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1941212000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 4926187000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 4318756000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 607431000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 351885000000,
+    "source": "Operating Expense",
+    "target": "Salaries, wages and allowance"
+   },
+   {
+    "value": 255546000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

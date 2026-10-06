@@ -1,0 +1,90 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/MORA/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:54:50+0700",
+ "fetched_at_epoch": 1791320090.2602184,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "MORA.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 1158870606331,
+    "source": "Internet",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 987312982700,
+    "source": "Domestic link",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 502398973733,
+    "source": "VSAT",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 301982785153,
+    "source": "International link",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 881735673805,
+    "source": "Concession project",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 64977124804,
+    "source": "Data Centre",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 33503050882,
+    "source": "Indefeasible Right of Use",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 47407658766,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1652355392322,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 2325833463852,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 1066061487791,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 1259771976061,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 354246147309,
+    "source": "Operating Expense",
+    "target": "Salaries and allowances"
+   },
+   {
+    "value": 61041698312,
+    "source": "Operating Expense",
+    "target": "Marketing"
+   },
+   {
+    "value": 844484130440,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

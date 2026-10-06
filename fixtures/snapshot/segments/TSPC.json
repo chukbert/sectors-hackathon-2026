@@ -1,0 +1,60 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/TSPC/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:54:47+0700",
+ "fetched_at_epoch": 1791320087.8088522,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "TSPC.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 4746844043675,
+    "source": "Pharmaceuticals",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 4556377350868,
+    "source": "Products and Cosmestics",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 4351349435204,
+    "source": "Distribution Services",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 8477055405163,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 5177515424584,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 1698044513821,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 3479470910763,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 2783982283097,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 695488627666,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

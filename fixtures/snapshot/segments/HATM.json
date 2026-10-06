@@ -1,0 +1,110 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/HATM/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T04:01:50+0700",
+ "fetched_at_epoch": 1791320510.569146,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "HATM.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 731003724306,
+    "source": "Freight",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 17194894410,
+    "source": "Demurrage",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 539170864359,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 209027754357,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 162872351614,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 46155402743,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 35514218053,
+    "source": "Operating Expense",
+    "target": "Salary and allowance"
+   },
+   {
+    "value": 2416932269,
+    "source": "Operating Expense",
+    "target": "Entertainment"
+   },
+   {
+    "value": 1246176482,
+    "source": "Operating Expense",
+    "target": "Professional fees "
+   },
+   {
+    "value": 1285623615,
+    "source": "Operating Expense",
+    "target": "Business travel  "
+   },
+   {
+    "value": 752061853,
+    "source": "Operating Expense",
+    "target": "Employee benefits"
+   },
+   {
+    "value": 564259258,
+    "source": "Operating Expense",
+    "target": "Office rent"
+   },
+   {
+    "value": 362844714,
+    "source": "Operating Expense",
+    "target": "Repairs and maintenance"
+   },
+   {
+    "value": 303373416,
+    "source": "Operating Expense",
+    "target": "Depreciation"
+   },
+   {
+    "value": 196875000,
+    "source": "Operating Expense",
+    "target": "Amortization"
+   },
+   {
+    "value": 141299600,
+    "source": "Operating Expense",
+    "target": "Office supplies"
+   },
+   {
+    "value": 89400618,
+    "source": "Operating Expense",
+    "target": "Permit "
+   },
+   {
+    "value": 59550000,
+    "source": "Operating Expense",
+    "target": "Donation "
+   },
+   {
+    "value": 3222787865,
+    "source": "Operating Expense",
+    "target": "Others (expense)"
+   }
+  ]
+ }
+}

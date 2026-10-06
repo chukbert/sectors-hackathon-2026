@@ -1,0 +1,65 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/CMNP/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:56:41+0700",
+ "fetched_at_epoch": 1791320201.678593,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "CMNP.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 1207899786000,
+    "source": "Construction revenues toll road operator",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 2396692277000,
+    "source": "Toll revenues",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 368592738000,
+    "source": "Construction service revenue",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 90361985000,
+    "source": "Service revenue",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 44547179000,
+    "source": "Food and beverages",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 2230811882000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 1877282083000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 1718697521000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 158584562000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 158584562000,
+    "source": "Operating Expense",
+    "target": "General and Administrative"
+   }
+  ]
+ }
+}

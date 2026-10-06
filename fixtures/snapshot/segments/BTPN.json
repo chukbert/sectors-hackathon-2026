@@ -1,0 +1,95 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/BTPN/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:54:44+0700",
+ "fetched_at_epoch": 1791320084.6049778,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "BTPN.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 12552085000000,
+    "source": "Loans",
+    "target": "Interest Income"
+   },
+   {
+    "value": 1067243000000,
+    "source": "Securities",
+    "target": "Interest Income"
+   },
+   {
+    "value": 541307000000,
+    "source": "Placement with Bank Indonesia and other bank",
+    "target": "Interest Income"
+   },
+   {
+    "value": 5398377000000,
+    "source": "Sharia Income",
+    "target": "Interest Income"
+   },
+   {
+    "value": 4029323000000,
+    "source": "Others",
+    "target": "Interest Income"
+   },
+   {
+    "value": 15208282000000,
+    "source": "Interest Income",
+    "target": "Net Interest Income"
+   },
+   {
+    "value": 8380053000000,
+    "source": "Interest Income",
+    "target": "Interest Expense"
+   },
+   {
+    "value": 15208282000000,
+    "source": "Net Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 2221078000000,
+    "source": "Non Interest Income",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 4104017000000,
+    "source": "Total Revenue",
+    "target": "Operating Income"
+   },
+   {
+    "value": 13325343000000,
+    "source": "Total Revenue",
+    "target": "Operating and Credit-Related Expenses"
+   },
+   {
+    "value": 9428203000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 3897140000000,
+    "source": "Operating and Credit-Related Expenses",
+    "target": "Provision for Impairment"
+   },
+   {
+    "value": 4850251000000,
+    "source": "Operating Expense",
+    "target": "Personnel expenses"
+   },
+   {
+    "value": 3951282000000,
+    "source": "Operating Expense",
+    "target": "General and administrative expenses"
+   },
+   {
+    "value": 626670000000,
+    "source": "Operating Expense",
+    "target": "Others (expense)"
+   }
+  ]
+ }
+}

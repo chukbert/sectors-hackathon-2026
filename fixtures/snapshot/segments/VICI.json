@@ -1,0 +1,65 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/VICI/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:56:48+0700",
+ "fetched_at_epoch": 1791320208.232496,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "VICI.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 738394844122,
+    "source": "Personal care and antiseptic",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 696935524824,
+    "source": "Hair care",
+    "target": "Total Revenue"
+   },
+   {
+    "value": -34729021867,
+    "source": "Unallocated rebate and bonus",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 3531118083,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 616504877271,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 787627587891,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 233398873772,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 554228714119,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 393633424195,
+    "source": "Operating Expense",
+    "target": "Selling and marketing"
+   },
+   {
+    "value": 160595289924,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

@@ -1,0 +1,60 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/ABDA/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:57:45+0700",
+ "fetched_at_epoch": 1791320265.4664826,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "ABDA.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 850623031000,
+    "source": "Gross Premiums",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 94770309000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 755852722000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 108372076000,
+    "source": "Operating Income",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 755852722000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 363668990000,
+    "source": "Operating Expense",
+    "target": "Gross Claims"
+   },
+   {
+    "value": 392598224000,
+    "source": "Operating Expense",
+    "target": "General and administrative expenses"
+   },
+   {
+    "value": 107444404000,
+    "source": "Operating Expense",
+    "target": "Commission expenses"
+   },
+   {
+    "value": 513180000,
+    "source": "Operating Expense",
+    "target": "Others (expense)"
+   }
+  ]
+ }
+}

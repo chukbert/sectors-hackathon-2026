@@ -1,0 +1,70 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/MLPT/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:55:39+0700",
+ "fetched_at_epoch": 1791320139.6246245,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "MLPT.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 1504179000000,
+    "source": "Technology services",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1293946000000,
+    "source": "Hardware and supporting devices",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 614022000000,
+    "source": "IT outsourcing",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 263562000000,
+    "source": "Software",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 54077000000,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 3153527000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 576259000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 311396000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 264863000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 94065000000,
+    "source": "Operating Expense",
+    "target": "Selling expenses"
+   },
+   {
+    "value": 170798000000,
+    "source": "Operating Expense",
+    "target": "General and administrative expenses"
+   }
+  ]
+ }
+}

@@ -1,0 +1,75 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/PPRE/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:58:39+0700",
+ "fetched_at_epoch": 1791320319.134581,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "PPRE.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 3506814769569,
+    "source": "Construction ",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 146446914391,
+    "source": "Rental",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 61619260395,
+    "source": "Ready mix",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 75928267204,
+    "source": "Mining",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 3012589727376,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 778219484183,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 675197156344,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 103022327839,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 73952120286,
+    "source": "Operating Expense",
+    "target": "Employees"
+   },
+   {
+    "value": 5740176324,
+    "source": "Operating Expense",
+    "target": "Depreciation building"
+   },
+   {
+    "value": 1309287338,
+    "source": "Operating Expense",
+    "target": "Amortization of intangible assets"
+   },
+   {
+    "value": 22020743891,
+    "source": "Operating Expense",
+    "target": "Others (expense)"
+   }
+  ]
+ }
+}

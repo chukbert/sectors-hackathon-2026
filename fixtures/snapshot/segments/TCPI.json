@@ -1,0 +1,60 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/TCPI/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:56:47+0700",
+ "fetched_at_epoch": 1791320207.8237526,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "TCPI.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 1919838000000,
+    "source": "Sea transportations",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 6307000000,
+    "source": "Others",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 1396518000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 529627000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 360359000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 169268000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 97316000000,
+    "source": "Operating Expense",
+    "target": "Salaries and allowance"
+   },
+   {
+    "value": 7365000000,
+    "source": "Operating Expense",
+    "target": "Marketing and promotions"
+   },
+   {
+    "value": 64587000000,
+    "source": "Operating Expense",
+    "target": "General and administration"
+   }
+  ]
+ }
+}

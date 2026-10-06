@@ -1,0 +1,60 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/ASGR/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:57:43+0700",
+ "fetched_at_epoch": 1791320263.0172303,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "ASGR.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 1635683000000,
+    "source": "Services and rental ",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 779606000000,
+    "source": "Sales of goods",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 398973000000,
+    "source": "Project revenues ",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 2165063000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 649199000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 204118000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 445081000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 141531000000,
+    "source": "Operating Expense",
+    "target": "Selling"
+   },
+   {
+    "value": 303550000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   }
+  ]
+ }
+}

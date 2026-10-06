@@ -1,0 +1,65 @@
+{
+ "endpoint": "/sectors/v2/company/get-segments/BNBR/",
+ "params": {},
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T03:55:46+0700",
+ "fetched_at_epoch": 1791320146.893648,
+ "source": "sectors-live",
+ "data": {
+  "symbol": "BNBR.JK",
+  "financial_year": 2024,
+  "revenue_breakdown": [
+   {
+    "value": 3479967000000,
+    "source": "Infrastructure and manufacturing",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 253477000000,
+    "source": "Fabrication and construction services",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 136461000000,
+    "source": "Trading, services, and investment",
+    "target": "Total Revenue"
+   },
+   {
+    "value": 3000428000000,
+    "source": "Total Revenue",
+    "target": "Cost of Revenue"
+   },
+   {
+    "value": 869477000000,
+    "source": "Total Revenue",
+    "target": "Gross Profit"
+   },
+   {
+    "value": 282872000000,
+    "source": "Gross Profit",
+    "target": "Operating Income"
+   },
+   {
+    "value": 586605000000,
+    "source": "Gross Profit",
+    "target": "Operating Expense"
+   },
+   {
+    "value": 250990000000,
+    "source": "Operating Expense",
+    "target": "Personnel"
+   },
+   {
+    "value": 202712000000,
+    "source": "Operating Expense",
+    "target": "General and administrative"
+   },
+   {
+    "value": 132903000000,
+    "source": "Operating Expense",
+    "target": "Selling"
+   }
+  ]
+ }
+}
