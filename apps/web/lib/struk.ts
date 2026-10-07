@@ -1,4 +1,4 @@
-// Klien + tipe Struk Jadi Saham. Semua angka datang dari Core (yang hanya membaca data Sectors).
+// Klien + tipe Paham Emiten. Semua angka datang dari Core (yang hanya membaca data Sectors).
 
 const BASE = "/api/core/v1/struk";
 
@@ -13,51 +13,6 @@ export type Src = {
 };
 
 export type SectorsOff = { sectors_off: true; detail: string; message: string };
-
-export type BasketCompany = {
-  symbol: string;
-  name: string;
-  items: string[];
-  // Status per baris struk — tebakan AI tidak ikut "terverifikasi" dari baris lain di emiten yang sama.
-  lines: { raw: string; relation: "direct" | "indirect" | "dugaan"; verified: boolean; note: string | null }[];
-  verified: boolean;
-  relation: "direct" | "indirect" | "dugaan";
-  note: string | null;
-  sub_sector: string | null;
-  market_cap: number | null;
-  group: string;
-};
-
-// Harga = data struk pengguna (bisa dikoreksi); margin laba = data Sectors.
-export type ScanItem = { raw: string; brand: string; symbol: string | null; price: number | null };
-
-export type Spend = {
-  total: number;
-  to_issuers: number;
-  to_issuers_share: number | null;
-  other: number;
-  other_share: number | null;
-  lines: number;
-  priced_lines: number;
-  companies: { symbol: string; name: string; group: string; verified: boolean; amount: number; share: number | null; net_margin: number | null; per_100: number | null }[];
-  groups: { label: string; kind: string; symbols: string[]; amount: number; share: number | null }[];
-  year: number;
-  price_source: string;
-  margin_src: Src;
-};
-
-export type ScanResult = {
-  store_name: string | null;
-  llm_read: boolean;
-  items: ScanItem[];
-  companies: BasketCompany[];
-  groups: { label: string; kind: string; symbols: string[] }[];
-  unknown: { raw: string; brand: string }[];
-  spend: Spend;
-  universe_total: number;
-  src: Src;
-  disclaimer: string;
-};
 
 export type Holder = { name: string; pct: number; symbol: string | null };
 export type ChainLink = Holder & { of: string };
@@ -119,7 +74,6 @@ export type Card = {
     year: number;
     links: { source: string; target: string; value: number }[];
     src: Src;
-    explain?: { labels: Record<string, string>; summary: string | null; llm: boolean };
   };
   owners: { holders: Holder[]; free_float: number | null; group: { label: string; kind: string; chain: ChainLink[]; affiliates: string[] }; src: Src };
   peers: { symbol: string; name: string; is_self: boolean; revenue: number | null; earnings: number | null; net_margin: number | null; market_cap: number | null }[];
@@ -130,8 +84,6 @@ export type Card = {
 
 export type Status = {
   sectors_off: boolean;
-  llm_available: boolean;
-  model: string;
   disclaimer: string;
   store?: { credits_spent: number; credits_saved: number; store_hits: number; cached_keys: number; credit_remaining: number; mode: string };
 };
@@ -156,19 +108,14 @@ export async function status(): Promise<Status> {
   return j(await fetch(`${BASE}/status`, { cache: "no-store" }));
 }
 
-export async function scan(body: { text?: string; image?: string }): Promise<ScanResult | SectorsOff> {
-  return j(await fetch(`${BASE}/scan`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) }));
-}
-
-export async function recount(items: ScanItem[]): Promise<Omit<ScanResult, "store_name" | "llm_read"> | SectorsOff> {
-  return j(await fetch(`${BASE}/basket`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ items }) }));
-}
-
 export async function company(symbol: string): Promise<Card | SectorsOff> {
   return j(await fetch(`${BASE}/company/${encodeURIComponent(symbol)}`, { cache: "no-store" }));
 }
 
-export async function search(q: string): Promise<{ results: { symbol: string; name: string; brand: string | null }[] } | SectorsOff> {
+export type SearchHit = { symbol: string; name: string };
+
+// Input hanya kode saham: `exact` = kode persis ada di bursa; `results` = kode persis + kode berawalan sama.
+export async function search(q: string): Promise<{ query: string; exact: boolean; results: SearchHit[] } | SectorsOff> {
   return j(await fetch(`${BASE}/search?q=${encodeURIComponent(q)}`, { cache: "no-store" }));
 }
 
@@ -203,12 +150,6 @@ export function share(v: number | null | undefined): string {
   const p = v * 100;
   if (p > 0 && p < 1) return `${new Intl.NumberFormat("id-ID", { maximumSignificantDigits: 2 }).format(p)}%`;
   return pct(v);
-}
-
-// Nominal belanja pengguna: tampil persis (Rp1.998.000), bukan dibulatkan seperti angka perusahaan.
-export function rp(v: number | null | undefined): string {
-  if (v === null || v === undefined || Number.isNaN(v)) return "—";
-  return `Rp${nf0.format(v)}`;
 }
 
 // ------------------------------------------------------------- label & format field lima sisi

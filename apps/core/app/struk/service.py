@@ -1,9 +1,8 @@
-"""Struk Jadi Saham — rakit Kartu Kenalan dari data Sectors (lewat Store, cache-first).
+"""Paham Emiten — rakit Kartu Kenalan dari data Sectors (lewat Store, cache-first).
 
 Aturan keras:
 - Semua angka/pemilik/segmen berasal dari respons Sectors; setiap fakta membawa `src`.
-- LLM hanya: membaca struk → nama merek + harga baris, dan menerjemahkan label segmen —
-  tanpa angka baru (lihat narrate.py).
+- Tanpa LLM: semua teks di kartu adalah templat tetap atau label asli Sectors (segmen tampil dalam bahasa Inggris).
 - STRUK_SECTORS_OFF=1 mematikan akses Sectors: aplikasi harus kosong, bukan mengarang.
 """
 from __future__ import annotations
@@ -188,6 +187,18 @@ async def money_map(sym: str) -> dict[str, Any] | None:
             "src": _src(f"GET /v2/company/get-segments/{sym}/", "revenue_breakdown", resp)}
 
 
+# ---------------------------------------------------------------- pencarian (kode saham saja)
+
+def search_tickers(records: dict[str, Any], q: str, limit: int = 8) -> dict[str, Any]:
+    """Input hanya kode saham: cocok persis dulu, lalu kode yang diawali ketikan pengguna (BB → BBCA, BBRI, …)."""
+    code = "".join(ch for ch in universe.bare(q.strip()) if ch.isalnum())
+    if not code:
+        return {"query": code, "exact": False, "results": []}
+    syms = ([code] if code in records else []) + sorted(s for s in records if s.startswith(code) and s != code)
+    return {"query": code, "exact": code in records,
+            "results": [{"symbol": s, "name": records[s].get("company_name")} for s in syms[:limit]]}
+
+
 # ---------------------------------------------------------------- kartu kenalan
 
 def _series(rec: dict[str, Any], field: str) -> list[dict[str, Any]]:
@@ -255,103 +266,4 @@ async def company_card(sym: str) -> dict[str, Any]:
         "peers_src": _matrix_src(u, "sub_sector, market_cap, revenue, net_profit_margin"),
         "snowflake": {**snowflake.evaluate(u["records"], sym),
                       "src": _matrix_src(u, f"intrinsic_value, pe/pb/peg[{LATEST}], eps[{universe.HIST_YEAR}..{LATEST}], total_dividend, rasio utang, forecast_*[{universe.FORECAST_YEAR}] …")},
-    }
-
-
-# ---------------------------------------------------------------- keranjang (hasil struk)
-
-async def basket(items: list[dict[str, Any]]) -> dict[str, Any]:
-    """items: [{raw, brand, symbol?}] dari pembaca struk → emiten terverifikasi + peta pemilik."""
-    u = await load_universe()
-    recs = u["records"]
-    resolved, unknown = [], []
-    for it in items:
-        # Hanya merek yang diidentifikasi pembaca struk. Teks mentah tidak dicocokkan lagi:
-        # "Clear plastik bag" atau "Surya beras" bukan Clear (UNVR) / Surya (GGRM).
-        hit = brands.lookup(it.get("brand") or "")
-        if hit and hit.symbol in recs:
-            resolved.append({**it, "brand": hit.brand, "symbol": hit.symbol, "relation": hit.relation,
-                             "note": hit.note, "verified": True})
-            continue
-        guess = universe.bare(it.get("symbol") or "")
-        if guess and guess in recs:
-            # Tebakan LLM di luar katalog: simbolnya ada di Sectors, tapi pemetaan merek belum dikurasi.
-            resolved.append({**it, "symbol": guess, "relation": "dugaan", "note": None, "verified": False})
-        else:
-            unknown.append(it)
-
-    by_symbol: dict[str, dict[str, Any]] = {}
-    for r in resolved:
-        e = by_symbol.setdefault(r["symbol"], {"symbol": r["symbol"], "name": recs[r["symbol"]].get("company_name"),
-                                               "items": [], "lines": [], "verified": r["verified"], "relation": r["relation"],
-                                               "note": r.get("note"), "sub_sector": recs[r["symbol"]].get("sub_sector"),
-                                               "market_cap": _num(recs[r["symbol"]].get("market_cap"))})
-        raw = r.get("raw") or r.get("brand")
-        e["items"].append(raw)
-        # Status per baris: tebakan AI tidak boleh ikut "terverifikasi" hanya karena baris lain di emiten yang sama terverifikasi.
-        e["lines"].append({"raw": raw, "relation": r["relation"], "verified": r["verified"], "note": r.get("note")})
-        if r["verified"] and not e["verified"]:
-            e.update(verified=True, relation=r["relation"], note=r.get("note"))
-
-    groups: dict[str, dict[str, Any]] = {}
-    for sym, e in by_symbol.items():
-        g = owner_group(recs, sym)
-        e["group"] = g["label"]
-        grp = groups.setdefault(g["label"], {"label": g["label"], "kind": g["kind"], "symbols": [], "chain_example": g["chain"]})
-        grp["symbols"].append(sym)
-
-    return {
-        "companies": sorted(by_symbol.values(), key=lambda e: -(e["market_cap"] or 0)),
-        "groups": sorted(groups.values(), key=lambda g: -len(g["symbols"])),
-        "unknown": unknown,
-        "spend": spend_flow(u, resolved, unknown, by_symbol, groups),
-        "universe_total": u["count"],
-        "src": _matrix_src(u, "company_name, sub_sector, market_cap, major_shareholders_share_percentage, affiliates"),
-    }
-
-
-def _price(it: dict[str, Any]) -> int:
-    p = it.get("price")
-    return p if isinstance(p, int) and not isinstance(p, bool) and p > 0 else 0
-
-
-def spend_flow(u: dict[str, Any], resolved: list[dict[str, Any]], unknown: list[dict[str, Any]],
-               by_symbol: dict[str, dict[str, Any]], groups: dict[str, dict[str, Any]]) -> dict[str, Any]:
-    """Uang belanjamu mengalir ke siapa: harga dari STRUK PENGGUNA (bukan fakta perusahaan) dijumlah per emiten
-    dan per grup pemilik. Satu-satunya angka perusahaan di sini — margin laba bersih — datang dari Sectors."""
-    recs = u["records"]
-    per_sym: dict[str, int] = {}
-    for r in resolved:
-        per_sym[r["symbol"]] = per_sym.get(r["symbol"], 0) + _price(r)
-    other = sum(_price(it) for it in unknown)
-    total = sum(per_sym.values()) + other
-    lines = len(resolved) + len(unknown)
-    priced = sum(1 for it in [*resolved, *unknown] if _price(it))
-    share = (lambda v: round(v / total, 4)) if total else (lambda v: None)
-
-    companies = []
-    for sym, amount in per_sym.items():
-        if not amount:
-            continue
-        margin = _num(recs[sym].get(f"net_profit_margin[{LATEST}]"))
-        companies.append({"symbol": sym, "name": by_symbol[sym]["name"], "group": by_symbol[sym]["group"],
-                          "verified": by_symbol[sym]["verified"], "amount": amount, "share": share(amount),
-                          "net_margin": margin, "per_100": round(margin * 100, 1) if margin is not None else None})
-    companies.sort(key=lambda c: -c["amount"])
-    grp = []
-    for g in groups.values():
-        syms = [c["symbol"] for c in companies if c["group"] == g["label"]]
-        if syms:
-            amount = sum(per_sym[s] for s in syms)
-            grp.append({"label": g["label"], "kind": g["kind"], "symbols": syms, "amount": amount, "share": share(amount)})
-    grp.sort(key=lambda g: -g["amount"])
-    to_issuers = sum(c["amount"] for c in companies)
-    return {
-        "total": total, "to_issuers": to_issuers, "to_issuers_share": share(to_issuers),
-        "other": other, "other_share": share(other),
-        "lines": lines, "priced_lines": priced,
-        "companies": companies, "groups": grp,
-        "year": LATEST,
-        "price_source": "struk pengguna",
-        "margin_src": _matrix_src(u, f"net_profit_margin[{LATEST}]"),
     }

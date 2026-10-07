@@ -7,10 +7,10 @@ import logging
 import uuid
 from typing import Any
 
-from fastapi import FastAPI, HTTPException, Query, Request
+from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response, StreamingResponse
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 from .config import SETTINGS
 from .executor import execute
@@ -252,23 +252,7 @@ async def export_pdf(run_id: str):
                     headers={"Content-Disposition": f'inline; filename="idxmaca-{run_id}.html"'})
 
 
-# ------------------------------------------------------------------ Struk Jadi Saham
-
-class StrukScanRequest(BaseModel):
-    text: str | None = None
-    image: str | None = None  # data URL (data:image/jpeg;base64,...)
-
-
-class StrukItem(BaseModel):
-    raw: str = Field(default="", max_length=200)
-    brand: str = Field(default="", max_length=120)
-    symbol: str | None = Field(default=None, max_length=12)
-    price: float | None = None
-
-
-class StrukBasketRequest(BaseModel):
-    items: list[StrukItem] = Field(max_length=120)
-
+# ------------------------------------------------------------------ Paham Emiten (endpoint /v1/struk/*)
 
 def _sectors_off_response(exc: Exception) -> dict[str, Any]:
     return {"sectors_off": True, "detail": str(exc),
@@ -277,10 +261,9 @@ def _sectors_off_response(exc: Exception) -> dict[str, Any]:
 
 @app.get("/v1/struk/status")
 async def struk_status():
-    from .struk import quota, service
+    from .struk import service
 
-    out: dict[str, Any] = {"sectors_off": service.sectors_off(), "llm_available": GATEWAY.available, "model": SETTINGS.model,
-                           "llm_quota": quota.stats(), "disclaimer": DISCLAIMER}
+    out: dict[str, Any] = {"sectors_off": service.sectors_off(), "disclaimer": DISCLAIMER}
     try:
         out["store"] = await STORE.stats()
     except Exception as exc:  # noqa: BLE001
@@ -288,50 +271,9 @@ async def struk_status():
     return out
 
 
-@app.post("/v1/struk/scan")
-async def struk_scan(req: StrukScanRequest, request: Request):
-    from .struk import narrate, quota, service
-
-    if service.sectors_off():
-        return _sectors_off_response(service.SectorsOff("STRUK_SECTORS_OFF=1"))
-    if req.image and len(req.image) > 8_000_000:
-        raise HTTPException(status_code=413, detail="Foto terlalu besar (maks ±6 MB).")
-    ip = quota.client_ip(dict(request.headers), request.client.host if request.client else None)
-    use_llm = quota.take("scan_photo" if req.image else "scan_text", ip)
-    if req.image and not use_llm:
-        raise HTTPException(status_code=429, detail="Batas foto demo untukmu sedang penuh — coba lagi beberapa menit lagi, "
-                                                    "atau ketik nama barangnya (jalur teks tetap jalan).")
-    try:
-        parsed = await narrate.read_receipt(req.text, req.image, use_llm=use_llm)
-    except Exception as exc:  # noqa: BLE001
-        raise HTTPException(status_code=502, detail=f"Gagal membaca struk: {exc}") from exc
-    try:
-        result = await service.basket(parsed["items"])
-    except service.SectorsOff as exc:
-        return _sectors_off_response(exc)
-    return {"store_name": parsed.get("store"), "llm_read": parsed.get("llm"), "items": parsed["items"], **result,
-            "disclaimer": DISCLAIMER}
-
-
-@app.post("/v1/struk/basket")
-async def struk_basket(req: StrukBasketRequest):
-    """Hitung ulang hasil struk setelah pengguna mengoreksi baris/harga. Tanpa LLM, tanpa kredit (matriks di cache)."""
-    from .struk import narrate, service
-
-    if service.sectors_off():
-        return _sectors_off_response(service.SectorsOff("STRUK_SECTORS_OFF=1"))
-    items = [{"raw": it.raw, "brand": it.brand or it.raw, "symbol": it.symbol or "",
-              "price": narrate.clean_price(it.raw, it.price)} for it in req.items if (it.raw or it.brand).strip()]
-    try:
-        result = await service.basket(items)
-    except service.SectorsOff as exc:
-        return _sectors_off_response(exc)
-    return {"items": items, **result, "disclaimer": DISCLAIMER}
-
-
 @app.get("/v1/struk/company/{symbol}")
 async def struk_company(symbol: str):
-    from .struk import narrate, service
+    from .struk import service
 
     try:
         card = await service.company_card(symbol)
@@ -339,32 +281,20 @@ async def struk_company(symbol: str):
         return _sectors_off_response(exc)
     except KeyError as exc:
         raise HTTPException(status_code=404, detail=f"{symbol.upper()} tidak ada di data Sectors") from exc
-    if card.get("money"):
-        card["money"]["explain"] = await narrate.explain_money(card["symbol"], card["name"] or card["symbol"], card["money"])
     card["disclaimer"] = DISCLAIMER
     return card
 
 
 @app.get("/v1/struk/search")
-async def struk_search(q: str = Query(min_length=1)):
-    from .struk import brands, service, universe
+async def struk_search(q: str = Query(min_length=1, max_length=12)):
+    """Cari emiten lewat kode saham (ticker) saja — persis atau awalan. 0 kredit: semuanya dari matriks."""
+    from .struk import service
 
     try:
         u = await service.load_universe()
     except service.SectorsOff as exc:
         return _sectors_off_response(exc)
-    ql = q.strip().lower()
-    hit = brands.lookup(q)
-    out = []
-    if hit and hit.symbol in u["records"]:
-        out.append({"symbol": hit.symbol, "name": u["records"][hit.symbol].get("company_name"), "brand": hit.brand})
-    for sym, rec in u["records"].items():
-        if len(out) >= 8:
-            break
-        if sym.lower() == ql or ql in (rec.get("company_name") or "").lower():
-            if not any(o["symbol"] == sym for o in out):
-                out.append({"symbol": sym, "name": rec.get("company_name"), "brand": None})
-    return {"results": out, "universe_total": u["count"], "bare": universe.bare(q)}
+    return {**service.search_tickers(u["records"], q), "universe_total": u["count"]}
 
 
 @app.on_event("shutdown")

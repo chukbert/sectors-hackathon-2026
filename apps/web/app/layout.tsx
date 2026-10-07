@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Struk Jadi Saham",
-  description: "Foto struk belanjamu, kenali perusahaan publik di baliknya — semua angka dari data Sectors.",
+  title: "Paham Emiten",
+  description: "Kondisi perusahaan di Bursa Efek Indonesia dalam bahasa sederhana: 30 cek fundamental, pemilik, dan peta uang — semua angka dari data Sectors.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

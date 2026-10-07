@@ -17,17 +17,11 @@ tar --exclude=.git --exclude=.venv --exclude=.data --exclude=.logs --exclude=nod
     --exclude=__pycache__ --exclude=.pytest_cache --exclude=.env --exclude='*.tsbuildinfo' -czf - . \
   | "${SSH[@]}" "mkdir -p $DIR && tar -xzf - -C $DIR"
 
-# Hanya variabel yang dibutuhkan demo yang dikirim; key tidak pernah dicetak.
-if [ -f .env ]; then
-  grep -E '^(OPENROUTER_API_KEY|OPENROUTER_BASE_URL|IDXMACA_MODEL)=' .env | sed 's/[[:space:]]*#.*$//' > /tmp/struk-demo.env || true
-else
-  : > /tmp/struk-demo.env
-fi
-cat >> /tmp/struk-demo.env <<EOF
+# Paham Emiten tidak memakai LLM, jadi tidak ada key yang dikirim ke server; hanya variabel demo.
+cat > /tmp/struk-demo.env <<EOF
 IDXMACA_STORE_MODE=offline
 PUBLIC_DEMO=1
 WEB_BIND=127.0.0.1:$WEB_PORT
-STRUK_QUOTA_DAILY_LLM=600
 EOF
 "${SSH[@]}" "cat > $DIR/.env && chmod 600 $DIR/.env" < /tmp/struk-demo.env
 rm -f /tmp/struk-demo.env

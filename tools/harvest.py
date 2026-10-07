@@ -1,4 +1,4 @@
-"""Panen snapshot Sectors untuk Struk Jadi Saham — lewat Store (cache + ledger kredit), lalu
+"""Panen snapshot Sectors untuk Paham Emiten — lewat Store (cache + ledger kredit), lalu
 simpan respons asli ke fixtures/snapshot/ supaya demo & juri bisa jalan dengan 0 kredit.
 
   python tools/harvest.py --dry              # rencana + estimasi kredit (0 kredit)

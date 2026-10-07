@@ -1,27 +1,14 @@
-"""Katalog kurasi merek sehari-hari → emiten IDX.
+"""Katalog kurasi merek sehari-hari → emiten IDX, hanya untuk tampilan.
 
-Ini satu-satunya pengetahuan non-Sectors di aplikasi, dan sengaja dibatasi pada pemetaan
-nama merek. Setiap emiten tetap harus ada di snapshot Screener Sectors sebelum ditampilkan;
-semua angka, pemilik, dan segmen hanya dari Sectors. Merek di luar katalog boleh ditebak LLM
-tetapi ditandai `dugaan` sampai simbolnya terkonfirmasi ada di data Sectors.
+Input aplikasi adalah kode saham. Katalog ini cuma menambahkan chip "merek yang kamu kenal" di kepala
+kartu (ICBP → Indomie, Chitato, …) supaya pengguna langsung menangkap bisnis perusahaannya. Ini
+satu-satunya pengetahuan non-Sectors di aplikasi; semua angka, pemilik, dan segmen hanya dari Sectors.
 
 relation:
   direct   — merek milik emiten atau anak usaha yang dikonsolidasi
-  indirect — emiten hanya pemegang saham minoritas pemilik merek
+  indirect — emiten hanya pemegang saham minoritas pemilik merek (tidak ditampilkan sebagai merek emiten)
 """
 from __future__ import annotations
-
-import re
-from dataclasses import dataclass
-
-
-@dataclass(frozen=True)
-class BrandHit:
-    brand: str
-    symbol: str
-    relation: str
-    note: str | None = None
-
 
 # symbol: (relation, [merek...], catatan opsional)
 CATALOG: dict[str, tuple[str, list[str], str | None]] = {
@@ -123,45 +110,10 @@ CATALOG: dict[str, tuple[str, list[str], str | None]] = {
 }
 
 
-def _key(s: str) -> str:
-    return re.sub(r"[^a-z0-9+]", "", s.lower())
-
-
-_INDEX: dict[str, BrandHit] = {}
-_SYMBOLS: dict[str, BrandHit] = {}  # kode saham: hanya cocok persis ("roti tawar" ≠ ROTI)
-for _sym, (_rel, _brands, _note) in CATALOG.items():
-    for _b in _brands:
-        _INDEX[_key(_b)] = BrandHit(_b, _sym, _rel, _note)
-    _SYMBOLS[_key(_sym)] = BrandHit(_sym, _sym, _rel, _note)
-
-
-# Merek yang juga kata umum: hanya cocok persis, tidak lewat prefiks ("Surya beras" ≠ Surya).
-_EXACT_ONLY = {_key(b) for b in ["Clear", "Surya", "Better", "Lux", "Tri", "Leo", "Zee", "Citra", "Astra", "Champ",
-                                 "Woods", "Dove", "Close Up", "Sakura", "Astor", "Lawson", "Indofood", "Telkom",
-                                 "Natur-E", "Charm", "Marina", "My Baby", "Bellagio", "Permata", "Finna", "Campina"]}
-
-
-def lookup(name: str) -> BrandHit | None:
-    """Cocokkan nama merek (toleran huruf/spasi/tanda baca) ke katalog."""
-    k = _key(name)
-    if not k:
-        return None
-    if k in _INDEX:
-        return _INDEX[k]
-    if k in _SYMBOLS:
-        return _SYMBOLS[k]
-    # Prefiks: "Indomie Goreng Rendang" → Indomie; minimal 4 huruf agar tidak salah tangkap.
-    best = None
-    for bk, hit in _INDEX.items():
-        if len(bk) >= 4 and bk not in _EXACT_ONLY and k.startswith(bk) and (best is None or len(bk) > len(_key(best.brand))):
-            best = hit
-    return best
-
-
 def catalog_symbols() -> list[str]:
     return sorted(CATALOG)
 
 
 def brands_of(symbol: str) -> list[str]:
     entry = CATALOG.get(symbol.upper())
-    return list(entry[1]) if entry else []
+    return list(entry[1]) if entry and entry[0] == "direct" else []

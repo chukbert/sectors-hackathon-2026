@@ -31,9 +31,6 @@ ROLES: dict[str, RoleConfig] = {
     "writer_l3": RoleConfig("xhigh", 0.2, 6000),
     "judge": RoleConfig("low", 0.0, 1600),
     "memory": RoleConfig("low", 0.0, 1600),
-    # Struk Jadi Saham (model default google/gemini-3.8-flash, effort low)
-    "struk_parse": RoleConfig("low", 0.0, 2400),
-    "struk_explain": RoleConfig("low", 0.2, 2000),
 }
 
 

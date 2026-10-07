@@ -1,1 +1,1 @@
-"""Struk Jadi Saham — dari struk belanja ke perusahaan publik, semua angka dari Sectors."""
+"""Paham Emiten — kondisi perusahaan di bursa dalam bahasa sederhana, semua angka dari Sectors."""

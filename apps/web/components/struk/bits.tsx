@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import type { Src } from "@/lib/struk";
 
 // Setiap angka bisa ditelusuri: endpoint Sectors, field, query, kapan diambil, berapa kredit.
@@ -35,10 +36,41 @@ const GLOSSARY: Record<string, string> = {
   pengendali: "Pihak yang memegang saham cukup besar untuk menentukan arah perusahaan.",
 };
 
+// Istilah bergaris titik: arahkan kursor (desktop) atau ketuk (ponsel) untuk penjelasan singkat.
+// Popover memakai posisi fixed agar tidak terpotong kotak kartu yang overflow: hidden.
 export function Term({ k, children }: { k: keyof typeof GLOSSARY | string; children: React.ReactNode }) {
+  const [open, setOpen] = useState(false);
+  const [pos, setPos] = useState<{ top: number; left: number } | null>(null);
+  // Posisi fixed tidak ikut menggulir: tutup saat halaman digulir.
+  useEffect(() => {
+    if (!open) return;
+    const close = () => setOpen(false);
+    window.addEventListener("scroll", close, true);
+    return () => window.removeEventListener("scroll", close, true);
+  }, [open]);
+  const text = GLOSSARY[k];
+  if (!text) return <>{children}</>;
+  const place = (el: HTMLElement) => {
+    const r = el.getBoundingClientRect();
+    const w = Math.min(260, window.innerWidth - 32);
+    setPos({ top: r.bottom + 6, left: Math.max(16, Math.min(r.left, window.innerWidth - 16 - w)) });
+  };
   return (
-    <span className="sj-term" title={GLOSSARY[k] ?? ""}>
+    <button
+      type="button"
+      className={`sj-term${open ? " open" : ""}`}
+      aria-expanded={open}
+      onMouseEnter={(e) => place(e.currentTarget)}
+      onClick={(e) => {
+        place(e.currentTarget);
+        setOpen((v) => !v);
+      }}
+      onBlur={() => setOpen(false)}
+    >
       {children}
-    </span>
+      <span className="sj-term-pop" role="tooltip" style={pos ?? undefined}>
+        {text}
+      </span>
+    </button>
   );
 }

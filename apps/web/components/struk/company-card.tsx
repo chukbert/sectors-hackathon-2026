@@ -101,15 +101,13 @@ export function CompanyCard({ card, onPick }: { card: Card; onPick: (symbol: str
       <section className="sj-block">
         <BlockHead no="02" title="Peta uang: dari mana datang, ke mana pergi">
           {card.money
-            ? `Aliran pendapatan tahun ${card.money.year}. Kiri: sumber penjualan. Kanan: biaya dan laba yang tersisa. Arahkan kursor ke aliran untuk melihat nilainya.`
+            ? `Aliran pendapatan tahun ${card.money.year}. Kiri: sumber penjualan. Kanan: biaya dan laba yang tersisa. Arahkan kursor ke aliran untuk melihat nilainya. Nama segmen ditulis apa adanya dari laporan (bahasa Inggris).`
             : null}
         </BlockHead>
         {card.money ? (
           <>
-            {card.money.explain?.summary && <div className="sj-summary">{card.money.explain.summary}</div>}
             <MoneySankey money={card.money} />
             <SrcNote src={card.money.src} />
-            {card.money.explain?.llm && <div className="sj-ai-note">Label diterjemahkan dan diringkas AI dari label Sectors — AI tidak menambah angka.</div>}
           </>
         ) : (
           <div className="sj-empty">Sectors belum punya rincian segmen pendapatan untuk {card.symbol}, jadi peta uang tidak kami tampilkan — bukan kami karang.</div>

@@ -48,7 +48,7 @@ def _screener_params(p: dict[str, Any]) -> dict[str, Any]:
 
 def translate(endpoint: str, params: dict[str, Any] | None) -> tuple[str, dict[str, Any]] | None:
     seg = _segments(endpoint)
-    # Passthrough path resmi: /sectors/v2/... → /v2/.../ apa adanya (dipakai Struk Jadi Saham).
+    # Passthrough path resmi: /sectors/v2/... → /v2/.../ apa adanya (dipakai Paham Emiten).
     # Param tidak diterjemahkan dan respons tidak dinormalisasi (lihat live_shapes.normalize).
     if len(seg) >= 3 and seg[0].lower() == "sectors" and seg[1].lower() == "v2":
         return "/" + "/".join(seg[1:]) + "/", dict(params or {})
