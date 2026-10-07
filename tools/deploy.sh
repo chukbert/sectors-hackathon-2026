@@ -53,7 +53,7 @@ for p in "$WORK"/part_*; do
   name=$(basename "$p"); size=$(wc -c < "$p")
   send() {
     local got
-    got=$(timeout 120 "${SSH[@]}" "f=/tmp/paham-deploy/$name; if [ \"\$(wc -c < \$f 2>/dev/null)\" = $size ]; then echo $size; else cat > \$f.part && mv \$f.part \$f && wc -c < \$f; fi" < "$p" | tr -d '[:space:]')
+    got=$(timeout 120 "${SSH[@]}" "f=/tmp/paham-deploy/$name; if [ -f \$f ] && [ \"\$(wc -c < \$f)\" = $size ]; then echo $size; else cat > \$f.part && mv \$f.part \$f && wc -c < \$f; fi" < "$p" | tr -d '[:space:]')
     [ "$got" = "$size" ]
   }
   retry 8 send || { echo "✗ gagal mengirim $name — jalankan ulang; potongan yang sudah sampai tidak dikirim lagi"; exit 1; }

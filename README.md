@@ -98,7 +98,7 @@ flowchart LR
     A["⌨️ Ketik kode saham<br>(BBCA, ICBP, …)"] --> D{"Ada di 962 emiten<br>data Sectors?"}
     D -- tidak --> E["'Kode tidak ada'<br>(tidak menebak)"]
     D -- ya --> F["Kartu emiten<br><b>100% data Sectors</b>"]
-    F --> G["01 Ukuran · 02 Peta uang<br>03 Pemilik · 04 Sejenis<br>05 Lima sisi"]
+    F --> G["01 Ukuran · 02 Peta uang<br>03 Pemilik · 04 Industri<br>05 Lima sisi"]
     D -- "ya, 2–5 kode" --> H["Bandingkan<br>kolom berdampingan"]
     style F fill:#2b4bff,color:#fff,stroke:#2b4bff
     style E fill:#ff7a1a,color:#0b0d12,stroke:#ff7a1a
@@ -109,14 +109,14 @@ flowchart LR
 | 01 Seberapa besar | Pendapatan, laba, nilai pasar + peringkat dari 962 emiten, utang vs modal, dividen, tren 4 tahun, **"dari setiap Rp100 pendapatan, sisa laba Rp X"** | Screener `include_query_values` (matriks seluruh bursa) |
 | 02 Peta uang | Diagram Sankey: segmen pendapatan → biaya → laba (rugi ditandai tangerine) | `/v2/company/get-segments/{symbol}/` |
 | 03 Siapa pemiliknya | Pemegang saham, porsi publik, rantai pengendali (ICBP ← 80,5% INDF ← 50,1% First Pacific → Grup Salim) | `major_shareholders`, `affiliates` dari Screener |
-| 04 Teman sejenis | Perbandingan dengan emiten se-industri | Matriks Screener |
+| 04 Posisi di industrinya | Nilai pasar dibanding 5 emiten terbesar se-industri + tabel angka pembanding; satu ketukan menjajarkannya | Matriks Screener |
 | 05 Lima sisi | Radar 5 sisi × 6 cek ya/tidak, angka setiap cek, rumus `where` setara, dan "lolos oleh N dari 962 emiten" | Matriks Screener tahap 2 (valuasi, forecast, riwayat 2020–2025, kesehatan, bank) |
 
 Kode yang tepat langsung membuka kartunya; awalan kode (`BB`) menampilkan saran kode beserta nama perusahaan. Nama merek atau nama perusahaan bukan input, jadi aplikasi tidak pernah menebak emiten. Setiap kartu punya tautan sendiri (`/?emiten=ROTI`) untuk dibagikan.
 
 ### Bandingkan 2–5 emiten berdampingan
 
-Pengguna kami jarang ragu soal satu emiten saja; biasanya mereka bingung memilih di antara beberapa. Ketik kode kedua sampai kelima (atau tekan **Bandingkan dengan teman sejenis** di kartu, atau **+ bandingkan** di tabel pesaing), dan setiap emiten jadi satu kolom. Setiap baris memakai ukuran yang sama, jadi angkanya bisa dibaca sejajar: ukuran dan untung-rugi dengan batang relatif terhadap yang terbesar di baris itu, tren 4 tahun, porsi segmen pendapatan, pemilik, dan 30 cek lima sisi. Label baris tetap menempel di kiri saat kolom digeser, juga di ponsel. Tautannya bisa dibagikan: `/?emiten=BBCA,BBRI,BMRI,BBNI,BNLI`.
+Pengguna kami jarang ragu soal satu emiten saja; biasanya mereka bingung memilih di antara beberapa. Ketik kode kedua sampai kelima di bilah atas (atau tekan **Bandingkan dengan teman sejenis** di kartu, atau kode pembanding di bagian 04), dan setiap emiten jadi satu kolom. **Satu emiten dan lima emiten memakai tampilan yang sama**: kepala gelap yang sama, bagian 01–05 yang sama, label baris yang sama. Kartu satu emiten hanyalah perbandingan satu kolom yang lebar, dengan isi tambahan (Sankey, semua pemegang, tabel pembanding, rincian 30 cek). Jadi berpindah dari satu ke banyak emiten tidak mengubah cara membaca. Setiap baris memakai ukuran yang sama: batang relatif terhadap yang terbesar di baris itu, tren 4 tahun, porsi segmen pendapatan, pemilik, posisi di industri, dan 30 cek lima sisi. Label baris menempel di kiri saat kolom digeser, dan nama kolom menempel di atas saat halaman digulir, juga di ponsel. Tautannya bisa dibagikan: `/?emiten=BBCA,BBRI,BMRI,BBNI,BNLI`.
 
 ![Perbandingan lima bank: BBCA, BBRI, BMRI, BBNI, BNLI](docs/img/compare.png)
 

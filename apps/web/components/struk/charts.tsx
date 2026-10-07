@@ -79,41 +79,67 @@ export function TrendChart({ trend, height = 280, compact = false }: { trend: Ca
   return <ReactECharts option={option} className="sj-chart" style={{ height }} notMerge />;
 }
 
-// Lima sisi: jari-jari = jumlah cek yang lolos di sisi itu (maks = jumlah cek di sisi itu).
+// Lima sisi: jari-jari = porsi cek yang lolos di sisi itu (maks = jumlah cek di sisi itu, 4 untuk Kesehatan bank).
+// Digambar sebagai SVG sendiri (radar ECharts tidak bisa melengkung): kurva Catmull-Rom tertutup melewati kelima titik,
+// grid berupa lingkaran. Titik aslinya tetap ditandai, jadi lengkungan tidak menyembunyikan angkanya.
 export function FiveSidesRadar({ sf, height, compact = false }: { sf: Snowflake; height?: number; compact?: boolean }) {
-  const narrow = compact || (typeof window !== "undefined" && window.innerWidth < 640);
-  const option = {
-    textStyle: { fontFamily: FONT },
-    tooltip: {
-      trigger: "item",
-      confine: true,
-      formatter: () =>
-        sf.axes.map((a) => `${a.label}: <b>${a.passed}</b> dari ${a.total} cek lolos${a.assessed < a.total ? ` (${a.total - a.assessed} tanpa data)` : ""}`).join("<br/>"),
-    },
-    radar: {
-      radius: compact ? "50%" : narrow ? "62%" : "68%",
-      axisNameGap: compact ? 6 : 15,
-      center: ["50%", "54%"],
-      startAngle: 90,
-      splitNumber: 3,
-      shape: "polygon",
-      indicator: sf.axes.map((a) => ({ name: `${a.label}\n${a.passed}/${a.total}`, max: a.total, min: 0 })),
-      axisName: { color: "#0b0d12", fontSize: compact ? 10.5 : narrow ? 11 : 12.5, fontWeight: 600, lineHeight: 16 },
-      splitLine: { lineStyle: { color: "#e2e4ea" } },
-      splitArea: { areaStyle: { color: ["#ffffff", "#f7f9fc"] } },
-      axisLine: { lineStyle: { color: "#cfd3dc" } },
-    },
-    series: [
-      {
-        type: "radar",
-        symbol: "circle",
-        symbolSize: 6,
-        data: [{ value: sf.axes.map((a) => a.passed), name: "cek lolos" }],
-        lineStyle: { color: "#2b4bff", width: 2 },
-        itemStyle: { color: "#2b4bff" },
-        areaStyle: { color: "rgba(43, 75, 255, 0.18)" },
-      },
-    ],
-  };
-  return <ReactECharts option={option} className="sj-chart" style={{ height: height ?? (narrow ? 300 : 340) }} notMerge />;
+  const L = compact ? { w: 230, h: 210, r: 60, gap: 8, cy: 112, fs: 11, lh: 13 } : { w: 380, h: 320, r: 104, gap: 14, cy: 166, fs: 12.5, lh: 16 };
+  const cx = L.w / 2;
+  const n = sf.axes.length;
+  // Mulai dari atas, berlawanan arah jarum jam (Harga, Prospek, Rekam jejak, Kesehatan, Dividen).
+  const ang = (i: number) => -Math.PI / 2 - (i * 2 * Math.PI) / n;
+  const at = (i: number, r: number): [number, number] => [cx + r * Math.cos(ang(i)), L.cy + r * Math.sin(ang(i))];
+  // Sisi 0/6 tetap punya jari-jari kecil supaya kurvanya tidak terjepit ke satu titik.
+  const pts = sf.axes.map((a, i) => at(i, L.r * (0.06 + 0.94 * (a.total ? a.passed / a.total : 0))));
+  const f = (v: number) => v.toFixed(1);
+  let d = `M${f(pts[0][0])},${f(pts[0][1])}`;
+  for (let i = 0; i < n; i++) {
+    const p0 = pts[(i - 1 + n) % n], p1 = pts[i], p2 = pts[(i + 1) % n], p3 = pts[(i + 2) % n];
+    const c1 = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6];
+    const c2 = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6];
+    d += ` C${f(c1[0])},${f(c1[1])} ${f(c2[0])},${f(c2[1])} ${f(p2[0])},${f(p2[1])}`;
+  }
+  const summary = sf.axes.map((a) => `${a.label}: ${a.passed} dari ${a.total} cek lolos${a.assessed < a.total ? ` (${a.total - a.assessed} tanpa data)` : ""}`).join("\n");
+  return (
+    <svg
+      className="sj-radar"
+      viewBox={`0 0 ${L.w} ${L.h}`}
+      style={{ height: height ?? (compact ? 220 : 340) }}
+      role="img"
+      aria-label={`Bentuk lima sisi. ${summary.replace(/\n/g, "; ")}`}
+    >
+      {[3, 2, 1].map((k) => (
+        <circle key={k} cx={cx} cy={L.cy} r={(L.r * k) / 3} className={`ring${k % 2 ? "" : " alt"}`} />
+      ))}
+      {sf.axes.map((a, i) => {
+        const [x, y] = at(i, L.r);
+        return <line key={a.id} x1={cx} y1={L.cy} x2={x} y2={y} className="spoke" />;
+      })}
+      <g className="blob" style={{ transformOrigin: `${cx}px ${L.cy}px` }}>
+        <path d={d}>
+          <title>{summary}</title>
+        </path>
+        {pts.map(([x, y], i) => (
+          <circle key={sf.axes[i].id} cx={x} cy={y} r={compact ? 2.6 : 3.2} className="pt">
+            <title>{`${sf.axes[i].label}: ${sf.axes[i].passed} dari ${sf.axes[i].total} cek lolos`}</title>
+          </circle>
+        ))}
+      </g>
+      {sf.axes.map((a, i) => {
+        const [x, y] = at(i, L.r + L.gap);
+        const c = Math.cos(ang(i)), s = Math.sin(ang(i));
+        const anchor = Math.abs(c) < 0.3 ? "middle" : c > 0 ? "start" : "end";
+        // Label di atas titik: baris terakhir menempel ke titik; di bawah: baris pertama menempel; di samping: di tengah.
+        const y0 = s < -0.5 ? y - L.lh : s > 0.5 ? y + L.lh * 0.8 : y - L.lh * 0.15;
+        return (
+          <text key={a.id} x={x} y={y0} textAnchor={anchor} fontSize={L.fs} className="lab">
+            <tspan x={x}>{a.label}</tspan>
+            <tspan x={x} dy={L.lh} className="n">
+              {a.passed}/{a.total}
+            </tspan>
+          </text>
+        );
+      })}
+    </svg>
+  );
 }
