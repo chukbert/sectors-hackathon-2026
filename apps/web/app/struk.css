@@ -248,3 +248,76 @@
 .sj-sf-check code { display: block; margin-top: 8px; font-family: var(--mono); font-size: 12px; background: var(--ink); color: var(--lime); padding: 10px 12px; border-radius: 8px; overflow-x: auto; white-space: pre; }
 .sj-sf-check .dev { font-size: 12.5px; color: var(--text-2); margin: 6px 0 0; }
 @media (max-width: 600px) { .sj-sf-axis { grid-template-columns: 92px 1fr auto; padding: 8px 10px; } .sj-sf-axis .dots i { width: 10px; height: 10px; } }
+
+/* ================= bandingkan 2–5 emiten ================= */
+.sj-picked { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 12px; }
+.sj-picked > .lab { font-size: 12px; color: var(--muted); margin-right: 2px; }
+.sj-pick { display: inline-flex; align-items: center; gap: 4px; font-family: var(--mono); font-weight: 600; font-size: 12.5px; background: var(--ink); color: var(--white); border-radius: 6px; padding: 3px 4px 3px 9px; }
+.sj-pick button { border: 0; background: transparent; color: #aab0bf !important; cursor: pointer; padding: 0 5px; font-size: 15px; line-height: 1; border-radius: 4px; }
+.sj-pick button:hover { color: var(--white) !important; background: var(--ink-3); }
+.sj-pick .sj-spin { width: 11px; height: 11px; margin: 0 5px; }
+.sj-picked .sj-link { font-size: 12px; margin-left: 4px; }
+.sj-picked .full { font-size: 12px; color: var(--tang-ink); }
+.sj-cmp-add { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 16px; }
+.sj-cmp-add .btn { border: 1px solid var(--ink-3); background: transparent; color: var(--white) !important; border-radius: 6px; padding: 6px 11px; font-size: 13px; cursor: pointer; }
+.sj-cmp-add .btn:hover:not(:disabled) { border-color: var(--lime); color: var(--lime) !important; }
+.sj-cmp-add .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.sj-table .add { border: 1px solid var(--line-2); background: transparent; border-radius: 5px; font-size: 12px; padding: 1px 7px; cursor: pointer; color: var(--text-2) !important; white-space: nowrap; }
+.sj-table .add:hover:not(:disabled) { border-color: var(--blue); color: var(--blue) !important; }
+.sj-table .add:disabled { opacity: 0.4; cursor: default; }
+
+.sj-cmp-card { --cmp-label: 168px; --cmp-col: 236px; }
+.sj-cmp-head p { margin: 6px 0 0; color: #aab0bf; font-size: 14px; max-width: 640px; }
+.sj-cmp { overflow-x: auto; overscroll-behavior-x: contain; }
+.sj-cmp-grid { display: grid; min-width: min-content; }
+.sj-cmp-lab, .sj-cmp-cell, .sj-cmp-col, .sj-cmp-sec { border-bottom: 1px solid var(--line); }
+.sj-cmp-lab {
+  position: sticky; left: 0; z-index: 2; background: var(--card); padding: 12px 14px 12px 24px; font-size: 13px; color: var(--text-2);
+  border-right: 1px solid var(--line); box-shadow: 6px 0 8px -8px rgba(11, 13, 18, 0.25);
+}
+.sj-cmp-lab.top { background: var(--paper); }
+.sj-cmp-cell { padding: 12px 16px; min-width: 0; border-right: 1px solid var(--line); }
+.sj-cmp-cell.chart { padding: 8px 10px; }
+.sj-cmp-col { padding: 14px 16px; background: var(--paper); border-right: 1px solid var(--line); min-width: 0; }
+.sj-cmp-col .row { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.sj-cmp-col .sym { font-family: var(--mono); font-weight: 700; font-size: 14px; background: var(--ink); color: var(--lime); padding: 2px 8px; border-radius: 5px; }
+.sj-cmp-col .x { border: 1px solid var(--line-2); background: var(--card); border-radius: 6px; width: 26px; height: 26px; cursor: pointer; font-size: 16px; line-height: 1; color: var(--text-2) !important; }
+.sj-cmp-col .x:hover { border-color: var(--tang); color: var(--tang-ink) !important; }
+.sj-cmp-col .name { font-weight: 800; font-size: 15px; line-height: 1.25; margin-top: 8px; letter-spacing: -0.01em; }
+.sj-cmp-col .sub { font-size: 12.5px; color: var(--muted); margin: 2px 0 6px; }
+.sj-cmp-col .sj-link { font-size: 12.5px; }
+.sj-cmp-sec { background: var(--ink); color: var(--white); padding: 0; }
+.sj-cmp-sec .in { position: sticky; left: 0; display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; padding: 10px 24px; max-width: 100vw; }
+.sj-cmp-sec .no { font-family: var(--mono); font-size: 12px; color: var(--lime); }
+.sj-cmp-sec b { font-size: 14.5px; }
+.sj-cmp-sec .note { font-size: 12px; color: #8d93a3; }
+.sj-cmp-v { font-weight: 800; font-size: 16.5px; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
+.sj-cmp-v.neg { color: var(--tang-ink); }
+.sj-cmp-v .of { font-weight: 500; font-size: 13px; color: var(--muted); }
+.sj-cmp-t { font-size: 13.5px; line-height: 1.4; }
+.sj-cmp-t b { font-family: var(--mono); font-size: 12.5px; white-space: nowrap; }
+.sj-cmp-h { font-size: 12px; color: var(--text-2); margin-top: 3px; }
+.sj-cmp-na { font-size: 13px; color: var(--muted); }
+.sj-cmp-bar { height: 5px; background: var(--paper); border-radius: 99px; overflow: hidden; margin-top: 6px; }
+.sj-cmp-bar span { display: block; height: 100%; background: var(--ink); border-radius: 99px; }
+.sj-cmp-bar.neg span { background: var(--tang); }
+.sj-cmp-bar.pub span { background: var(--blue); }
+.sj-cmp-segs { display: grid; gap: 8px; }
+.sj-cmp-segs .seg { display: flex; justify-content: space-between; gap: 8px; font-size: 13px; line-height: 1.3; }
+.sj-cmp-segs .seg b { font-family: var(--mono); font-size: 12.5px; }
+.sj-cmp-segs .sj-cmp-bar { margin-top: 3px; }
+.sj-cmp-segs .sj-cmp-bar span { background: var(--blue); }
+.sj-cmp-axis { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.sj-cmp-axis .dots { display: flex; gap: 3px; }
+.sj-cmp-axis .dots i { width: 13px; height: 13px; border-radius: 3px; background: var(--line); }
+.sj-cmp-axis .dots i.pass { background: var(--blue); }
+.sj-cmp-axis .dots i.fail { background: var(--tang-soft); border: 1px solid var(--tang); }
+.sj-cmp-axis .dots i.none { background: transparent; border: 1px dashed var(--line-2); }
+.sj-cmp-axis .n { font-family: var(--mono); font-size: 13px; font-weight: 600; }
+@media (max-width: 600px) {
+  .sj-cmp-card { --cmp-label: 104px; --cmp-col: 200px; }
+  .sj-cmp-lab { padding: 10px 8px 10px 12px; font-size: 12px; }
+  .sj-cmp-cell, .sj-cmp-col { padding: 10px 12px; }
+  .sj-cmp-sec .in { padding: 9px 12px; }
+  .sj-cmp-v { font-size: 15px; }
+}

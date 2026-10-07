@@ -1,0 +1,8 @@
+# Override untuk demo publik di VPS: web memakai hasil build dari laptop (.deploy/web), bukan build di server.
+#   docker compose -f docker-compose.yml -f docker-compose.prebuilt.yml up -d --build
+# Image core/store di server hanya menyalin kode; layer pip-nya ter-cache selama requirements tidak berubah.
+services:
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile.prebuilt

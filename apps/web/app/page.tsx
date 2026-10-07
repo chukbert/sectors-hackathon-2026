@@ -5,16 +5,21 @@ import "./struk.css";
 import type { Card, SearchHit, SectorsOff, Status } from "@/lib/struk";
 import { company, isOff, num, search, status } from "@/lib/struk";
 import { CompanyCard } from "@/components/struk/company-card";
+import { CompareView } from "@/components/struk/compare";
 
 // Contoh cepat: kode saham yang sering dibicarakan, dari sektor yang berbeda-beda.
 const QUICK = ["BBCA", "TLKM", "ICBP", "ROTI", "GOTO"];
+// Satu kode = kartu lengkap; 2–5 kode = kolom berdampingan.
+const MAX_PICK = 5;
 
 export default function PahamEmitenPage() {
   const [st, setSt] = useState<Status | null>(null);
   const [err, setErr] = useState<string | null>(null);
   const [off, setOff] = useState<SectorsOff | null>(null);
-  const [card, setCard] = useState<Card | null>(null);
-  const [cardBusy, setCardBusy] = useState<string | null>(null);
+  const [sel, setSel] = useState<string[]>([]);
+  const [cards, setCards] = useState<Record<string, Card>>({});
+  const [loading, setLoading] = useState<string[]>([]);
+  const [full, setFull] = useState(false);
   const [searching, setSearching] = useState(false);
   const [q, setQ] = useState("");
   const [hits, setHits] = useState<SearchHit[] | null>(null);
@@ -27,9 +32,9 @@ export default function PahamEmitenPage() {
       .catch(() => setSt(null));
   useEffect(() => {
     refreshStatus();
-    // Tautan siap-bagikan: /?emiten=ICBP langsung membuka kartunya.
-    const sym = new URLSearchParams(window.location.search).get("emiten");
-    if (sym) void pick(sym.toUpperCase());
+    // Tautan siap-bagikan: /?emiten=ICBP membuka kartunya; /?emiten=ICBP,MYOR,ROTI langsung membandingkan.
+    const raw = new URLSearchParams(window.location.search).get("emiten");
+    if (raw) choose(raw.split(","), false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -42,22 +47,40 @@ export default function PahamEmitenPage() {
     return x;
   }
 
-  async function pick(symbol: string, scroll = true) {
-    setCardBusy(symbol);
-    setErr(null);
+  // Kartu disimpan per kode: menambah kolom tidak mengambil ulang kartu yang sudah ada.
+  async function load(symbol: string) {
+    setLoading((l) => (l.includes(symbol) ? l : [...l, symbol]));
     try {
       const c = handle(await company(symbol));
-      setCard(c);
-      if (c) {
-        window.history.replaceState(null, "", `?emiten=${c.symbol}`);
-        if (scroll) setTimeout(() => document.getElementById("kartu")?.scrollIntoView({ behavior: "smooth" }), 50);
-      }
+      if (c) setCards((m) => ({ ...m, [symbol]: c }));
+      else setSel((s) => s.filter((x) => x !== symbol));
     } catch (e) {
+      setSel((s) => s.filter((x) => x !== symbol));
       setErr((e as Error).message === "Not Found" ? `Kode ${symbol} tidak ada di data Sectors.` : (e as Error).message);
     } finally {
-      setCardBusy(null);
+      setLoading((l) => l.filter((x) => x !== symbol));
       refreshStatus();
     }
+  }
+
+  function choose(symbols: string[], scroll = true) {
+    const next = Array.from(new Set(symbols.map((x) => x.trim().toUpperCase()).filter(Boolean))).slice(0, MAX_PICK);
+    setSel(next);
+    setErr(null);
+    setFull(false);
+    window.history.replaceState(null, "", next.length ? `?emiten=${next.join(",")}` : window.location.pathname);
+    next.filter((x) => !cards[x] && !loading.includes(x)).forEach((x) => void load(x));
+    if (scroll && next.length) setTimeout(() => document.getElementById("kartu")?.scrollIntoView({ behavior: "smooth" }), 80);
+  }
+
+  // Kode baru ditambahkan ke pilihan: satu kode = kartu lengkap, dua atau lebih = dibandingkan berdampingan.
+  function add(symbol: string) {
+    if (sel.includes(symbol)) return choose(sel);
+    if (sel.length >= MAX_PICK) {
+      setFull(true);
+      return;
+    }
+    choose([...sel, symbol]);
   }
 
   // Saran kode saat mengetik (BB → BBCA, BBRI, …): lokal di Core, 0 kredit.
@@ -86,7 +109,7 @@ export default function PahamEmitenPage() {
     setQ("");
     setHits(null);
     setNotFound(null);
-    void pick(symbol);
+    add(symbol);
   }
 
   async function find(query: string) {
@@ -110,7 +133,8 @@ export default function PahamEmitenPage() {
   }
 
   const sectorsDown = st?.sectors_off || !!off;
-  const busy = searching || !!cardBusy;
+  const single = sel.length === 1 ? cards[sel[0]] : undefined;
+  const firstLoad = sel.length === 1 && !single && loading.includes(sel[0]);
 
   return (
     <div className="sj">
@@ -146,7 +170,7 @@ export default function PahamEmitenPage() {
               </h1>
               <p className="sub">
                 Ketik kode sahamnya. Kamu dapat satu kartu yang menjelaskan kondisi perusahaan itu dalam bahasa sehari-hari — tanpa perlu membaca laporan
-                keuangan sendiri.
+                keuangan sendiri. Masih bingung memilih? Masukkan sampai lima kode dan bandingkan berdampingan.
               </p>
             </div>
             <ol className="sj-steps">
@@ -171,8 +195,31 @@ export default function PahamEmitenPage() {
             <div className="sj-finder">
               <div className="sj-finder-head">
                 <b>CEK EMITEN</b>
-                kode saham (ticker) di Bursa Efek Indonesia
+                kode saham (ticker) di Bursa Efek Indonesia · 1 kode untuk kartu lengkap, 2–{MAX_PICK} untuk dibandingkan
               </div>
+              {sel.length > 0 && (
+                <div className="sj-picked" aria-label="Emiten yang dipilih">
+                  <span className="lab">
+                    Dipilih {sel.length}/{MAX_PICK}:
+                  </span>
+                  {sel.map((x) => (
+                    <span className="sj-pick" key={x}>
+                      {x}
+                      {loading.includes(x) ? (
+                        <span className="sj-spin" />
+                      ) : (
+                        <button onClick={() => choose(sel.filter((y) => y !== x), false)} aria-label={`Hapus ${x}`} title={`Hapus ${x}`}>
+                          ×
+                        </button>
+                      )}
+                    </span>
+                  ))}
+                  <button className="sj-link" onClick={() => choose([], false)}>
+                    kosongkan
+                  </button>
+                  {full && <span className="full">Maksimal {MAX_PICK} emiten. Hapus salah satu dulu.</span>}
+                </div>
+              )}
               <form
                 className="sj-find"
                 onSubmit={(e) => {
@@ -187,31 +234,31 @@ export default function PahamEmitenPage() {
                     setQ(e.target.value.toUpperCase().replace(/[^A-Z0-9.]/g, ""));
                     setNotFound(null);
                   }}
-                  placeholder="mis. BBCA"
+                  placeholder={sel.length ? "tambah kode, mis. BBRI" : "mis. BBCA"}
                   aria-label="Kode saham"
                   maxLength={8}
                   autoComplete="off"
                   autoCapitalize="characters"
                   spellCheck={false}
                 />
-                <button type="submit" className={`sj-go${busy ? " busy" : ""}`} disabled={!q.trim() || busy}>
-                  {busy ? (
+                <button type="submit" className={`sj-go${searching ? " busy" : ""}`} disabled={!q.trim() || searching}>
+                  {searching ? (
                     <>
-                      <span>{cardBusy ? `Menyusun kartu ${cardBusy}…` : "Mencari…"}</span>
+                      <span>Mencari…</span>
                       <span className="sj-spin" />
                     </>
                   ) : (
                     <>
-                      <span>Cek kondisinya</span>
-                      <span className="arr">→</span>
+                      <span>{sel.length === 0 ? "Cek kondisinya" : sel.length >= MAX_PICK ? `Sudah ${MAX_PICK} emiten` : "Tambah untuk dibandingkan"}</span>
+                      <span className="arr">{sel.length === 0 ? "→" : "+"}</span>
                     </>
                   )}
                 </button>
               </form>
               <div className="sj-quick">
-                <span>Coba:</span>
+                <span>{sel.length ? "Tambah:" : "Coba:"}</span>
                 {QUICK.map((sym) => (
-                  <button key={sym} className="sj-ex" disabled={busy} onClick={() => open(sym)}>
+                  <button key={sym} className="sj-ex" disabled={sel.includes(sym)} onClick={() => open(sym)}>
                     {sym}
                   </button>
                 ))}
@@ -246,13 +293,20 @@ export default function PahamEmitenPage() {
           </div>
         )}
 
-        {cardBusy && !card && (
+        {firstLoad && (
           <div className="sj-loading">
-            <span className="sj-spin" /> Menyusun kartu {cardBusy}…
+            <span className="sj-spin" /> Menyusun kartu {sel[0]}…
           </div>
         )}
-        {card && <CompanyCard card={card} onPick={pick} />}
-        {!card && !cardBusy && !off && (
+        {single && <CompanyCard card={single} onPick={(x) => choose([x])} onCompare={(xs) => choose(xs)} />}
+        {sel.length > 1 && (
+          <CompareView
+            cards={sel.filter((x) => cards[x]).map((x) => cards[x])}
+            loading={sel.filter((x) => !cards[x])}
+            onRemove={(x) => choose(sel.filter((y) => y !== x), false)}
+          />
+        )}
+        {sel.length === 0 && !off && (
           <div className="sj-empty sj-start">
             Belum ada emiten yang dibuka. Ketik kode saham yang ingin kamu pahami di kotak di atas — atau{" "}
             <button className="sj-link" onClick={() => inputRef.current?.focus()}>

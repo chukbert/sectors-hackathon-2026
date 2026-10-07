@@ -26,3 +26,6 @@ packages/evals/last_results/
 
 # TS incremental build
 *.tsbuildinfo
+
+# hasil build lokal untuk deploy
+.deploy/

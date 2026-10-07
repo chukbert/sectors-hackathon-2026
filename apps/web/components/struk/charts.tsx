@@ -54,33 +54,34 @@ export function MoneySankey({ money }: { money: NonNullable<Card["money"]> }) {
   return <ReactECharts option={option} className="sj-chart tall" style={{ height: narrow ? 460 : 380 }} notMerge />;
 }
 
-export function TrendChart({ trend }: { trend: Card["trend"] }) {
+// compact: untuk kolom perbandingan yang sempit — legenda dan angka sumbu lebih kecil.
+export function TrendChart({ trend, height = 280, compact = false }: { trend: Card["trend"]; height?: number; compact?: boolean }) {
   const years = trend.revenue.map((r) => String(r.year));
   const option = {
     textStyle: { fontFamily: FONT },
-    grid: { left: 8, right: 8, top: 34, bottom: 4, containLabel: true },
-    legend: { top: 0, left: 0, itemWidth: 12, itemHeight: 8, textStyle: { fontSize: 12 } },
+    grid: { left: 4, right: 4, top: compact ? 26 : 34, bottom: 4, containLabel: true },
+    legend: { top: 0, left: 0, itemWidth: compact ? 10 : 12, itemHeight: 8, textStyle: { fontSize: compact ? 11 : 12 } },
     tooltip: {
       trigger: "axis",
       valueFormatter: (v: number | null) => rupiah(v),
     },
-    xAxis: { type: "category", data: years, axisTick: { show: false }, axisLine: { lineStyle: { color: "#cfd3dc" } } },
+    xAxis: { type: "category", data: years, axisTick: { show: false }, axisLine: { lineStyle: { color: "#cfd3dc" } }, axisLabel: { fontSize: compact ? 10 : 12 } },
     yAxis: {
       type: "value",
       splitLine: { lineStyle: { color: "#e2e4ea" } },
-      axisLabel: { fontSize: 11, formatter: (v: number) => (v === 0 ? "0" : Math.abs(v) >= 1e12 ? `${(v / 1e12).toLocaleString("id-ID")} T` : `${(v / 1e9).toLocaleString("id-ID")} M`) },
+      axisLabel: { fontSize: compact ? 10 : 11, formatter: (v: number) => (v === 0 ? "0" : Math.abs(v) >= 1e12 ? `${(v / 1e12).toLocaleString("id-ID")} T` : `${(v / 1e9).toLocaleString("id-ID")} M`) },
     },
     series: [
       { name: "Pendapatan", type: "bar", data: trend.revenue.map((r) => r.value), itemStyle: { color: "#0b0d12", borderRadius: [4, 4, 0, 0] }, barMaxWidth: 34 },
       { name: "Laba bersih", type: "bar", data: trend.earnings.map((r) => ({ value: r.value, itemStyle: { color: (r.value ?? 0) < 0 ? "#ff7a1a" : "#2b4bff" } })), itemStyle: { color: "#2b4bff", borderRadius: [4, 4, 0, 0] }, barMaxWidth: 34 },
     ],
   };
-  return <ReactECharts option={option} className="sj-chart" style={{ height: 280 }} notMerge />;
+  return <ReactECharts option={option} className="sj-chart" style={{ height }} notMerge />;
 }
 
 // Lima sisi: jari-jari = jumlah cek yang lolos di sisi itu (maks = jumlah cek di sisi itu).
-export function FiveSidesRadar({ sf }: { sf: Snowflake }) {
-  const narrow = typeof window !== "undefined" && window.innerWidth < 640;
+export function FiveSidesRadar({ sf, height, compact = false }: { sf: Snowflake; height?: number; compact?: boolean }) {
+  const narrow = compact || (typeof window !== "undefined" && window.innerWidth < 640);
   const option = {
     textStyle: { fontFamily: FONT },
     tooltip: {
@@ -90,13 +91,14 @@ export function FiveSidesRadar({ sf }: { sf: Snowflake }) {
         sf.axes.map((a) => `${a.label}: <b>${a.passed}</b> dari ${a.total} cek lolos${a.assessed < a.total ? ` (${a.total - a.assessed} tanpa data)` : ""}`).join("<br/>"),
     },
     radar: {
-      radius: narrow ? "62%" : "68%",
+      radius: compact ? "50%" : narrow ? "62%" : "68%",
+      axisNameGap: compact ? 6 : 15,
       center: ["50%", "54%"],
       startAngle: 90,
       splitNumber: 3,
       shape: "polygon",
       indicator: sf.axes.map((a) => ({ name: `${a.label}\n${a.passed}/${a.total}`, max: a.total, min: 0 })),
-      axisName: { color: "#0b0d12", fontSize: narrow ? 11 : 12.5, fontWeight: 600, lineHeight: 16 },
+      axisName: { color: "#0b0d12", fontSize: compact ? 10.5 : narrow ? 11 : 12.5, fontWeight: 600, lineHeight: 16 },
       splitLine: { lineStyle: { color: "#e2e4ea" } },
       splitArea: { areaStyle: { color: ["#ffffff", "#f7f9fc"] } },
       axisLine: { lineStyle: { color: "#cfd3dc" } },
@@ -113,5 +115,5 @@ export function FiveSidesRadar({ sf }: { sf: Snowflake }) {
       },
     ],
   };
-  return <ReactECharts option={option} className="sj-chart" style={{ height: narrow ? 300 : 340 }} notMerge />;
+  return <ReactECharts option={option} className="sj-chart" style={{ height: height ?? (narrow ? 300 : 340) }} notMerge />;
 }

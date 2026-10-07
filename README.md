@@ -25,7 +25,7 @@ dalam bahasa sehari-hari: seberapa besar, untung atau rugi, siapa pemiliknya, da
 ## Untuk juri: 60 detik
 
 - **Untuk siapa.** Pemegang akun sekuritas yang pasif: orang yang sudah tahu investasi itu penting dan sudah membuka akun, tapi akunnya diam. Yang menahan mereka bukan niat, melainkan dua pertanyaan: *"perusahaan ini bagus atau tidak?"* dan *"kondisinya sekarang bagaimana?"*. Jawabannya tersebar di laporan keuangan berbahasa akuntansi dan aplikasi yang dibuat untuk trader.
-- **Yang kami bangun.** Satu kotak kode saham (ticker) → **kartu emiten** yang 100% dibangun dari data Sectors, dalam bahasa Indonesia sederhana: ukuran dan untung-rugi (*"dari setiap Rp100 pendapatan, sisa laba Rp X"*), peta uang dari segmen pendapatan, rantai pemilik sampai grup konglomerasi, perbandingan dengan pesaing, dan **lima sisi**: 30 cek fundamental ya/tidak (harga, prospek, rekam jejak, kesehatan, dividen) ala model terbuka Simply Wall St.
+- **Yang kami bangun.** Satu kotak kode saham (ticker) → **kartu emiten** yang 100% dibangun dari data Sectors, dalam bahasa Indonesia sederhana: ukuran dan untung-rugi (*"dari setiap Rp100 pendapatan, sisa laba Rp X"*), peta uang dari segmen pendapatan, rantai pemilik sampai grup konglomerasi, perbandingan dengan pesaing, dan **lima sisi**: 30 cek fundamental ya/tidak (harga, prospek, rekam jejak, kesehatan, dividen) ala model terbuka Simply Wall St. Masih ragu di antara beberapa emiten? Masukkan **2–5 kode** dan semuanya tampil sebagai kolom berdampingan, baris demi baris.
 - **Menjawab "bagus atau tidak" tanpa memberi saran beli/jual.** Kartu tidak memberi skor bintang. Kartu menulis *"ROTI lolos 17 dari 30 cek"*, lalu setiap cek menunjukkan angkanya, artinya, dan *"lolos oleh N dari 962 emiten"*, sehingga pengguna belajar cara menilai, bukan sekadar menerima vonis.
 - **Sectors adalah inti.** Jalankan dengan `STRUK_SECTORS_OFF=1` dan semua endpoint menolak: *tidak ada angka tanpa Sectors* (diuji otomatis). Setiap angka di layar bisa dibuka asal-usulnya: endpoint, field, query, waktu ambil.
 - **Pemakaian Sectors yang tidak biasa.** Seluruh bursa (962 emiten × 77 field) diambil hanya dengan **25 panggilan Screener**, memanfaatkan `include_query_values`. Total 258 kredit untuk seluruh proyek (termasuk peta uang untuk semua 219 emiten yang punya data segmen); **0 kredit per pengguna**.
@@ -99,6 +99,7 @@ flowchart LR
     D -- tidak --> E["'Kode tidak ada'<br>(tidak menebak)"]
     D -- ya --> F["Kartu emiten<br><b>100% data Sectors</b>"]
     F --> G["01 Ukuran · 02 Peta uang<br>03 Pemilik · 04 Sejenis<br>05 Lima sisi"]
+    D -- "ya, 2–5 kode" --> H["Bandingkan<br>kolom berdampingan"]
     style F fill:#2b4bff,color:#fff,stroke:#2b4bff
     style E fill:#ff7a1a,color:#0b0d12,stroke:#ff7a1a
 ```
@@ -112,6 +113,14 @@ flowchart LR
 | 05 Lima sisi | Radar 5 sisi × 6 cek ya/tidak, angka setiap cek, rumus `where` setara, dan "lolos oleh N dari 962 emiten" | Matriks Screener tahap 2 (valuasi, forecast, riwayat 2020–2025, kesehatan, bank) |
 
 Kode yang tepat langsung membuka kartunya; awalan kode (`BB`) menampilkan saran kode beserta nama perusahaan. Nama merek atau nama perusahaan bukan input, jadi aplikasi tidak pernah menebak emiten. Setiap kartu punya tautan sendiri (`/?emiten=ROTI`) untuk dibagikan.
+
+### Bandingkan 2–5 emiten berdampingan
+
+Pengguna kami jarang ragu soal satu emiten saja; biasanya mereka bingung memilih di antara beberapa. Ketik kode kedua sampai kelima (atau tekan **Bandingkan dengan teman sejenis** di kartu, atau **+ bandingkan** di tabel pesaing), dan setiap emiten jadi satu kolom. Setiap baris memakai ukuran yang sama, jadi angkanya bisa dibaca sejajar: ukuran dan untung-rugi dengan batang relatif terhadap yang terbesar di baris itu, tren 4 tahun, porsi segmen pendapatan, pemilik, dan 30 cek lima sisi. Label baris tetap menempel di kiri saat kolom digeser, juga di ponsel. Tautannya bisa dibagikan: `/?emiten=BBCA,BBRI,BMRI,BBNI,BNLI`.
+
+![Perbandingan lima bank: BBCA, BBRI, BMRI, BBNI, BNLI](docs/img/compare.png)
+
+Perbandingan memakai kartu yang sama dengan tampilan satu emiten, jadi **0 kredit tambahan** dan tidak ada angka baru yang perlu dipercaya.
 
 ### Lima sisi = 30 cek fundamental, 0 kredit tambahan
 
@@ -181,7 +190,8 @@ Aturan tim: setiap panggilan Sectors baru dicatat di tabel anggaran di atas **da
 | 6 | **Hindari Company Report penuh** | Report dihitung 1 kredit **per seksi** (default 8). Semua yang kami butuhkan sudah ada di matriks Screener, jadi kami tidak memanggilnya sama sekali. | 0 | 8 per emiten |
 | 7 | **Runtime nol kredit** | Store read-through cache + ledger. Semua respons mentah disimpan di `fixtures/snapshot/` lalu di-*seed*, dan aplikasi berjalan `offline`. Pencarian kode juga lokal: kode dan nama 962 emiten sudah ada di matriks. | **0** per pengguna | 1+ per tampilan |
 | 8 | **Analisis turunan dihitung lokal** | 30 cek lima sisi dan semua pembandingnya (median PE bursa, median pertumbuhan perkiraan, persentil imbal hasil dividen, median ROA dan pertumbuhan laba per industri) dihitung dari matriks yang sudah dibayar. Hitungan *"lolos oleh N dari 962"* untuk 34 cek juga lokal. Rumusnya ditulis sebagai `where` Sectors, jadi bisa dicek silang 1 kredit per cek bila perlu. | **0** | 34 kueri `total_count` + 8 per emiten bila memakai Company Report |
-| 9 | **Dry-run dan batas anggaran** | Setiap script punya `--dry` (estimasi, 0 kredit) dan `--budget` (berhenti sebelum melewati anggaran). | — | — |
+| 9 | **Bandingkan dari data yang sama** | Kolom perbandingan 2–5 emiten dirakit dari kartu yang sudah dibangun dari matriks dan snapshot segmen. Kartu disimpan di browser per kode, jadi menambah kolom tidak mengambil ulang kartu yang sudah ada. | **0** | 5 × Company Report 8 seksi = 40 per perbandingan |
+| 10 | **Dry-run dan batas anggaran** | Setiap script punya `--dry` (estimasi, 0 kredit) dan `--budget` (berhenti sebelum melewati anggaran). | — | — |
 
 **Kapan kredit terpakai** (tabel penagihan di docs Sectors): respons **2xx dan 404 ditagih**. Respons 400, 401/403, 429, dan 5xx **gratis**. Jebakan yang kami temui:
 - Filter `symbol in [...]` tanpa suffix `.JK` menghasilkan 200 kosong, dan **tetap ditagih**.

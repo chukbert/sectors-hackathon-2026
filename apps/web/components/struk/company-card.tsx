@@ -18,8 +18,10 @@ function BlockHead({ no, title, children }: { no: string; title: string; childre
   );
 }
 
-export function CompanyCard({ card, onPick }: { card: Card; onPick: (symbol: string) => void }) {
+// onCompare: buka tampilan banding dengan daftar kode ini (emiten ini selalu di kolom pertama, maks 5).
+export function CompanyCard({ card, onPick, onCompare }: { card: Card; onPick: (symbol: string) => void; onCompare: (symbols: string[]) => void }) {
   const f = card.facts;
+  const others = card.peers.filter((p) => !p.is_self).map((p) => p.symbol);
   const meta = [
     card.listing_date ? `Tercatat di bursa sejak ${card.listing_date.slice(0, 4)}` : null,
     card.employees ? `${num(card.employees)} karyawan` : null,
@@ -40,6 +42,13 @@ export function CompanyCard({ card, onPick }: { card: Card; onPick: (symbol: str
                 {b}
               </span>
             ))}
+          </div>
+        )}
+        {others.length > 0 && (
+          <div className="sj-cmp-add">
+            <button className="btn" onClick={() => onCompare([card.symbol, ...others.slice(0, 4)])}>
+              Bandingkan dengan {Math.min(4, others.length)} teman sejenis →
+            </button>
           </div>
         )}
       </header>
@@ -119,7 +128,7 @@ export function CompanyCard({ card, onPick }: { card: Card; onPick: (symbol: str
       {card.peers.length > 1 && (
         <section className="sj-block">
           <BlockHead no="04" title="Dibanding teman sejenisnya">
-            Perusahaan lain di industri yang sama, urut dari nilai pasar terbesar.
+            Perusahaan lain di industri yang sama, urut dari nilai pasar terbesar. Tekan <b>+ bandingkan</b> untuk menjajarkannya kolom demi kolom.
           </BlockHead>
           <div className="sj-scroll">
             <table className="sj-table">
@@ -129,6 +138,7 @@ export function CompanyCard({ card, onPick }: { card: Card; onPick: (symbol: str
                   <th className="r">Pendapatan</th>
                   <th className="r">Laba bersih</th>
                   <th className="r">Sisa per Rp100</th>
+                  <th />
                 </tr>
               </thead>
               <tbody>
@@ -145,6 +155,13 @@ export function CompanyCard({ card, onPick }: { card: Card; onPick: (symbol: str
                       <td className="r">{rupiah(p.revenue)}</td>
                       <td className={`r${neg ? " neg" : ""}`}>{rupiah(p.earnings)}</td>
                       <td className={`r${neg ? " neg" : ""}`}>{p.net_margin === null ? "—" : `Rp${id1(p.net_margin * 100)}`}</td>
+                      <td className="r">
+                        {!p.is_self && (
+                          <button className="add" onClick={() => onCompare([card.symbol, p.symbol])} aria-label={`Bandingkan ${card.symbol} dengan ${p.symbol}`}>
+                            + bandingkan
+                          </button>
+                        )}
+                      </td>
                     </tr>
                   );
                 })}
