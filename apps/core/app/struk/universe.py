@@ -27,7 +27,34 @@ FIN_FIELDS = (
     + [f"{f}[{LATEST}]" for f in ("gross_profit", "operating_cash_flow", "total_debt", "total_equity",
                                    "total_assets", "total_dividend", "roe")]
 )
-GROUPS = {"profile": PROFILE_FIELDS, "fin": FIN_FIELDS}
+# Untuk 30 cek ala Snowflake. Probe 2026-10-07 (fixtures/validation/D_snowflake_coverage.json):
+# data tahunan mulai ±2020 (2015/2016 kosong), forecast analis hanya ±15% emiten dan praktis
+# hanya untuk 2026, intrinsic_value/peg/pe_peer_avg ±90%.
+HIST_YEAR = 2020
+FORECAST_YEAR = LATEST + 1
+VALUE_FIELDS = (
+    ["intrinsic_value", "forward_pe"]
+    + [f"{f}[{LATEST}]" for f in ("pe", "pe_peer_avg", "pb", "pb_peer_avg", "peg", "roa", "eps_growth",
+                                   "outstanding_shares")]
+    + [f"{f}[{FORECAST_YEAR}]" for f in ("forecast_eps_growth", "forecast_revenue_growth",
+                                          "forecast_eps_estimate")]
+)
+HIST_FIELDS = (
+    [f"eps[{y}]" for y in range(HIST_YEAR, LATEST + 1)]
+    + [f"eps_growth[{y}]" for y in range(HIST_YEAR + 1, LATEST)]
+    + [f"total_dividend[{y}]" for y in range(HIST_YEAR, LATEST)]
+    + [f"debt_to_equity_ratio[{y}]" for y in (HIST_YEAR, LATEST)]
+)
+HEALTH_FIELDS = (
+    [f"{f}[{YEARS[0]}]" for f in ("ebit", "total_assets", "current_liabilities")]
+    + [f"{f}[{LATEST}]" for f in ("ebit", "current_liabilities", "current_assets", "non_current_liabilities",
+                                   "current_ratio", "cash_flow_to_debt_ratio", "interest_coverage_ratio",
+                                   # bank: Snowflake memakai cek kesehatan berbeda untuk lembaga keuangan
+                                   "capital_adequacy_ratio", "non_performing_loan", "gross_loan",
+                                   "loan_to_deposit_ratio")]
+)
+GROUPS = {"profile": PROFILE_FIELDS, "fin": FIN_FIELDS, "value": VALUE_FIELDS, "hist": HIST_FIELDS,
+          "health": HEALTH_FIELDS}
 
 _STRING_FIELDS = {"sector", "sub_sector", "industry", "listing_board", "listing_date"}
 

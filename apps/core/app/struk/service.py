@@ -52,7 +52,7 @@ _LOCK = asyncio.Lock()
 
 
 async def load_universe() -> dict[str, Any]:
-    """{records: {SYM: {...}}, prov: {...}} — 10 halaman screener, semuanya hit cache setelah panen."""
+    """{records: {SYM: {...}}, prov: {...}} — 25 halaman screener (5 grup × 5), semuanya hit cache setelah panen."""
     global _UNIVERSE
     if sectors_off():
         raise SectorsOff("Sectors API dimatikan (STRUK_SECTORS_OFF=1)")

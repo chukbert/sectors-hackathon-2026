@@ -1,0 +1,3269 @@
+{
+ "endpoint": "/sectors/v2/companies/",
+ "params": {
+  "where": "symbol like '%' or intrinsic_value > -1000000000000000000 or forward_pe > -1000000000000000000 or pe[2025] > -1000000000000000000 or pe_peer_avg[2025] > -1000000000000000000 or pb[2025] > -1000000000000000000 or pb_peer_avg[2025] > -1000000000000000000 or peg[2025] > -1000000000000000000 or roa[2025] > -1000000000000000000 or eps_growth[2025] > -1000000000000000000 or outstanding_shares[2025] > -1000000000000000000 or forecast_eps_growth[2026] > -1000000000000000000 or forecast_revenue_growth[2026] > -1000000000000000000 or forecast_eps_estimate[2026] > -1000000000000000000",
+  "order_by": "symbol",
+  "limit": 200,
+  "offset": 800,
+  "include_query_values": "true"
+ },
+ "http_status": 200,
+ "credits_spent": 1,
+ "fetched_at": "2026-10-07T15:47:40+0700",
+ "fetched_at_epoch": 1791362860.752059,
+ "source": "sectors-live",
+ "data": {
+  "results": [
+   {
+    "symbol": "SMBR.JK",
+    "company_name": "PT Semen Baturaja Tbk",
+    "query_values": {
+     "symbol": "SMBR.JK",
+     "intrinsic_value": 552,
+     "forward_pe": null,
+     "pe[2025]": 16.6384854975745,
+     "pe_peer_avg[2025]": 11.0469310117327,
+     "pb[2025]": 0.838225945309862,
+     "pb_peer_avg[2025]": 1.23762029050414,
+     "peg[2025]": 0.503994824166655,
+     "roa[2025]": 0.0360234652256949,
+     "eps_growth[2025]": 0.3301,
+     "outstanding_shares[2025]": 9932611943.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "SMCB.JK",
+    "company_name": "PT Solusi Bangun Indonesia Tbk",
+    "query_values": {
+     "symbol": "SMCB.JK",
+     "intrinsic_value": 2226,
+     "forward_pe": -33.3333333333333,
+     "pe[2025]": 10.611166479555,
+     "pe_peer_avg[2025]": 11.0469310117327,
+     "pb[2025]": 0.52936181112647,
+     "pb_peer_avg[2025]": 1.23762029050414,
+     "peg[2025]": -0.915629086053135,
+     "roa[2025]": 0.0323237551302164,
+     "eps_growth[2025]": -0.1159,
+     "outstanding_shares[2025]": 9023863014.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "SMDM.JK",
+    "company_name": "Suryamas Dutamakmur Tbk",
+    "query_values": {
+     "symbol": "SMDM.JK",
+     "intrinsic_value": -421,
+     "forward_pe": null,
+     "pe[2025]": 179.141127127328,
+     "pe_peer_avg[2025]": 12.0117423547015,
+     "pb[2025]": 1.2141382018481,
+     "pb_peer_avg[2025]": 0.812918901984095,
+     "peg[2025]": -2.18100188028863,
+     "roa[2025]": 0.00626035516521031,
+     "eps_growth[2025]": -0.8214,
+     "outstanding_shares[2025]": 4775455633.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "SMDR.JK",
+    "company_name": "Samudera Indonesia Tbk",
+    "query_values": {
+     "symbol": "SMDR.JK",
+     "intrinsic_value": 2005,
+     "forward_pe": null,
+     "pe[2025]": 7.36873055235209,
+     "pe_peer_avg[2025]": 21.9045610013486,
+     "pb[2025]": 0.495867565487985,
+     "pb_peer_avg[2025]": 1.85670255843823,
+     "peg[2025]": -0.308341096637892,
+     "roa[2025]": 0.03649344977421,
+     "eps_growth[2025]": -0.239,
+     "outstanding_shares[2025]": null,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "SMGA.JK",
+    "company_name": "PT Sumber Mineral Global Abadi Tbk",
+    "query_values": {
+     "symbol": "SMGA.JK",
+     "intrinsic_value": -738,
+     "forward_pe": null,
+     "pe[2025]": 19.1042081425242,
+     "pe_peer_avg[2025]": 11.0469310117327,
+     "pb[2025]": 2.35535782760434,
+     "pb_peer_avg[2025]": 1.23762029050414,
+     "peg[2025]": 0.140085153912047,
+     "roa[2025]": 0.0514373892640518,
+     "eps_growth[2025]": 1.3638,
+     "outstanding_shares[2025]": 8618548144.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "SMGR.JK",
+    "company_name": "Semen Indonesia (Persero) Tbk",
+    "query_values": {
+     "symbol": "SMGR.JK",
+     "intrinsic_value": 12039,
+     "forward_pe": 4.7881104891352,
+     "pe[2025]": 93.3940404665493,
+     "pe_peer_avg[2025]": 11.0469310117327,
+     "pb[2025]": 0.373515764605048,
+     "pb_peer_avg[2025]": 1.23762029050414,
+     "peg[2025]": -1.2709334155455,
+     "roa[2025]": 0.00249250594798994,
+     "eps_growth[2025]": -0.7348,
+     "outstanding_shares[2025]": null,
+     "forecast_eps_growth[2026]": 7.94318701324229,
+     "forecast_revenue_growth[2026]": 0.117644940800995,
+     "forecast_eps_estimate[2026]": 252.8
+    }
+   },
+   {
+    "symbol": "SMIL.JK",
+    "company_name": "PT Sarana Mitra Luas Tbk",
+    "query_values": {
+     "symbol": "SMIL.JK",
+     "intrinsic_value": -206,
+     "forward_pe": null,
+     "pe[2025]": 47.9806353749976,
+     "pe_peer_avg[2025]": 6.33412512893495,
+     "pb[2025]": 4.30209768535255,
+     "pb_peer_avg[2025]": 0.939719583768338,
+     "peg[2025]": -2.65212860847726,
+     "roa[2025]": 0.057128491120047,
+     "eps_growth[2025]": -0.1811,
+     "outstanding_shares[2025]": 8733968600.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "SMKL.JK",
+    "company_name": "PT Satyamitra Kemas Lestari Tbk",
+    "query_values": {
+     "symbol": "SMKL.JK",
+     "intrinsic_value": -1028,
+     "forward_pe": null,
+     "pe[2025]": 14.3263834746168,
+     "pe_peer_avg[2025]": 11.0469310117327,
+     "pb[2025]": 0.571892412693977,
+     "pb_peer_avg[2025]": 1.23762029050414,
+     "peg[2025]": 0.167748671450719,
+     "roa[2025]": 0.0159505453601861,
+     "eps_growth[2025]": 0.854,
+     "outstanding_shares[2025]": 3416797919.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "SMKM.JK",
+    "company_name": "PT Sumber Mas Konstruksi Tbk",
+    "query_values": {
+     "symbol": "SMKM.JK",
+     "intrinsic_value": -727,
+     "forward_pe": null,
+     "pe[2025]": -18956.3812355099,
+     "pe_peer_avg[2025]": -0.837793504960042,
+     "pb[2025]": 1.01248992284041,
+     "pb_peer_avg[2025]": 1.33495851911062,
+     "peg[2025]": 188.735578090092,
+     "roa[2025]": -5.22494384272811e-05,
+     "eps_growth[2025]": -1.0044,
+     "outstanding_shares[2025]": null,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "SMLE.JK",
+    "company_name": "PT Sinergi Multi Lestarindo Tbk",
+    "query_values": {
+     "symbol": "SMLE.JK",
+     "intrinsic_value": -207,
+     "forward_pe": null,
+     "pe[2025]": 1483.20836821222,
+     "pe_peer_avg[2025]": 11.0469310117327,
+     "pb[2025]": 3.53706351441076,
+     "pb_peer_avg[2025]": 1.23762029050414,
+     "peg[2025]": -15.6274818014328,
+     "roa[2025]": 0.00124382536962737,
+     "eps_growth[2025]": -0.9491,
+     "outstanding_shares[2025]": 2325970909.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "SMMA.JK",
+    "company_name": "PT Sinar Mas Multiartha Tbk",
+    "query_values": {
+     "symbol": "SMMA.JK",
+     "intrinsic_value": null,
+     "forward_pe": null,
+     "pe[2025]": 45.1354871113938,
+     "pe_peer_avg[2025]": 19.1784525670184,
+     "pb[2025]": 3.56338124226128,
+     "pb_peer_avg[2025]": 3.22600932724791,
+     "peg[2025]": 0.352670504151332,
+     "roa[2025]": 0.0169916339515945,
+     "eps_growth[2025]": 1.2798,
+     "outstanding_shares[2025]": 6367664717.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "SMMT.JK",
+    "company_name": "Golden Eagle Energy Tbk",
+    "query_values": {
+     "symbol": "SMMT.JK",
+     "intrinsic_value": -663,
+     "forward_pe": null,
+     "pe[2025]": 70.4972999548893,
+     "pe_peer_avg[2025]": 14.797623491379,
+     "pb[2025]": 8.80773694133989,
+     "pb_peer_avg[2025]": 1.61127517039477,
+     "peg[2025]": 0.697843705053577,
+     "roa[2025]": 0.0423308085396356,
+     "eps_growth[2025]": 0.8488,
+     "outstanding_shares[2025]": 3386657500.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "SMRA.JK",
+    "company_name": "PT Summarecon Agung Tbk",
+    "query_values": {
+     "symbol": "SMRA.JK",
+     "intrinsic_value": -4680,
+     "forward_pe": 4.22535216943112,
+     "pe[2025]": 8.22682244267319,
+     "pe_peer_avg[2025]": 12.0117423547015,
+     "pb[2025]": 0.394021882160721,
+     "pb_peer_avg[2025]": 0.812918901984095,
+     "peg[2025]": -0.186190124643557,
+     "roa[2025]": 0.0199921770873871,
+     "eps_growth[2025]": -0.4419,
+     "outstanding_shares[2025]": 16508568358.0,
+     "forecast_eps_growth[2026]": 0.308323202597897,
+     "forecast_revenue_growth[2026]": -0.095464171782409,
+     "forecast_eps_estimate[2026]": 60.75
+    }
+   },
+   {
+    "symbol": "SMRU.JK",
+    "company_name": "SMR Utama Tbk",
+    "query_values": {
+     "symbol": "SMRU.JK",
+     "intrinsic_value": 40,
+     "forward_pe": null,
+     "pe[2025]": null,
+     "pe_peer_avg[2025]": null,
+     "pb[2025]": null,
+     "pb_peer_avg[2025]": null,
+     "peg[2025]": null,
+     "roa[2025]": null,
+     "eps_growth[2025]": null,
+     "outstanding_shares[2025]": null,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "SMSM.JK",
+    "company_name": "Selamat Sempurna Tbk",
+    "query_values": {
+     "symbol": "SMSM.JK",
+     "intrinsic_value": 4692,
+     "forward_pe": 9.27852018807703,
+     "pe[2025]": 8.93470422218132,
+     "pe_peer_avg[2025]": 9.36933928993265,
+     "pb[2025]": 2.33326862370222,
+     "pb_peer_avg[2025]": 1.03486819540341,
+     "peg[2025]": 0.910313596915499,
+     "roa[2025]": 0.217830693302872,
+     "eps_growth[2025]": 0.0981,
+     "outstanding_shares[2025]": 5767707692.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "SNLK.JK",
+    "company_name": "PT Sunter Lakeside Hotel Tbk",
+    "query_values": {
+     "symbol": "SNLK.JK",
+     "intrinsic_value": null,
+     "forward_pe": null,
+     "pe[2025]": -37.5799297577639,
+     "pe_peer_avg[2025]": 5.01681519773133,
+     "pb[2025]": 1.02316564409059,
+     "pb_peer_avg[2025]": 1.606972508497,
+     "peg[2025]": -0.206099148633723,
+     "roa[2025]": -0.0212838336515184,
+     "eps_growth[2025]": 1.8234,
+     "outstanding_shares[2025]": 449950040.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "SOCI.JK",
+    "company_name": "PT Soechi Lines Tbk",
+    "query_values": {
+     "symbol": "SOCI.JK",
+     "intrinsic_value": -189,
+     "forward_pe": null,
+     "pe[2025]": 27.4191016220446,
+     "pe_peer_avg[2025]": 14.797623491379,
+     "pb[2025]": 0.51651826240706,
+     "pb_peer_avg[2025]": 1.61127517039477,
+     "peg[2025]": -0.510818202048554,
+     "roa[2025]": 0.0126929264634694,
+     "eps_growth[2025]": -0.5368,
+     "outstanding_shares[2025]": 6964068182.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "SOFA.JK",
+    "company_name": "PT Solusi Environment Asia Tbk",
+    "query_values": {
+     "symbol": "SOFA.JK",
+     "intrinsic_value": 14,
+     "forward_pe": null,
+     "pe[2025]": -118.413874408182,
+     "pe_peer_avg[2025]": 7.60943974558871,
+     "pb[2025]": 15.757987541801,
+     "pb_peer_avg[2025]": 1.72513458516261,
+     "peg[2025]": -0.251591826668067,
+     "roa[2025]": -0.0999004780582107,
+     "eps_growth[2025]": 4.7066,
+     "outstanding_shares[2025]": 1654376936.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "SOHO.JK",
+    "company_name": "PT Soho Global Health Tbk",
+    "query_values": {
+     "symbol": "SOHO.JK",
+     "intrinsic_value": 699,
+     "forward_pe": null,
+     "pe[2025]": 28.9638457996638,
+     "pe_peer_avg[2025]": 9.13665253343321,
+     "pb[2025]": 6.73154913325657,
+     "pb_peer_avg[2025]": 1.53815515306666,
+     "peg[2025]": 0.973353106926729,
+     "roa[2025]": 0.0974944811089329,
+     "eps_growth[2025]": 0.2976,
+     "outstanding_shares[2025]": 12772787234.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "SOLA.JK",
+    "company_name": "PT Xolare RCR Energy Tbk",
+    "query_values": {
+     "symbol": "SOLA.JK",
+     "intrinsic_value": -373,
+     "forward_pe": null,
+     "pe[2025]": 9.12230128985355,
+     "pe_peer_avg[2025]": 11.0469310117327,
+     "pb[2025]": 2.11425615490662,
+     "pb_peer_avg[2025]": 1.23762029050414,
+     "peg[2025]": 0.0161001680103187,
+     "roa[2025]": 0.144088119987655,
+     "eps_growth[2025]": 5.6594,
+     "outstanding_shares[2025]": 3285239854.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "SONA.JK",
+    "company_name": "Sona Topas Tourism Industry Tbk",
+    "query_values": {
+     "symbol": "SONA.JK",
+     "intrinsic_value": 6217,
+     "forward_pe": null,
+     "pe[2025]": 15.8408423660397,
+     "pe_peer_avg[2025]": 10.0664781604264,
+     "pb[2025]": 1.93150527813568,
+     "pb_peer_avg[2025]": 1.06673769083503,
+     "peg[2025]": 0.121114974011049,
+     "roa[2025]": 0.0909042200218183,
+     "eps_growth[2025]": 1.3079,
+     "outstanding_shares[2025]": 664686498.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "SOSS.JK",
+    "company_name": "PT Shield On Service Tbk",
+    "query_values": {
+     "symbol": "SOSS.JK",
+     "intrinsic_value": 205,
+     "forward_pe": null,
+     "pe[2025]": -53.4916527968171,
+     "pe_peer_avg[2025]": 15.7437294320706,
+     "pb[2025]": 3.16228436763432,
+     "pb_peer_avg[2025]": 2.4589448820673,
+     "peg[2025]": 0.139369418772805,
+     "roa[2025]": -0.0345408185036404,
+     "eps_growth[2025]": -3.8381,
+     "outstanding_shares[2025]": 799416844.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "SOTS.JK",
+    "company_name": "PT Satria Mega Kencana Tbk",
+    "query_values": {
+     "symbol": "SOTS.JK",
+     "intrinsic_value": -145,
+     "forward_pe": null,
+     "pe[2025]": -83.8990014827734,
+     "pe_peer_avg[2025]": 5.01681519773133,
+     "pb[2025]": 7.2233975775103,
+     "pb_peer_avg[2025]": 1.606972508497,
+     "peg[2025]": 13.4845106110623,
+     "roa[2025]": -0.0371753646070755,
+     "eps_growth[2025]": -0.0622,
+     "outstanding_shares[2025]": 987542344.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "SOUL.JK",
+    "company_name": "PT Mitra Tirta Buwana Tbk",
+    "query_values": {
+     "symbol": "SOUL.JK",
+     "intrinsic_value": null,
+     "forward_pe": null,
+     "pe[2025]": null,
+     "pe_peer_avg[2025]": null,
+     "pb[2025]": null,
+     "pb_peer_avg[2025]": null,
+     "peg[2025]": null,
+     "roa[2025]": null,
+     "eps_growth[2025]": null,
+     "outstanding_shares[2025]": null,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "SPMA.JK",
+    "company_name": "Suparma Tbk",
+    "query_values": {
+     "symbol": "SPMA.JK",
+     "intrinsic_value": 3147,
+     "forward_pe": null,
+     "pe[2025]": 9.26359049486913,
+     "pe_peer_avg[2025]": 11.0469310117327,
+     "pb[2025]": 0.395294113185333,
+     "pb_peer_avg[2025]": 1.23762029050414,
+     "peg[2025]": 6.97920075418142,
+     "roa[2025]": 0.0290158275657315,
+     "eps_growth[2025]": 0.0162,
+     "outstanding_shares[2025]": 5319330730.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "SPRE.JK",
+    "company_name": "PT Soraya Berjaya Indonesia Tbk",
+    "query_values": {
+     "symbol": "SPRE.JK",
+     "intrinsic_value": -491,
+     "forward_pe": null,
+     "pe[2025]": 88.7992854277542,
+     "pe_peer_avg[2025]": 5.0841960086024,
+     "pb[2025]": 3.24883526447215,
+     "pb_peer_avg[2025]": 0.749284683296504,
+     "peg[2025]": -3.20785904186925,
+     "roa[2025]": 0.0324293034033163,
+     "eps_growth[2025]": -0.2768,
+     "outstanding_shares[2025]": 801689191.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "SPTO.JK",
+    "company_name": "PT Surya Pertiwi Tbk",
+    "query_values": {
+     "symbol": "SPTO.JK",
+     "intrinsic_value": 1806,
+     "forward_pe": 7.86082489683849,
+     "pe[2025]": 6.47851154060443,
+     "pe_peer_avg[2025]": 6.33412512893495,
+     "pb[2025]": 0.71531868551171,
+     "pb_peer_avg[2025]": 0.939719583768338,
+     "peg[2025]": -1.13729398239098,
+     "roa[2025]": 0.0806520695569289,
+     "eps_growth[2025]": -0.057,
+     "outstanding_shares[2025]": 2700045432.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "SQMI.JK",
+    "company_name": "Wilton Makmur Indonesia Tbk",
+    "query_values": {
+     "symbol": "SQMI.JK",
+     "intrinsic_value": -60,
+     "forward_pe": null,
+     "pe[2025]": -24.3635255865992,
+     "pe_peer_avg[2025]": 11.0469310117327,
+     "pb[2025]": 6.03571458458722,
+     "pb_peer_avg[2025]": 1.23762029050414,
+     "peg[2025]": 0.378054083658482,
+     "roa[2025]": -0.0534406698928197,
+     "eps_growth[2025]": -0.6444,
+     "outstanding_shares[2025]": null,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "SRAJ.JK",
+    "company_name": "Sejahteraraya Anugrahjaya Tbk",
+    "query_values": {
+     "symbol": "SRAJ.JK",
+     "intrinsic_value": -1074,
+     "forward_pe": null,
+     "pe[2025]": -1014.78813987437,
+     "pe_peer_avg[2025]": 34.3008695340439,
+     "pb[2025]": 151.185940096202,
+     "pb_peer_avg[2025]": 2.2969338134568,
+     "peg[2025]": -1.3596855341345,
+     "roa[2025]": -0.0261020919711801,
+     "eps_growth[2025]": 7.2986,
+     "outstanding_shares[2025]": 12238622386.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "SRIL.JK",
+    "company_name": "PT Sri Rejeki Isman Tbk",
+    "query_values": {
+     "symbol": "SRIL.JK",
+     "intrinsic_value": -3680,
+     "forward_pe": null,
+     "pe[2025]": null,
+     "pe_peer_avg[2025]": null,
+     "pb[2025]": null,
+     "pb_peer_avg[2025]": null,
+     "peg[2025]": null,
+     "roa[2025]": null,
+     "eps_growth[2025]": null,
+     "outstanding_shares[2025]": null,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "SRSN.JK",
+    "company_name": "Indo Acidatama Tbk",
+    "query_values": {
+     "symbol": "SRSN.JK",
+     "intrinsic_value": 97,
+     "forward_pe": null,
+     "pe[2025]": 4.74738009180819,
+     "pe_peer_avg[2025]": 11.0469310117327,
+     "pb[2025]": 0.45346067587216,
+     "pb_peer_avg[2025]": 1.23762029050414,
+     "peg[2025]": 0.0194753617287848,
+     "roa[2025]": 0.0734999689085196,
+     "eps_growth[2025]": 2.4376,
+     "outstanding_shares[2025]": 6020000000.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "SRTG.JK",
+    "company_name": "PT Saratoga Investama Sedaya Tbk",
+    "query_values": {
+     "symbol": "SRTG.JK",
+     "intrinsic_value": 1078,
+     "forward_pe": 12.3211169284468,
+     "pe[2025]": 2.92841053364515,
+     "pe_peer_avg[2025]": 19.1784525670184,
+     "pb[2025]": 0.363762108734195,
+     "pb_peer_avg[2025]": 3.22600932724791,
+     "peg[2025]": 0.0239166210202794,
+     "roa[2025]": 0.117080425824371,
+     "eps_growth[2025]": 1.2244,
+     "outstanding_shares[2025]": 13564835000.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "SSIA.JK",
+    "company_name": "PT Surya Semesta Internusa Tbk",
+    "query_values": {
+     "symbol": "SSIA.JK",
+     "intrinsic_value": -5014,
+     "forward_pe": 17.2413790010785,
+     "pe[2025]": -88.4514448018474,
+     "pe_peer_avg[2025]": -0.837793504960042,
+     "pb[2025]": 0.978326128796063,
+     "pb_peer_avg[2025]": 1.33495851911062,
+     "peg[2025]": 0.640233030079941,
+     "roa[2025]": -0.0070303710672776,
+     "eps_growth[2025]": -1.3816,
+     "outstanding_shares[2025]": 4661394290.0,
+     "forecast_eps_growth[2026]": 6.72670437748292,
+     "forecast_revenue_growth[2026]": 0.594694130390111,
+     "forecast_eps_estimate[2026]": 108.77
+    }
+   },
+   {
+    "symbol": "SSMS.JK",
+    "company_name": "PT Sawit Sumbermas Sarana Tbk",
+    "query_values": {
+     "symbol": "SSMS.JK",
+     "intrinsic_value": -1286,
+     "forward_pe": 19.4545454545455,
+     "pe[2025]": 12.596636611891,
+     "pe_peer_avg[2025]": 12.1475666326432,
+     "pb[2025]": 4.97061529066942,
+     "pb_peer_avg[2025]": 1.87654333744704,
+     "peg[2025]": 0.302593365909054,
+     "roa[2025]": 0.0854460375821034,
+     "eps_growth[2025]": 0.4163,
+     "outstanding_shares[2025]": 9524837814.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "SSTM.JK",
+    "company_name": "Sunson Textile Manufacturer Tbk",
+    "query_values": {
+     "symbol": "SSTM.JK",
+     "intrinsic_value": null,
+     "forward_pe": null,
+     "pe[2025]": -153.461573218648,
+     "pe_peer_avg[2025]": 5.0841960086024,
+     "pb[2025]": 14.5453297586318,
+     "pb_peer_avg[2025]": 0.749284683296504,
+     "peg[2025]": -25.3404759503143,
+     "roa[2025]": -0.0519712561120532,
+     "eps_growth[2025]": 0.0606,
+     "outstanding_shares[2025]": 1170909181.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "STAA.JK",
+    "company_name": "PT Sumber Tani Agung Resources Tbk",
+    "query_values": {
+     "symbol": "STAA.JK",
+     "intrinsic_value": 1921,
+     "forward_pe": null,
+     "pe[2025]": 9.0619334244341,
+     "pe_peer_avg[2025]": 12.1475666326432,
+     "pb[2025]": 2.07872155803554,
+     "pb_peer_avg[2025]": 1.87654333744704,
+     "peg[2025]": 0.358560977274929,
+     "roa[2025]": 0.167971477851603,
+     "eps_growth[2025]": 0.2527,
+     "outstanding_shares[2025]": 10903372600.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "STAR.JK",
+    "company_name": "PT Calculus Global Ventures Tbk",
+    "query_values": {
+     "symbol": "STAR.JK",
+     "intrinsic_value": -12,
+     "forward_pe": null,
+     "pe[2025]": 89.5339547044156,
+     "pe_peer_avg[2025]": 19.1784525670184,
+     "pb[2025]": 3.81845433452842,
+     "pb_peer_avg[2025]": 3.22600932724791,
+     "peg[2025]": 0.202649313689223,
+     "roa[2025]": 0.0424283995525299,
+     "eps_growth[2025]": 4.4182,
+     "outstanding_shares[2025]": 4800311237.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "STRK.JK",
+    "company_name": "PT Lovina Beach Brewery Tbk",
+    "query_values": {
+     "symbol": "STRK.JK",
+     "intrinsic_value": -84,
+     "forward_pe": null,
+     "pe[2025]": -101.557678426142,
+     "pe_peer_avg[2025]": 12.1475666326432,
+     "pb[2025]": 18.5923275403503,
+     "pb_peer_avg[2025]": 1.87654333744704,
+     "peg[2025]": -5.5966819238724,
+     "roa[2025]": -0.160266407516026,
+     "eps_growth[2025]": 0.1815,
+     "outstanding_shares[2025]": 10716542011.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "STTP.JK",
+    "company_name": "PT Siantar Top Tbk",
+    "query_values": {
+     "symbol": "STTP.JK",
+     "intrinsic_value": null,
+     "forward_pe": null,
+     "pe[2025]": 10.9051895933548,
+     "pe_peer_avg[2025]": 12.1475666326432,
+     "pb[2025]": 1.75834850198942,
+     "pb_peer_avg[2025]": 1.87654333744704,
+     "peg[2025]": -1.06893062238007,
+     "roa[2025]": 0.147388298537122,
+     "eps_growth[2025]": -0.102,
+     "outstanding_shares[2025]": 1309995925.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "SUGI.JK",
+    "company_name": "Sugih Energy Tbk",
+    "query_values": {
+     "symbol": "SUGI.JK",
+     "intrinsic_value": null,
+     "forward_pe": null,
+     "pe[2025]": null,
+     "pe_peer_avg[2025]": null,
+     "pb[2025]": null,
+     "pb_peer_avg[2025]": null,
+     "peg[2025]": null,
+     "roa[2025]": null,
+     "eps_growth[2025]": null,
+     "outstanding_shares[2025]": null,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "SULI.JK",
+    "company_name": "PT SLJ Global Tbk",
+    "query_values": {
+     "symbol": "SULI.JK",
+     "intrinsic_value": -163,
+     "forward_pe": null,
+     "pe[2025]": -14.0624300210797,
+     "pe_peer_avg[2025]": 11.0469310117327,
+     "pb[2025]": 3.80117788702614,
+     "pb_peer_avg[2025]": 1.23762029050414,
+     "peg[2025]": 0.209085603962166,
+     "roa[2025]": -0.0789908069987787,
+     "eps_growth[2025]": -0.6726,
+     "outstanding_shares[2025]": 6320776836.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "SUNI.JK",
+    "company_name": "PT Sunindo Pratama Tbk",
+    "query_values": {
+     "symbol": "SUNI.JK",
+     "intrinsic_value": -732,
+     "forward_pe": null,
+     "pe[2025]": 10.525329924689,
+     "pe_peer_avg[2025]": 14.797623491379,
+     "pb[2025]": 2.36059253374763,
+     "pb_peer_avg[2025]": 1.61127517039477,
+     "peg[2025]": -1.62109721627921,
+     "roa[2025]": 0.173090203851639,
+     "eps_growth[2025]": -0.0649,
+     "outstanding_shares[2025]": 2438964725.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "SUPA.JK",
+    "company_name": "PT Super Bank Indonesia Tbk",
+    "query_values": {
+     "symbol": "SUPA.JK",
+     "intrinsic_value": 508,
+     "forward_pe": null,
+     "pe[2025]": 314.762392818807,
+     "pe_peer_avg[2025]": 14.6874841154653,
+     "pb[2025]": 3.84302934913236,
+     "pb_peer_avg[2025]": 0.852068326449239,
+     "peg[2025]": -2.47437627147776,
+     "roa[2025]": 0.00468388960748249,
+     "eps_growth[2025]": null,
+     "outstanding_shares[2025]": 33558047450.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "SUPR.JK",
+    "company_name": "Solusi Tunas Pratama Tbk",
+    "query_values": {
+     "symbol": "SUPR.JK",
+     "intrinsic_value": 26974,
+     "forward_pe": 106.959045465363,
+     "pe[2025]": 37.6610921370006,
+     "pe_peer_avg[2025]": 18.2127103566376,
+     "pb[2025]": 6.2182120000723,
+     "pb_peer_avg[2025]": 2.44703088769422,
+     "peg[2025]": 1.04777964293661,
+     "roa[2025]": 0.130413365233336,
+     "eps_growth[2025]": 0.3594,
+     "outstanding_shares[2025]": null,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "SURE.JK",
+    "company_name": "PT Super Energy Tbk",
+    "query_values": {
+     "symbol": "SURE.JK",
+     "intrinsic_value": -6914,
+     "forward_pe": null,
+     "pe[2025]": -102.10529266208,
+     "pe_peer_avg[2025]": 14.797623491379,
+     "pb[2025]": 16.7927476355003,
+     "pb_peer_avg[2025]": 1.61127517039477,
+     "peg[2025]": 1.43799238523011,
+     "roa[2025]": -0.024044310151412,
+     "eps_growth[2025]": -0.7101,
+     "outstanding_shares[2025]": 1497546818.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "SURI.JK",
+    "company_name": "PT Maja Agung Latexindo Tbk",
+    "query_values": {
+     "symbol": "SURI.JK",
+     "intrinsic_value": -311,
+     "forward_pe": null,
+     "pe[2025]": -170.58796492361,
+     "pe_peer_avg[2025]": 34.3008695340439,
+     "pb[2025]": 1.69310024167032,
+     "pb_peer_avg[2025]": 2.2969338134568,
+     "peg[2025]": 13.3638960037653,
+     "roa[2025]": -0.00874272980204483,
+     "eps_growth[2025]": -0.1276,
+     "outstanding_shares[2025]": 6375597694.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "SWAT.JK",
+    "company_name": "PT Sriwahana Adityakarta Tbk",
+    "query_values": {
+     "symbol": "SWAT.JK",
+     "intrinsic_value": -510,
+     "forward_pe": null,
+     "pe[2025]": null,
+     "pe_peer_avg[2025]": null,
+     "pb[2025]": null,
+     "pb_peer_avg[2025]": null,
+     "peg[2025]": null,
+     "roa[2025]": null,
+     "eps_growth[2025]": null,
+     "outstanding_shares[2025]": null,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "SWID.JK",
+    "company_name": "PT Saraswanti Indoland Development Tbk",
+    "query_values": {
+     "symbol": "SWID.JK",
+     "intrinsic_value": -274,
+     "forward_pe": null,
+     "pe[2025]": 15.6209057721303,
+     "pe_peer_avg[2025]": 12.0117423547015,
+     "pb[2025]": 2.32823167210272,
+     "pb_peer_avg[2025]": 0.812918901984095,
+     "peg[2025]": 0.129953716499094,
+     "roa[2025]": 0.0813740940231232,
+     "eps_growth[2025]": 1.202,
+     "outstanding_shares[2025]": 5383603088.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "TALF.JK",
+    "company_name": "PT Tunas Alfin Tbk",
+    "query_values": {
+     "symbol": "TALF.JK",
+     "intrinsic_value": 707,
+     "forward_pe": null,
+     "pe[2025]": 14.489860000027,
+     "pe_peer_avg[2025]": 11.0469310117327,
+     "pb[2025]": 0.563339983682995,
+     "pb_peer_avg[2025]": 1.23762029050414,
+     "peg[2025]": 0.0775900152033872,
+     "roa[2025]": 0.027829959458218,
+     "eps_growth[2025]": 1.8675,
+     "outstanding_shares[2025]": 1353528557.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "TAMA.JK",
+    "company_name": "PT Lancartama Sejati Tbk",
+    "query_values": {
+     "symbol": "TAMA.JK",
+     "intrinsic_value": -204,
+     "forward_pe": null,
+     "pe[2025]": -6.3295243826936,
+     "pe_peer_avg[2025]": -0.837793504960042,
+     "pb[2025]": 1.80031820320158,
+     "pb_peer_avg[2025]": 1.33495851911062,
+     "peg[2025]": -0.393796915529372,
+     "roa[2025]": -0.0563822203512592,
+     "eps_growth[2025]": 0.1607,
+     "outstanding_shares[2025]": 1199338974.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "TAMU.JK",
+    "company_name": "PT Pelayaran Tamarin Samudra Tbk",
+    "query_values": {
+     "symbol": "TAMU.JK",
+     "intrinsic_value": 0,
+     "forward_pe": null,
+     "pe[2025]": -48.7626165100392,
+     "pe_peer_avg[2025]": 14.797623491379,
+     "pb[2025]": 4.63475261959665,
+     "pb_peer_avg[2025]": 1.61127517039477,
+     "peg[2025]": 0.629342378630663,
+     "roa[2025]": -0.0433928460068675,
+     "eps_growth[2025]": -0.7748,
+     "outstanding_shares[2025]": 3750000000.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "TAPG.JK",
+    "company_name": "PT Triputra Agro Persada Tbk",
+    "query_values": {
+     "symbol": "TAPG.JK",
+     "intrinsic_value": 2932,
+     "forward_pe": null,
+     "pe[2025]": 8.04340098739529,
+     "pe_peer_avg[2025]": 12.1475666326432,
+     "pb[2025]": 2.54792284225392,
+     "pb_peer_avg[2025]": 1.87654333744704,
+     "peg[2025]": 0.431238183806351,
+     "roa[2025]": 0.251913729761169,
+     "eps_growth[2025]": 0.1865,
+     "outstanding_shares[2025]": 19904655914.0,
+     "forecast_eps_growth[2026]": -0.256789716035993,
+     "forecast_revenue_growth[2026]": -0.114205875042689,
+     "forecast_eps_estimate[2026]": 138.6
+    }
+   },
+   {
+    "symbol": "TARA.JK",
+    "company_name": "PT Agung Semesta Sejahtera Tbk",
+    "query_values": {
+     "symbol": "TARA.JK",
+     "intrinsic_value": null,
+     "forward_pe": null,
+     "pe[2025]": -65.4256922703476,
+     "pe_peer_avg[2025]": 12.0117423547015,
+     "pb[2025]": 0.306769779563601,
+     "pb_peer_avg[2025]": 0.812918901984095,
+     "peg[2025]": -0.470881459407368,
+     "roa[2025]": -0.00448328175117929,
+     "eps_growth[2025]": 1.3894,
+     "outstanding_shares[2025]": 10051242800.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "TAXI.JK",
+    "company_name": "Express Transindo Utama Tbk",
+    "query_values": {
+     "symbol": "TAXI.JK",
+     "intrinsic_value": null,
+     "forward_pe": null,
+     "pe[2025]": -10.4480274257922,
+     "pe_peer_avg[2025]": 7.63365268748404,
+     "pb[2025]": 5.72594507243551,
+     "pb_peer_avg[2025]": 0.719836025292692,
+     "peg[2025]": -0.0104208264211238,
+     "roa[2025]": -0.502637923575649,
+     "eps_growth[2025]": 10.0261,
+     "outstanding_shares[2025]": 10223647156.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "TAYS.JK",
+    "company_name": "PT Jaya Swarasa Agung Tbk",
+    "query_values": {
+     "symbol": "TAYS.JK",
+     "intrinsic_value": -848,
+     "forward_pe": null,
+     "pe[2025]": null,
+     "pe_peer_avg[2025]": null,
+     "pb[2025]": null,
+     "pb_peer_avg[2025]": null,
+     "peg[2025]": null,
+     "roa[2025]": null,
+     "eps_growth[2025]": null,
+     "outstanding_shares[2025]": null,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "TBIG.JK",
+    "company_name": "PT Tower Bersama Infrastructure Tbk",
+    "query_values": {
+     "symbol": "TBIG.JK",
+     "intrinsic_value": 2003,
+     "forward_pe": 19.0387430219634,
+     "pe[2025]": 39.1646517070144,
+     "pe_peer_avg[2025]": 18.2127103566376,
+     "pb[2025]": 4.77163497358856,
+     "pb_peer_avg[2025]": 2.44703088769422,
+     "peg[2025]": 2.82495535462761,
+     "roa[2025]": 0.0335240775736201,
+     "eps_growth[2025]": 0.1386,
+     "outstanding_shares[2025]": null,
+     "forecast_eps_growth[2026]": 0.195983191148067,
+     "forecast_revenue_growth[2026]": 0.0637329442724059,
+     "forecast_eps_estimate[2026]": 81.84
+    }
+   },
+   {
+    "symbol": "TBLA.JK",
+    "company_name": "Tunas Baru Lampung Tbk",
+    "query_values": {
+     "symbol": "TBLA.JK",
+     "intrinsic_value": -12190,
+     "forward_pe": 5.10033451323155,
+     "pe[2025]": 4.55239304479224,
+     "pe_peer_avg[2025]": 12.1475666326432,
+     "pb[2025]": 0.442811608462938,
+     "pb_peer_avg[2025]": 1.87654333744704,
+     "peg[2025]": 0.159335691305751,
+     "roa[2025]": 0.029485767355054,
+     "eps_growth[2025]": 0.2857,
+     "outstanding_shares[2025]": 6011769421.0,
+     "forecast_eps_growth[2026]": -0.159815695409668,
+     "forecast_revenue_growth[2026]": -0.126253448217382,
+     "forecast_eps_estimate[2026]": 125.5
+    }
+   },
+   {
+    "symbol": "TBMS.JK",
+    "company_name": "Tembaga Mulia Semanan Tbk",
+    "query_values": {
+     "symbol": "TBMS.JK",
+     "intrinsic_value": -8892,
+     "forward_pe": null,
+     "pe[2025]": 14.6883827337582,
+     "pe_peer_avg[2025]": 11.0469310117327,
+     "pb[2025]": 0.797664977010435,
+     "pb_peer_avg[2025]": 1.23762029050414,
+     "peg[2025]": -0.278385576553704,
+     "roa[2025]": 0.0231436570878615,
+     "eps_growth[2025]": -0.5276,
+     "outstanding_shares[2025]": 677404833.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "TCID.JK",
+    "company_name": "Mandom Indonesia Tbk",
+    "query_values": {
+     "symbol": "TCID.JK",
+     "intrinsic_value": 2058,
+     "forward_pe": null,
+     "pe[2025]": 78.8502693537582,
+     "pe_peer_avg[2025]": 20.9323334371573,
+     "pb[2025]": 0.673934109034651,
+     "pb_peer_avg[2025]": 1.14562653916903,
+     "peg[2025]": -0.702359915246826,
+     "roa[2025]": 0.00659253398685932,
+     "eps_growth[2025]": -1.1226,
+     "outstanding_shares[2025]": 402628536.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "TCPI.JK",
+    "company_name": "PT Transcoal Pacific Tbk",
+    "query_values": {
+     "symbol": "TCPI.JK",
+     "intrinsic_value": -418,
+     "forward_pe": null,
+     "pe[2025]": 388.755980861244,
+     "pe_peer_avg[2025]": 14.797623491379,
+     "pb[2025]": 20.5555417514677,
+     "pb_peer_avg[2025]": 1.61127517039477,
+     "peg[2025]": 10.4816175165099,
+     "roa[2025]": 0.0302332850282727,
+     "eps_growth[2025]": 0.3709,
+     "outstanding_shares[2025]": null,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "TDPM.JK",
+    "company_name": "PT Tianrong Chemicals Industry Tbk",
+    "query_values": {
+     "symbol": "TDPM.JK",
+     "intrinsic_value": -997,
+     "forward_pe": null,
+     "pe[2025]": null,
+     "pe_peer_avg[2025]": null,
+     "pb[2025]": null,
+     "pb_peer_avg[2025]": null,
+     "peg[2025]": null,
+     "roa[2025]": null,
+     "eps_growth[2025]": null,
+     "outstanding_shares[2025]": null,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "TEBE.JK",
+    "company_name": "PT Dana Brata Luhur Tbk",
+    "query_values": {
+     "symbol": "TEBE.JK",
+     "intrinsic_value": null,
+     "forward_pe": null,
+     "pe[2025]": 25.2689171148101,
+     "pe_peer_avg[2025]": 14.797623491379,
+     "pb[2025]": 2.73774959156565,
+     "pb_peer_avg[2025]": 1.61127517039477,
+     "peg[2025]": -72.2183140705655,
+     "roa[2025]": 0.102985745960064,
+     "eps_growth[2025]": -0.0035,
+     "outstanding_shares[2025]": null,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "TECH.JK",
+    "company_name": "PT Indosterling Technomedia Tbk",
+    "query_values": {
+     "symbol": "TECH.JK",
+     "intrinsic_value": null,
+     "forward_pe": null,
+     "pe[2025]": null,
+     "pe_peer_avg[2025]": null,
+     "pb[2025]": null,
+     "pb_peer_avg[2025]": null,
+     "peg[2025]": null,
+     "roa[2025]": null,
+     "eps_growth[2025]": null,
+     "outstanding_shares[2025]": null,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "TELE.JK",
+    "company_name": "PT Omni Inovasi Indonesia Tbk",
+    "query_values": {
+     "symbol": "TELE.JK",
+     "intrinsic_value": -548,
+     "forward_pe": null,
+     "pe[2025]": null,
+     "pe_peer_avg[2025]": null,
+     "pb[2025]": null,
+     "pb_peer_avg[2025]": null,
+     "peg[2025]": null,
+     "roa[2025]": null,
+     "eps_growth[2025]": null,
+     "outstanding_shares[2025]": null,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "TFAS.JK",
+    "company_name": "PT Telefast Indonesia Tbk",
+    "query_values": {
+     "symbol": "TFAS.JK",
+     "intrinsic_value": -326,
+     "forward_pe": null,
+     "pe[2025]": -20.0908134994437,
+     "pe_peer_avg[2025]": 15.3208397947199,
+     "pb[2025]": 2.85975926687376,
+     "pb_peer_avg[2025]": 2.54240600262395,
+     "peg[2025]": -0.131984675361619,
+     "roa[2025]": -0.113657374670277,
+     "eps_growth[2025]": 1.5222,
+     "outstanding_shares[2025]": 1656847610.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "TFCO.JK",
+    "company_name": "Tifico Fiber Indonesia Tbk",
+    "query_values": {
+     "symbol": "TFCO.JK",
+     "intrinsic_value": 1134,
+     "forward_pe": null,
+     "pe[2025]": -99.7351073168085,
+     "pe_peer_avg[2025]": 5.0841960086024,
+     "pb[2025]": 0.461851964868625,
+     "pb_peer_avg[2025]": 0.749284683296504,
+     "peg[2025]": 0.661029703429715,
+     "roa[2025]": -0.00423366297451065,
+     "eps_growth[2025]": -1.5088,
+     "outstanding_shares[2025]": 4815720000.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "TGKA.JK",
+    "company_name": "Tigaraksa Satria Tbk",
+    "query_values": {
+     "symbol": "TGKA.JK",
+     "intrinsic_value": 15475,
+     "forward_pe": null,
+     "pe[2025]": 11.0996917305557,
+     "pe_peer_avg[2025]": 12.1475666326432,
+     "pb[2025]": 1.87654333744704,
+     "pb_peer_avg[2025]": 1.87654333744704,
+     "peg[2025]": -12.5081394992728,
+     "roa[2025]": 0.0733608388772139,
+     "eps_growth[2025]": -0.0089,
+     "outstanding_shares[2025]": 918611236.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "TGRA.JK",
+    "company_name": "PT Terregra Asia Energy",
+    "query_values": {
+     "symbol": "TGRA.JK",
+     "intrinsic_value": -111,
+     "forward_pe": null,
+     "pe[2025]": -0.326739806512754,
+     "pe_peer_avg[2025]": 20.4128888077398,
+     "pb[2025]": 1.44403568532445,
+     "pb_peer_avg[2025]": 1.44403568532445,
+     "peg[2025]": -0.000369696439532075,
+     "roa[2025]": -1.10070549493901,
+     "eps_growth[2025]": 8.8381,
+     "outstanding_shares[2025]": null,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "TGUK.JK",
+    "company_name": "PT Platinum Wahab Nusantara Tbk",
+    "query_values": {
+     "symbol": "TGUK.JK",
+     "intrinsic_value": -334,
+     "forward_pe": null,
+     "pe[2025]": -22.5749625562244,
+     "pe_peer_avg[2025]": 12.1475666326432,
+     "pb[2025]": 6.62553128396638,
+     "pb_peer_avg[2025]": 1.87654333744704,
+     "peg[2025]": 0.306248555423046,
+     "roa[2025]": -0.169785477139899,
+     "eps_growth[2025]": -0.7371,
+     "outstanding_shares[2025]": 3571451815.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "TIFA.JK",
+    "company_name": "KDB Tifa Finance Tbk",
+    "query_values": {
+     "symbol": "TIFA.JK",
+     "intrinsic_value": -849,
+     "forward_pe": null,
+     "pe[2025]": 25.5006576301552,
+     "pe_peer_avg[2025]": 12.0526918352896,
+     "pb[2025]": 1.38781439239329,
+     "pb_peer_avg[2025]": 0.988198720376642,
+     "peg[2025]": 13.1922450713483,
+     "roa[2025]": 0.0324920591178535,
+     "eps_growth[2025]": 0.0193,
+     "outstanding_shares[2025]": null,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "TINS.JK",
+    "company_name": "PT Timah Tbk",
+    "query_values": {
+     "symbol": "TINS.JK",
+     "intrinsic_value": 3558,
+     "forward_pe": 24.9933093254105,
+     "pe[2025]": 17.6324484382513,
+     "pe_peer_avg[2025]": 11.0469310117327,
+     "pb[2025]": 2.7545763094728,
+     "pb_peer_avg[2025]": 1.23762029050414,
+     "peg[2025]": 1.64772525747,
+     "roa[2025]": 0.0962832198290821,
+     "eps_growth[2025]": 0.107,
+     "outstanding_shares[2025]": 7447753454.0,
+     "forecast_eps_growth[2026]": 0.118611617581008,
+     "forecast_revenue_growth[2026]": -0.0305324289932088,
+     "forecast_eps_estimate[2026]": 197.3
+    }
+   },
+   {
+    "symbol": "TIRA.JK",
+    "company_name": "Tira Austenite Tbk",
+    "query_values": {
+     "symbol": "TIRA.JK",
+     "intrinsic_value": 503,
+     "forward_pe": null,
+     "pe[2025]": null,
+     "pe_peer_avg[2025]": null,
+     "pb[2025]": null,
+     "pb_peer_avg[2025]": null,
+     "peg[2025]": null,
+     "roa[2025]": null,
+     "eps_growth[2025]": null,
+     "outstanding_shares[2025]": null,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "TIRT.JK",
+    "company_name": "Tirta Mahakam Resources Tbk",
+    "query_values": {
+     "symbol": "TIRT.JK",
+     "intrinsic_value": -2789,
+     "forward_pe": null,
+     "pe[2025]": -3.10793375649082,
+     "pe_peer_avg[2025]": 11.0469310117327,
+     "pb[2025]": -0.210322056708096,
+     "pb_peer_avg[2025]": 1.23762029050414,
+     "peg[2025]": -1.28541493970951,
+     "roa[2025]": -0.11194230963152,
+     "eps_growth[2025]": 0.0242,
+     "outstanding_shares[2025]": 1011774750.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "TKIM.JK",
+    "company_name": "Pabrik Kertas Tjiwi Kimia Tbk",
+    "query_values": {
+     "symbol": "TKIM.JK",
+     "intrinsic_value": 970,
+     "forward_pe": null,
+     "pe[2025]": 4.90660071443277,
+     "pe_peer_avg[2025]": 11.0469310117327,
+     "pb[2025]": 0.458732596734393,
+     "pb_peer_avg[2025]": 1.23762029050414,
+     "peg[2025]": -1.27424415938627,
+     "roa[2025]": 0.0703223343905366,
+     "eps_growth[2025]": -0.0385,
+     "outstanding_shares[2025]": 3112900677.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "TLDN.JK",
+    "company_name": "PT Teladan Prima Agro Tbk",
+    "query_values": {
+     "symbol": "TLDN.JK",
+     "intrinsic_value": 1881,
+     "forward_pe": null,
+     "pe[2025]": 8.18951559487234,
+     "pe_peer_avg[2025]": 12.1475666326432,
+     "pb[2025]": 2.48636429878575,
+     "pb_peer_avg[2025]": 1.87654333744704,
+     "peg[2025]": 0.240594365038942,
+     "roa[2025]": 0.18388178540895,
+     "eps_growth[2025]": 0.3404,
+     "outstanding_shares[2025]": 12946530200.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "TLKM.JK",
+    "company_name": "PT Telkom Indonesia (Persero) Tbk",
+    "query_values": {
+     "symbol": "TLKM.JK",
+     "intrinsic_value": 9361,
+     "forward_pe": 8.7319525407279,
+     "pe[2025]": 19.3519992010778,
+     "pe_peer_avg[2025]": 18.2127103566376,
+     "pb[2025]": 2.29004506379163,
+     "pb_peer_avg[2025]": 2.44703088769422,
+     "peg[2025]": -0.784328070447796,
+     "roa[2025]": 0.061905969926223,
+     "eps_growth[2025]": -0.2467,
+     "outstanding_shares[2025]": 99061024659.0,
+     "forecast_eps_growth[2026]": 0.486767305437819,
+     "forecast_revenue_growth[2026]": 0.102206593885868,
+     "forecast_eps_estimate[2026]": 267.36
+    }
+   },
+   {
+    "symbol": "TMAS.JK",
+    "company_name": "PT Temas Tbk",
+    "query_values": {
+     "symbol": "TMAS.JK",
+     "intrinsic_value": -20,
+     "forward_pe": null,
+     "pe[2025]": 15.313231243803,
+     "pe_peer_avg[2025]": 21.9045610013486,
+     "pb[2025]": 2.42527810162824,
+     "pb_peer_avg[2025]": 1.85670255843823,
+     "peg[2025]": -0.592171467542321,
+     "roa[2025]": 0.0943561513554052,
+     "eps_growth[2025]": -0.2586,
+     "outstanding_shares[2025]": 56868856000.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "TMPO.JK",
+    "company_name": "Tempo Inti Media Tbk",
+    "query_values": {
+     "symbol": "TMPO.JK",
+     "intrinsic_value": -229,
+     "forward_pe": null,
+     "pe[2025]": 63.7671337424281,
+     "pe_peer_avg[2025]": -1.78574675701668,
+     "pb[2025]": 0.695108219307786,
+     "pb_peer_avg[2025]": 1.70235547799666,
+     "peg[2025]": 0.93947289588664,
+     "roa[2025]": 0.00629098807671992,
+     "eps_growth[2025]": 0.6788,
+     "outstanding_shares[2025]": 1058333250.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "TNCA.JK",
+    "company_name": "PT Trimuda Nuansa Citra Tbk",
+    "query_values": {
+     "symbol": "TNCA.JK",
+     "intrinsic_value": 100,
+     "forward_pe": null,
+     "pe[2025]": -122.58770251146,
+     "pe_peer_avg[2025]": 21.9045610013486,
+     "pb[2025]": 2.62141692338991,
+     "pb_peer_avg[2025]": 1.85670255843823,
+     "peg[2025]": 0.370744990921182,
+     "roa[2025]": -0.0171735532054143,
+     "eps_growth[2025]": -3.3065,
+     "outstanding_shares[2025]": 421615726.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "TOBA.JK",
+    "company_name": "PT TBS Energi Utama Tbk",
+    "query_values": {
+     "symbol": "TOBA.JK",
+     "intrinsic_value": -5817,
+     "forward_pe": null,
+     "pe[2025]": -2.14570590131962,
+     "pe_peer_avg[2025]": 14.797623491379,
+     "pb[2025]": 1.695604968229,
+     "pb_peer_avg[2025]": 1.61127517039477,
+     "peg[2025]": 0.00298390363024445,
+     "roa[2025]": -0.214544138929541,
+     "eps_growth[2025]": -7.1238,
+     "outstanding_shares[2025]": 8269070308.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "TOOL.JK",
+    "company_name": "PT Rohartindo Nusantara Luas Tbk",
+    "query_values": {
+     "symbol": "TOOL.JK",
+     "intrinsic_value": 87,
+     "forward_pe": null,
+     "pe[2025]": -18.489453253123,
+     "pe_peer_avg[2025]": 10.0664781604264,
+     "pb[2025]": 0.694847923966858,
+     "pb_peer_avg[2025]": 1.06673769083503,
+     "peg[2025]": 0.0219175514686709,
+     "roa[2025]": -0.0342885493484821,
+     "eps_growth[2025]": -8.4359,
+     "outstanding_shares[2025]": 2048425943.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "TOPS.JK",
+    "company_name": "PT Totalindo Eka Persada Tbk",
+    "query_values": {
+     "symbol": "TOPS.JK",
+     "intrinsic_value": -41,
+     "forward_pe": null,
+     "pe[2025]": null,
+     "pe_peer_avg[2025]": null,
+     "pb[2025]": null,
+     "pb_peer_avg[2025]": null,
+     "peg[2025]": null,
+     "roa[2025]": null,
+     "eps_growth[2025]": null,
+     "outstanding_shares[2025]": null,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "TOSK.JK",
+    "company_name": "PT Topindo Solusi Komunika Tbk",
+    "query_values": {
+     "symbol": "TOSK.JK",
+     "intrinsic_value": -299,
+     "forward_pe": null,
+     "pe[2025]": 47.3043537662047,
+     "pe_peer_avg[2025]": 15.3208397947199,
+     "pb[2025]": 1.67930466622247,
+     "pb_peer_avg[2025]": 2.54240600262395,
+     "peg[2025]": -3.20798061374783,
+     "roa[2025]": 0.0294549985121925,
+     "eps_growth[2025]": -0.1475,
+     "outstanding_shares[2025]": 4377486982.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "TOTL.JK",
+    "company_name": "Total Bangun Persada Tbk",
+    "query_values": {
+     "symbol": "TOTL.JK",
+     "intrinsic_value": 3248,
+     "forward_pe": 20.8047240641183,
+     "pe[2025]": 8.35402012203862,
+     "pe_peer_avg[2025]": -0.837793504960042,
+     "pb[2025]": 2.60241069555119,
+     "pb_peer_avg[2025]": 1.33495851911062,
+     "peg[2025]": 0.148937925742406,
+     "roa[2025]": 0.102462702651883,
+     "eps_growth[2025]": 0.5609,
+     "outstanding_shares[2025]": 3409954831.0,
+     "forecast_eps_growth[2026]": -0.218096638823972,
+     "forecast_revenue_growth[2026]": 0.114965416976433,
+     "forecast_eps_estimate[2026]": 95.0
+    }
+   },
+   {
+    "symbol": "TOTO.JK",
+    "company_name": "Surya Toto Indonesia Tbk",
+    "query_values": {
+     "symbol": "TOTO.JK",
+     "intrinsic_value": 721,
+     "forward_pe": 18.8976380790896,
+     "pe[2025]": 7.99381364555481,
+     "pe_peer_avg[2025]": 6.33412512893495,
+     "pb[2025]": 1.09287689872956,
+     "pb_peer_avg[2025]": 0.939719583768338,
+     "peg[2025]": 0.688732510702883,
+     "roa[2025]": 0.0997817477669395,
+     "eps_growth[2025]": 0.1161,
+     "outstanding_shares[2025]": 10318881678.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "TOWR.JK",
+    "company_name": "Sarana Menara Nusantara Tbk",
+    "query_values": {
+     "symbol": "TOWR.JK",
+     "intrinsic_value": 1717,
+     "forward_pe": 5.99943961270821,
+     "pe[2025]": 9.3989724326662,
+     "pe_peer_avg[2025]": 18.2127103566376,
+     "pb[2025]": 1.27652032889319,
+     "pb_peer_avg[2025]": 2.44703088769422,
+     "peg[2025]": 1.93013122757291,
+     "roa[2025]": 0.0476036063402453,
+     "eps_growth[2025]": -0.0947,
+     "outstanding_shares[2025]": null,
+     "forecast_eps_growth[2026]": 0.232631070953001,
+     "forecast_revenue_growth[2026]": 0.0316698638428374,
+     "forecast_eps_estimate[2026]": 76.72
+    }
+   },
+   {
+    "symbol": "TOYS.JK",
+    "company_name": "PT Sunindo Adipersada Tbk",
+    "query_values": {
+     "symbol": "TOYS.JK",
+     "intrinsic_value": -56,
+     "forward_pe": null,
+     "pe[2025]": null,
+     "pe_peer_avg[2025]": null,
+     "pb[2025]": null,
+     "pb_peer_avg[2025]": null,
+     "peg[2025]": null,
+     "roa[2025]": null,
+     "eps_growth[2025]": null,
+     "outstanding_shares[2025]": null,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "TPIA.JK",
+    "company_name": "PT Chandra Asri Pacific Tbk",
+    "query_values": {
+     "symbol": "TPIA.JK",
+     "intrinsic_value": -4887,
+     "forward_pe": 108.816280808768,
+     "pe[2025]": 33.1929422734728,
+     "pe_peer_avg[2025]": 11.0469310117327,
+     "pb[2025]": 7.76980632797296,
+     "pb_peer_avg[2025]": 1.23762029050414,
+     "peg[2025]": -0.0191573801075038,
+     "roa[2025]": 0.0884618530772904,
+     "eps_growth[2025]": -17.3265,
+     "outstanding_shares[2025]": 86511545092.0,
+     "forecast_eps_growth[2026]": -0.993456248545841,
+     "forecast_revenue_growth[2026]": -0.669333747054489,
+     "forecast_eps_estimate[2026]": 1.38
+    }
+   },
+   {
+    "symbol": "TPMA.JK",
+    "company_name": "Trans Power Marine Tbk",
+    "query_values": {
+     "symbol": "TPMA.JK",
+     "intrinsic_value": -3469,
+     "forward_pe": null,
+     "pe[2025]": 6.62887884404546,
+     "pe_peer_avg[2025]": 14.797623491379,
+     "pb[2025]": 0.789616216181476,
+     "pb_peer_avg[2025]": 1.61127517039477,
+     "peg[2025]": -0.249241367250461,
+     "roa[2025]": 0.0625265428695891,
+     "eps_growth[2025]": -0.266,
+     "outstanding_shares[2025]": null,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "TRAM.JK",
+    "company_name": "Trada Alam Minera Tbk",
+    "query_values": {
+     "symbol": "TRAM.JK",
+     "intrinsic_value": 140,
+     "forward_pe": null,
+     "pe[2025]": null,
+     "pe_peer_avg[2025]": null,
+     "pb[2025]": null,
+     "pb_peer_avg[2025]": null,
+     "peg[2025]": null,
+     "roa[2025]": null,
+     "eps_growth[2025]": null,
+     "outstanding_shares[2025]": null,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "TRGU.JK",
+    "company_name": "PT Cerestar Indonesia Tbk",
+    "query_values": {
+     "symbol": "TRGU.JK",
+     "intrinsic_value": -561,
+     "forward_pe": null,
+     "pe[2025]": 140.304079581124,
+     "pe_peer_avg[2025]": 12.1475666326432,
+     "pb[2025]": 1.64499465219746,
+     "pb_peer_avg[2025]": 1.87654333744704,
+     "peg[2025]": -1.19434887892571,
+     "roa[2025]": 0.00344273014001865,
+     "eps_growth[2025]": -1.1747,
+     "outstanding_shares[2025]": 7920272417.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "TRIL.JK",
+    "company_name": "Triwira Insanlestari Tbk",
+    "query_values": {
+     "symbol": "TRIL.JK",
+     "intrinsic_value": -21,
+     "forward_pe": null,
+     "pe[2025]": null,
+     "pe_peer_avg[2025]": null,
+     "pb[2025]": null,
+     "pb_peer_avg[2025]": null,
+     "peg[2025]": null,
+     "roa[2025]": null,
+     "eps_growth[2025]": null,
+     "outstanding_shares[2025]": null,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "TRIM.JK",
+    "company_name": "PT Trimegah Sekuritas Indonesia Tbk",
+    "query_values": {
+     "symbol": "TRIM.JK",
+     "intrinsic_value": -3560,
+     "forward_pe": null,
+     "pe[2025]": 7.96523996767096,
+     "pe_peer_avg[2025]": 27.3422060185614,
+     "pb[2025]": 2.27859341568708,
+     "pb_peer_avg[2025]": 2.66305943384694,
+     "peg[2025]": 0.0620472181961399,
+     "roa[2025]": 0.0869267080882474,
+     "eps_growth[2025]": 1.2837,
+     "outstanding_shares[2025]": 7109300056.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "TRIN.JK",
+    "company_name": "PT Perintis Triniti Properti Tbk",
+    "query_values": {
+     "symbol": "TRIN.JK",
+     "intrinsic_value": -805,
+     "forward_pe": null,
+     "pe[2025]": 421.976512612864,
+     "pe_peer_avg[2025]": 12.0117423547015,
+     "pb[2025]": 10.3857562364085,
+     "pb_peer_avg[2025]": 0.812918901984095,
+     "peg[2025]": -3.86759091509356,
+     "roa[2025]": 0.00582483574341428,
+     "eps_growth[2025]": -1.0911,
+     "outstanding_shares[2025]": 4564880524.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "TRIO.JK",
+    "company_name": "Trikomsel Oke Tbk",
+    "query_values": {
+     "symbol": "TRIO.JK",
+     "intrinsic_value": -32,
+     "forward_pe": null,
+     "pe[2025]": -69.8646846467467,
+     "pe_peer_avg[2025]": 10.0664781604264,
+     "pb[2025]": -2.67695941945319,
+     "pb_peer_avg[2025]": 1.06673769083503,
+     "peg[2025]": -2.31284186670392,
+     "roa[2025]": -2.13702603457639,
+     "eps_growth[2025]": 0.3021,
+     "outstanding_shares[2025]": 26007494645.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "TRIS.JK",
+    "company_name": "Trisula International Tbk",
+    "query_values": {
+     "symbol": "TRIS.JK",
+     "intrinsic_value": 607,
+     "forward_pe": null,
+     "pe[2025]": 9.89489488291917,
+     "pe_peer_avg[2025]": 5.0841960086024,
+     "pb[2025]": 0.717106038709293,
+     "pb_peer_avg[2025]": 0.749284683296504,
+     "peg[2025]": 0.326142506658235,
+     "roa[2025]": 0.0448461008961281,
+     "eps_growth[2025]": 0.3034,
+     "outstanding_shares[2025]": 3078606291.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "TRJA.JK",
+    "company_name": "PT Transkon Jaya Tbk",
+    "query_values": {
+     "symbol": "TRJA.JK",
+     "intrinsic_value": 2759,
+     "forward_pe": null,
+     "pe[2025]": 81.3484808800274,
+     "pe_peer_avg[2025]": 7.63365268748404,
+     "pb[2025]": 0.681384969015785,
+     "pb_peer_avg[2025]": 0.719836025292692,
+     "peg[2025]": -1.03872496234101,
+     "roa[2025]": 0.00422190817970051,
+     "eps_growth[2025]": -0.7832,
+     "outstanding_shares[2025]": null,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "TRON.JK",
+    "company_name": "PT Teknologi Karya Digital Nusa Tbk",
+    "query_values": {
+     "symbol": "TRON.JK",
+     "intrinsic_value": -572,
+     "forward_pe": null,
+     "pe[2025]": -18.9763807008813,
+     "pe_peer_avg[2025]": 15.3208397947199,
+     "pb[2025]": 3.76978747761944,
+     "pb_peer_avg[2025]": 2.54240600262395,
+     "peg[2025]": 0.0119756261856271,
+     "roa[2025]": -0.145197397604793,
+     "eps_growth[2025]": -15.8457,
+     "outstanding_shares[2025]": 2951596185.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "TRST.JK",
+    "company_name": "Trias Sentosa Tbk",
+    "query_values": {
+     "symbol": "TRST.JK",
+     "intrinsic_value": 4,
+     "forward_pe": null,
+     "pe[2025]": -39.2657959759972,
+     "pe_peer_avg[2025]": 11.0469310117327,
+     "pb[2025]": 0.534508217474307,
+     "pb_peer_avg[2025]": 1.23762029050414,
+     "peg[2025]": 0.183946494571194,
+     "roa[2025]": -0.00675950113784049,
+     "eps_growth[2025]": -2.1346,
+     "outstanding_shares[2025]": 2808000000.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "TRUE.JK",
+    "company_name": "PT Triniti Dinamik Tbk",
+    "query_values": {
+     "symbol": "TRUE.JK",
+     "intrinsic_value": -117,
+     "forward_pe": null,
+     "pe[2025]": -45.1456018911216,
+     "pe_peer_avg[2025]": 12.0117423547015,
+     "pb[2025]": 7.07234893453785,
+     "pb_peer_avg[2025]": 0.812918901984095,
+     "peg[2025]": 1.13967220557218,
+     "roa[2025]": -0.0516503833384184,
+     "eps_growth[2025]": -0.3961,
+     "outstanding_shares[2025]": 7571107860.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "TRUK.JK",
+    "company_name": "PT Guna Timur Raya Tbk",
+    "query_values": {
+     "symbol": "TRUK.JK",
+     "intrinsic_value": -19,
+     "forward_pe": null,
+     "pe[2025]": -37.9300857524862,
+     "pe_peer_avg[2025]": 21.9045610013486,
+     "pb[2025]": 5.73005336410997,
+     "pb_peer_avg[2025]": 1.85670255843823,
+     "peg[2025]": -0.492023512521415,
+     "roa[2025]": -0.109150457249373,
+     "eps_growth[2025]": 0.7709,
+     "outstanding_shares[2025]": 435151116.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "TRUS.JK",
+    "company_name": "Trust Finance Indonesia Tbk",
+    "query_values": {
+     "symbol": "TRUS.JK",
+     "intrinsic_value": null,
+     "forward_pe": null,
+     "pe[2025]": null,
+     "pe_peer_avg[2025]": null,
+     "pb[2025]": null,
+     "pb_peer_avg[2025]": null,
+     "peg[2025]": null,
+     "roa[2025]": null,
+     "eps_growth[2025]": null,
+     "outstanding_shares[2025]": null,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "TSPC.JK",
+    "company_name": "Tempo Scan Pacific Tbk",
+    "query_values": {
+     "symbol": "TSPC.JK",
+     "intrinsic_value": 6689,
+     "forward_pe": null,
+     "pe[2025]": 9.13665253343321,
+     "pe_peer_avg[2025]": 9.13665253343321,
+     "pb[2025]": 1.33053263037205,
+     "pb_peer_avg[2025]": 1.53815515306666,
+     "peg[2025]": -3.22928706158926,
+     "roa[2025]": 0.10750763594403,
+     "eps_growth[2025]": -0.0283,
+     "outstanding_shares[2025]": 4508858761.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "TUGU.JK",
+    "company_name": "PT Asuransi Tugu Pratama Indonesia Tbk",
+    "query_values": {
+     "symbol": "TUGU.JK",
+     "intrinsic_value": 6939,
+     "forward_pe": null,
+     "pe[2025]": 5.43300003167794,
+     "pe_peer_avg[2025]": 14.0076064011075,
+     "pb[2025]": 0.407150050447196,
+     "pb_peer_avg[2025]": 0.877312527438507,
+     "peg[2025]": 3.42349019729935,
+     "roa[2025]": 0.02751187758158,
+     "eps_growth[2025]": 0.0159,
+     "outstanding_shares[2025]": 3555282795.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "TYRE.JK",
+    "company_name": "PT King Tire Indonesia Tbk",
+    "query_values": {
+     "symbol": "TYRE.JK",
+     "intrinsic_value": -488,
+     "forward_pe": null,
+     "pe[2025]": 18.2485527727728,
+     "pe_peer_avg[2025]": 9.36933928993265,
+     "pb[2025]": 1.23452537235108,
+     "pb_peer_avg[2025]": 1.03486819540341,
+     "peg[2025]": 5.4073272709287,
+     "roa[2025]": 0.0386377506673864,
+     "eps_growth[2025]": 0.033,
+     "outstanding_shares[2025]": 3480716267.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "UANG.JK",
+    "company_name": "PT Pakuan Tbk",
+    "query_values": {
+     "symbol": "UANG.JK",
+     "intrinsic_value": -3137,
+     "forward_pe": null,
+     "pe[2025]": 65.5242542028183,
+     "pe_peer_avg[2025]": 12.0117423547015,
+     "pb[2025]": 9.02317688740998,
+     "pb_peer_avg[2025]": 0.812918901984095,
+     "peg[2025]": -30.151450559363,
+     "roa[2025]": 0.0460844903581878,
+     "eps_growth[2025]": -0.0217,
+     "outstanding_shares[2025]": 1210000000.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "UCID.JK",
+    "company_name": "PT Uni-Charm Indonesia Tbk",
+    "query_values": {
+     "symbol": "UCID.JK",
+     "intrinsic_value": 2971,
+     "forward_pe": null,
+     "pe[2025]": -1.46073087234171,
+     "pe_peer_avg[2025]": 20.9323334371573,
+     "pb[2025]": 0.377505858739368,
+     "pb_peer_avg[2025]": 1.14562653916903,
+     "peg[2025]": 0.00331178565144126,
+     "roa[2025]": -0.162919310413927,
+     "eps_growth[2025]": -4.4107,
+     "outstanding_shares[2025]": 4149750000.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "UDNG.JK",
+    "company_name": "PT Agro Bahari Nusantara Tbk",
+    "query_values": {
+     "symbol": "UDNG.JK",
+     "intrinsic_value": -260,
+     "forward_pe": null,
+     "pe[2025]": -2652.43089770615,
+     "pe_peer_avg[2025]": 12.1475666326432,
+     "pb[2025]": 175.695682920255,
+     "pb_peer_avg[2025]": 1.87654333744704,
+     "peg[2025]": 402.861759915774,
+     "roa[2025]": -0.0612770580400163,
+     "eps_growth[2025]": -0.0658,
+     "outstanding_shares[2025]": 1750455954.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "UFOE.JK",
+    "company_name": "PT Damai Sejahtera Abadi Tbk",
+    "query_values": {
+     "symbol": "UFOE.JK",
+     "intrinsic_value": -59,
+     "forward_pe": null,
+     "pe[2025]": 26.9801666412287,
+     "pe_peer_avg[2025]": 10.0664781604264,
+     "pb[2025]": 2.17408369369147,
+     "pb_peer_avg[2025]": 1.06673769083503,
+     "peg[2025]": 5.86867082781487,
+     "roa[2025]": 0.036282205593033,
+     "eps_growth[2025]": 0.046,
+     "outstanding_shares[2025]": 2893943769.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "ULTJ.JK",
+    "company_name": "PT Ultrajaya Milk Industry & Trading Company Tbk",
+    "query_values": {
+     "symbol": "ULTJ.JK",
+     "intrinsic_value": 2881,
+     "forward_pe": 14.3949927404031,
+     "pe[2025]": 11.0643652413328,
+     "pe_peer_avg[2025]": 12.1475666326432,
+     "pb[2025]": 1.80045022617797,
+     "pb_peer_avg[2025]": 1.87654333744704,
+     "peg[2025]": 0.58041486839914,
+     "roa[2025]": 0.146247515796777,
+     "eps_growth[2025]": 0.3229,
+     "outstanding_shares[2025]": 10409976923.0,
+     "forecast_eps_growth[2026]": 0.262182864906815,
+     "forecast_revenue_growth[2026]": 0.226069685923146,
+     "forecast_eps_estimate[2026]": 164.27
+    }
+   },
+   {
+    "symbol": "UNIC.JK",
+    "company_name": "Unggul Indah Cahaya Tbk",
+    "query_values": {
+     "symbol": "UNIC.JK",
+     "intrinsic_value": 56958,
+     "forward_pe": null,
+     "pe[2025]": 5.60498680790492,
+     "pe_peer_avg[2025]": 11.0469310117327,
+     "pb[2025]": 0.641918266875341,
+     "pb_peer_avg[2025]": 1.23762029050414,
+     "peg[2025]": 0.0663168691973899,
+     "roa[2025]": 0.100782071381941,
+     "eps_growth[2025]": 0.8452,
+     "outstanding_shares[2025]": 383228166.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "UNIQ.JK",
+    "company_name": "PT Ulima Nitra Tbk",
+    "query_values": {
+     "symbol": "UNIQ.JK",
+     "intrinsic_value": 983,
+     "forward_pe": null,
+     "pe[2025]": 29.659043205635,
+     "pe_peer_avg[2025]": 14.797623491379,
+     "pb[2025]": 2.31986981800171,
+     "pb_peer_avg[2025]": 1.61127517039477,
+     "peg[2025]": -0.670079521721444,
+     "roa[2025]": 0.0507192757159389,
+     "eps_growth[2025]": -0.4426,
+     "outstanding_shares[2025]": 3139789834.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "UNIT.JK",
+    "company_name": "Nusantara Inti Corpora Tbk",
+    "query_values": {
+     "symbol": "UNIT.JK",
+     "intrinsic_value": -251,
+     "forward_pe": null,
+     "pe[2025]": null,
+     "pe_peer_avg[2025]": null,
+     "pb[2025]": null,
+     "pb_peer_avg[2025]": null,
+     "peg[2025]": null,
+     "roa[2025]": null,
+     "eps_growth[2025]": null,
+     "outstanding_shares[2025]": null,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "UNSP.JK",
+    "company_name": "Bakrie Sumatera Plantations Tbk",
+    "query_values": {
+     "symbol": "UNSP.JK",
+     "intrinsic_value": -333,
+     "forward_pe": null,
+     "pe[2025]": 67.4882851649331,
+     "pe_peer_avg[2025]": 12.1475666326432,
+     "pb[2025]": -0.206820532792776,
+     "pb_peer_avg[2025]": 1.87654333744704,
+     "peg[2025]": -0.763696394589439,
+     "roa[2025]": 0.0046307618251142,
+     "eps_growth[2025]": -0.8837,
+     "outstanding_shares[2025]": 2500162344.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "UNTD.JK",
+    "company_name": "PT Terang Dunia Internusa Tbk",
+    "query_values": {
+     "symbol": "UNTD.JK",
+     "intrinsic_value": -455,
+     "forward_pe": null,
+     "pe[2025]": -19.2510628672382,
+     "pe_peer_avg[2025]": -30.0029074731381,
+     "pb[2025]": 1.13969315414398,
+     "pb_peer_avg[2025]": 6.26409643209447,
+     "peg[2025]": 0.0741250090320694,
+     "roa[2025]": -0.0271948759660531,
+     "eps_growth[2025]": -2.5971,
+     "outstanding_shares[2025]": 6662308183.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "UNTR.JK",
+    "company_name": "United Tractors Tbk",
+    "query_values": {
+     "symbol": "UNTR.JK",
+     "intrinsic_value": 83095,
+     "forward_pe": 5.23178822262061,
+     "pe[2025]": 7.42982862703416,
+     "pe_peer_avg[2025]": 6.33412512893495,
+     "pb[2025]": 1.06692757033814,
+     "pb_peer_avg[2025]": 0.939719583768338,
+     "peg[2025]": -0.307393656734192,
+     "roa[2025]": 0.0833745732645935,
+     "eps_growth[2025]": -0.2417,
+     "outstanding_shares[2025]": 3628229789.0,
+     "forecast_eps_growth[2026]": 0.279441675435035,
+     "forecast_revenue_growth[2026]": -0.000310813010224385,
+     "forecast_eps_estimate[2026]": 5080.0
+    }
+   },
+   {
+    "symbol": "UNVR.JK",
+    "company_name": "Unilever Indonesia Tbk",
+    "query_values": {
+     "symbol": "UNVR.JK",
+     "intrinsic_value": 3522,
+     "forward_pe": 15.0131780127222,
+     "pe[2025]": 12.981011655166,
+     "pe_peer_avg[2025]": 20.9323334371573,
+     "pb[2025]": 22.1647786717579,
+     "pb_peer_avg[2025]": 1.14562653916903,
+     "peg[2025]": 0.102350779679745,
+     "roa[2025]": 0.381727111680529,
+     "eps_growth[2025]": 1.2683,
+     "outstanding_shares[2025]": 38150000000.0,
+     "forecast_eps_growth[2026]": -0.477713985703886,
+     "forecast_revenue_growth[2026]": 0.128869536084396,
+     "forecast_eps_estimate[2026]": 104.61
+    }
+   },
+   {
+    "symbol": "URBN.JK",
+    "company_name": "PT Urban Jakarta Propertindo Tbk",
+    "query_values": {
+     "symbol": "URBN.JK",
+     "intrinsic_value": -934,
+     "forward_pe": null,
+     "pe[2025]": -3.78393903671615,
+     "pe_peer_avg[2025]": 12.0117423547015,
+     "pb[2025]": 0.357912625471509,
+     "pb_peer_avg[2025]": 0.812918901984095,
+     "peg[2025]": 0.000637658025659142,
+     "roa[2025]": -0.0418945883745156,
+     "eps_growth[2025]": -59.3412,
+     "outstanding_shares[2025]": 3232122640.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "UVCR.JK",
+    "company_name": "PT Trimegah Karya Pratama Tbk",
+    "query_values": {
+     "symbol": "UVCR.JK",
+     "intrinsic_value": 211,
+     "forward_pe": null,
+     "pe[2025]": 54.4484703772712,
+     "pe_peer_avg[2025]": 15.3208397947199,
+     "pb[2025]": 2.87608877267219,
+     "pb_peer_avg[2025]": 2.54240600262395,
+     "peg[2025]": 1.0421662232746,
+     "roa[2025]": 0.0252195565938679,
+     "eps_growth[2025]": 0.5225,
+     "outstanding_shares[2025]": 1997613515.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "VAST.JK",
+    "company_name": "PT Vastland Indonesia Tbk",
+    "query_values": {
+     "symbol": "VAST.JK",
+     "intrinsic_value": -289,
+     "forward_pe": null,
+     "pe[2025]": 29.6709276748571,
+     "pe_peer_avg[2025]": 12.0117423547015,
+     "pb[2025]": 1.27151943266569,
+     "pb_peer_avg[2025]": 0.812918901984095,
+     "peg[2025]": 1.98838707756133,
+     "roa[2025]": 0.0335882058170812,
+     "eps_growth[2025]": 0.1492,
+     "outstanding_shares[2025]": 3056271713.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "VERN.JK",
+    "company_name": "PT Verona Indah Pictures Tbk",
+    "query_values": {
+     "symbol": "VERN.JK",
+     "intrinsic_value": -477,
+     "forward_pe": null,
+     "pe[2025]": 116.939544785476,
+     "pe_peer_avg[2025]": -1.78574675701668,
+     "pb[2025]": 1.10944795653354,
+     "pb_peer_avg[2025]": 1.70235547799666,
+     "peg[2025]": -4.2385489055186,
+     "roa[2025]": 0.00908332238727611,
+     "eps_growth[2025]": -0.2759,
+     "outstanding_shares[2025]": 4773933790.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "VICI.JK",
+    "company_name": "PT Victoria Care Indonesia Tbk",
+    "query_values": {
+     "symbol": "VICI.JK",
+     "intrinsic_value": 528,
+     "forward_pe": null,
+     "pe[2025]": 33.3587082834502,
+     "pe_peer_avg[2025]": 20.9323334371573,
+     "pb[2025]": 4.1768421396097,
+     "pb_peer_avg[2025]": 1.14562653916903,
+     "peg[2025]": -1.49702613758913,
+     "roa[2025]": 0.102202473149095,
+     "eps_growth[2025]": -0.2228,
+     "outstanding_shares[2025]": 6709475346.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "VICO.JK",
+    "company_name": "PT Victoria Investama Tbk",
+    "query_values": {
+     "symbol": "VICO.JK",
+     "intrinsic_value": -1657,
+     "forward_pe": null,
+     "pe[2025]": 6.48500648979921,
+     "pe_peer_avg[2025]": 19.1784525670184,
+     "pb[2025]": 0.546880663783877,
+     "pb_peer_avg[2025]": 3.22600932724791,
+     "peg[2025]": 0.0112181402415471,
+     "roa[2025]": 0.0125775081784384,
+     "eps_growth[2025]": 5.7808,
+     "outstanding_shares[2025]": 15217075658.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "VINS.JK",
+    "company_name": "PT Victoria Insurance Tbk",
+    "query_values": {
+     "symbol": "VINS.JK",
+     "intrinsic_value": null,
+     "forward_pe": null,
+     "pe[2025]": 19.4734258462173,
+     "pe_peer_avg[2025]": 14.0076064011075,
+     "pb[2025]": 1.10428854731633,
+     "pb_peer_avg[2025]": 0.877312527438507,
+     "peg[2025]": 0.221635275214109,
+     "roa[2025]": 0.0393755148763501,
+     "eps_growth[2025]": 0.7663,
+     "outstanding_shares[2025]": 1460860318.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "VISI.JK",
+    "company_name": "PT Satu Visi Putra Tbk",
+    "query_values": {
+     "symbol": "VISI.JK",
+     "intrinsic_value": -205,
+     "forward_pe": null,
+     "pe[2025]": -1345.3125,
+     "pe_peer_avg[2025]": 15.7437294320706,
+     "pb[2025]": 3.19390099140489,
+     "pb_peer_avg[2025]": 2.4589448820673,
+     "peg[2025]": 12.1954426801558,
+     "roa[2025]": -0.00148162374987996,
+     "eps_growth[2025]": -1.1031,
+     "outstanding_shares[2025]": 3075000000.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "VIVA.JK",
+    "company_name": "PT Visi Media Asia Tbk",
+    "query_values": {
+     "symbol": "VIVA.JK",
+     "intrinsic_value": -111,
+     "forward_pe": null,
+     "pe[2025]": 0.701528185921431,
+     "pe_peer_avg[2025]": -1.78574675701668,
+     "pb[2025]": 2.18545715849977,
+     "pb_peer_avg[2025]": 1.70235547799666,
+     "peg[2025]": -0.00940244705310985,
+     "roa[2025]": 0.176460837789645,
+     "eps_growth[2025]": -0.7461,
+     "outstanding_shares[2025]": null,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "VKTR.JK",
+    "company_name": "PT VKTR Teknologi Mobilitas Tbk",
+    "query_values": {
+     "symbol": "VKTR.JK",
+     "intrinsic_value": -136,
+     "forward_pe": null,
+     "pe[2025]": -3252.00123152709,
+     "pe_peer_avg[2025]": 9.36933928993265,
+     "pb[2025]": 29.6892918980909,
+     "pb_peer_avg[2025]": 1.03486819540341,
+     "peg[2025]": 12.9959827404096,
+     "roa[2025]": -0.00632183524523249,
+     "eps_growth[2025]": -2.5023,
+     "outstanding_shares[2025]": 43723076923.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "VOKS.JK",
+    "company_name": "Voksel Electric Tbk",
+    "query_values": {
+     "symbol": "VOKS.JK",
+     "intrinsic_value": 243,
+     "forward_pe": null,
+     "pe[2025]": -15.3806408608451,
+     "pe_peer_avg[2025]": 6.33412512893495,
+     "pb[2025]": 1.82528708237208,
+     "pb_peer_avg[2025]": 0.939719583768338,
+     "peg[2025]": 0.667295323310592,
+     "roa[2025]": -0.037246731332825,
+     "eps_growth[2025]": -0.2305,
+     "outstanding_shares[2025]": 4156676448.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "VRNA.JK",
+    "company_name": "PT Mizuho Leasing Indonesia Tbk",
+    "query_values": {
+     "symbol": "VRNA.JK",
+     "intrinsic_value": null,
+     "forward_pe": null,
+     "pe[2025]": 174.987098539776,
+     "pe_peer_avg[2025]": 12.0526918352896,
+     "pb[2025]": 0.680331366036799,
+     "pb_peer_avg[2025]": 0.988198720376642,
+     "peg[2025]": -0.747208495712118,
+     "roa[2025]": 0.000917271423618156,
+     "eps_growth[2025]": -2.3419,
+     "outstanding_shares[2025]": null,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "VTNY.JK",
+    "company_name": "PT Venteny Fortuna International Tbk",
+    "query_values": {
+     "symbol": "VTNY.JK",
+     "intrinsic_value": -1753,
+     "forward_pe": null,
+     "pe[2025]": 92.6172535289551,
+     "pe_peer_avg[2025]": 12.0526918352896,
+     "pb[2025]": 1.43958225461925,
+     "pb_peer_avg[2025]": 0.988198720376642,
+     "peg[2025]": -3.46125866219751,
+     "roa[2025]": 0.00359665634052007,
+     "eps_growth[2025]": -0.2676,
+     "outstanding_shares[2025]": 6265193445.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "WAPO.JK",
+    "company_name": "Wahana Pronatural Tbk",
+    "query_values": {
+     "symbol": "WAPO.JK",
+     "intrinsic_value": 9,
+     "forward_pe": null,
+     "pe[2025]": -19.2278967402351,
+     "pe_peer_avg[2025]": 12.1475666326432,
+     "pb[2025]": 3.70432171823515,
+     "pb_peer_avg[2025]": 1.87654333744704,
+     "peg[2025]": 0.0112060860710255,
+     "roa[2025]": -0.12920672037868,
+     "eps_growth[2025]": -17.1584,
+     "outstanding_shares[2025]": 1228107092.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "WBSA.JK",
+    "company_name": "PT BSA Logistics Indonesia Tbk",
+    "query_values": {
+     "symbol": "WBSA.JK",
+     "intrinsic_value": null,
+     "forward_pe": null,
+     "pe[2025]": null,
+     "pe_peer_avg[2025]": null,
+     "pb[2025]": null,
+     "pb_peer_avg[2025]": null,
+     "peg[2025]": null,
+     "roa[2025]": null,
+     "eps_growth[2025]": null,
+     "outstanding_shares[2025]": null,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "WEGE.JK",
+    "company_name": "PT Wijaya Karya Bangunan Gedung Tbk",
+    "query_values": {
+     "symbol": "WEGE.JK",
+     "intrinsic_value": -146,
+     "forward_pe": null,
+     "pe[2025]": -1.0629410699338,
+     "pe_peer_avg[2025]": -0.837793504960042,
+     "pb[2025]": 0.339906574161219,
+     "pb_peer_avg[2025]": 1.33495851911062,
+     "peg[2025]": 0.00103345463507322,
+     "roa[2025]": -0.15588369201143,
+     "eps_growth[2025]": -10.2853,
+     "outstanding_shares[2025]": 9571275473.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "WEHA.JK",
+    "company_name": "PT WEHA Transportasi Indonesia Tbk",
+    "query_values": {
+     "symbol": "WEHA.JK",
+     "intrinsic_value": -7,
+     "forward_pe": null,
+     "pe[2025]": 8.88463606368189,
+     "pe_peer_avg[2025]": 7.63365268748404,
+     "pb[2025]": 0.758287081569599,
+     "pb_peer_avg[2025]": 0.719836025292692,
+     "peg[2025]": -0.41390613976208,
+     "roa[2025]": 0.0535436703303009,
+     "eps_growth[2025]": -0.2147,
+     "outstanding_shares[2025]": null,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "WGSH.JK",
+    "company_name": "PT Wira Global Solusi Tbk",
+    "query_values": {
+     "symbol": "WGSH.JK",
+     "intrinsic_value": -97,
+     "forward_pe": null,
+     "pe[2025]": 88.6783923483587,
+     "pe_peer_avg[2025]": 15.3208397947199,
+     "pb[2025]": 4.38024701820353,
+     "pb_peer_avg[2025]": 2.54240600262395,
+     "peg[2025]": -3.56075788399948,
+     "roa[2025]": 0.0425353501169007,
+     "eps_growth[2025]": -0.249,
+     "outstanding_shares[2025]": 1042438244.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "WICO.JK",
+    "company_name": "Wicaksana Overseas International Tbk",
+    "query_values": {
+     "symbol": "WICO.JK",
+     "intrinsic_value": -853,
+     "forward_pe": null,
+     "pe[2025]": null,
+     "pe_peer_avg[2025]": null,
+     "pb[2025]": null,
+     "pb_peer_avg[2025]": null,
+     "peg[2025]": null,
+     "roa[2025]": null,
+     "eps_growth[2025]": null,
+     "outstanding_shares[2025]": null,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "WIDI.JK",
+    "company_name": "PT Widiant Jaya Krenindo Tbk",
+    "query_values": {
+     "symbol": "WIDI.JK",
+     "intrinsic_value": -170,
+     "forward_pe": null,
+     "pe[2025]": -44.1530086624868,
+     "pe_peer_avg[2025]": 6.33412512893495,
+     "pb[2025]": 1.31360704155634,
+     "pb_peer_avg[2025]": 0.939719583768338,
+     "peg[2025]": 0.117660156650031,
+     "roa[2025]": -0.0286351699703284,
+     "eps_growth[2025]": -3.7526,
+     "outstanding_shares[2025]": 1601228920.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "WIFI.JK",
+    "company_name": "PT Solusi Sinergi Digital Tbk",
+    "query_values": {
+     "symbol": "WIFI.JK",
+     "intrinsic_value": -9054,
+     "forward_pe": null,
+     "pe[2025]": 42.229181941695,
+     "pe_peer_avg[2025]": 15.3208397947199,
+     "pb[2025]": 2.02546325392553,
+     "pb_peer_avg[2025]": 2.54240600262395,
+     "peg[2025]": 0.55043885622451,
+     "roa[2025]": 0.0269321245044687,
+     "eps_growth[2025]": -0.2146,
+     "outstanding_shares[2025]": 5308549015.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "WIIM.JK",
+    "company_name": "Wismilak Inti Makmur Tbk",
+    "query_values": {
+     "symbol": "WIIM.JK",
+     "intrinsic_value": -1071,
+     "forward_pe": null,
+     "pe[2025]": 8.26509900798213,
+     "pe_peer_avg[2025]": 14.706613220765,
+     "pb[2025]": 1.56432999740985,
+     "pb_peer_avg[2025]": 1.14100743446416,
+     "peg[2025]": 0.204823237010256,
+     "roa[2025]": 0.130790453213426,
+     "eps_growth[2025]": 0.4035,
+     "outstanding_shares[2025]": 2077628427.0,
+     "forecast_eps_growth[2026]": -0.208554155599287,
+     "forecast_revenue_growth[2026]": -0.199271730507871,
+     "forecast_eps_estimate[2026]": 158.0
+    }
+   },
+   {
+    "symbol": "WIKA.JK",
+    "company_name": "PT Wijaya Karya (Persero) Tbk",
+    "query_values": {
+     "symbol": "WIKA.JK",
+     "intrinsic_value": -2399,
+     "forward_pe": -1.52352508811695,
+     "pe[2025]": -0.837793504960042,
+     "pe_peer_avg[2025]": -0.837793504960042,
+     "pb[2025]": 4.82644972027528,
+     "pb_peer_avg[2025]": 1.33495851911062,
+     "peg[2025]": -0.00255184697424231,
+     "roa[2025]": -0.193609689090301,
+     "eps_growth[2025]": 3.2831,
+     "outstanding_shares[2025]": 39873063860.0,
+     "forecast_eps_growth[2026]": 0.79055162375999,
+     "forecast_revenue_growth[2026]": 0.358298863135828,
+     "forecast_eps_estimate[2026]": -51.0
+    }
+   },
+   {
+    "symbol": "WINE.JK",
+    "company_name": "PT Hatten Bali Tbk",
+    "query_values": {
+     "symbol": "WINE.JK",
+     "intrinsic_value": -37,
+     "forward_pe": null,
+     "pe[2025]": 14.1250987050668,
+     "pe_peer_avg[2025]": 12.1475666326432,
+     "pb[2025]": 1.64900374967284,
+     "pb_peer_avg[2025]": 1.87654333744704,
+     "peg[2025]": -1.20132208550996,
+     "roa[2025]": 0.0872771982189748,
+     "eps_growth[2025]": -0.1176,
+     "outstanding_shares[2025]": 2707024361.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "WINR.JK",
+    "company_name": "PT Winner Nusantara Jaya Tbk",
+    "query_values": {
+     "symbol": "WINR.JK",
+     "intrinsic_value": -67,
+     "forward_pe": null,
+     "pe[2025]": 12.0117423547015,
+     "pe_peer_avg[2025]": 12.0117423547015,
+     "pb[2025]": 0.558588036303394,
+     "pb_peer_avg[2025]": 0.812918901984095,
+     "peg[2025]": 0.0953686262484815,
+     "roa[2025]": 0.0352626198341802,
+     "eps_growth[2025]": 1.2595,
+     "outstanding_shares[2025]": 5240423343.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "WINS.JK",
+    "company_name": "Wintermar Offshore Marine Tbk",
+    "query_values": {
+     "symbol": "WINS.JK",
+     "intrinsic_value": 363,
+     "forward_pe": 6.107924407563,
+     "pe[2025]": 7.11853237948269,
+     "pe_peer_avg[2025]": 14.797623491379,
+     "pb[2025]": 0.634169980460707,
+     "pb_peer_avg[2025]": 1.61127517039477,
+     "peg[2025]": -0.919612151096221,
+     "roa[2025]": 0.0715862547195121,
+     "eps_growth[2025]": -0.0973,
+     "outstanding_shares[2025]": 4431924558.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "WIRG.JK",
+    "company_name": "PT Wir Asia Tbk",
+    "query_values": {
+     "symbol": "WIRG.JK",
+     "intrinsic_value": -142,
+     "forward_pe": null,
+     "pe[2025]": 15.3208397947199,
+     "pe_peer_avg[2025]": 15.3208397947199,
+     "pb[2025]": 1.26720636231022,
+     "pb_peer_avg[2025]": 2.54240600262395,
+     "peg[2025]": -16.8440904891401,
+     "roa[2025]": 0.0448145300918224,
+     "eps_growth[2025]": -0.0091,
+     "outstanding_shares[2025]": 11929744083.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "WMPP.JK",
+    "company_name": "PT Widodo Makmur Perkasa Tbk",
+    "query_values": {
+     "symbol": "WMPP.JK",
+     "intrinsic_value": -99,
+     "forward_pe": null,
+     "pe[2025]": -1.66249230344856,
+     "pe_peer_avg[2025]": 12.1475666326432,
+     "pb[2025]": 0.703101702628238,
+     "pb_peer_avg[2025]": 1.87654333744704,
+     "peg[2025]": 0.0265573159481788,
+     "roa[2025]": -0.0467661149095775,
+     "eps_growth[2025]": -0.626,
+     "outstanding_shares[2025]": null,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "WMUU.JK",
+    "company_name": "PT Widodo Makmur Unggas Tbk",
+    "query_values": {
+     "symbol": "WMUU.JK",
+     "intrinsic_value": -82,
+     "forward_pe": null,
+     "pe[2025]": -9.50611244824853,
+     "pe_peer_avg[2025]": 12.1475666326432,
+     "pb[2025]": 1.01479782081904,
+     "pb_peer_avg[2025]": 1.87654333744704,
+     "peg[2025]": 0.305639385196488,
+     "roa[2025]": -0.0355948391908212,
+     "eps_growth[2025]": -0.311,
+     "outstanding_shares[2025]": 13502852773.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "WOMF.JK",
+    "company_name": "PT Wahana Ottomitra Multiartha Tbk",
+    "query_values": {
+     "symbol": "WOMF.JK",
+     "intrinsic_value": -4022,
+     "forward_pe": null,
+     "pe[2025]": 7.91284644672508,
+     "pe_peer_avg[2025]": 12.0526918352896,
+     "pb[2025]": 0.568785763171324,
+     "pb_peer_avg[2025]": 0.988198720376642,
+     "peg[2025]": -0.172845750614041,
+     "roa[2025]": 0.0193458302097475,
+     "eps_growth[2025]": -0.4578,
+     "outstanding_shares[2025]": 3481481480.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "WOOD.JK",
+    "company_name": "PT Integra Indocabinet Tbk",
+    "query_values": {
+     "symbol": "WOOD.JK",
+     "intrinsic_value": -1040,
+     "forward_pe": 1.52960528235191,
+     "pe[2025]": 31.3256149700933,
+     "pe_peer_avg[2025]": 7.60943974558871,
+     "pb[2025]": 0.535303635364401,
+     "pb_peer_avg[2025]": 1.72513458516261,
+     "peg[2025]": -0.604922100850856,
+     "roa[2025]": 0.00970678400336449,
+     "eps_growth[2025]": -0.5178,
+     "outstanding_shares[2025]": 6264519293.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "WOWS.JK",
+    "company_name": "PT Ginting Jaya Energi Tbk",
+    "query_values": {
+     "symbol": "WOWS.JK",
+     "intrinsic_value": 169,
+     "forward_pe": null,
+     "pe[2025]": 14.6053222170928,
+     "pe_peer_avg[2025]": 14.797623491379,
+     "pb[2025]": 0.404578314127983,
+     "pb_peer_avg[2025]": 1.61127517039477,
+     "peg[2025]": 0.00496322079679577,
+     "roa[2025]": 0.0230349788606884,
+     "eps_growth[2025]": 29.4271,
+     "outstanding_shares[2025]": 2473749631.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "WSBP.JK",
+    "company_name": "PT Waskita Beton Precast Tbk",
+    "query_values": {
+     "symbol": "WSBP.JK",
+     "intrinsic_value": -75,
+     "forward_pe": null,
+     "pe[2025]": -2.43026601153748,
+     "pe_peer_avg[2025]": 11.0469310117327,
+     "pb[2025]": -0.66388491962231,
+     "pb_peer_avg[2025]": 1.23762029050414,
+     "peg[2025]": 0.0526970795546201,
+     "roa[2025]": -0.175867242282513,
+     "eps_growth[2025]": -0.4773,
+     "outstanding_shares[2025]": 56780478486.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "WSKT.JK",
+    "company_name": "PT Waskita Karya (Persero) Tbk",
+    "query_values": {
+     "symbol": "WSKT.JK",
+     "intrinsic_value": -4781,
+     "forward_pe": null,
+     "pe[2025]": -1.48119925038913,
+     "pe_peer_avg[2025]": -0.837793504960042,
+     "pb[2025]": 1.58487372150579,
+     "pb_peer_avg[2025]": 1.33495851911062,
+     "peg[2025]": -0.0286405999953137,
+     "roa[2025]": -0.0555401771910624,
+     "eps_growth[2025]": 0.5172,
+     "outstanding_shares[2025]": null,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "WTON.JK",
+    "company_name": "Wijaya Karya Beton",
+    "query_values": {
+     "symbol": "WTON.JK",
+     "intrinsic_value": 172,
+     "forward_pe": 1.71764705882353,
+     "pe[2025]": 21.9958292628617,
+     "pe_peer_avg[2025]": 11.0469310117327,
+     "pb[2025]": 0.238811504511109,
+     "pb_peer_avg[2025]": 1.23762029050414,
+     "peg[2025]": -0.572277631603971,
+     "roa[2025]": 0.00636192713311672,
+     "eps_growth[2025]": -0.3844,
+     "outstanding_shares[2025]": 8718845686.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "YELO.JK",
+    "company_name": "PT Yelooo Integra Datanet Tbk",
+    "query_values": {
+     "symbol": "YELO.JK",
+     "intrinsic_value": null,
+     "forward_pe": null,
+     "pe[2025]": -13.2946202805512,
+     "pe_peer_avg[2025]": 10.0664781604264,
+     "pb[2025]": 1.06949486030662,
+     "pb_peer_avg[2025]": 1.06673769083503,
+     "peg[2025]": -0.0128426020186113,
+     "roa[2025]": -0.0781946779195954,
+     "eps_growth[2025]": 10.352,
+     "outstanding_shares[2025]": 1913242298.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "YOII.JK",
+    "company_name": "PT Asuransi Digital Bersama Tbk",
+    "query_values": {
+     "symbol": "YOII.JK",
+     "intrinsic_value": null,
+     "forward_pe": null,
+     "pe[2025]": 25.1518537279226,
+     "pe_peer_avg[2025]": 14.0076064011075,
+     "pb[2025]": 1.65533333949372,
+     "pb_peer_avg[2025]": 0.877312527438507,
+     "peg[2025]": -1.61120495373194,
+     "roa[2025]": 0.0399955108753138,
+     "eps_growth[2025]": null,
+     "outstanding_shares[2025]": 3472091250.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "YPAS.JK",
+    "company_name": "Yanaprima Hastapersada Tbk",
+    "query_values": {
+     "symbol": "YPAS.JK",
+     "intrinsic_value": 501,
+     "forward_pe": null,
+     "pe[2025]": 69.8210469291292,
+     "pe_peer_avg[2025]": 11.0469310117327,
+     "pb[2025]": 2.95566545557271,
+     "pb_peer_avg[2025]": 1.23762029050414,
+     "peg[2025]": -0.307602846171989,
+     "roa[2025]": 0.0209153381428988,
+     "eps_growth[2025]": -2.2698,
+     "outstanding_shares[2025]": 687650909.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "YULE.JK",
+    "company_name": "Yulie Sekuritas Indonesia Tbk",
+    "query_values": {
+     "symbol": "YULE.JK",
+     "intrinsic_value": 245,
+     "forward_pe": null,
+     "pe[2025]": 44.5789621771014,
+     "pe_peer_avg[2025]": 27.3422060185614,
+     "pb[2025]": 8.42680253431744,
+     "pb_peer_avg[2025]": 2.66305943384694,
+     "peg[2025]": 0.211068032063451,
+     "roa[2025]": 0.169887032093911,
+     "eps_growth[2025]": 2.1121,
+     "outstanding_shares[2025]": 1785000000.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "YUPI.JK",
+    "company_name": "PT Yupi Indo Jelly Gum Tbk",
+    "query_values": {
+     "symbol": "YUPI.JK",
+     "intrinsic_value": 1611,
+     "forward_pe": null,
+     "pe[2025]": 22.4363659184372,
+     "pe_peer_avg[2025]": 12.1475666326432,
+     "pb[2025]": 8.82148039366098,
+     "pb_peer_avg[2025]": 1.87654333744704,
+     "peg[2025]": -8.84362952129854,
+     "roa[2025]": 0.211666367610528,
+     "eps_growth[2025]": null,
+     "outstanding_shares[2025]": 8544538379.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "ZATA.JK",
+    "company_name": "PT Bersama Zatta Jaya Tbk",
+    "query_values": {
+     "symbol": "ZATA.JK",
+     "intrinsic_value": -344,
+     "forward_pe": null,
+     "pe[2025]": null,
+     "pe_peer_avg[2025]": null,
+     "pb[2025]": null,
+     "pb_peer_avg[2025]": null,
+     "peg[2025]": null,
+     "roa[2025]": null,
+     "eps_growth[2025]": null,
+     "outstanding_shares[2025]": null,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "ZBRA.JK",
+    "company_name": "PT Dosni Roha Indonesia Tbk",
+    "query_values": {
+     "symbol": "ZBRA.JK",
+     "intrinsic_value": -759,
+     "forward_pe": null,
+     "pe[2025]": null,
+     "pe_peer_avg[2025]": null,
+     "pb[2025]": null,
+     "pb_peer_avg[2025]": null,
+     "peg[2025]": null,
+     "roa[2025]": null,
+     "eps_growth[2025]": null,
+     "outstanding_shares[2025]": null,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "ZINC.JK",
+    "company_name": "PT Kapuas Prima Coal Tbk",
+    "query_values": {
+     "symbol": "ZINC.JK",
+     "intrinsic_value": -81,
+     "forward_pe": null,
+     "pe[2025]": -3.3209402470671,
+     "pe_peer_avg[2025]": 11.0469310117327,
+     "pb[2025]": 2.23246328010882,
+     "pb_peer_avg[2025]": 1.23762029050414,
+     "peg[2025]": -0.032895296001275,
+     "roa[2025]": -0.102715810909679,
+     "eps_growth[2025]": 1.0095,
+     "outstanding_shares[2025]": 25239065189.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "ZONE.JK",
+    "company_name": "PT Mega Perintis Tbk",
+    "query_values": {
+     "symbol": "ZONE.JK",
+     "intrinsic_value": 1638,
+     "forward_pe": null,
+     "pe[2025]": 32.408321332327,
+     "pe_peer_avg[2025]": 10.0664781604264,
+     "pb[2025]": 1.17714633225769,
+     "pb_peer_avg[2025]": 1.06673769083503,
+     "peg[2025]": 0.33868961060267,
+     "roa[2025]": 0.0183418733910232,
+     "eps_growth[2025]": 0.9569,
+     "outstanding_shares[2025]": 872633073.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   },
+   {
+    "symbol": "ZYRX.JK",
+    "company_name": "PT Zyrexindo Mandiri Buana Tbk",
+    "query_values": {
+     "symbol": "ZYRX.JK",
+     "intrinsic_value": -1748,
+     "forward_pe": null,
+     "pe[2025]": 5.0193064659693,
+     "pe_peer_avg[2025]": 8.89856645415434,
+     "pb[2025]": 0.640368556090698,
+     "pb_peer_avg[2025]": 1.39351645847126,
+     "peg[2025]": 0.0268205795619666,
+     "roa[2025]": 0.0371756193263296,
+     "eps_growth[2025]": 1.8714,
+     "outstanding_shares[2025]": 1333491142.0,
+     "forecast_eps_growth[2026]": null,
+     "forecast_revenue_growth[2026]": null,
+     "forecast_eps_estimate[2026]": null
+    }
+   }
+  ],
+  "pagination": {
+   "total_count": 962,
+   "showing": 162,
+   "limit": 200,
+   "offset": 800,
+   "has_next": false,
+   "has_previous": true,
+   "next_offset": null,
+   "previous_offset": 600
+  }
+ }
+}

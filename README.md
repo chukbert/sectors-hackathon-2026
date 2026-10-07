@@ -27,7 +27,7 @@ dari mana uangnya datang, siapa pemiliknya, dan pertanyaan kritis yang layak kam
 - **Masalah.** Jutaan orang membeli Indomie, Pepsodent, dan pulsa Telkomsel tiap minggu tanpa tahu bahwa pemilik merek itu perusahaan terbuka yang bisa mereka pelajari. Aplikasi saham dibuat untuk orang yang *sudah* paham pasar.
 - **Yang kami bangun.** Foto struk belanja (atau satu kemasan) → setiap merek dipetakan ke emitennya → **kartu kenalan** yang 100% dibangun dari data Sectors: ukuran perusahaan dalam bahasa awam, peta uang (segmen pendapatan), rantai pemilik sampai grup konglomerasi, dan **pertanyaan kritis** yang dihitung Sectors ke seluruh bursa.
 - **Sectors adalah inti.** Jalankan dengan `STRUK_SECTORS_OFF=1` dan semua endpoint menolak: *tidak ada angka tanpa Sectors* (diuji otomatis). Setiap angka di layar bisa dibuka asal-usulnya: endpoint, field, query, waktu ambil.
-- **Pemakaian Sectors yang tidak biasa.** Seluruh bursa (962 emiten × ±50 field) diambil hanya dengan **10 panggilan Screener**, memanfaatkan `include_query_values`. Total 242 kredit untuk seluruh proyek (termasuk peta uang untuk semua 219 emiten yang punya data segmen); **0 kredit per pengguna**. 9 pola anomali adalah ekspresi `where` Sectors, dan rumus lokal kami dikunci tes agar sama persis dengan `total_count` Sectors.
+- **Pemakaian Sectors yang tidak biasa.** Seluruh bursa (962 emiten × 77 field) diambil hanya dengan **25 panggilan Screener**, memanfaatkan `include_query_values`. Total 258 kredit untuk seluruh proyek (termasuk peta uang untuk semua 219 emiten yang punya data segmen); **0 kredit per pengguna**. 9 pola anomali adalah ekspresi `where` Sectors, dan rumus lokal kami dikunci tes agar sama persis dengan `total_count` Sectors.
 - **Uang belanjamu mengalir ke siapa.** Harga tiap baris dibaca dari strukmu (bisa kamu koreksi), dijumlah per emiten dan per grup pemilik: *"Dari belanjamu Rp57.100, Rp28.000 (49%) masuk ke Grup Salim lewat ROTI dan ICBP"* — lengkap dengan Sankey dompet → emiten → grup, dan "dari setiap Rp100 pendapatan, laba Rp X" dari Sectors. Hitung ulang tanpa AI, tanpa kredit.
 - **AI dipagari kode, bukan imbauan.** AI hanya membaca merek dan harga baris dari strukmu — tidak pernah angka perusahaan. Keluarannya ditolak bila memuat angka atau saran beli/jual. Pada **set uji held-out** (52 baris, ditulis sebelum katalog diperluas): **83% terpetakan benar dan 0 dari 18 merek non-emiten dikarang**; setelah katalog diperluas 98%, dengan satu tebakan AI yang keliru tetap ditandai "dugaan" (tabel di [§3](#ukur-sendiri-seberapa-jujur-pembacaan-struknya)).
 - **Bisa diverifikasi.** Demo live di atas · `docker compose up --build` · 115 tes + CI · semua respons Sectors mentah ada di `fixtures/snapshot/`.
@@ -177,12 +177,12 @@ Ulangi sendiri: `python tools/eval_struk.py --set b` (0 kredit Sectors, 1 panggi
 
 ## 4. Pemakaian Sectors API yang hemat (dan tidak biasa)
 
-Seluruh bursa (962 emiten × ±50 field) diambil hanya dengan **10 panggilan Screener**, memanfaatkan fakta bahwa
+Seluruh bursa (962 emiten × 77 field) diambil hanya dengan **25 panggilan Screener**, memanfaatkan fakta bahwa
 `include_query_values=true` mengembalikan *setiap* field yang disebut di `where` — termasuk cabang `OR` dan field per-tahun:
 
 ```
 where = symbol like '%' or revenue[2022] > -1e18 or revenue[2023] > -1e18 or … or affiliates in ['Salim'] or …
-limit = 200, order_by = symbol, include_query_values = true      → 5 halaman × 2 grup field = 10 kredit
+limit = 200, order_by = symbol, include_query_values = true      → 5 halaman × 5 grup field = 25 kredit
 ```
 
 Kebenaran rumus lokal dikunci tes: untuk **setiap** pola, evaluasi Python atas matriks harus sama persis dengan `total_count` yang dihitung Sectors (`test_local_rule_matches_sectors_screener_count`, 9 pola).
@@ -196,12 +196,33 @@ Kebenaran rumus lokal dikunci tes: untuk **setiap** pola, evaluasi Python atas m
 | Harvest segmen pendapatan, tahap 1 (43 emiten konsumen) | 43 | 43 |
 | Harvest segmen pendapatan, tahap 2 (176 emiten sisanya — semua 219 yang punya segmen di Sectors) | 176 | 176 |
 | Harvest kohort 9 pola | 9 | 9 |
+| Probe cakupan data untuk 30 cek ala Snowflake (`tools/probe_snowflake.py`) | 1 | 1 |
+| Harvest matriks tahap 2: 44 field baru (valuasi, forecast, riwayat 2020–2025, kesehatan, bank) untuk 30 cek ala Snowflake | 15 | 15 |
 | **Runtime aplikasi (setiap scan, kartu, pertanyaan)** | **0** | **0** |
-| **Total** | 242 | **242** → sisa **248** |
+| **Total** | 258 | **258** → sisa **232** |
 
-Semua respons mentah disimpan di `fixtures/snapshot/` (±3,2 MB, data Sectors asli) dan di-*seed* ke Store saat start. Aplikasi berjalan di mode `offline` — tidak ada panggilan live, tidak ada kredit terbakar saat demo atau saat juri mencoba. Chip di header menampilkan kredit terpakai vs dihemat secara jujur.
+Semua respons mentah disimpan di `fixtures/snapshot/` (±5,3 MB, data Sectors asli) dan di-*seed* ke Store saat start. Aplikasi berjalan di mode `offline` — tidak ada panggilan live, tidak ada kredit terbakar saat demo atau saat juri mencoba. Chip di header menampilkan kredit terpakai vs dihemat secara jujur.
 
-Pelajaran API yang kami dokumentasikan di kode: Cloudflare menolak UA `Python-urllib` (pakai UA kustom); filter `symbol in [...]` butuh suffix `.JK`; `listing_date` harus dibandingkan sebagai tanggal (bukan `like`); panggilan beruntun kena 429 (gratis, tapi perlu jeda).
+### Buku resep hemat kredit
+
+Aturan tim: setiap panggilan Sectors baru dicatat di tabel anggaran di atas **dan** caranya ditulis di sini. Prinsipnya satu: **satu kredit harus menjawab sebanyak mungkin pertanyaan**.
+
+| # | Trik | Caranya | Kredit kami | Cara biasa |
+|---|---|---|---|---|
+| 1 | **Matriks seluruh bursa** | `where = symbol like '%' or <field> > -1e18 or …` + `include_query_values=true`, `limit=200`. Cabang `symbol like '%'` membuat semua emiten lolos, dan cabang `OR` lain hanya ada agar nilainya ikut dikembalikan. | **25** untuk 962 emiten × 77 field (termasuk daftar lengkap pemegang saham). Menambah 44 field baru hanya menambah 3 grup = **15 kredit**, bukan 962. | ≥962 per kelompok field (satu per emiten), atau 7.696 bila memakai Company Report 8 seksi |
+| 2 | **Probe cakupan data** | Trik yang sama, 15 field kandidat sekaligus. Hitung berapa persen yang terisi dari 200 baris (`tools/probe_snowflake.py`). Hasil: data mulai sekitar 2020, forecast analis hanya ±15% emiten, `intrinsic_value`/`peg`/`pe_peer_avg` ±90%. Karena itu harvest berikutnya tidak membayar kolom tahun 2015–2019 yang kosong, dan cek 10 tahun Snowflake diganti 5 tahun dengan jujur. | **1** untuk 15 field | 15 (satu query hitung per field) |
+| 3 | **Ukuran kohort dari `total_count`** | Satu `where` per pola anomali, `limit=10`. `pagination.total_count` = jumlah emiten se-bursa dengan pola itu, dan 10 baris teratas jadi contoh. Rumus lokal kemudian dikunci tes agar sama dengan angka Sectors, sehingga pola berikutnya bisa dihitung lokal dari matriks. | **1** per pola | Menarik semua baris lalu menghitung sendiri (5 kredit per pola) |
+| 4 | **Cek daftar dulu, baru ambil detail** | `list_companies_with_segments` (1 kredit) → hanya 219 emiten yang benar-benar punya segmen yang dipanggil. Menurut docs Sectors, respons **404 tetap ditagih**, jadi mencoba semua simbol itu mahal. | **1 + 219** | 962 bila semua emiten dicoba |
+| 5 | **Jangan pakai `q=`** | Bahasa alami di Screener memakan 3 kredit. Ekspresi `where` terstruktur 1 kredit dan hasilnya bisa diulang persis. | 1 | 3 |
+| 6 | **Hindari Company Report penuh** | Report dihitung 1 kredit **per seksi** (default 8). Semua yang kami butuhkan sudah ada di matriks Screener, jadi kami tidak memanggilnya sama sekali. | 0 | 8 per emiten |
+| 7 | **Runtime nol kredit** | Store read-through cache + ledger. Semua respons mentah disimpan di `fixtures/snapshot/` lalu di-*seed*, dan aplikasi berjalan `offline`. | **0** per pengguna | 1+ per tampilan |
+| 8 | **Dry-run dan batas anggaran** | Setiap script punya `--dry` (estimasi, 0 kredit) dan `--budget` (berhenti sebelum melewati anggaran). | — | — |
+
+**Kapan kredit terpakai** (tabel penagihan di docs Sectors): respons **2xx dan 404 ditagih**. Respons 400, 401/403, 429, dan 5xx **gratis**. Jebakan yang kami temui:
+- Filter `symbol in [...]` tanpa suffix `.JK` menghasilkan 200 kosong, dan **tetap ditagih**.
+- Cloudflare menolak UA `Python-urllib` (403, gratis), jadi pakai UA kustom.
+- `listing_date` harus dibandingkan sebagai tanggal, bukan dengan `like`.
+- Panggilan beruntun kena 429 (gratis), jadi beri jeda `--sleep`.
 
 ## 5. Arsitektur
 

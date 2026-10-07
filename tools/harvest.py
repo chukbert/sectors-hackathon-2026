@@ -119,7 +119,9 @@ def main() -> int:
         spent += int(resp.get("credits_spent") or 0)
         status = resp.get("http_status")
         print(f"  {category}/{name}: HTTP {status}, {resp.get('source')}, kredit {resp.get('credits_spent')} (total {spent})")
-        if status and 200 <= int(status) < 300:
+        # Cache hit tidak menimpa snapshot yang ada: provenans asli (sectors-live, kredit 1) harus tetap.
+        is_hit = str(resp.get("source", "")).startswith("store-hit")
+        if status and 200 <= int(status) < 300 and not (is_hit and (OUT / category / f"{name}.json").exists()):
             save(category, name, endpoint, params, resp)
         return resp
 
