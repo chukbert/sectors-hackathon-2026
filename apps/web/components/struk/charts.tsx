@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import type { Card, Spend } from "@/lib/struk";
+import type { Card, Snowflake, Spend } from "@/lib/struk";
 import { rp, rupiah } from "@/lib/struk";
 
 const ReactECharts = dynamic(() => import("echarts-for-react"), { ssr: false });
@@ -146,4 +146,42 @@ export function SpendSankey({ spend, names }: { spend: Spend; names: Record<stri
   };
   const rows = Math.max(spend.companies.length + (spend.other > 0 ? 1 : 0), spend.groups.length);
   return <ReactECharts option={option} className="sj-chart" style={{ height: Math.max(240, rows * 64) }} notMerge />;
+}
+
+// Lima sisi: jari-jari = jumlah cek yang lolos di sisi itu (maks = jumlah cek di sisi itu).
+export function FiveSidesRadar({ sf }: { sf: Snowflake }) {
+  const narrow = typeof window !== "undefined" && window.innerWidth < 640;
+  const option = {
+    textStyle: { fontFamily: FONT },
+    tooltip: {
+      trigger: "item",
+      confine: true,
+      formatter: () =>
+        sf.axes.map((a) => `${a.label}: <b>${a.passed}</b> dari ${a.total} cek lolos${a.assessed < a.total ? ` (${a.total - a.assessed} tanpa data)` : ""}`).join("<br/>"),
+    },
+    radar: {
+      radius: narrow ? "62%" : "68%",
+      center: ["50%", "54%"],
+      startAngle: 90,
+      splitNumber: 3,
+      shape: "polygon",
+      indicator: sf.axes.map((a) => ({ name: `${a.label}\n${a.passed}/${a.total}`, max: a.total, min: 0 })),
+      axisName: { color: "#0b0d12", fontSize: narrow ? 11 : 12.5, fontWeight: 600, lineHeight: 16 },
+      splitLine: { lineStyle: { color: "#e2e4ea" } },
+      splitArea: { areaStyle: { color: ["#ffffff", "#f7f9fc"] } },
+      axisLine: { lineStyle: { color: "#cfd3dc" } },
+    },
+    series: [
+      {
+        type: "radar",
+        symbol: "circle",
+        symbolSize: 6,
+        data: [{ value: sf.axes.map((a) => a.passed), name: "cek lolos" }],
+        lineStyle: { color: "#2b4bff", width: 2 },
+        itemStyle: { color: "#2b4bff" },
+        areaStyle: { color: "rgba(43, 75, 255, 0.18)" },
+      },
+    ],
+  };
+  return <ReactECharts option={option} className="sj-chart" style={{ height: narrow ? 300 : 340 }} notMerge />;
 }

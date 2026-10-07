@@ -5,7 +5,7 @@ Dua lapis, keduanya di memori proses (cukup untuk satu container):
 - global  : jumlah panggilan LLM per hari kalender UTC
 
 Data Sectors tidak tersentuh: kuota hanya membatasi AI. Saat kuota habis, jalur deterministik tetap jalan
-(teks → katalog, refleksi → jawaban baku); hanya foto yang benar-benar butuh AI yang ditolak dengan 429.
+(teks → katalog); hanya foto yang benar-benar butuh AI yang ditolak dengan 429.
 """
 from __future__ import annotations
 
@@ -18,7 +18,6 @@ WINDOW_S = 600
 PER_IP = {
     "scan_photo": int(os.getenv("STRUK_QUOTA_PHOTO_PER_10MIN", "8")),
     "scan_text": int(os.getenv("STRUK_QUOTA_TEXT_PER_10MIN", "20")),
-    "reflect": int(os.getenv("STRUK_QUOTA_REFLECT_PER_10MIN", "20")),
 }
 DAILY_CAP = int(os.getenv("STRUK_QUOTA_DAILY_LLM", "600"))
 

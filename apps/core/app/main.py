@@ -270,12 +270,6 @@ class StrukBasketRequest(BaseModel):
     items: list[StrukItem] = Field(max_length=120)
 
 
-class StrukReflectRequest(BaseModel):
-    symbol: str
-    rule_id: str
-    answer: str
-
-
 def _sectors_off_response(exc: Exception) -> dict[str, Any]:
     return {"sectors_off": True, "detail": str(exc),
             "message": "Tanpa data Sectors, aplikasi ini tidak bisa menampilkan apa pun — kami tidak mengarang angka."}
@@ -371,26 +365,6 @@ async def struk_search(q: str = Query(min_length=1)):
             if not any(o["symbol"] == sym for o in out):
                 out.append({"symbol": sym, "name": rec.get("company_name"), "brand": None})
     return {"results": out, "universe_total": u["count"], "bare": universe.bare(q)}
-
-
-@app.post("/v1/struk/reflect")
-async def struk_reflect(req: StrukReflectRequest, request: Request):
-    from .struk import narrate, quota, rules, service, universe
-
-    rule = rules.RULES_BY_ID.get(req.rule_id)
-    if not rule:
-        raise HTTPException(status_code=404, detail="aturan tidak dikenal")
-    try:
-        u = await service.load_universe()
-    except service.SectorsOff as exc:
-        return _sectors_off_response(exc)
-    rec = u["records"].get(universe.bare(req.symbol))
-    if not rec or not rule.check(rec):
-        raise HTTPException(status_code=400, detail="pola ini tidak berlaku untuk emiten tersebut")
-    ip = quota.client_ip(dict(request.headers), request.client.host if request.client else None)
-    use_llm = bool((req.answer or "").strip()) and quota.take("reflect", ip)
-    return await narrate.reflect(rec.get("company_name") or req.symbol, rule.title, rule.question, list(rule.hints), req.answer,
-                                 use_llm=use_llm)
 
 
 @app.on_event("shutdown")

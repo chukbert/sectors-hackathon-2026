@@ -62,19 +62,30 @@ export type ScanResult = {
 export type Holder = { name: string; pct: number; symbol: string | null };
 export type ChainLink = Holder & { of: string };
 
-export type Kritis = {
+// Lima sisi (30 cek ala Simply Wall St) — hasil per cek: true lolos, false tidak, null data Sectors tidak cukup.
+export type SfCheck = {
   id: string;
   title: string;
-  tone: "tanya" | "positif";
-  question: string;
-  hints: string[];
+  result: boolean | null;
+  note: string | null;
   values: { field: string; value: number | null }[];
   where: string;
-  cohort_total: number | null;
+  market_pass: number;
+};
+
+export type SfAxis = { id: string; label: string; blurb: string; checks: SfCheck[]; passed: number; assessed: number; total: number };
+
+export type Snowflake = {
+  axes: SfAxis[];
+  passed: number;
+  assessed: number;
+  total: number;
+  is_bank: boolean;
+  pays_dividend: boolean;
+  peer_group: string | null;
+  stats: { market_pe: number | null; yield_p25: number | null; yield_p75: number | null; market_eps_growth_fc: number | null; market_rev_growth_fc: number | null };
   universe_total: number;
-  cohort_examples: { symbol: string; name: string }[];
   src: Src;
-  values_src: Src;
 };
 
 export type Card = {
@@ -113,7 +124,7 @@ export type Card = {
   owners: { holders: Holder[]; free_float: number | null; group: { label: string; kind: string; chain: ChainLink[]; affiliates: string[] }; src: Src };
   peers: { symbol: string; name: string; is_self: boolean; revenue: number | null; earnings: number | null; net_margin: number | null; market_cap: number | null }[];
   peers_src: Src;
-  kritis: Kritis[];
+  snowflake: Snowflake;
   disclaimer: string;
 };
 
@@ -161,10 +172,6 @@ export async function search(q: string): Promise<{ results: { symbol: string; na
   return j(await fetch(`${BASE}/search?q=${encodeURIComponent(q)}`, { cache: "no-store" }));
 }
 
-export async function reflect(symbol: string, rule_id: string, answer: string): Promise<{ text: string; llm: boolean }> {
-  return j(await fetch(`${BASE}/reflect`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ symbol, rule_id, answer }) }));
-}
-
 // ------------------------------------------------------------- format angka (id-ID)
 
 const nf1 = new Intl.NumberFormat("id-ID", { maximumFractionDigits: 1 });
@@ -190,28 +197,6 @@ export function num(v: number | null | undefined): string {
   return nf0.format(v);
 }
 
-const FIELD_LABEL: Record<string, string> = {
-  revenue: "Pendapatan",
-  earnings: "Laba bersih",
-  net_profit_margin: "Margin laba bersih",
-  total_debt: "Total utang",
-  total_equity: "Modal sendiri",
-  operating_cash_flow: "Kas dari operasi",
-  payout_ratio: "Rasio dividen/laba",
-};
-
-export function fieldLabel(field: string): string {
-  const m = field.match(/^([a-z_]+)(?:\[(\d{4})\])?$/);
-  if (!m) return field;
-  const base = FIELD_LABEL[m[1]] ?? m[1];
-  return m[2] ? `${base} ${m[2]}` : base;
-}
-
-export function fieldValue(field: string, v: number | null): string {
-  if (field.startsWith("net_profit_margin") || field === "payout_ratio") return pct(v);
-  return rupiah(v);
-}
-
 // Porsi saham: di bawah 1% pakai 2 angka penting agar 0,04% tidak terbulatkan jadi "0%".
 export function share(v: number | null | undefined): string {
   if (v === null || v === undefined || Number.isNaN(v)) return "—";
@@ -224,4 +209,71 @@ export function share(v: number | null | undefined): string {
 export function rp(v: number | null | undefined): string {
   if (v === null || v === undefined || Number.isNaN(v)) return "—";
   return `Rp${nf0.format(v)}`;
+}
+
+// ------------------------------------------------------------- label & format field lima sisi
+
+const SF_LABEL: Record<string, string> = {
+  last_close_price: "Harga saham",
+  intrinsic_value: "Nilai wajar (Sectors)",
+  pe_ttm: "PE 12 bulan",
+  pe: "PE",
+  pe_peer_avg: "PE rata-rata industri",
+  pb: "PB",
+  pb_peer_avg: "PB rata-rata industri",
+  peg: "PEG",
+  forecast_eps_estimate: "Perkiraan laba/saham",
+  forecast_eps_growth: "Perkiraan pertumbuhan laba",
+  forecast_revenue_growth: "Perkiraan pertumbuhan pendapatan",
+  outstanding_shares: "Jumlah saham",
+  total_equity: "Modal sendiri",
+  total_assets: "Total aset",
+  total_debt: "Utang berbunga",
+  eps: "Laba/saham",
+  eps_growth: "Pertumbuhan laba/saham",
+  roe: "ROE",
+  roa: "ROA",
+  ebit: "Laba operasi (EBIT)",
+  current_liabilities: "Utang jangka pendek",
+  current_assets: "Aset lancar",
+  non_current_liabilities: "Utang jangka panjang",
+  current_ratio: "Rasio lancar",
+  debt_to_equity_ratio: "Utang/modal",
+  cash_flow_to_debt_ratio: "Kas operasi/utang",
+  interest_coverage_ratio: "EBIT/beban bunga",
+  non_performing_loan: "Kredit macet (NPL)",
+  gross_loan: "Total kredit",
+  loan_to_deposit_ratio: "LDR",
+  capital_adequacy_ratio: "CAR",
+  yield_ttm: "Imbal hasil dividen",
+  total_dividend: "Dividen/saham",
+  payout_ratio: "Rasio dividen/laba",
+};
+
+const SF_PER_SHARE = new Set(["last_close_price", "intrinsic_value", "eps", "total_dividend", "forecast_eps_estimate"]);
+const SF_TIMES = new Set(["pe_ttm", "pe", "pe_peer_avg", "pb", "pb_peer_avg", "peg", "current_ratio", "interest_coverage_ratio"]);
+const SF_PCT = new Set([
+  "eps_growth", "forecast_eps_growth", "forecast_revenue_growth", "roe", "roa", "yield_ttm", "payout_ratio",
+  "debt_to_equity_ratio", "cash_flow_to_debt_ratio", "loan_to_deposit_ratio", "capital_adequacy_ratio",
+]);
+
+function sfBase(field: string): [string, string | undefined] {
+  const m = field.match(/^([a-z_]+)(?:\[(\d{4})\])?$/);
+  return m ? [m[1], m[2]] : [field, undefined];
+}
+
+export function sfLabel(field: string): string {
+  const [base, year] = sfBase(field);
+  const label = SF_LABEL[base] ?? base;
+  return year ? `${label} ${year}` : label;
+}
+
+export function sfValue(field: string, v: number | null): string {
+  if (v === null || Number.isNaN(v)) return "—";
+  const [base] = sfBase(field);
+  if (SF_PER_SHARE.has(base)) return `${v < 0 ? "−" : ""}Rp${nf1.format(Math.abs(v))}`;
+  if (SF_TIMES.has(base)) return `${nf1.format(v)}×`;
+  if (SF_PCT.has(base)) return pct(v);
+  if (base === "outstanding_shares") return `${nf0.format(v)} lembar`;
+  return rupiah(v);
 }

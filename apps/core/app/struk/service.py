@@ -2,8 +2,8 @@
 
 Aturan keras:
 - Semua angka/pemilik/segmen berasal dari respons Sectors; setiap fakta membawa `src`.
-- LLM hanya: membaca struk → nama merek, menerjemahkan label segmen, dan menanggapi jawaban
-  pengguna di Mode Kritis — tanpa angka baru (lihat narrate.py).
+- LLM hanya: membaca struk → nama merek + harga baris, dan menerjemahkan label segmen —
+  tanpa angka baru (lihat narrate.py).
 - STRUK_SECTORS_OFF=1 mematikan akses Sectors: aplikasi harus kosong, bukan mengarang.
 """
 from __future__ import annotations
@@ -13,7 +13,7 @@ import os
 from typing import Any
 
 from ..store_client import STORE, StoreError
-from . import brands, rules, universe
+from . import brands, snowflake, universe
 from .universe import LATEST, YEARS
 
 SEG_ENDPOINT = "/sectors/v2/company/get-segments/{sym}/"
@@ -188,40 +188,6 @@ async def money_map(sym: str) -> dict[str, Any] | None:
             "src": _src(f"GET /v2/company/get-segments/{sym}/", "revenue_breakdown", resp)}
 
 
-# ---------------------------------------------------------------- kritis
-
-_COHORTS: dict[str, dict[str, Any]] = {}
-
-
-async def cohort(rule: rules.Rule) -> dict[str, Any]:
-    if rule.id not in _COHORTS:
-        resp = await _fetch(universe.SCREENER, rules.cohort_params(rule))
-        body = resp["data"] or {}
-        _COHORTS[rule.id] = {
-            "total": (body.get("pagination") or {}).get("total_count"),
-            "examples": [{"symbol": universe.bare(r["symbol"]), "name": r.get("company_name")}
-                         for r in body.get("results") or []],
-            "src": _src("GET /v2/companies/ (Screener)", None, resp, query=rule.where),
-        }
-    return _COHORTS[rule.id]
-
-
-async def kritis(u: dict[str, Any], sym: str) -> list[dict[str, Any]]:
-    rec = u["records"][sym]
-    out = []
-    for rule in rules.matches(rec):
-        c = await cohort(rule)
-        out.append({
-            "id": rule.id, "title": rule.title, "tone": rule.tone, "question": rule.question, "hints": list(rule.hints),
-            "values": [{"field": f, "value": _num(rec.get(f))} for f in rule.fields],
-            "where": rule.where, "cohort_total": c["total"], "universe_total": u["count"],
-            "cohort_examples": [e for e in c["examples"] if e["symbol"] != sym][:5],
-            "src": c["src"], "values_src": _matrix_src(u, ", ".join(rule.fields)),
-        })
-    # Kejanggalan dulu, pola positif belakangan.
-    return sorted(out, key=lambda k: (k["tone"] != "tanya", k["cohort_total"] or 0))
-
-
 # ---------------------------------------------------------------- kartu kenalan
 
 def _series(rec: dict[str, Any], field: str) -> list[dict[str, Any]]:
@@ -256,7 +222,7 @@ async def company_card(sym: str) -> dict[str, Any]:
     rec = u["records"].get(sym)
     if not rec:
         raise KeyError(sym)
-    money, crit = await asyncio.gather(money_map(sym), kritis(u, sym))
+    money = await money_map(sym)
     margin = _num(rec.get(f"net_profit_margin[{LATEST}]"))
     return {
         "symbol": sym,
@@ -287,7 +253,8 @@ async def company_card(sym: str) -> dict[str, Any]:
         "owners": owners_view(u, sym),
         "peers": peers(u, sym),
         "peers_src": _matrix_src(u, "sub_sector, market_cap, revenue, net_profit_margin"),
-        "kritis": crit,
+        "snowflake": {**snowflake.evaluate(u["records"], sym),
+                      "src": _matrix_src(u, f"intrinsic_value, pe/pb/peg[{LATEST}], eps[{universe.HIST_YEAR}..{LATEST}], total_dividend, rasio utang, forecast_*[{universe.FORECAST_YEAR}] …")},
     }
 
 

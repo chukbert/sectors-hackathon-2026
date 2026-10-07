@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from app.struk import brands, rules, service, universe
+from app.struk import brands, service, universe
 
 SNAP = Path(__file__).resolve().parents[3] / "fixtures" / "snapshot"
 
@@ -25,13 +25,6 @@ def test_matrix_covers_whole_exchange(records):
     icbp = records["ICBP"]
     assert icbp["company_name"].startswith("Indofood CBP")
     assert icbp[f"revenue[{universe.LATEST}]"] > 0 and "sub_sector" in icbp
-
-
-@pytest.mark.parametrize("rule", rules.RULES, ids=lambda r: r.id)
-def test_local_rule_matches_sectors_screener_count(records, rule):
-    """Evaluasi lokal per emiten harus sepakat dengan ekspresi `where` yang dijalankan Sectors."""
-    sectors_total = _load(SNAP / "cohorts" / f"{rule.id}.json")["pagination"]["total_count"]
-    assert sum(1 for r in records.values() if rule.check(r)) == sectors_total
 
 
 def test_brand_lookup_tolerates_receipt_spelling():
@@ -105,7 +98,7 @@ def test_quota_daily_cap_is_global(monkeypatch):
 
     quota.reset()
     monkeypatch.setattr(quota, "DAILY_CAP", 3)
-    assert [quota.take("reflect", f"10.0.0.{i}", now=5000.0) for i in range(4)] == [True, True, True, False]
+    assert [quota.take("scan_text", f"10.0.0.{i}", now=5000.0) for i in range(4)] == [True, True, True, False]
     quota.reset()
 
 

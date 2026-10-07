@@ -2,9 +2,8 @@
 
 1. read_receipt   : foto/teks struk → daftar merek (+ tebakan simbol, ditandai dugaan).
 2. explain_money  : terjemahkan label segmen Sectors ke bahasa awam + 1 kalimat cara cari uang.
-3. reflect        : tanggapi jawaban pengguna atas Pertanyaan Kritis, berpijak pada data yang diberikan.
 
-Penjaga: keluaran (2) dan (3) ditolak bila memuat angka (semua angka di UI datang dari Sectors)
+Penjaga: keluaran (2) ditolak bila memuat angka (semua angka di UI datang dari Sectors)
 atau frasa rekomendasi (verify.BANNED_RE). Gagal/LLM mati → fallback deterministik, bukan karangan.
 """
 from __future__ import annotations
@@ -187,36 +186,3 @@ async def explain_money(symbol: str, name: str, money: dict[str, Any]) -> dict[s
     _EXPLAIN_CACHE[key] = result
     return result
 
-
-REFLECT_PROMPT = """Kamu pendamping belajar yang sabar untuk pemula pasar saham. Pengguna sedang melihat perusahaan {name}.
-Data dari Sectors menunjukkan pola: "{title}".
-Pertanyaan yang diajukan ke pengguna: "{question}"
-Kemungkinan penjelasan umum (BUKAN fakta tentang {name}): {hints}
-Jawaban pengguna: "{answer}"
-
-Tanggapi dalam 2-4 kalimat Bahasa Indonesia santai:
-- hargai bagian jawaban yang masuk akal, luruskan yang keliru dengan lembut;
-- sebutkan satu kemungkinan lain yang belum terpikir;
-- akhiri dengan SATU pertanyaan lanjutan atau saran apa yang bisa dicek sendiri (mis. "baca bagian beban di laporan tahunan").
-ATURAN: DILARANG menulis angka apa pun. DILARANG mengklaim fakta spesifik tentang {name} yang tidak ada di atas.
-DILARANG menyarankan beli/jual/tahan saham."""
-
-
-async def reflect(name: str, title: str, question: str, hints: list[str], answer: str,
-                  use_llm: bool = True) -> dict[str, Any]:
-    answer = (answer or "").strip()[:600]
-    fallback = ("Pertanyaan bagus untuk dipikirkan. Beberapa kemungkinan umum: " + "; ".join(hints)
-                + ". Coba cek bagian beban dan catatan laporan tahunan perusahaan untuk melihat mana yang paling cocok.")
-    if not answer or not use_llm:
-        return {"text": fallback, "llm": False}
-    try:
-        out = await GATEWAY.chat("struk_reflect", [{"role": "user", "content": REFLECT_PROMPT.format(
-            name=name, title=title, question=question, hints="; ".join(hints), answer=answer)}])
-        text = out["text"].strip()
-        if DIGIT_RE.search(text) or BANNED_RE.search(text):
-            log.warning("reflect ditolak penjaga: %s", text[:200])
-            return {"text": fallback, "llm": False, "guarded": True}
-        return {"text": text, "llm": True}
-    except (LLMUnavailable, LLMFatal) as exc:
-        log.warning("reflect fallback: %s", exc)
-        return {"text": fallback, "llm": False}

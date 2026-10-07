@@ -243,34 +243,6 @@
 .sj-table td.neg { color: var(--tang-ink); }
 .sj-scroll { overflow-x: auto; }
 
-/* ================= mode kritis ================= */
-.sj-kritis { display: grid; gap: 14px; }
-.sj-q { border: 1px solid var(--line); border-radius: 12px; padding: 18px 18px 18px 20px; background: var(--card); position: relative; }
-.sj-q::before { content: ""; position: absolute; left: -1px; top: 18px; bottom: 18px; width: 3px; border-radius: 0 3px 3px 0; background: var(--tang); }
-.sj-q.positif::before { background: var(--blue); }
-.sj-q .tone { font-family: var(--mono); font-size: 11.5px; color: var(--tang-ink); letter-spacing: 0.04em; }
-.sj-q.positif .tone { color: var(--blue); }
-.sj-q h4 { margin: 2px 0 10px; font-size: 17px; letter-spacing: -0.01em; }
-.sj-q .vals { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
-.sj-q .val { font-size: 12.5px; border: 1px solid var(--line); border-radius: 6px; padding: 4px 8px; }
-.sj-q .val b { font-variant-numeric: tabular-nums; }
-.sj-q .cohort { font-size: 14px; color: var(--text-2); margin: 4px 0 10px; }
-.sj-q .cohort .count { font-family: var(--mono); font-weight: 600; color: var(--ink); background: var(--lime); padding: 0 5px; border-radius: 3px; }
-.sj-q .cohort .sj-sym { margin: 0 2px; }
-.sj-q details > summary { cursor: pointer; font-size: 12px; color: var(--muted); font-family: var(--mono); }
-.sj-q details > summary:hover { color: var(--blue); }
-.sj-q code { display: block; margin-top: 8px; font-family: var(--mono); font-size: 12px; background: var(--ink); color: var(--lime); padding: 10px 12px; border-radius: 8px; overflow-x: auto; white-space: pre; }
-.sj-q .ask { font-weight: 700; margin: 16px 0 8px; font-size: 15.5px; }
-.sj-q textarea { width: 100%; min-height: 72px; border: 1px solid var(--line-2); border-radius: 8px; padding: 10px; font: inherit; font-size: 14px; resize: vertical; background: var(--card); color: var(--text); }
-.sj-q textarea:focus { outline: none; border-color: var(--blue); }
-.sj-q .row { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
-.sj-btn { border: 1px solid var(--blue); background: var(--blue); color: #fff !important; border-radius: 8px; padding: 8px 13px; font-size: 13.5px; font-weight: 600; cursor: pointer; }
-.sj-btn.ghost { background: transparent; color: var(--text) !important; border-color: var(--line-2); }
-.sj-btn.ghost:hover { border-color: var(--ink); }
-.sj-btn:disabled { opacity: 0.45; cursor: not-allowed; }
-.sj-reply { margin-top: 12px; background: var(--ink); color: var(--white); border-radius: 10px; padding: 12px 14px; font-size: 14.5px; }
-.sj-reply::before { content: "Pendamping"; display: block; font-family: var(--mono); font-size: 11px; color: var(--lime); margin-bottom: 4px; }
-.sj-hints { margin: 10px 0 0; padding-left: 18px; font-size: 14px; color: var(--text-2); }
 
 /* ================= sumber ================= */
 .sj-src { display: block; margin-top: 12px; }
@@ -332,3 +304,40 @@
   .sj-spend-main { padding: 14px 12px; }
   .sj-spend-kpis { grid-template-columns: 1fr; gap: 8px; }
 }
+
+/* ================= 06 lima sisi ================= */
+.sj-sf { display: grid; gap: 8px; align-items: center; }
+@media (min-width: 820px) { .sj-sf { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; } }
+.sj-sf-sum .lead { margin: 0 0 12px; font-size: 15.5px; }
+.sj-sf-sum .count { font-family: var(--mono); font-weight: 600; background: var(--lime); padding: 0 6px; border-radius: 3px; }
+.sj-sf-axes { display: grid; gap: 6px; }
+.sj-sf-axis { display: grid; grid-template-columns: 110px 1fr auto; align-items: center; gap: 10px; text-align: left; border: 1px solid var(--line); background: var(--card); border-radius: 8px; padding: 9px 12px; cursor: pointer; }
+.sj-sf-axis:hover { border-color: var(--line-2); }
+.sj-sf-axis.on { border-color: var(--blue); box-shadow: inset 3px 0 0 var(--blue); }
+.sj-sf-axis .name { font-weight: 700; font-size: 14px; }
+.sj-sf-axis .n { font-family: var(--mono); font-size: 13px; font-variant-numeric: tabular-nums; }
+.sj-sf-axis .dots { display: flex; gap: 4px; }
+.sj-sf-axis .dots i { width: 12px; height: 12px; border-radius: 3px; background: var(--line); }
+.sj-sf-axis .dots i.pass { background: var(--blue); }
+.sj-sf-axis .dots i.fail { background: var(--tang-soft); border: 1px solid var(--tang); }
+.sj-sf-axis .dots i.none { background: transparent; border: 1px dashed var(--line-2); }
+.sj-sf-note { font-size: 13px; color: var(--text-2); margin: 12px 0 0; max-width: 760px; }
+.sj-sf-detail { margin-top: 18px; border-top: 1px solid var(--line); padding-top: 14px; }
+.sj-sf-detail .blurb { margin: 0 0 10px; color: var(--text-2); font-size: 14px; }
+.sj-sf-checks { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.sj-sf-check { display: grid; grid-template-columns: 26px 1fr; gap: 10px; border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; background: var(--card); }
+.sj-sf-check .mark { width: 24px; height: 24px; border-radius: 6px; display: grid; place-items: center; font-weight: 800; font-size: 13px; }
+.sj-sf-check.pass .mark { background: var(--blue); color: #fff; }
+.sj-sf-check.fail .mark { background: var(--tang-soft); color: var(--tang-ink); border: 1px solid var(--tang); }
+.sj-sf-check.none .mark { border: 1px dashed var(--line-2); color: var(--muted); }
+.sj-sf-check .t { font-weight: 700; font-size: 14.5px; }
+.sj-sf-check.none .t { color: var(--text-2); }
+.sj-sf-check .vals { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0; }
+.sj-sf-check .val { font-size: 12.5px; border: 1px solid var(--line); border-radius: 6px; padding: 3px 8px; }
+.sj-sf-check .val b { font-variant-numeric: tabular-nums; }
+.sj-sf-check .mkt { font-size: 12.5px; color: var(--muted); }
+.sj-sf-check details > summary { cursor: pointer; font-size: 12px; color: var(--muted); font-family: var(--mono); margin-top: 4px; }
+.sj-sf-check details > summary:hover { color: var(--blue); }
+.sj-sf-check code { display: block; margin-top: 8px; font-family: var(--mono); font-size: 12px; background: var(--ink); color: var(--lime); padding: 10px 12px; border-radius: 8px; overflow-x: auto; white-space: pre; }
+.sj-sf-check .dev { font-size: 12.5px; color: var(--text-2); margin: 6px 0 0; }
+@media (max-width: 600px) { .sj-sf-axis { grid-template-columns: 92px 1fr auto; padding: 8px 10px; } .sj-sf-axis .dots i { width: 10px; height: 10px; } }

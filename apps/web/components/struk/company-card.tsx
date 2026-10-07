@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import type { Card, Kritis } from "@/lib/struk";
-import { fieldLabel, fieldValue, num, pct, reflect, rupiah, share } from "@/lib/struk";
+import type { Card } from "@/lib/struk";
+import { num, pct, rupiah, share } from "@/lib/struk";
 import { SrcNote, Term } from "./bits";
 import { MoneySankey, TrendChart } from "./charts";
+import { FiveSides } from "./five-sides";
 
 const id1 = (v: number) => v.toLocaleString("id-ID", { maximumFractionDigits: 1 });
 
@@ -157,21 +157,15 @@ export function CompanyCard({ card, onPick }: { card: Card; onPick: (symbol: str
         </section>
       )}
 
-      <section className="sj-block">
-        <BlockHead no="05" title="Pertanyaan kritis">
-          Pola di angka {card.symbol} yang layak dipertanyakan. Tiap pola adalah rumus yang dijalankan Sectors ke seluruh bursa, jadi kamu tahu ada berapa
-          perusahaan lain dengan pola yang sama. Kami tidak memberi jawaban — kami mengajakmu berpikir.
-        </BlockHead>
-        {card.kritis.length ? (
-          <div className="sj-kritis">
-            {card.kritis.map((k) => (
-              <KritisCard key={k.id} k={k} symbol={card.symbol} onPick={onPick} />
-            ))}
-          </div>
-        ) : (
-          <div className="sj-empty">Tidak ada pola mencolok dari 9 pola yang kami periksa. Bukan berarti sempurna — hanya tidak tertangkap rumus kami.</div>
-        )}
-      </section>
+      {card.snowflake && (
+        <section className="sj-block">
+          <BlockHead no="05" title="Lima sisi: 30 cek fundamental">
+            Harga, prospek, rekam jejak, kesehatan, dan dividen {card.symbol} — masing-masing 6 pertanyaan ya/tidak atas angka Sectors. Makin penuh bentuknya,
+            makin banyak syarat yang terpenuhi. Pilih satu sisi untuk melihat angka dan rumus setiap cek.
+          </BlockHead>
+          <FiveSides sf={card.snowflake} symbol={card.symbol} />
+        </section>
+      )}
     </article>
   );
 }
@@ -270,78 +264,6 @@ function Owners({ card, onPick }: { card: Card; onPick: (symbol: string) => void
       )}
       <SrcNote src={o.src} />
     </section>
-  );
-}
-
-function KritisCard({ k, symbol, onPick }: { k: Kritis; symbol: string; onPick: (s: string) => void }) {
-  const [answer, setAnswer] = useState("");
-  const [reply, setReply] = useState<string | null>(null);
-  const [busy, setBusy] = useState(false);
-  const [hints, setHints] = useState(false);
-
-  async function send() {
-    setBusy(true);
-    try {
-      const r = await reflect(symbol, k.id, answer);
-      setReply(r.text);
-    } catch (e) {
-      setReply(`Gagal menghubungi pendamping: ${(e as Error).message}`);
-    } finally {
-      setBusy(false);
-    }
-  }
-
-  const examples = k.cohort_examples.filter((e) => e.symbol !== symbol).slice(0, 4);
-  return (
-    <div className={`sj-q ${k.tone}`}>
-      <div className="tone">{k.tone === "positif" ? "pola positif" : "pola yang perlu ditanyakan"}</div>
-      <h4>{k.title}</h4>
-      <div className="vals">
-        {k.values.map((v) => (
-          <span key={v.field} className="val">
-            {fieldLabel(v.field)} <b>{fieldValue(v.field, v.value)}</b>
-          </span>
-        ))}
-      </div>
-      {k.cohort_total !== null && (
-        <div className="cohort">
-          Pola ini dimiliki <span className="count">{num(k.cohort_total)}</span> dari {num(k.universe_total)} perusahaan di bursa
-          {examples.length > 0 && (
-            <>
-              , misalnya
-              {examples.map((e) => (
-                <button key={e.symbol} className="sj-sym ghost" onClick={() => onPick(e.symbol)} title={e.name}>
-                  {e.symbol}
-                </button>
-              ))}
-            </>
-          )}
-        </div>
-      )}
-      <details>
-        <summary>lihat rumus yang dijalankan Sectors</summary>
-        <code>{k.where}</code>
-        <SrcNote src={k.src} label="sumber hitungan seluruh bursa" />
-      </details>
-      <div className="ask">{k.question}</div>
-      <textarea value={answer} onChange={(e) => setAnswer(e.target.value)} placeholder="Tulis tebakanmu dulu — tidak ada jawaban salah" />
-      <div className="row">
-        <button className="sj-btn" onClick={send} disabled={busy || !answer.trim()}>
-          {busy ? "Memikirkan…" : "Kirim jawabanku"}
-        </button>
-        <button className="sj-btn ghost" onClick={() => setHints((h) => !h)}>
-          {hints ? "Sembunyikan petunjuk" : "Beri petunjuk"}
-        </button>
-      </div>
-      {hints && (
-        <ul className="sj-hints">
-          {k.hints.map((h) => (
-            <li key={h}>{h}</li>
-          ))}
-        </ul>
-      )}
-      {reply && <div className="sj-reply">{reply}</div>}
-    </div>
   );
 }
 

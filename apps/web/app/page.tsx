@@ -192,7 +192,7 @@ export default function StrukPage() {
               </h1>
               <p className="sub">
                 Foto struk belanjamu — atau satu produk saja. Kami cari perusahaan terbuka di balik tiap merek, lalu tunjukkan dari mana uangnya datang, siapa pemiliknya, dan
-                pertanyaan kritis yang layak kamu ajukan.
+                bagaimana hasil 30 cek fundamentalnya.
               </p>
               <ol className="sj-steps">
                 <li>

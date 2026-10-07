@@ -3,7 +3,7 @@ simpan respons asli ke fixtures/snapshot/ supaya demo & juri bisa jalan dengan 0
 
   python tools/harvest.py --dry              # rencana + estimasi kredit (0 kredit)
   python tools/harvest.py --budget 80        # jalankan; berhenti sebelum melewati anggaran
-  python tools/harvest.py --only matrix      # matrix | segments | cohorts
+  python tools/harvest.py --only matrix      # matrix | segments
   python tools/harvest.py --only segments --all-segments --dry   # seluruh emiten bersegmen yang belum di snapshot
 
 Store harus berjalan dalam mode live (IDXMACA_STORE_MODE=live) untuk panen sungguhan.
@@ -21,7 +21,7 @@ import httpx
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "apps" / "core"))
 
-from app.struk import brands, rules, universe  # noqa: E402
+from app.struk import brands, universe  # noqa: E402
 
 OUT = ROOT / "fixtures" / "snapshot"
 STORE = "http://127.0.0.1:8787"
@@ -80,9 +80,6 @@ def plan(only: str | None, all_segments: bool = False) -> list[tuple[str, str, s
             syms = [s for s in syms + rest if s not in done]
         for sym in syms:
             out.append(("segments", sym, seg_endpoint(sym), {}))
-    if only in (None, "cohorts"):
-        for r in rules.RULES:
-            out.append(("cohorts", r.id, universe.SCREENER, rules.cohort_params(r)))
     return out
 
 
@@ -90,7 +87,7 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry", action="store_true")
     ap.add_argument("--budget", type=int, default=80)
-    ap.add_argument("--only", choices=["matrix", "segments", "cohorts"])
+    ap.add_argument("--only", choices=["matrix", "segments"])
     ap.add_argument("--all-segments", action="store_true", help="semua emiten bersegmen, bukan hanya katalog merek")
     ap.add_argument("--sleep", type=float, default=0.0, help="jeda antar panggilan miss (hindari 429)")
     args = ap.parse_args()
@@ -146,7 +143,7 @@ def main() -> int:
 
     rest = plan(args.only, args.all_segments)
     if rest:
-        print(f"Segmen ({sum(1 for c in rest if c[0] == 'segments')}) + kohort aturan kritis ({sum(1 for c in rest if c[0] == 'cohorts')}):")
+        print(f"Segmen ({len(rest)}):")
     for category, name, endpoint, params in rest:
         fetch(category, name, endpoint, params)
 

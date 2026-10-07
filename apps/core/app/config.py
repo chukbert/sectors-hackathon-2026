@@ -34,7 +34,6 @@ ROLES: dict[str, RoleConfig] = {
     # Struk Jadi Saham (model default google/gemini-3.8-flash, effort low)
     "struk_parse": RoleConfig("low", 0.0, 2400),
     "struk_explain": RoleConfig("low", 0.2, 2000),
-    "struk_reflect": RoleConfig("low", 0.3, 1600),
 }
 
 

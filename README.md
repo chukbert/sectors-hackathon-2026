@@ -5,13 +5,13 @@
 **Kamu sudah jadi pelanggan mereka. Sekarang kenali perusahaannya.**
 
 Foto struk belanja — atau satu kemasan produk — dan lihat perusahaan terbuka di balik tiap merek:<br>
-dari mana uangnya datang, siapa pemiliknya, dan pertanyaan kritis yang layak kamu ajukan.
+dari mana uangnya datang, siapa pemiliknya, dan bagaimana hasil 30 cek fundamentalnya.
 
 ![Sectors API v2](https://img.shields.io/badge/data-Sectors%20API%20v2-2b4bff?style=flat-square)
 ![Track](https://img.shields.io/badge/track-Market%20Intelligence-c8f046?style=flat-square&labelColor=0b0d12)
 ![Runtime credits](https://img.shields.io/badge/kredit%20runtime-0-ff7a1a?style=flat-square)
 ![AI numbers](https://img.shields.io/badge/angka%20dari%20AI-0-0b0d12?style=flat-square)
-![Tests](https://img.shields.io/badge/tes-115%20lulus-2b4bff?style=flat-square)
+![Tests](https://img.shields.io/badge/tes-113%20lulus-2b4bff?style=flat-square)
 [![CI](https://github.com/chukbert/sectors-hackathon-2026/actions/workflows/ci.yml/badge.svg)](https://github.com/chukbert/sectors-hackathon-2026/actions/workflows/ci.yml)
 
 ### 🌐 Coba langsung: **[sectors.muflichlabs.online](https://sectors.muflichlabs.online)** — tanpa daftar, tanpa install
@@ -25,12 +25,13 @@ dari mana uangnya datang, siapa pemiliknya, dan pertanyaan kritis yang layak kam
 ## Untuk juri: 60 detik
 
 - **Masalah.** Jutaan orang membeli Indomie, Pepsodent, dan pulsa Telkomsel tiap minggu tanpa tahu bahwa pemilik merek itu perusahaan terbuka yang bisa mereka pelajari. Aplikasi saham dibuat untuk orang yang *sudah* paham pasar.
-- **Yang kami bangun.** Foto struk belanja (atau satu kemasan) → setiap merek dipetakan ke emitennya → **kartu kenalan** yang 100% dibangun dari data Sectors: ukuran perusahaan dalam bahasa awam, peta uang (segmen pendapatan), rantai pemilik sampai grup konglomerasi, dan **pertanyaan kritis** yang dihitung Sectors ke seluruh bursa.
+- **Yang kami bangun.** Foto struk belanja (atau satu kemasan) → setiap merek dipetakan ke emitennya → **kartu kenalan** yang 100% dibangun dari data Sectors: ukuran perusahaan dalam bahasa awam, peta uang (segmen pendapatan), rantai pemilik sampai grup konglomerasi, dan **lima sisi**: 30 cek fundamental ya/tidak (harga, prospek, rekam jejak, kesehatan, dividen) ala model terbuka Simply Wall St.
 - **Sectors adalah inti.** Jalankan dengan `STRUK_SECTORS_OFF=1` dan semua endpoint menolak: *tidak ada angka tanpa Sectors* (diuji otomatis). Setiap angka di layar bisa dibuka asal-usulnya: endpoint, field, query, waktu ambil.
-- **Pemakaian Sectors yang tidak biasa.** Seluruh bursa (962 emiten × 77 field) diambil hanya dengan **25 panggilan Screener**, memanfaatkan `include_query_values`. Total 258 kredit untuk seluruh proyek (termasuk peta uang untuk semua 219 emiten yang punya data segmen); **0 kredit per pengguna**. 9 pola anomali adalah ekspresi `where` Sectors, dan rumus lokal kami dikunci tes agar sama persis dengan `total_count` Sectors.
+- **Pemakaian Sectors yang tidak biasa.** Seluruh bursa (962 emiten × 77 field) diambil hanya dengan **25 panggilan Screener**, memanfaatkan `include_query_values`. Total 258 kredit untuk seluruh proyek (termasuk peta uang untuk semua 219 emiten yang punya data segmen); **0 kredit per pengguna**.
 - **Uang belanjamu mengalir ke siapa.** Harga tiap baris dibaca dari strukmu (bisa kamu koreksi), dijumlah per emiten dan per grup pemilik: *"Dari belanjamu Rp57.100, Rp28.000 (49%) masuk ke Grup Salim lewat ROTI dan ICBP"* — lengkap dengan Sankey dompet → emiten → grup, dan "dari setiap Rp100 pendapatan, laba Rp X" dari Sectors. Hitung ulang tanpa AI, tanpa kredit.
 - **AI dipagari kode, bukan imbauan.** AI hanya membaca merek dan harga baris dari strukmu — tidak pernah angka perusahaan. Keluarannya ditolak bila memuat angka atau saran beli/jual. Pada **set uji held-out** (52 baris, ditulis sebelum katalog diperluas): **83% terpetakan benar dan 0 dari 18 merek non-emiten dikarang**; setelah katalog diperluas 98%, dengan satu tebakan AI yang keliru tetap ditandai "dugaan" (tabel di [§3](#ukur-sendiri-seberapa-jujur-pembacaan-struknya)).
-- **Bisa diverifikasi.** Demo live di atas · `docker compose up --build` · 115 tes + CI · semua respons Sectors mentah ada di `fixtures/snapshot/`.
+- **Lima sisi, 0 kredit tambahan.** 30 cek fundamental, masing-masing sebuah ekspresi `where` Sectors yang ditampilkan ke pengguna, dan pembandingnya (median bursa, median industri, persentil dividen) dihitung dari matriks yang sama. Setiap cek menyebut *"lolos oleh N dari 962 emiten"*; bank otomatis memakai 4 cek kesehatan khusus bank. Penyimpangan dari model asli ditulis terbuka di layar.
+- **Bisa diverifikasi.** Demo live di atas · `docker compose up --build` · 113 tes + CI · semua respons Sectors mentah ada di `fixtures/snapshot/`.
 
 ---
 
@@ -41,7 +42,7 @@ dari mana uangnya datang, siapa pemiliknya, dan pertanyaan kritis yang layak kam
 ![Foto kemasan Sari Roti menjadi kartu kenalan ROTI](docs/img/demo-produk.png)
 
 Foto bungkus **Sari Roti Sandwich Cokelat** dari tangan → AI membaca mereknya → katalog mencocokkan ke **ROTI** → dicek ke data Sectors → kartu kenalan PT Nippon Indosari Corpindo Tbk.
-Dari setiap Rp100 pendapatannya, hanya sekitar **Rp6,9** yang jadi laba bersih — dan dividennya **259%** dari laba. Itu yang layak ditanyakan.
+Dari setiap Rp100 pendapatannya, hanya sekitar **Rp6,9** yang jadi laba bersih — dan dividennya **259%** dari laba, jadi cek lima sisi *"dividen ≤ 90% laba"* tidak lolos.
 
 ### 🧾 Foto satu struk → peta pemilik belanjaanmu
 
@@ -77,7 +78,7 @@ Setiap kartu dibangun 100% dari data Sectors. Contoh di bawah: **ICBP** (Indomie
 </tr>
 <tr>
 <td><b>03 · Siapa pemiliknya?</b><br><sub>Porsi publik + rantai pengendali: ICBP ← INDF ← First Pacific → Grup Salim</sub><br><img src="docs/img/card-b3.png"></td>
-<td><b>05 · Pertanyaan kritis</b><br><sub>Pola dihitung Sectors ke seluruh bursa — "dimiliki 181 dari 962 perusahaan"</sub><br><img src="docs/img/card-b5.png"></td>
+<td><b>05 · Lima sisi</b><br><sub>30 cek fundamental ya/tidak — "lolos oleh 257 dari 962 emiten"</sub><br><img src="docs/img/card-b5-limasisi.png"></td>
 </tr>
 </table>
 
@@ -97,7 +98,7 @@ Jutaan orang Indonesia membeli Indomie, Pepsodent, pulsa Telkomsel, dan GoFood s
 
 **Struk Jadi Saham** memakai benda yang semua orang punya — struk belanja, atau bungkus produk di meja — sebagai pintu masuk itu.
 
-**Insight turunan, bukan data mentah** (track Market Intelligence): 9 detektor anomali berbasis aritmatika Screener + ukuran kohort seluruh bursa, peringkat dari 962 emiten, rasio "per Rp100 pendapatan", perbandingan se-industri, dan rantai pengendali yang ditelusuri dari data pemegang saham.
+**Insight turunan, bukan data mentah** (track Market Intelligence): 30 cek fundamental lima sisi dengan pembanding median bursa dan industri, peringkat dari 962 emiten, rasio "per Rp100 pendapatan", perbandingan se-industri, dan rantai pengendali yang ditelusuri dari data pemegang saham.
 
 ## 2. Cara kerjanya
 
@@ -108,7 +109,7 @@ flowchart LR
     C --> D{"Ada di data<br>Sectors?"}
     D -- tidak --> E["'bukan emiten'<br>(Aqua, Mie Sedaap…)"]
     D -- ya --> F["Kartu Kenalan<br><b>100% data Sectors</b>"]
-    F --> G["01 Ukuran · 02 Peta uang<br>03 Pemilik · 04 Sejenis<br>05 Pertanyaan kritis"]
+    F --> G["01 Ukuran · 02 Peta uang<br>03 Pemilik · 04 Sejenis<br>05 Lima sisi"]
     style B fill:#0b0d12,color:#c8f046,stroke:#0b0d12
     style F fill:#2b4bff,color:#fff,stroke:#2b4bff
     style E fill:#ff7a1a,color:#0b0d12,stroke:#ff7a1a
@@ -120,25 +121,24 @@ flowchart LR
 | 02 Peta uang | Diagram Sankey: segmen pendapatan → biaya → laba (rugi ditandai tangerine) | `/v2/company/get-segments/{symbol}/` |
 | 03 Siapa pemiliknya | Pemegang saham, porsi publik, rantai pengendali (ICBP ← 80,5% INDF ← 50,1% First Pacific → Grup Salim) | `major_shareholders`, `affiliates` dari Screener |
 | 04 Teman sejenis | Perbandingan dengan emiten se-industri | Matriks Screener |
-| 05 Pertanyaan kritis | Pola anomali + berapa emiten lain di bursa dengan pola sama + pertanyaan Sokratik | **Ekspresi aritmatika `where` Screener** |
+| 05 Lima sisi | Radar 5 sisi × 6 cek ya/tidak, angka setiap cek, rumus `where` setara, dan "lolos oleh N dari 962 emiten" | Matriks Screener tahap 2 (valuasi, forecast, riwayat 2020–2025, kesehatan, bank) |
 
-### Pertanyaan kritis = rumus yang dijalankan Sectors ke seluruh bursa
+### Lima sisi = 30 cek fundamental, 0 kredit tambahan
 
-Setiap pola adalah ekspresi `where` Screener Sectors, ditampilkan apa adanya ke pengguna sebagai bukti:
+Kerangkanya diadaptasi dari [model analisis terbuka Simply Wall St](https://github.com/SimplyWallSt/Company-Analysis-Model): 5 sisi × 6 pertanyaan ya/tidak. Semua angka dari Sectors; setiap cek punya ekspresi `where` setara yang ditampilkan di layar dan bisa dijalankan ulang di Screener (`apps/core/app/struk/snowflake.py`).
 
-| Pola | `where` |
-|---|---|
-| Penjualan naik, tapi laba turun | `revenue[2025] > revenue[2024] and earnings[2025] < earnings[2024]` |
-| Laba turun dua tahun berturut-turut | `earnings[2025] < earnings[2024] and earnings[2024] < earnings[2023]` |
-| Utang lebih besar dari modal sendiri | `total_debt[2025] > total_equity[2025]` |
-| Dividen lebih besar dari laba | `payout_ratio > 1` |
-| Rugi di tahun 2025 | `earnings[2025] < 0` |
-| Untung di atas kertas, kas operasi minus | `operating_cash_flow[2025] < 0 and earnings[2025] > 0` |
-| Margin laba bersih anjlok > 30% | `net_profit_margin[2024] > 0 and net_profit_margin[2025] < net_profit_margin[2024] * 0.7` |
-| Laba naik tiga tahun berturut-turut | `earnings[2023] > 0 and earnings[2024] > earnings[2023] and earnings[2025] > earnings[2024]` |
-| Penjualan melonjak > 20% | `revenue[2024] > 0 and revenue[2025] > revenue[2024] * 1.2` |
+| Sisi | Contoh cek | `where` (ICBP) |
+|---|---|---|
+| Harga | Harga ≥20% di bawah nilai wajar Sectors | `intrinsic_value > 0 and last_close_price < intrinsic_value * 0.8` |
+| Prospek | Perkiraan pertumbuhan laba di atas median bursa | `forecast_eps_growth[2026] > 0.1974` |
+| Rekam jejak | ROA di atas median kelompoknya | `roa[2025] > 0.049` (median industri Processed Foods) |
+| Kesehatan | Laba operasi > 5× beban bunga | `interest_coverage_ratio[2025] > 5` |
+| Dividen | Dividen ≤ 90% laba | `payout_ratio > 0 and payout_ratio <= 0.9` |
 
-`pagination.total_count` dari Sectors menjadi konteks kohort ("pola ini dimiliki **181** dari 962 perusahaan"). Pengguna menulis tebakannya; AI pendamping menanggapi **tanpa angka dan tanpa saran beli/jual** (dijaga kode, bukan imbauan).
+- **Hasil, bukan nilai.** Kartu menulis *"ICBP lolos 23 dari 30 cek"* dan setiap cek menyebut berapa emiten lain yang juga lolos. Kami tidak memberi skor bintang atau saran beli/jual.
+- **Data kosong ≠ gagal.** Cek tanpa data Sectors ditandai "tidak bisa dinilai" (–), tidak dihitung tidak lolos. Prospek hanya tersedia untuk ±10% emiten yang diliput analis.
+- **Bank dinilai sebagai bank.** Utang bank sebagian besar adalah simpanan nasabah, jadi 6 cek kesehatan diganti 4 cek bank: NPL < 2%, LDR < 110%, aset < 20× modal, CAR > 8%.
+- **Penyimpangan dari model asli, ditulis di layar:** data Sectors mulai ±2020, jadi cek "10 tahun" menjadi 5 tahun. Sectors tidak menyediakan suku bunga bebas risiko, jadi cek pertama Prospek memakai syarat alternatif model asli (diperkirakan untung). Perkiraan ROE dan dividen 3 tahun didekati dengan perkiraan laba 2026. PEG memakai pertumbuhan historis Sectors, dan perusahaan rugi tidak bisa lolos PEG.
 
 ## 3. Kenapa Sectors adalah inti, bukan hiasan
 
@@ -153,7 +153,6 @@ Peran AI sengaja sempit:
 |---|---|---|
 | `struk_parse` | baca nama merek dari foto/teks | skema JSON ketat; injeksi di struk diabaikan |
 | `struk_explain` | terjemahkan label segmen Sectors + 1 kalimat ringkasan | output ditolak bila ada digit atau frasa rekomendasi |
-| `struk_reflect` | tanggapi jawaban pengguna | output ditolak bila ada digit atau frasa rekomendasi → fallback deterministik |
 
 Model: `google/gemini-3.8-flash` via OpenRouter, `reasoning_effort=low`.
 
@@ -185,7 +184,7 @@ where = symbol like '%' or revenue[2022] > -1e18 or revenue[2023] > -1e18 or …
 limit = 200, order_by = symbol, include_query_values = true      → 5 halaman × 5 grup field = 25 kredit
 ```
 
-Kebenaran rumus lokal dikunci tes: untuk **setiap** pola, evaluasi Python atas matriks harus sama persis dengan `total_count` yang dihitung Sectors (`test_local_rule_matches_sectors_screener_count`, 9 pola).
+Hasil lima sisi dikunci tes terhadap angka asli di snapshot (`apps/core/tests/test_snowflake.py`): misalnya ICBP lolos cek nilai wajar dan PEG, BBCA dinilai dengan cek kesehatan bank, dan perusahaan rugi tidak bisa lolos PEG.
 
 ### Anggaran kredit (saldo awal tim 490)
 
@@ -195,7 +194,7 @@ Kebenaran rumus lokal dikunci tes: untuk **setiap** pola, evaluasi Python atas m
 | Harvest matriks seluruh bursa | 10 | 10 |
 | Harvest segmen pendapatan, tahap 1 (43 emiten konsumen) | 43 | 43 |
 | Harvest segmen pendapatan, tahap 2 (176 emiten sisanya — semua 219 yang punya segmen di Sectors) | 176 | 176 |
-| Harvest kohort 9 pola | 9 | 9 |
+| Harvest kohort 9 pola anomali (fitur "pertanyaan kritis" sudah dihapus; respons mentah tetap di `fixtures/snapshot/cohorts/`) | 9 | 9 |
 | Probe cakupan data untuk 30 cek ala Snowflake (`tools/probe_snowflake.py`) | 1 | 1 |
 | Harvest matriks tahap 2: 44 field baru (valuasi, forecast, riwayat 2020–2025, kesehatan, bank) untuk 30 cek ala Snowflake | 15 | 15 |
 | **Runtime aplikasi (setiap scan, kartu, pertanyaan)** | **0** | **0** |
@@ -211,12 +210,13 @@ Aturan tim: setiap panggilan Sectors baru dicatat di tabel anggaran di atas **da
 |---|---|---|---|---|
 | 1 | **Matriks seluruh bursa** | `where = symbol like '%' or <field> > -1e18 or …` + `include_query_values=true`, `limit=200`. Cabang `symbol like '%'` membuat semua emiten lolos, dan cabang `OR` lain hanya ada agar nilainya ikut dikembalikan. | **25** untuk 962 emiten × 77 field (termasuk daftar lengkap pemegang saham). Menambah 44 field baru hanya menambah 3 grup = **15 kredit**, bukan 962. | ≥962 per kelompok field (satu per emiten), atau 7.696 bila memakai Company Report 8 seksi |
 | 2 | **Probe cakupan data** | Trik yang sama, 15 field kandidat sekaligus. Hitung berapa persen yang terisi dari 200 baris (`tools/probe_snowflake.py`). Hasil: data mulai sekitar 2020, forecast analis hanya ±15% emiten, `intrinsic_value`/`peg`/`pe_peer_avg` ±90%. Karena itu harvest berikutnya tidak membayar kolom tahun 2015–2019 yang kosong, dan cek 10 tahun Snowflake diganti 5 tahun dengan jujur. | **1** untuk 15 field | 15 (satu query hitung per field) |
-| 3 | **Ukuran kohort dari `total_count`** | Satu `where` per pola anomali, `limit=10`. `pagination.total_count` = jumlah emiten se-bursa dengan pola itu, dan 10 baris teratas jadi contoh. Rumus lokal kemudian dikunci tes agar sama dengan angka Sectors, sehingga pola berikutnya bisa dihitung lokal dari matriks. | **1** per pola | Menarik semua baris lalu menghitung sendiri (5 kredit per pola) |
+| 3 | **Ukuran kohort dari `total_count`** | Satu `where`, `limit=10`. `pagination.total_count` = jumlah emiten se-bursa yang memenuhi rumus itu, dan 10 baris teratas jadi contoh. Dipakai untuk 9 pola anomali di versi awal (fitur itu sudah dihapus). Sekarang ini cara termurah untuk mencek silang hitungan lokal *"lolos oleh N dari 962"* di lima sisi. | **1** per rumus | Menarik semua baris lalu menghitung sendiri (5 kredit per pola) |
 | 4 | **Cek daftar dulu, baru ambil detail** | `list_companies_with_segments` (1 kredit) → hanya 219 emiten yang benar-benar punya segmen yang dipanggil. Menurut docs Sectors, respons **404 tetap ditagih**, jadi mencoba semua simbol itu mahal. | **1 + 219** | 962 bila semua emiten dicoba |
 | 5 | **Jangan pakai `q=`** | Bahasa alami di Screener memakan 3 kredit. Ekspresi `where` terstruktur 1 kredit dan hasilnya bisa diulang persis. | 1 | 3 |
 | 6 | **Hindari Company Report penuh** | Report dihitung 1 kredit **per seksi** (default 8). Semua yang kami butuhkan sudah ada di matriks Screener, jadi kami tidak memanggilnya sama sekali. | 0 | 8 per emiten |
 | 7 | **Runtime nol kredit** | Store read-through cache + ledger. Semua respons mentah disimpan di `fixtures/snapshot/` lalu di-*seed*, dan aplikasi berjalan `offline`. | **0** per pengguna | 1+ per tampilan |
-| 8 | **Dry-run dan batas anggaran** | Setiap script punya `--dry` (estimasi, 0 kredit) dan `--budget` (berhenti sebelum melewati anggaran). | — | — |
+| 8 | **Analisis turunan dihitung lokal** | 30 cek lima sisi dan semua pembandingnya (median PE bursa, median pertumbuhan perkiraan, persentil imbal hasil dividen, median ROA dan pertumbuhan laba per industri) dihitung dari matriks yang sudah dibayar. Hitungan *"lolos oleh N dari 962"* untuk 34 cek juga lokal. Rumusnya ditulis sebagai `where` Sectors, jadi bisa dicek silang 1 kredit per cek bila perlu. | **0** | 34 kueri `total_count` + 8 per emiten bila memakai Company Report |
+| 9 | **Dry-run dan batas anggaran** | Setiap script punya `--dry` (estimasi, 0 kredit) dan `--budget` (berhenti sebelum melewati anggaran). | — | — |
 
 **Kapan kredit terpakai** (tabel penagihan di docs Sectors): respons **2xx dan 404 ditagih**. Respons 400, 401/403, 429, dan 5xx **gratis**. Jebakan yang kami temui:
 - Filter `symbol in [...]` tanpa suffix `.JK` menghasilkan 200 kosong, dan **tetap ditagih**.
@@ -228,11 +228,12 @@ Aturan tim: setiap panggilan Sectors baru dicatat di tabel anggaran di atas **da
 
 ```
 apps/web    Next.js 14 + ECharts   — halaman Struk Jadi Saham (/), proxy /api/core/*
-apps/core   FastAPI                — app/struk/: universe (matriks), rules (9 pola), brands (katalog),
-                                     service (kartu, pemilik, kohort, keranjang), narrate (3 peran AI)
+apps/core   FastAPI                — app/struk/: universe (matriks), snowflake (30 cek),
+                                     brands (katalog),
+                                     service (kartu, pemilik, keranjang), narrate (2 peran AI)
 apps/store  FastAPI + SQLite       — Sectors Call Store: read-through cache, ledger kredit, mode offline,
                                      seed snapshot, passthrough /sectors/v2/* dengan biaya kanonis
-fixtures/snapshot   respons Sectors asli (matrix/, segments/, cohorts/)
+fixtures/snapshot   respons Sectors asli (matrix/, segments/; cohorts/ dari fitur yang sudah dihapus)
 tools/harvest.py    pengambil snapshot (--dry dulu, --budget, --sleep)
 ```
 
@@ -270,7 +271,7 @@ IDXMACA_STORE_MODE=live .venv/bin/python tools/harvest.py --budget 70 --sleep 3
 Tes:
 
 ```bash
-make test        # 115 tes Store + Core, termasuk tes Struk Jadi Saham terhadap snapshot Sectors asli
+make test        # 113 tes Store + Core, termasuk tes Struk Jadi Saham terhadap snapshot Sectors asli
 ```
 
 CI (GitHub Actions) menjalankan tes yang sama, ditambah typecheck dan build web serta build image Docker, di setiap push.
@@ -280,7 +281,8 @@ CI (GitHub Actions) menjalankan tes yang sama, ditambah typecheck dan build web 
 - Katalog merek dikurasi manual (86 emiten, 269 merek). Merek di luar katalog bisa ditebak AI tapi ditandai **dugaan**; merek milik perusahaan tertutup (Aqua, Mie Sedaap, Sosro) jujur ditandai **bukan emiten**.
 - Harga di "aliran uang" berasal dari struk pengguna dan bisa salah baca; karena itu harga selalu bisa dikoreksi. Nominal itu adalah belanja konsumen, bukan pendapatan perusahaan.
 - Peta uang tersedia untuk ke-219 emiten yang punya data segmen di Sectors (seluruhnya sudah kami ambil); emiten lain menampilkan kotak kosong yang jujur, bukan angka karangan.
-- Snapshot bertanggal 6 Oktober 2026, tahun buku 2025.
+- Lima sisi adalah adaptasi, bukan salinan Snowflake Simply Wall St: riwayat 5 tahun (bukan 10), perkiraan analis hanya untuk ±10% emiten dan hanya 2026, dan nilai wajar memakai `intrinsic_value` Sectors (bukan DCF Simply Wall St).
+- Snapshot bertanggal 6–7 Oktober 2026, tahun buku 2025.
 - Alat informasi dan analisis, **bukan rekomendasi investasi**.
 
 ## 8. Riwayat
