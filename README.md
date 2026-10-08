@@ -11,7 +11,7 @@ dalam bahasa sehari-hari: seberapa besar, untung atau rugi, siapa pemiliknya, da
 ![Track](https://img.shields.io/badge/track-Market%20Intelligence-c8f046?style=flat-square&labelColor=0b0d12)
 ![Runtime credits](https://img.shields.io/badge/kredit%20runtime-0-ff7a1a?style=flat-square)
 ![LLM](https://img.shields.io/badge/LLM-tidak%20dipakai-0b0d12?style=flat-square)
-![Tests](https://img.shields.io/badge/tes-95%20lulus-2b4bff?style=flat-square)
+![Tests](https://img.shields.io/badge/tes-42%20lulus-2b4bff?style=flat-square)
 [![CI](https://github.com/chukbert/sectors-hackathon-2026/actions/workflows/ci.yml/badge.svg)](https://github.com/chukbert/sectors-hackathon-2026/actions/workflows/ci.yml)
 
 ### 🌐 Coba langsung: **[sectors.muflichlabs.online](https://sectors.muflichlabs.online)** — tanpa daftar, tanpa install
@@ -31,7 +31,7 @@ dalam bahasa sehari-hari: seberapa besar, untung atau rugi, siapa pemiliknya, da
 - **Pemakaian Sectors yang tidak biasa.** Seluruh bursa (962 emiten × 77 field) diambil hanya dengan **25 panggilan Screener**, memanfaatkan `include_query_values`. Total 258 kredit untuk seluruh proyek (termasuk peta uang untuk semua 219 emiten yang punya data segmen); **0 kredit per pengguna**.
 - **Lima sisi, 0 kredit tambahan.** Setiap cek adalah sebuah ekspresi `where` Sectors yang ditampilkan ke pengguna. Pembandingnya (median bursa, median industri, persentil dividen) dihitung dari matriks yang sama. Bank otomatis memakai 4 cek kesehatan khusus bank. Penyimpangan dari model asli ditulis terbuka di layar.
 - **Tanpa AI generatif sama sekali.** Tidak ada LLM, tidak ada API key selain Sectors (dan itu pun tidak dibutuhkan saat runtime). Semua kalimat di kartu adalah templat tetap yang diisi angka Sectors, dan semua penjelasan istilah kami tulis sendiri. Jadi tidak ada satu kata pun yang bisa dikarang mesin, dan kartu terbuka dalam waktu kurang dari satu detik.
-- **Bisa diverifikasi.** Demo live di atas · `docker compose up --build` · 95 tes + CI · semua respons Sectors mentah ada di `fixtures/snapshot/`.
+- **Bisa diverifikasi.** Demo live di atas · `docker compose up --build` · 42 tes + CI · semua respons Sectors mentah ada di `fixtures/snapshot/`.
 
 ---
 
@@ -146,7 +146,7 @@ Kerangkanya diadaptasi dari [model analisis terbuka Simply Wall St](https://gith
 Tidak ada sumber angka cadangan.
  Ini diuji otomatis (`test_sectors_off_kills_the_app`).
 
-**Tanpa LLM.** Versi awal memakai LLM untuk membaca struk, lalu untuk menerjemahkan label segmen peta uang. Keduanya sudah dibuang. Sekarang semua teks di kartu adalah templat tetap atau data asli Sectors. Nama segmen di peta uang tampil apa adanya dari laporan (bahasa Inggris), dan halaman mengatakannya. Kartu dibangun murni dari data dan aturan yang bisa dibaca di kode (`apps/core/app/struk/`). Kode IDXMACA lama di repo memang memuat integrasi LLM opsional (OpenRouter), tetapi tidak dipanggil oleh satu pun endpoint `/v1/struk/*` dan tidak terjangkau di demo publik.
+**Tanpa LLM.** Versi awal memakai LLM untuk membaca struk, lalu untuk menerjemahkan label segmen peta uang. Keduanya sudah dibuang. Sekarang semua teks di kartu adalah templat tetap atau data asli Sectors. Nama segmen di peta uang tampil apa adanya dari laporan (bahasa Inggris), dan halaman mengatakannya. Kartu dibangun murni dari data dan aturan yang bisa dibaca di kode (`apps/core/app/struk/`). Repo ini tidak lagi memuat kode LLM sama sekali.
 
 ## 4. Pemakaian Sectors API yang hemat (dan tidak biasa)
 
@@ -242,7 +242,6 @@ make dev                        # Store :8787 + Core :8788 + Web :3000
 ```
 
 - `IDXMACA_STORE_MODE=offline` (default) → hanya snapshot, 0 kredit Sectors. `SECTORS_API_KEY` tidak dibutuhkan untuk menjalankan aplikasi.
-- Demo publik (`PUBLIC_DEMO=1`): proxy hanya membuka endpoint `/v1/struk/*`.
 - Tidak perlu API key apa pun: Paham Emiten tidak memakai LLM, dan data Sectors sudah ada di snapshot.
 - Uji copot Sectors: `STRUK_SECTORS_OFF=1 make dev`.
 
@@ -256,7 +255,7 @@ IDXMACA_STORE_MODE=live .venv/bin/python tools/harvest.py --budget 70 --sleep 3
 Tes:
 
 ```bash
-make test        # 95 tes Store + Core, termasuk tes kartu dan lima sisi terhadap snapshot Sectors asli
+make test        # 42 tes (23 Store + 19 Core), termasuk tes kartu dan lima sisi terhadap snapshot Sectors asli
 ```
 
 CI (GitHub Actions) menjalankan tes yang sama, ditambah typecheck dan build web serta build image Docker, di setiap push.
@@ -273,6 +272,6 @@ CI (GitHub Actions) menjalankan tes yang sama, ditambah typecheck dan build web 
 
 ## 8. Riwayat
 
-Repo ini berawal dari **IDXMACA** (asisten multi-agen untuk analis yang memakai LLM). Kodenya masih ada di repo (halaman `/idxmaca`, endpoint `/v1/chat` dan `/v1/runs/*`, `packages/`), tetapi **bukan bagian dari Paham Emiten**: tidak dipakai kartu emiten, tidak punya docs lagi, dan di demo publik ditutup. Kami beralih karena IDXMACA menghabiskan kredit per pertanyaan; arsitektur Store-nya dipakai ulang sehingga runtime menjadi 0 kredit. Daftar modul lama ada di [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md#kode-lama-yang-masih-ada-di-repo).
+Repo ini berawal dari **IDXMACA** (asisten multi-agen untuk analis yang memakai LLM). Kami beralih karena IDXMACA menghabiskan kredit per pertanyaan; arsitektur Store-nya dipakai ulang sehingga runtime menjadi 0 kredit. Seluruh kode IDXMACA (agen, LLM, halaman `/idxmaca`, endpoint `/v1/chat` dan `/v1/runs/*`, mode fixture Store) sudah dihapus dari pohon kode dan hanya tersisa di riwayat git.
 
 Versi berikutnya, **Struk Jadi Saham**, memakai foto struk belanja sebagai pintu masuk: AI membaca merek dan harga, lalu menunjukkan ke emiten mana uang belanja mengalir. Setelah menetapkan pengguna kami (pemegang akun sekuritas yang pasif), kami membuang seluruh alur struk: pemindai foto dan teks, peta pemilik keranjang, aliran uang belanja, kuota AI, dan set evaluasi pembacaan struk. Setelah itu LLM terakhir (penerjemah label peta uang) juga dibuang. Pengguna kami tidak kesulitan menemukan perusahaannya. Mereka kesulitan menilai perusahaan itu. Yang tersisa adalah bagian yang menjawab itu: kartu emiten. Pencarian lewat nama merek juga dibuang karena pengguna kami sudah mengenal kode saham.

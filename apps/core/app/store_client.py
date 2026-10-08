@@ -1,14 +1,11 @@
-"""Klien Store Service — agen TIDAK PERNAH menembak Sectors langsung (docs/STORE.md)."""
+"""Klien Store Service — Core TIDAK PERNAH menembak Sectors langsung (docs/STORE.md)."""
 from __future__ import annotations
 
-import logging
 from typing import Any
 
 import httpx
 
 from .config import SETTINGS
-
-log = logging.getLogger("idxmaca.core.store")
 
 
 class StoreError(RuntimeError):
@@ -25,18 +22,6 @@ class StoreClient:
 
     async def aclose(self) -> None:
         await self._client.aclose()
-
-    async def lookup(self, endpoint: str, params: dict[str, Any] | None = None) -> dict[str, Any]:
-        r = await self._client.post("/v1/store/lookup", json={"endpoint": endpoint, "params": params or {}})
-        if r.status_code >= 400:
-            raise StoreError(r.status_code, r.text[:300])
-        return r.json()
-
-    async def lookup_many(self, nodes: list[tuple[str, dict[str, Any]]]) -> list[dict[str, Any]]:
-        out = []
-        for endpoint, params in nodes:
-            out.append(await self.lookup(endpoint, params))
-        return out
 
     async def fetch(self, endpoint: str, params: dict[str, Any] | None = None) -> dict[str, Any]:
         r = await self._client.post("/v1/store/fetch", json={"endpoint": endpoint, "params": params or {}})

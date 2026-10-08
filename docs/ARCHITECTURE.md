@@ -82,7 +82,7 @@ Tes `apps/core/tests/test_snowflake.py` mengunci hasil terhadap angka asli di sn
 | `GET /v1/struk/status` | Status `sectors_off`, statistik Store, disclaimer |
 | `GET /v1/health` | Health check |
 
-Demo publik (`PUBLIC_DEMO=1`): route proxy web hanya meneruskan `v1/struk/*` dan `v1/health`.
+Route proxy web (`apps/web/app/api/core/[...path]`) hanya meneruskan GET ke Core, jadi browser cukup bicara ke satu origin.
 
 **Store (`:8787`)**: lihat [STORE.md](STORE.md).
 
@@ -101,12 +101,6 @@ Tidak ada endpoint khusus. Browser mengambil kartu tiap kode lewat `/v1/struk/co
 
 `tools/harvest.py` mengambil snapshot lewat Store (mode live). Saat start, Store membaca `fixtures/snapshot/**/*.json` dan mengisi cache tanpa mencatat kredit, sehingga aplikasi berjalan penuh di mode `offline` dengan 0 kredit.
 
-## Kode lama yang masih ada di repo
+## Riwayat
 
-Repo ini berawal dari **IDXMACA**, asisten multi-agen yang memakai LLM (OpenRouter). Kodenya masih ada dan **tidak dipakai Paham Emiten**:
-
-- Core: `catalog`, `charts`, `compiler`, `compute`, `executor`, `export`, `ledger`, `llm`, `memory`, `panels`, `pipelines_*`, `plan_builder`, `prompts`, `resolve`, `router_agent`, `rules`, `writer` di `apps/core/app/`, serta endpoint `/v1/sessions`, `/v1/chat`, `/v1/runs/*`, `/v1/export/*` di `main.py`. Dari `verify.py` hanya konstanta `DISCLAIMER` yang dipakai Paham Emiten.
-- Web: `apps/web/app/idxmaca/` dan komponen `messages`, `pieces`, `shell`.
-- Lain-lain: `packages/prompts`, `packages/evals`, `mockup/`, `apps/store/app/fixture_provider.py` bersama `fixtures/sectors/` (mode Store `fixture`).
-
-Di demo publik (`PUBLIC_DEMO=1`) halaman `/idxmaca` dialihkan ke beranda dan route proxy menolak endpoint selain `v1/struk/*` dan `v1/health`, jadi kode lama tidak terjangkau dari luar.
+Repo ini berawal dari **IDXMACA**, asisten multi-agen berbasis LLM. Seluruh kodenya (agen, LLM, halaman `/idxmaca`, mode fixture Store) sudah dihapus dan hanya tersisa di riwayat git. Yang dipakai ulang hanya arsitektur Store (cache read-through + ledger kredit).

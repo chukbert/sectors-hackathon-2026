@@ -13,9 +13,6 @@ node_modules/
 .next/
 out/
 
-# Eval artifacts
-packages/evals/last_results/
-
 # Env & secrets — repo wajib bersih dari key
 .env
 .env.local

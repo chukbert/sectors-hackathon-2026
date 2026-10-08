@@ -12,7 +12,6 @@
 **/.pytest_cache
 *.tsbuildinfo
 docs/img
-mockup
 
 # Hasil build web dari laptop (tools/deploy.sh) harus ikut ke image prebuilt.
 !.deploy/web/.next

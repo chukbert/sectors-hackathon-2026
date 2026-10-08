@@ -2,7 +2,7 @@ name: struk-jadi-saham
 
 # Satu perintah untuk juri:  docker compose up --build  →  http://127.0.0.1:3000
 # Mode offline: semua data dari snapshot Sectors asli di fixtures/snapshot (0 kredit).
-# Paham Emiten tidak memakai LLM. OPENROUTER_API_KEY (opsional) hanya untuk halaman lama /idxmaca (ditutup di demo publik).
+# Paham Emiten tidak memakai LLM dan tidak butuh key apa pun untuk berjalan.
 
 services:
   store:
@@ -30,14 +30,7 @@ services:
     restart: unless-stopped
     environment:
       IDXMACA_STORE_URL: http://store:8787
-      IDXMACA_LLM_MODE: ${IDXMACA_LLM_MODE:-auto}
-      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
-      OPENROUTER_BASE_URL: ${OPENROUTER_BASE_URL:-https://openrouter.ai/api/v1}
-      IDXMACA_MODEL: ${IDXMACA_MODEL:-google/gemini-3.8-flash}
       STRUK_SECTORS_OFF: ${STRUK_SECTORS_OFF:-0}
-      IDXMACA_DATA_DIR: /data
-    volumes:
-      - struk-data:/data
     depends_on:
       store:
         condition: service_healthy
@@ -54,7 +47,6 @@ services:
     restart: unless-stopped
     environment:
       CORE_URL: http://core:8788
-      PUBLIC_DEMO: ${PUBLIC_DEMO:-0}
     ports:
       - "${WEB_BIND:-127.0.0.1:3000}:3000"
     depends_on:

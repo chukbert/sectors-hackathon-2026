@@ -8,8 +8,7 @@ COPY apps/store/requirements.txt /tmp/requirements.txt
 RUN pip install --no-cache-dir -r /tmp/requirements.txt
 
 COPY apps/store/app ./apps/store/app
-COPY fixtures ./fixtures
-COPY packages/prompts ./packages/prompts
+COPY fixtures/snapshot ./fixtures/snapshot
 
 ENV IDXMACA_DATA_DIR=/data \
     IDXMACA_STORE_MODE=offline

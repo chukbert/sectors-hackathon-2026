@@ -1,2 +1,2 @@
-"""IDXMACA Core — router → planner → executor → compute → verifier → writer."""
-__version__ = "0.1.0"
+"""Paham Emiten Core — merakit kartu emiten dari data Sectors (app/struk), tanpa LLM."""
+__version__ = "1.0.0"

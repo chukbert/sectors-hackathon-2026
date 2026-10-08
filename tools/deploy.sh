@@ -37,7 +37,7 @@ fi
 echo "→ paket kode + hasil build"
 tar --exclude=.git --exclude=.venv --exclude=.data --exclude=.logs --exclude=node_modules --exclude=.next \
     --exclude=__pycache__ --exclude=.pytest_cache --exclude=.env --exclude='*.tsbuildinfo' \
-    --exclude=./docs --exclude=./mockup --exclude=./.deploy --exclude=./apps/web \
+    --exclude=./docs --exclude=./.deploy --exclude=./apps/web \
     -cf "$WORK/pkg.tar" .
 tar -rf "$WORK/pkg.tar" apps/web/Dockerfile.prebuilt .deploy/web
 xz -T0 -6 "$WORK/pkg.tar"
@@ -65,12 +65,12 @@ echo "→ rakit di server + cek checksum"
 retry 4 "${SSH[@]}" "cd /tmp/paham-deploy && cat part_* > pkg.tar.xz && echo \"$SUM  pkg.tar.xz\" | sha256sum -c --quiet"
 
 # Hanya variabel demo; Paham Emiten tidak memakai LLM, jadi tidak ada key yang dikirim.
-printf 'IDXMACA_STORE_MODE=offline\nPUBLIC_DEMO=1\nWEB_BIND=127.0.0.1:%s\n' "$WEB_PORT" > "$WORK/demo.env"
+printf 'IDXMACA_STORE_MODE=offline\nWEB_BIND=127.0.0.1:%s\n' "$WEB_PORT" > "$WORK/demo.env"
 retry 4 "${SSH[@]}" "cat > /tmp/paham-deploy/demo.env" < "$WORK/demo.env"
 
 echo "→ pasang + jalankan (VPS hanya menyalin hasil build)"
 # Satu sesi pendek; hasilnya ditulis ke log di server supaya tetap jalan walau SSH putus.
-retry 3 "${SSH[@]}" "cd $DIR 2>/dev/null || mkdir -p $DIR; cd $DIR && rm -rf apps packages fixtures tools .deploy && \
+retry 3 "${SSH[@]}" "cd $DIR 2>/dev/null || mkdir -p $DIR; cd $DIR && rm -rf apps fixtures tools .deploy && \
   tar -xJf /tmp/paham-deploy/pkg.tar.xz -C $DIR && mv /tmp/paham-deploy/demo.env $DIR/.env && chmod 600 $DIR/.env && \
   nohup sh -c '$COMPOSE up -d --build --remove-orphans > /tmp/paham-deploy/up.log 2>&1; echo EXIT=\$? >> /tmp/paham-deploy/up.log' >/dev/null 2>&1 &"
 

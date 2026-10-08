@@ -1,9 +1,9 @@
-"""Store Service API — read-through cache wajib (docs/STORE.md).
+"""Store Service API — cache read-through wajib (docs/STORE.md).
 
-POST /v1/store/fetch       jalur utama (hit → 0 kredit; miss → tembak + simpan)
-POST /v1/store/lookup      cek kering gratis untuk estimasi planner
+POST /v1/store/fetch       jalur utama (hit → 0 kredit; miss → tembak + simpan, hanya mode live)
+POST /v1/store/lookup      cek kering gratis: sudah ada di Store atau belum
 POST /v1/store/invalidate  bust cache
-GET  /v1/store/stats       hit rate + kredit hemat (bahan demo)
+GET  /v1/store/stats       hit rate + kredit terpakai/hemat
 """
 from __future__ import annotations
 
@@ -11,6 +11,7 @@ import asyncio
 import json
 import logging
 import time
+from pathlib import Path
 from typing import Any
 
 from fastapi import FastAPI, HTTPException
@@ -18,17 +19,15 @@ from pydantic import BaseModel, Field
 
 from .config import SETTINGS
 from .db import StoreDB
-from .fixture_provider import respond as fixture_respond
-from .keys import canonical_public, canonical_key, clamp_params, credit_cost, normalize_path
+from .keys import canonical_key, canonical_public, credit_cost, normalize_params, normalize_path
 from .live_routes import translate
-from .live_shapes import normalize as normalize_live_shape
 from .sectors_client import SectorsClient, SectorsError
-from .ttl import data_kind, ttl_seconds
+from .ttl import ttl_seconds
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s %(message)s")
-log = logging.getLogger("idxmaca.store")
+log = logging.getLogger("paham.store")
 
-app = FastAPI(title="IDXMACA Store Service", version="0.1.0")
+app = FastAPI(title="Paham Emiten Store", version="1.0.0")
 db = StoreDB(SETTINGS.db_path)
 sectors = SectorsClient(SETTINGS)
 _inflight: dict[str, asyncio.Future] = {}
@@ -79,13 +78,11 @@ async def _fetch_live(endpoint: str, params: dict, key: str, ttl: int) -> tuple[
             "error": "live_route_unavailable",
             "endpoint": normalize_path(endpoint),
             "params": params,
-            "detail": "Endpoint internal ini belum dipetakan ke path resmi Sectors; permintaan tidak dikirim agar tidak membuang kredit (fail-closed).",
+            "detail": "Hanya path resmi /sectors/v2/... yang diteruskan ke Sectors; permintaan tidak dikirim agar tidak membuang kredit (fail-closed).",
         }, 0, now
     live_endpoint, live_params = route
     status, body = await sectors.get(live_endpoint, live_params)
     credits = credit_cost(endpoint, params, status, body)
-    if 200 <= status < 300:
-        body = normalize_live_shape(endpoint, params, body)
     if status == 404:
         db.put(key, "GET", endpoint, params, body, status, credits, SETTINGS.negative_ttl_s, now, origin="live")
     elif 200 <= status < 300:
@@ -93,54 +90,28 @@ async def _fetch_live(endpoint: str, params: dict, key: str, ttl: int) -> tuple[
     return status, body, credits, now
 
 
-async def _fetch_via_fixture(endpoint: str, params: dict, key: str, ttl: int) -> tuple[int, Any, int, float]:
-    result = fixture_respond(endpoint, params)
-    now = time.time()
-    if result is None:
-        log.info("fixture miss: %s %s", normalize_path(endpoint), params)
-        raise HTTPException(status_code=501, detail={
-            "error": "fixture_unavailable",
-            "endpoint": normalize_path(endpoint),
-            "params": params,
-            "detail": "Endpoint belum punya fixture pada mode demo. Jalankan mode live dengan SECTORS_API_KEY untuk data nyata.",
-        })
-    status, body = result
-    if status == 200:
-        db.put(key, "GET", endpoint, params, body, status, 0, ttl, now, origin="fixture")
-    return status, body, 0, now
-
-
 def _lookup_state(endpoint: str, params: dict) -> dict:
-    clamped, warnings, error = clamp_params(endpoint, params)
-    key = canonical_key(endpoint, clamped)
+    params = normalize_params(params)
+    key = canonical_key(endpoint, params)
     row = db.get(key)
-    est = credit_cost(endpoint, clamped)
-    demo = _mode() in ("fixture", "offline")
-    route = None if demo else translate(endpoint, clamped)
-    if not demo and route is None:
-        warnings = warnings + ["endpoint belum dipetakan ke path live Sectors — akan dilewati saat approve (fail-closed, 0 kredit)"]
+    offline = _mode() == "offline"
+    route = translate(endpoint, params)
     out = {
-        **canonical_public(endpoint, clamped),
+        **canonical_public(endpoint, params),
         "cache_key": key,
-        "warnings": warnings,
-        "invalid": bool(error),
-        "error": error,
-        "est_credits_live": 0 if demo else est,
+        "est_credits_live": 0 if offline else credit_cost(endpoint, params),
         "live_path": route[0] if route else None,
-        "live_ready": True if demo else route is not None,
-        "data_kind": data_kind(endpoint),
+        "live_ready": route is not None,
         "ttl_s": ttl_seconds(endpoint, SETTINGS.default_ttl_s),
-        "demo_mode": demo,
         "mode": _mode(),
     }
-    usable = row and db.is_fresh(row) and not (row.get("origin") != "live" and _mode() == "live")
-    if usable:
+    if row and db.is_fresh(row):
         out.update({"hit": True, "fresh": True, "fetched_at": row["fetched_at"], "expires_at": row["expires_at"],
                     "http_status": row["http_status"], "credits_spent": 0, "est_credits_live": 0,
                     "origin": row.get("origin")})
     elif row:
         out.update({"hit": True, "fresh": False, "fetched_at": row["fetched_at"], "expires_at": row["expires_at"],
-                    "http_status": row["http_status"], "est_credits_live": est})
+                    "http_status": row["http_status"], "est_credits_live": 0 if offline else credit_cost(endpoint, params)})
     else:
         out.update({"hit": False, "fresh": False, "fetched_at": None, "expires_at": None})
     return out
@@ -148,26 +119,26 @@ def _lookup_state(endpoint: str, params: dict) -> dict:
 
 @app.post("/v1/store/fetch")
 async def fetch(req: FetchRequest):
-    clamped, warnings, error = clamp_params(req.endpoint, req.params)
-    if error:
-        raise HTTPException(status_code=400, detail={"error": "invalid_params", "detail": error, "warnings": warnings})
-    key = canonical_key(req.endpoint, clamped)
+    params = normalize_params(req.params)
+    key = canonical_key(req.endpoint, params)
     path = normalize_path(req.endpoint)
     ttl = ttl_seconds(req.endpoint, SETTINGS.default_ttl_s)
 
     row = db.get(key)
-    if row and db.is_fresh(row) and not (row.get("origin") != "live" and _mode() == "live"):
+    if row and db.is_fresh(row):
         db.touch(key)
         spent_original = int(row.get("credits_spent") or 0)
         if spent_original > 0:
             db.record_saving(key, spent_original)
-        return {"data": json.loads(row["response"]), **_provenance("store-hit", row["fetched_at"], 0, key, row["http_status"], warnings)}
+        return {"data": json.loads(row["response"]), **_provenance("store-hit", row["fetched_at"], 0, key, row["http_status"], [])}
 
     if _mode() == "offline":
         if row:
-            return {"data": json.loads(row["response"]), **_provenance("store-hit-stale", row["fetched_at"], 0, key, row["http_status"], warnings + ["mode offline: memakai entri kedaluwarsa"])}
-        raise HTTPException(status_code=503, detail={"error": "offline_no_cache", "endpoint": path, "params": clamped,
+            return {"data": json.loads(row["response"]), **_provenance("store-hit-stale", row["fetched_at"], 0, key, row["http_status"], ["mode offline: memakai entri kedaluwarsa"])}
+        raise HTTPException(status_code=503, detail={"error": "offline_no_cache", "endpoint": path, "params": params,
                                                     "detail": "Mode offline: belum ada di Store, data tidak dikarang."})
+    if not sectors.configured:
+        raise HTTPException(status_code=503, detail={"error": "no_api_key", "detail": "Mode live butuh SECTORS_API_KEY."})
 
     async with _inflight_lock:
         fut = _inflight.get(key)
@@ -180,25 +151,15 @@ async def fetch(req: FetchRequest):
 
     if not leader:
         status, body, credits, now = await fut
-        return {"data": body, **_provenance("sectors-live" if credits and _mode() != "fixture" else "store-hit", now, credits, key, status, warnings + ["single-flight: menunggu penerbangan yang sama"])}
+        return {"data": body, **_provenance("sectors-live" if credits else "store-hit", now, credits, key, status, ["single-flight: menunggu penerbangan yang sama"])}
 
     try:
-        if _mode() == "fixture" or (_mode() == "auto" and not sectors.configured):
-            status, body, credits, now = await _fetch_via_fixture(req.endpoint, clamped, key, ttl)
-            source, origin = ("fixture", "fixture")
-        else:
-            try:
-                status, body, credits, now = await _fetch_live(req.endpoint, clamped, key, ttl)
-                source, origin = "sectors-live", "live"
-            except SectorsError as exc:
-                if SETTINGS.allow_fixture_fallback and _mode() == "auto":
-                    log.warning("live gagal (%s), fallback ke fixture", exc.message)
-                    status, body, credits, now = await _fetch_via_fixture(req.endpoint, clamped, key, ttl)
-                    source, origin = "fixture", "fixture-fallback"
-                else:
-                    raise HTTPException(status_code=502, detail={"error": "sectors_unreachable", "detail": exc.message}) from exc
+        try:
+            status, body, credits, now = await _fetch_live(req.endpoint, params, key, ttl)
+        except SectorsError as exc:
+            raise HTTPException(status_code=502, detail={"error": "sectors_unreachable", "detail": exc.message}) from exc
         fut.set_result((status, body, credits, now))
-        return {"data": body, **_provenance(source, now, credits, key, status, warnings, origin)}
+        return {"data": body, **_provenance("sectors-live", now, credits, key, status, [], "live")}
     except HTTPException as exc:
         fut.set_exception(exc)
         raise
@@ -235,11 +196,7 @@ async def invalidate(req: InvalidateRequest):
     if req.older_than:
         deleted += db.delete_older_than(req.older_than)
     if req.endpoint:
-        clamped, warnings, error = clamp_params(req.endpoint, req.params or {})
-        if error:
-            raise HTTPException(status_code=400, detail={"error": "invalid_params", "detail": error})
-        key = canonical_key(req.endpoint, clamped)
-        deleted += 1 if db.delete(key) else 0
+        deleted += 1 if db.delete(canonical_key(req.endpoint, req.params or {})) else 0
     return {"deleted": deleted}
 
 
@@ -260,13 +217,11 @@ async def keys():
 
 @app.get("/v1/health")
 async def health():
-    return {"ok": True, "service": "idxmaca-store", "mode": _mode(), "sectors_key_configured": sectors.configured}
+    return {"ok": True, "service": "paham-emiten-store", "mode": _mode(), "sectors_key_configured": sectors.configured}
 
 
 def seed_snapshot(directory: str) -> int:
     """Seed cache dari fixtures/snapshot/*.json (respons Sectors asli hasil tools/harvest.py)."""
-    from pathlib import Path
-
     n = 0
     for f in sorted(Path(directory).glob("**/*.json")) if Path(directory).is_dir() else []:
         try:
@@ -276,11 +231,9 @@ def seed_snapshot(directory: str) -> int:
             continue
         if not isinstance(snap, dict) or "endpoint" not in snap or "data" not in snap:
             continue
-        clamped, _, error = clamp_params(snap["endpoint"], snap.get("params") or {})
-        if error:
-            continue
-        key = canonical_key(snap["endpoint"], clamped)
-        n += db.seed(key, snap["endpoint"], clamped, snap["data"], int(snap.get("http_status", 200)),
+        params = normalize_params(snap.get("params") or {})
+        key = canonical_key(snap["endpoint"], params)
+        n += db.seed(key, snap["endpoint"], params, snap["data"], int(snap.get("http_status", 200)),
                      int(snap.get("credits_spent", 0)), float(snap.get("fetched_at_epoch") or time.time()),
                      ttl_seconds(snap["endpoint"], SETTINGS.default_ttl_s))
     return n

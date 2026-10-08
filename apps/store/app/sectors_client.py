@@ -8,7 +8,7 @@ import httpx
 
 from .config import SETTINGS
 
-log = logging.getLogger("idxmaca.store.sectors")
+log = logging.getLogger("paham.store.sectors")
 
 
 class SectorsError(Exception):

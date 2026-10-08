@@ -10,23 +10,23 @@ Diatur lewat `IDXMACA_STORE_MODE` (nama variabel warisan IDXMACA, sengaja tidak 
 
 | Mode | Perilaku | Dipakai untuk |
 |---|---|---|
-| `offline` | Hanya cache. Entri kedaluwarsa tetap dikembalikan (`store-hit-stale`). Yang tidak ada → 503 `offline_no_cache`, tidak dikarang. | **Demo, Docker, juri** (default di `docker-compose.yml` dan `.env.example`) |
+| `offline` | Hanya cache. Entri kedaluwarsa tetap dikembalikan (`store-hit-stale`). Yang tidak ada → 503 `offline_no_cache`, tidak dikarang. | **Demo, Docker, juri** (default di kode, `docker-compose.yml`, dan `.env.example`) |
 | `live` | Miss → tembak Sectors, simpan. Butuh `SECTORS_API_KEY`. | Panen snapshot (`tools/harvest.py`) |
-| `fixture` | Miss → jawab dari `fixtures/sectors/` (fixture IDXMACA lama). Default bila variabel tidak diset. | Tes dan kode lama |
-| `auto` | `live` bila ada key, selain itu `fixture`. Bila live gagal, jatuh ke fixture. | Dev kode lama |
+
+Nilai mode lain (mis. `fixture`, `auto` dari versi lama) ditolak saat start dengan `ValueError`, jadi salah konfigurasi tidak diam-diam jatuh ke sumber lain.
 
 Key Sectors hanya dibaca di Store (`sectors_client.py`), dikirim mentah di header `Authorization`. Klien memakai User-Agent kustom karena Cloudflare di depan Sectors menolak UA bawaan Python.
 
 ## Alur `POST /v1/store/fetch`
 
-1. **Clamp dan validasi** parameter (`keys.clamp_params`). Rentang tanggal yang melewati batas dipotong; parameter tidak valid → 400 (gratis), tidak pernah jadi kunci sampah.
-2. **Kunci kanonis** lalu cek cache. Segar → `store-hit`, 0 kredit. Di mode `live`, entri yang bukan hasil panggilan live tidak dianggap segar.
+1. **Normalisasi** parameter (`keys.normalize_params`): urutan, huruf besar kecil, tipe nilai. Dua permintaan yang sama artinya selalu jadi satu kunci.
+2. **Kunci kanonis** lalu cek cache. Segar → `store-hit`, 0 kredit (entri hasil seed snapshot juga dihitung hit).
 3. **Mode `offline`**: pakai entri kedaluwarsa bila ada, selain itu 503.
 4. **Single-flight**: bila kunci yang sama sedang diambil, permintaan berikutnya menunggu hasil yang sama. Satu tembakan, bukan banyak.
-5. **Live**: `live_routes.translate` memetakan endpoint ke path Sectors. Path `/sectors/v2/...` (yang dipakai Paham Emiten) diteruskan apa adanya ke `/v2/.../` dengan parameter tak berubah. Endpoint internal lama yang tidak punya padanan → **501 `live_route_unavailable`, 0 kredit** (fail-closed, supaya tidak ada 404 berbiaya).
+5. **Live**: `live_routes.translate` memetakan endpoint ke path Sectors. Hanya path `/sectors/v2/...` (yang dipakai Paham Emiten) yang diteruskan, apa adanya ke `/v2/.../` dengan parameter tak berubah. Path lain → **501 `live_route_unavailable`, 0 kredit** (fail-closed, supaya tidak ada 404 berbiaya).
 6. **Simpan** dan catat biaya (`keys.credit_cost`).
 
-Respons selalu membawa provenans: `source` (`store-hit`, `store-hit-stale`, `sectors-live`, `fixture`), `fetched_at`, `credits_spent`, `cache_key`, `http_status`, `warnings`, `mode`. Core meneruskannya ke UI sebagai `src` di setiap blok kartu.
+Respons selalu membawa provenans: `source` (`store-hit`, `store-hit-stale`, `sectors-live`), `fetched_at`, `credits_spent`, `cache_key`, `http_status`, `warnings`, `mode`. Core meneruskannya ke UI sebagai `src` di setiap blok kartu.
 
 ## Endpoint
 
@@ -43,23 +43,13 @@ Respons selalu membawa provenans: `source` (`store-hit`, `store-hit-stale`, `sec
 
 `cache_key = SHA256("GET|" + path_norm + "|" + params_json)`
 
-- **Path**: huruf kecil untuk kata kunci jalur yang dikenal (`company`, `report`, …); segmen alfanumerik lain (simbol, slug, `sectors`) dijadikan huruf besar, sehingga `bbca` dan `BBCA` memberi kunci yang sama. Host dibuang.
+- **Path**: huruf kecil untuk kata kunci jalur (`v1`, `v2`, `company`, `companies`); segmen alfanumerik lain (simbol, `sectors`, `report`, `get-segments`) dijadikan huruf besar, sehingga `bbca` dan `BBCA` memberi kunci yang sama. Host dibuang.
 - **Parameter**: diurutkan menurut nama; nilai kosong dibuang; `"true"`/`"false"` jadi boolean; string angka jadi integer; nilai pada kunci simbol (`symbol`, `symbols`, `code`, `ticker`, `slug`, `broker`) jadi huruf besar; daftar diurutkan; `sections` huruf kecil.
 - API key dan header autentikasi **tidak** ikut kunci.
 
 ## TTL
 
-`ttl.py`. Kategori `annual` dicek lebih dulu, jadi semua path `/sectors/v2/...` (Screener, segmen, daftar segmen) bertahan 30 hari: fundamental tahunan dan kepemilikan berubah per laporan, bukan per hari.
-
-| Jenis | TTL |
-|---|---|
-| `annual` (path `/sectors/v2/...`) | 30 hari |
-| Helper (subsektor, industri, tag, registri broker) | 7 hari |
-| Mining | 7 hari |
-| Kuartalan | 90 hari |
-| Laporan perusahaan/subsektor, EOD, screener lama, regional | 24 jam |
-| Event (aksi korporasi, filing, suspensi, berita) | 6 jam |
-| Lainnya | `IDXMACA_DEFAULT_TTL` (24 jam) |
+`ttl.py`. Semua path `/sectors/v2/...` (Screener, segmen, daftar segmen) bertahan **30 hari**: fundamental tahunan dan kepemilikan berubah per laporan, bukan per hari. Path lain memakai `IDXMACA_DEFAULT_TTL` (24 jam).
 
 **Negative cache**: respons `404` disimpan `IDXMACA_NEGATIVE_TTL` (6 jam) karena 404 tetap ditagih satu kredit. Status 400/401/403/429/5xx tidak disimpan. `200` kosong disimpan normal.
 
@@ -81,14 +71,12 @@ credit_events(id, cache_key, credits, source, at)
 
 | Variabel | Default | Arti |
 |---|---|---|
-| `IDXMACA_STORE_MODE` | `fixture` (compose: `offline`) | Mode di atas |
+| `IDXMACA_STORE_MODE` | `offline` | `offline` atau `live` |
 | `SECTORS_API_KEY` | kosong | Key Sectors; hanya Store yang membacanya |
 | `SECTORS_BASE_URL` | `https://api.sectors.app` | |
 | `SECTORS_AUTH_SCHEME` | kosong | Kosong = key mentah di `Authorization`; isi `Bearer` bila Sectors berubah |
 | `IDXMACA_DATA_DIR` / `IDXMACA_STORE_DB` | `./.data` / `<data>/store.db` | Lokasi SQLite |
 | `IDXMACA_SNAPSHOT_DIR` | `fixtures/snapshot` | Sumber seed |
-| `IDXMACA_FIXTURES_DIR` | `fixtures/sectors` | Fixture kode lama |
 | `IDXMACA_SECTORS_RETRIES` / `IDXMACA_SECTORS_TIMEOUT` | `2` / `30` s | Retry dengan backoff untuk 429/5xx dan galat jaringan |
 | `IDXMACA_DEFAULT_TTL` / `IDXMACA_NEGATIVE_TTL` | 24 jam / 6 jam | |
-| `IDXMACA_ALLOW_FIXTURE_FALLBACK` | `1` | Hanya relevan di mode `auto` |
 | `IDXMACA_CREDIT_START` | `1000` | Hanya untuk menghitung `credit_remaining` di `/stats`; Paham Emiten tidak menampilkannya |

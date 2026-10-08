@@ -21,7 +21,7 @@ jobs:
       - name: Store
         working-directory: apps/store
         run: python -m pytest -q
-      - name: Core (termasuk uji copot Sectors & 9 rumus = total_count Sectors)
+      - name: Core (kartu emiten, 30 cek lima sisi, uji copot Sectors)
         working-directory: apps/core
         run: python -m pytest -q
 

@@ -2,12 +2,11 @@ SHELL := /bin/bash
 PY    := .venv/bin/python
 PIP   := uv pip install
 
-.PHONY: setup fixtures serve web dev stop test test-store test-core build docker clean help
+.PHONY: setup serve dev stop test test-store test-core build docker clean help
 
 help:
 	@echo "Paham Emiten — targets:"
 	@echo "  make setup      venv + deps Python & Node"
-	@echo "  make fixtures   regenerate fixtures/sectors (deterministik)"
 	@echo "  make serve      Store(8787) + Core(8788) + Web(3000, build+start)"
 	@echo "  make dev        Store + Core + Web (next dev)"
 	@echo "  make stop       matikan semua layanan"
@@ -21,9 +20,6 @@ setup:
 	$(PIP) -r apps/core/requirements.txt
 	$(PIP) pytest pytest-asyncio
 	cd apps/web && npm install
-
-fixtures:
-	python3 tools/gen_fixtures.py
 
 serve: 
 	tools/serve.sh
