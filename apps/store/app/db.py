@@ -1,4 +1,4 @@
-"""SQLite cache store — skema STORE.md §8 + ledger kredit untuk stats."""
+"""SQLite cache store (lihat docs/STORE.md) + ledger kredit untuk stats."""
 from __future__ import annotations
 
 import json

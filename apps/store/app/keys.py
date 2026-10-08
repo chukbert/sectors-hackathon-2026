@@ -1,4 +1,4 @@
-"""Kunci kanonis STORE.md §3 + clamp rentang (§3, §7).
+"""Kunci kanonis + clamp rentang (docs/STORE.md, bagian "Kunci kanonis").
 
 cache_key = SHA256(METHOD + "|" + path_norm + "|" + params_norm)
 Clamp dilakukan SEBELUM lookup agar request invalid tidak pernah jadi key sampah.
@@ -23,7 +23,7 @@ PATH_KEYWORDS = {
     "shareholders", "affiliates", "free-float", "detail", "prices", "trade", "global",
 }
 
-# Batas rentang per jenis endpoint (STORE.md §3): broker ≤14 hari, IDX daily/idx ≤90 hari.
+# Batas rentang per jenis endpoint: broker ≤14 hari, IDX daily/idx ≤90 hari.
 RANGE_LIMITS_DAYS = {
     "broker": 14,
     "foreign": 14,

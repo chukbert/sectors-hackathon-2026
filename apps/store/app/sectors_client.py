@@ -44,7 +44,7 @@ class SectorsClient:
         await self._client.aclose()
 
     async def get(self, endpoint: str, params: dict | None = None) -> tuple[int, object]:
-        """GET dengan retry backoff untuk 429/5xx (STORE.md §5). 4xx lain langsung dikembalikan."""
+        """GET dengan retry backoff untuk 429/5xx (docs/STORE.md). 4xx lain langsung dikembalikan."""
         attempt = 0
         delay = 0.8
         last_exc: Exception | None = None

@@ -1,4 +1,4 @@
-"""TTL per jenis data (STORE.md §4) + klasifikasi jenis data."""
+"""TTL per jenis data (docs/STORE.md, bagian TTL) + klasifikasi jenis data."""
 from __future__ import annotations
 
 from .keys import normalize_path

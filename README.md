@@ -146,7 +146,7 @@ Kerangkanya diadaptasi dari [model analisis terbuka Simply Wall St](https://gith
 Tidak ada sumber angka cadangan.
  Ini diuji otomatis (`test_sectors_off_kills_the_app`).
 
-**Tanpa LLM.** Versi awal memakai LLM untuk membaca struk, lalu untuk menerjemahkan label segmen peta uang. Keduanya sudah dibuang. Sekarang semua teks di kartu adalah templat tetap atau data asli Sectors. Nama segmen di peta uang tampil apa adanya dari laporan (bahasa Inggris), dan halaman mengatakannya. Kartu dibangun murni dari data dan aturan yang bisa dibaca di kode (`apps/core/app/struk/`).
+**Tanpa LLM.** Versi awal memakai LLM untuk membaca struk, lalu untuk menerjemahkan label segmen peta uang. Keduanya sudah dibuang. Sekarang semua teks di kartu adalah templat tetap atau data asli Sectors. Nama segmen di peta uang tampil apa adanya dari laporan (bahasa Inggris), dan halaman mengatakannya. Kartu dibangun murni dari data dan aturan yang bisa dibaca di kode (`apps/core/app/struk/`). Kode IDXMACA lama di repo memang memuat integrasi LLM opsional (OpenRouter), tetapi tidak dipanggil oleh satu pun endpoint `/v1/struk/*` dan tidak terjangkau di demo publik.
 
 ## 4. Pemakaian Sectors API yang hemat (dan tidak biasa)
 
@@ -213,9 +213,17 @@ fixtures/snapshot   respons Sectors asli (matrix/, segments/; cohorts/ dari fitu
 tools/harvest.py    pengambil snapshot (--dry dulu, --budget, --sleep)
 ```
 
-Nama internal `struk` (folder, endpoint, variabel env) adalah sisa versi pertama dan sengaja tidak diganti agar riwayat dan deploy tetap stabil.
+Nama internal `struk` (folder, endpoint, variabel env) dan prefiks `IDXMACA_*` pada variabel Store adalah sisa versi sebelumnya dan sengaja tidak diganti agar riwayat dan deploy tetap stabil.
 
 Setiap angka di UI membawa provenans yang bisa dibuka ("dari mana angka ini?"): endpoint Sectors, field, query, waktu ambil, dan kredit untuk tampilan itu.
+
+Dokumentasi lebih rinci:
+
+| Dokumen | Isi |
+|---|---|
+| [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | Alur kode saham → kartu, matriks 25 panggilan, 30 cek lima sisi, uji copot Sectors, endpoint |
+| [`docs/STORE.md`](docs/STORE.md) | Cache read-through, mode `offline/live`, kunci kanonis, TTL, seed snapshot, ledger kredit |
+| [`docs/CREDITS.md`](docs/CREDITS.md) | Aturan penagihan Sectors, endpoint yang dipakai, cara kredit dihitung dan dijaga |
 
 ## 6. Menjalankan
 
@@ -265,6 +273,6 @@ CI (GitHub Actions) menjalankan tes yang sama, ditambah typecheck dan build web 
 
 ## 8. Riwayat
 
-Repo ini berawal dari **IDXMACA** (asisten multi-agen untuk analis), masih tersedia di `/idxmaca` — dokumentasinya di [`docs/IDXMACA.md`](docs/IDXMACA.md). Kami beralih karena IDXMACA menghabiskan kredit per pertanyaan; arsitektur Store-nya dipakai ulang sehingga runtime menjadi 0 kredit.
+Repo ini berawal dari **IDXMACA** (asisten multi-agen untuk analis yang memakai LLM). Kodenya masih ada di repo (halaman `/idxmaca`, endpoint `/v1/chat` dan `/v1/runs/*`, `packages/`), tetapi **bukan bagian dari Paham Emiten**: tidak dipakai kartu emiten, tidak punya docs lagi, dan di demo publik ditutup. Kami beralih karena IDXMACA menghabiskan kredit per pertanyaan; arsitektur Store-nya dipakai ulang sehingga runtime menjadi 0 kredit. Daftar modul lama ada di [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md#kode-lama-yang-masih-ada-di-repo).
 
 Versi berikutnya, **Struk Jadi Saham**, memakai foto struk belanja sebagai pintu masuk: AI membaca merek dan harga, lalu menunjukkan ke emiten mana uang belanja mengalir. Setelah menetapkan pengguna kami (pemegang akun sekuritas yang pasif), kami membuang seluruh alur struk: pemindai foto dan teks, peta pemilik keranjang, aliran uang belanja, kuota AI, dan set evaluasi pembacaan struk. Setelah itu LLM terakhir (penerjemah label peta uang) juga dibuang. Pengguna kami tidak kesulitan menemukan perusahaannya. Mereka kesulitan menilai perusahaan itu. Yang tersisa adalah bagian yang menjawab itu: kartu emiten. Pencarian lewat nama merek juga dibuang karena pengguna kami sudah mengenal kode saham.

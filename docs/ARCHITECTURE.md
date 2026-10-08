@@ -1,231 +1,112 @@
-# ARCHITECTURE — IDXMACA dengan LLM `meta/muse-spark-1.3` via OpenRouter
+# Arsitektur Paham Emiten
 
-> Produk: **IDX Multi Agent Consulting Assistant (IDXMACA)**. Dokumen induk: `PRD.md`, `INTENT-OUTPUT.md`, `STORE.md`.
-> Keputusan LLM: **satu model untuk semua peran agen** — `meta/muse-spark-1.3` lewat OpenRouter Chat Completions
-> (`POST https://openrouter.ai/api/v1/chat/completions`), dibedakan via `reasoning_effort`, `temperature`, dan system prompt.
-> Full reasoning (`xhigh`) hanya untuk tugas yang butuh penalaran dalam; tugas murah pakai effort rendah.
+Dokumen ini menjelaskan bagaimana satu kode saham berubah menjadi kartu emiten, dan di mana Sectors berada di dalamnya. Pengantar produk ada di [README](../README.md); aturan cache dan kredit ada di [STORE.md](STORE.md) dan [CREDITS.md](CREDITS.md).
 
-## 1. Keputusan Arsitektur Kunci
+## Gambaran
 
-1. **Satu model, banyak peran.** Router, planner, compiler, writer, judge memakai model yang sama; yang beda hanya
-   `reasoning_effort` (low/medium/high/xhigh), `temperature`, dan prompt. Alasan: 7 hari build, satu integrasi, perilaku konsisten.
-2. **LLM tidak pernah menyentuh Sectors langsung.** Semua data lewat Store Service read-through (`STORE.md`).
-3. **LLM tidak pernah menghitung.** Semua angka dari compute deterministik (Python); LLM hanya menarasikan + memilih visual.
-4. **Semua output terstruktur.** Planner, compiler, dan writer memakai `response_format` JSON (json_schema) agar bisa divalidasi kode.
-5. **Kunci API tidak pernah ke frontend.** `OPENROUTER_API_KEY` dan Sectors key hanya sebagai env di backend/Store Service.
-
-## 2. Topologi Layanan
-
-```
-                    ┌──────────────────────────────┐
-                    │  Web UI (Next.js)            │
-                    │  input, 8 panel §8, drawer   │◄── SSE: status panel progresif
-                    └──────────────┬───────────────┘
-                                   │ HTTPS/JSON
-┌──────────────────────────────────▼───────────────────────────────────┐
-│ API Backend (FastAPI) "idxmaca-core"                                 │
-│ ┌──────────┐ ┌──────────┐ ┌───────────┐ ┌────────┐ ┌───────┐ ┌─────┐ │
-│ │ Router   │→│ Planner  │→│ Executor  │→│Compute │→│Verify │→│Write│ │
-│ │(agen)    │ │(agen)    │ │(kode)     │ │(kode)  │ │campur │ │(agen)│ │
-│ └──────────┘ └──────────┘ └─────┬─────┘ └────────┘ └───────┘ └─────┘ │
-│        │             │          │  store.fetch / store.lookup        │
-│        └─────────────┴──────────┼── LLM Gateway (OpenRouter client) │
-└────────────────────────────────┼───────────────────────────────────┘
-                                 │                    ▲ POST /v1/chat/completions
-              ┌──────────────────▼─────────┐          │ model: meta/muse-spark-1.3
-              │ Store Service (FastAPI)    │          │ Header: Authorization,
-              │ SQLite→Postgres, TTL,      │          │ HTTP-Referer, X-Title
-              │ single-flight, stats       │──────────┘
-              └──────────┬─────────────────┘
-                         │ (API key Sectors hanya di sini)
-                         ▼
-                  api.sectors.app (+ fixtures saat dev)
-Scheduler (P2/roadmap, internal): pemanasan cache + invalidate TTL → menulis ke Store.
+```mermaid
+flowchart LR
+    U["Pengguna<br>ketik kode saham"] --> W["web :3000<br>Next.js 14 + ECharts"]
+    W -- "/api/core/v1/struk/*" --> C["core :8788<br>FastAPI"]
+    C -- "POST /v1/store/fetch" --> S["store :8787<br>FastAPI + SQLite"]
+    S -- "hit / seed snapshot" --> DB[("store.db<br>cache + ledger")]
+    S -. "hanya mode live<br>(panen snapshot)" .-> API["api.sectors.app"]
+    SNAP["fixtures/snapshot<br>respons Sectors asli"] -- "seed saat start" --> S
 ```
 
-## 3. LLM Gateway (satu-satunya pintu ke OpenRouter)
+| Layanan | Folder | Tugas |
+|---|---|---|
+| **web** | `apps/web` | Halaman Paham Emiten (`/`), kartu 1 emiten dan kolom perbandingan 2–5 emiten, grafik ECharts. Route `app/api/core/[...path]` mem-proxy ke Core. |
+| **core** | `apps/core/app/struk` | Merakit kartu dari data Sectors: matriks seluruh bursa, 30 cek lima sisi, rantai pemilik, pesaing, peta uang. Tanpa LLM. |
+| **store** | `apps/store` | Satu-satunya pintu ke Sectors: cache read-through, ledger kredit, mode offline, seed dari snapshot. Hanya Store yang boleh memegang `SECTORS_API_KEY`. |
 
-- **Endpoint & auth:** `POST https://openrouter.ai/api/v1/chat/completions`, header `Authorization: Bearer $OPENROUTER_API_KEY`
-  (+ `HTTP-Referer` dan `X-Title` IDXMACA sesuai praktik OpenRouter). Key dari env, tidak pernah ke klien.
-- **Kemampuan model yang dipakai** (terkonfirmasi dari halaman model): `messages`, `tools`, `tool_choice`,
-  `response_format`, `temperature`, `top_p`, `top_k`, `max_tokens`, `stream`, `reasoning`, `reasoning_effort`.
-- **Reliabilitas:** timeout 60–120 dtk (xhigh boleh lama), retry 3× dengan backoff untuk 429/502
-  (502 upstream = tidak ditagih; 402/403 = stop + pesan jujur, bukan retry).
-- **Akuntansi biaya:** catat `usage.{prompt_tokens, completion_tokens, cost}` tiap panggilan ke tabel `llm_calls`
-  (peran, run_id, effort) → tampil di panel rencana berdampingan dengan estimasi kredit Sectors.
-- **Fallback berlapis bila gagal:** (1) ulangi effort sama, (2) turunkan effort satu tingkat, (3) kembalikan error jujur
-  + hasil parsial yang sudah ada. Tidak ada fallback yang mengarang data.
+Core tidak punya API key Sectors sama sekali. Aturan ini ditegakkan oleh struktur layanan, bukan oleh imbauan.
 
-## 4. Peran Agen × Konfigurasi Model
+## Dari kode saham ke kartu
 
-| Peran | Tugas | `reasoning_effort` | `temperature` | Output |
-|---|---|---|---|---|
-| Router | query → {persona, playbook, DAG intent-output} | low | 0 | JSON strict |
-| Planner | DAG → tool calls + estimasi kredit (via `store/lookup`) | high | 0 | JSON strict |
-| NL→`where` Compiler | Bahasa Indonesia → query screener terstruktur + whitelist field | medium | 0 | JSON strict |
-| Writer L1/L2 | narasi panel + judul pesan chart | medium | 0.2 | JSON (narasi + chart spec) |
-| Writer L3 | sintesis memo multi-intent + risiko + disclaimer | **xhigh** | 0.2 | JSON (memo + sitasi) |
-| Judge bahasa | cek bahasa rekomendasi (lapis 2 setelah filter kode) | low | 0 | JSON {pass, temuan} |
-| Memory | ringkas memo → snapshot + diff antar kuartal | low | 0 | JSON |
+1. **Pencarian** (`GET /v1/struk/search?q=BB`). Mencocokkan kode persis, lalu kode yang diawali ketikan. Semuanya dari matriks yang sudah di memori, jadi 0 kredit.
+2. **Kartu** (`GET /v1/struk/company/{kode}`). `service.company_card` memanggil `load_universe()` lalu merakit:
 
-- `xhigh` hanya untuk **Writer L3** (sintesis Q1–Q5, §9) dan Planner pada query ≥20 intent — di situlah penalaran dalam terbayar.
-- Semua peran grounding: system prompt melarang angka tanpa `evidence_id`, melarang kata Buy/Sell/Hold/target-price.
-
-## 5. Tool Calling & Structured Output
-
-- Agen **tidak** memanggil Sectors sebagai tool. Tool yang didaftarkan ke model (`tools`) adalah fungsi backend:
-  `store_lookup`, `store_fetch`, `compute_*`, `memory_read/write`, `chart_spec_validate`.
-- Planner dan compiler memakai `response_format: json_schema` (skema DAG, skema `where`) → divalidasi kode sebelum dieksekusi.
-  Validasi gagal = perbaiki via 1× retry model, lalu tolak dengan pesan jujur (tidak pernah dieksekusi buta).
-- `stream: true` dipakai Writer agar UI terisi progresif per panel (§8.1 butir 4); peran JSON memakai non-streaming.
-
-## 6. Alur Run (interaktif vs terjadwal)
-
-**Interaktif (1 query, <15 intent):**
-input → Router (low) → Entity Resolver (kode: ticker/slug, hindari 404) → Planner (high + `lookup`)
-→ tampilkan estimasi ("9 Store + 3 live ≈ 5 kredit", biaya LLM $x) → Approve
-→ Executor paralel (`fetch`, single-flight) → Compute → Evidence ledger
-→ Verifier (kode: angka vs ledger; judge: bahasa) → Writer (medium/xhigh) → SSE render L0→L1→L2 → export.
-
-**Terjadwal / cache-warm (Q1–Q5, ≥20 intent; pola P2):** Scheduler → Planner (xhigh) → `fetch` massal (miss tersimpan) → memo + 8 panel
-→ snapshot di Store; di MVP pola DAG yang sama dijalankan interaktif dengan approval.
-
-## 7. Compute Deterministik (di luar LLM)
-
-`yoy, cagr, margin, roe/roa, dscr/icr, der, current_ratio, median_peer, zscore, adv, foreign_share,
-konsentrasi_broker, dilusi_rights, posisi_vs_band, delta_memo` — Python murni, unit-tested, tiap hasil
-membawa `evidence_id` → endpoint + params + `fetched_at` (+ `source: store-hit|sectors-live` dari `STORE.md`).
-
-## 8. Verifier & Kepatuhan (dua lapis)
-
-1. **Lapis kode (penentu):** setiap angka wajib ada di ledger (toleransi pembulatan eksplisit); filter regex frasa
-   rekomendasi (beli/jual/hold/tahan/target price/cuan/pasti naik); suntik disclaimer otomatis.
-2. **Lapis Judge LLM (low effort):** baca ulang nada tulisan; `fail` → Writer revisi 1×, gagal lagi → kirim versi fakta-saja.
-3. Larangan keras tetap: eksekusi order, koneksi broker, janji return.
-
-## 9. Memory, UX, dan Export
-
-- **Memory:** tabel `memo_snapshots(ticker, periode, ringkasan_json, llm_model, created_at)`; diff = kode (angka) + ringkasan LLM (low).
-- **UX:** peta langsung ke `INTENT-OUTPUT.md` §8 — L0 strip → 8 panel hero → L2 accordion → L3 appendix; tiap visual:
-  judul pesan + sumber/tanggal (klik → drawer) + `fetched_at` (tahu dari cache jam berapa).
-- **Export:** DOCX/PDF = L0 + 8 hero; XLSX = tabel mentah + sumber per sheet (§8.3).
-- **Charts:** Apache ECharts via `echarts-for-react` — import per-chart dari `echarts/core` (line, bar, scatter, heatmap,
-  treemap, sankey, gauge, graph, map + geo), bungkus `next/dynamic` (`ssr:false`) + `transpilePackages: ['echarts','zrender']`,
-  satu tema IDXMACA bersama (palet §7, format Rp id-ID, judul = pesan), `getDataURL` untuk PNG ke export DOCX/PDF.
-  Tabel comps/heatmap, timeline, dan checklist tetap HTML/JSX murni (lebih terbaca + siap XLSX).
-
-## 10. Layout Repo & Deploy (monorepo, Docker Compose)
-
-```
-idxmaca/  apps/web (Next.js)  apps/core (FastAPI: router/planner/executor/compute/verify/write)
-          apps/store (FastAPI: fetch/lookup/invalidate/stats)  packages/prompts (system prompt per peran)
-          packages/evals (20 pertanyaan baku)  fixtures/sectors/*.json  docs/ (PRD, INTENT-OUTPUT, STORE, INNOVATION)
-```
-
-- Lokal/demo: `docker compose up` → web + core + store (SQLite seed fixtures, mode offline tersedia).
-- Rahasia: hanya via env (`OPENROUTER_API_KEY`, `SECTORS_API_KEY` di store saja); repo bersih dari key (syarat submission).
-
-## 11. Anggaran Biaya & Evaluasi
-
-- **Biaya LLM:** dibatasi per run (cap token per peran; xhigh hanya 2 peran); tampil di UI berdampingan dengan kredit Sectors.
-- **Kredit Sectors:** target memo ≤30 (PRD §11); mega-query via scheduler + cache; `store/stats` ("hit rate, kredit dihemat") jadi bahan demo.
-- **Eval:** 20 pertanyaan ID/EN (typo ticker, emiten suspensi, tambang, SGX) → skor: intent tepat, angka cocok ledger,
-  tanpa bahasa rekomendasi, biaya dalam budget. Target 90%+.
-
-## 12. Yang Harus Diverifikasi Saat Build (risiko kecil, catat di sini)
-
-1. Nilai enum `reasoning_effort` yang diterima provider untuk model ini (`xhigh`/`high`/`medium`/`low`) + default bila tak diisi.
-2. Batas konteks & `max_tokens` praktis model ini (ukur dengan fixtures report 8 section).
-3. Harga per-token aktual (halaman model) untuk kalibrasi cap budget.
-4. Perilaku `response_format: json_schema` + `tools` dipakai bersamaan (uji; bila rewel, pisahkan: planner JSON tanpa tools).
-
-## 13. Diagram Khusus: Run 38 Intent Penuh (Q1) — intent ≠ agen
-
-> Prinsip: **38 intent = apa yang disajikan, bukan berapa agen yang jalan.**
-> Tiga penyusutan berlapis: intent → fetch unik (dedup + fetch-sharing) → worker terbatas → panel → 1 sintesis.
-
-```
-QUERY: 1 kalimat ("paket komite pagi..." = Q1, INTENT-OUTPUT §9)
-  │
-  │ 1× Router LLM (low) → {persona CIO, playbook komite, 37 intent}
-  ▼
-PLANNER (1× LLM high/xhigh)
-  │ ① expand tiap klausa → intent  ② dedup + fetch-sharing  ③ lookup Store per node
-  │ Output ke user: "37 intent → 27 fetch unik → 19 Store-hit + 8 live ≈ 34 kredit" → APPROVE
-  ▼
-FETCH PLAN = 27 node DAG, dieksekusi 6 WORKER paralel (semaphore + single-flight + budget guard)
-  │ Gelombang 1 · L0 (eksekutif dulu) : universe close, index/cap, movers, foreign universe, top rank
-  │ Gelombang 2 · Snapshot            : report sections ×3 emiten, quarterly ×3, quarterly dates
-  │ Gelombang 3 · Flow                : broker summary/top ×ticker, foreign per-simbol, registry/top brokers
-  │ Gelombang 4 · Event               : corporate actions + calendar, filings, suspensions, news
-  │ Gelombang 5 · Spesialis           : screener, subsector report, mining ×5, SGX/KLSE dossier + flow
-  ▼
-COMPUTE (kode murni, sinkron) → EVIDENCE LEDGER (nilai → endpoint + params + fetched_at + store-hit/live)
-  ▼
-8× PANEL WRITER (paralel, effort medium) → VERIFY (kode penentu + judge low)
-  ▼
-1× WRITER L3 (xhigh) → MEMO 3 LENSA + DISCLAIMER → SSE progresif L0→L1→L2 → EXPORT
-```
-
-### 13.1 Peta fetch-sharing (bukti 37 intent tidak butuh 37 tembakan)
-
-| Fetch (1 tembakan) | Menghidupi intent |
+| Bagian respons | Dibangun dari |
 |---|---|
-| `company/report` ×3 emiten (sections: overview, valuation, financials, dividend, management, ownership, peers) | IO-01,02,03,05,06,07,08 |
-| Quarterly financials ×3 + quarterly dates | IO-03,04,10 |
-| Screener terstruktur + top ranked + top growth + free float + helpers | IO-11,12,13,14,15 |
-| Universe close + index/cap + movers + most-traded + daily ×ticker | IO-16,17,18,19 |
-| Broker summary/top ×ticker + foreign universe/per-simbol + registry/top brokers + activity 2 broker | IO-21,22,23,24 |
-| Corp actions ×ticker + calendar + filings + suspensions + news | IO-25,26,27,28 |
-| Subsector report + mining (dossier, ownership, site, komoditas, lisensi) | IO-29,30,31,32,33,34 |
-| SGX/KLSE dossier + SGX short/buyback/filings/news | IO-35,36 |
-| Rule engine + agregasi daftar emiten (kode, tanpa fetch baru) | IO-38 |
+| `facts`, `trend` | Field `revenue`, `earnings`, `net_profit_margin`, `market_cap`, `total_debt`, `total_equity`, `roe`, dan seterusnya dari matriks. Rasio *"dari setiap Rp100 pendapatan"* = `net_profit_margin × 100`. |
+| `money` | Endpoint `get-segments` (peta uang). Hanya dipanggil bila simbol ada di `list_companies_with_segments` (219 emiten), karena 404 tetap ditagih. |
+| `owners` | `major_shareholders_share_percentage`, `affiliates`, `free_float`. `controller_chain` mengikuti pemegang terbesar yang bukan publik, melompat ke emiten induk bila Sectors menautkan simbolnya. |
+| `peers` | Emiten satu `industry` (mundur ke `sub_sector` bila kurang dari 4), diurutkan menurut nilai pasar. |
+| `snowflake` | `snowflake.evaluate`: 30 cek ya/tidak (lihat di bawah). |
 
-### 13.2 Akuntansi satu run penuh (contoh Q1, cache hangat)
+3. Setiap blok membawa `src`: endpoint Sectors, field, query, waktu ambil, sumber (`store-hit`, dst.), dan kredit untuk tampilan itu. UI menampilkan ini sebagai "dari mana angka ini?".
 
-- Panggilan LLM: **14** (1 router + 1 planner + 1 compiler + 8 panel writer + 1 L3 + 1 judge + 1 memory) — bukan 38.
-- Tembakan live Sectors: **~8** (snapshot harian + news/filings `since`); sisanya Store-hit.
-- Kredit: **~30–40** (vs ~100+ tanpa Store) — sesuai target PRD §11.
-- Ketergantungan dihormati: peer set (IO-11) sebelum comps (IO-08); `report_date` (IO-10) sebelum quarterly;
-  gelombang gagal → panel terkait jadi empty-state jujur (kill-switch), 7 panel lain tetap tayang.
+## Matriks seluruh bursa
 
-## 14. Memori Sesi Percakapan (wajib hukumnya)
+`struk/universe.py` mendefinisikan lima grup field (`profile`, `fin`, `value`, `hist`, `health`; total 77 field, tahun buku 2022–2025, riwayat dari 2020, perkiraan 2026). Untuk tiap grup, `load_universe()` memanggil Screener `GET /v2/companies/` dengan:
 
-> Setiap panggilan chat **wajib** menyertakan input dan output chat sebelumnya sebagai input chat berikutnya.
-> Ditegakkan di kode (bukan imbauan): satu-satunya pintu ke model adalah chat gateway yang selalu merakit konteks sesi —
-> peran agen tidak bisa memanggil model tanpa melewatinya.
+```
+where               = symbol like '%' or <field> > -1e18 or …
+limit               = 200
+order_by            = symbol
+include_query_values = true
+```
 
-### 14.1 Yang disimpan per turn
+Cabang `symbol like '%'` meloloskan semua emiten. Cabang `OR` lainnya ada supaya `query_values` mengembalikan nilai setiap field yang disebut. Hasilnya 5 halaman × 5 grup = **25 panggilan untuk 962 emiten × 77 field**. `merge_pages` menggabungkannya per simbol. Hasil disimpan di memori proses (`_UNIVERSE`) setelah panggilan pertama.
 
-`tchat_turns(session_id, seq, role, text, intent_ids[], evidence_ids[], model, effort, tokens, created_at)` —
-user dan assistant sama-sama disimpan lengkap (bukan ringkasan saja), beserta intent dan evidence yang dipakai turn itu.
+## Lima sisi: 30 cek
 
-### 14.2 Rakitan konteks (urutan tetap)
+`struk/snowflake.py`: 5 sisi (Harga, Prospek, Rekam jejak, Kesehatan, Dividen) × 6 cek, diadaptasi dari [model analisis terbuka Simply Wall St](https://github.com/SimplyWallSt/Company-Analysis-Model).
 
-1. System prompt peran + aturan grounding (angka hanya dari ledger, tanpa rekomendasi).
-2. **Rolling summary** sesi (hasil pemadatan turn lama — §14.3).
-3. **N turn terakhir verbatim** (default 10;IO-39 dan klarifikasi pendek selalu ikut agar "yang tadi" tidak hilang).
-4. **State entitas sesi**: daftar emiten (`session.tickers`), perbandingan yang sedang berjalan, flag yang sudah dibahas,
-   pertanyaan terbuka, preferensi bahasa — diekstrak tiap turn (resolver + model low).
-5. **Pointer ledger**: evidence_id yang relevan (bukan seluruh raw JSON) agar verifier tetap bisa menelusuri angka lama.
-6. Pesan baru user.
+- Setiap `Check` punya `fields` (field Sectors yang dipakai), fungsi `test`, dan `where`: ekspresi Screener setara yang ditampilkan di layar dan bisa dijalankan ulang.
+- `compute_stats` menghitung pembanding sekali dari matriks: median PER bursa, median perkiraan pertumbuhan laba dan pendapatan bursa, persentil ke-25 dan ke-75 imbal hasil dividen (hanya yang membayar), serta median pertumbuhan laba dan ROA per kelompok pembanding (industri bila beranggota ≥4, selain itu subsektor). Tidak ada panggilan Sectors tambahan.
+- Hasil tiap cek: `true` (lolos), `false`, atau `null` ("tidak bisa dinilai" bila data Sectors kosong). `null` tidak dihitung gagal.
+- `market_pass` per cek = jumlah emiten yang lolos, dihitung lokal dari matriks (*"lolos oleh N dari 962"*).
+- Bank (`is_bank`: subsektor Banks atau punya `gross_loan`) memakai 4 cek khusus bank (`BANK_ONLY`: NPL, LDR, leverage aset/modal, CAR) sebagai pengganti 6 cek kesehatan non-bank (`NON_BANK_HEALTH`).
+- Emiten yang tidak membayar dividen (`pays_dividend` salah: imbal hasil 0 dan tidak ada dividen 2020–2025) **tidak lolos** cek dividen yang mensyaratkan dividen. Ini hasil `false`, bukan `null`.
 
-### 14.3 Pemadatan (compaction) saat mendekati budget
+Tes `apps/core/tests/test_snowflake.py` mengunci hasil terhadap angka asli di snapshot.
 
-- Budget sejarah dikonfigurasi (default: sisakan ruang untuk N turn verbatim + respons; selebihnya diringkas).
-- Peringkas = model low-effort dengan instruksi eksplisit mempertahankan: keputusan yang diambil, **angka + evidence_id**,
-  item belum terjawab, koreksi user ("maksud saya..."), dan preferensi.
-- Ringkasan ditulis ke `chat_sessions.summary` tiap K turn; turn mentah tetap tersimpan di DB untuk audit/transkrip.
+## Uji copot Sectors
 
-### 14.4 Aturan perilaku yang dijamin memori ini
+`STRUK_SECTORS_OFF=1` membuat `service.load_universe()` dan `_fetch()` melempar `SectorsOff`. Endpoint `/v1/struk/*` lalu mengembalikan `sectors_off: true` dengan pesan *"Tanpa data Sectors, aplikasi ini tidak bisa menampilkan apa pun — kami tidak mengarang angka."* Tidak ada sumber angka cadangan. Dikunci oleh tes `test_sectors_off_kills_the_app`.
 
-- Pronomina dan elipsis terpecahkan: "tambah DBS", "bandingkan dengan yang tadi", "yang kedua maksudnya apa" —
-  diuji di eval multi-turn (wajib lolos agar rilis).
-- Koreksi user menimpa fakta lama (state entitas di-update, bukan ditumpuk) dan dicatat sebagai revisi.
-- Sesi bisa dilanjutkan lintas reload (resume by `session_id`); daftar sesi + export transkrip tersedia di UI.
-- Isolasi: memori per sesi per user; tidak bocor antar sesi (berbagi tim = opt-in, P2).
+## Satu-satunya pengetahuan non-Sectors
 
-### 14.5 Paritas mockup
+`struk/brands.py` berisi katalog kurasi 86 emiten → merek sehari-hari (ICBP → Indomie, …). Dipakai hanya untuk chip di kepala kartu. Semua angka, pemilik, dan segmen hanya dari Sectors.
 
-Chip "Konteks sesi: BBCA, BMRI, BBRI" di composer = state entitas yang terlihat; jawaban follow-up yang diawali
-"Mengingat konteks sesi (...)" adalah IO-39 yang membaca §§14.2–14.3 — perilaku ini yang dieval, bukan sekadar tempelan teks.
+## Endpoint
+
+**Core (`:8788`)**
+
+| Endpoint | Fungsi |
+|---|---|
+| `GET /v1/struk/search?q=` | Saran kode saham (persis atau awalan) |
+| `GET /v1/struk/company/{kode}` | Kartu emiten lengkap dengan `src` per blok |
+| `GET /v1/struk/status` | Status `sectors_off`, statistik Store, disclaimer |
+| `GET /v1/health` | Health check |
+
+Demo publik (`PUBLIC_DEMO=1`): route proxy web hanya meneruskan `v1/struk/*` dan `v1/health`.
+
+**Store (`:8787`)**: lihat [STORE.md](STORE.md).
+
+## Perbandingan 2–5 emiten
+
+Tidak ada endpoint khusus. Browser mengambil kartu tiap kode lewat `/v1/struk/company/{kode}`, menyimpannya per kode di state halaman, lalu menyusun kolom berdampingan. Menambah kolom tidak mengambil ulang kartu yang sudah ada, dan tidak ada angka baru di luar kartu. Tautan `/?emiten=BBCA,BBRI` membuka perbandingan langsung.
+
+## Data dan reproduksibilitas
+
+| Lokasi | Isi |
+|---|---|
+| `fixtures/snapshot/matrix/` | 25 respons Screener mentah (matriks seluruh bursa) |
+| `fixtures/snapshot/segments/` | `_list.json` + respons segmen per emiten |
+| `fixtures/snapshot/cohorts/` | Respons `total_count` dari fitur awal yang sudah dihapus; dipertahankan sebagai bukti panen |
+| `fixtures/validation/` | Respons mentah dari `tools/validate_api.py` dan `tools/probe_snowflake.py` |
+
+`tools/harvest.py` mengambil snapshot lewat Store (mode live). Saat start, Store membaca `fixtures/snapshot/**/*.json` dan mengisi cache tanpa mencatat kredit, sehingga aplikasi berjalan penuh di mode `offline` dengan 0 kredit.
+
+## Kode lama yang masih ada di repo
+
+Repo ini berawal dari **IDXMACA**, asisten multi-agen yang memakai LLM (OpenRouter). Kodenya masih ada dan **tidak dipakai Paham Emiten**:
+
+- Core: `catalog`, `charts`, `compiler`, `compute`, `executor`, `export`, `ledger`, `llm`, `memory`, `panels`, `pipelines_*`, `plan_builder`, `prompts`, `resolve`, `router_agent`, `rules`, `writer` di `apps/core/app/`, serta endpoint `/v1/sessions`, `/v1/chat`, `/v1/runs/*`, `/v1/export/*` di `main.py`. Dari `verify.py` hanya konstanta `DISCLAIMER` yang dipakai Paham Emiten.
+- Web: `apps/web/app/idxmaca/` dan komponen `messages`, `pieces`, `shell`.
+- Lain-lain: `packages/prompts`, `packages/evals`, `mockup/`, `apps/store/app/fixture_provider.py` bersama `fixtures/sectors/` (mode Store `fixture`).
+
+Di demo publik (`PUBLIC_DEMO=1`) halaman `/idxmaca` dialihkan ke beranda dan route proxy menolak endpoint selain `v1/struk/*` dan `v1/health`, jadi kode lama tidak terjangkau dari luar.

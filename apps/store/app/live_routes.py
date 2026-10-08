@@ -1,4 +1,4 @@
-"""Peta endpoint internal IDXMACA → path live Sectors v2 (docs/CREDITS.md).
+"""Peta endpoint internal IDXMACA → path live Sectors v2 (docs/STORE.md).
 
 Internal path adalah bahasa kanonis aplikasi + fixture. Saat mode live, Store
 menerjemahkan ke path resmi Sectors (termasuk param yang berbeda nama). Bila
